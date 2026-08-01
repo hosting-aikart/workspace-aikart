@@ -103,7 +103,7 @@ export default function HomePage() {
       <div className="home-hero">
         <div>
           <h1 className="home-greeting">
-            {greeting}, <span className="text-primary">{user?.fullName?.split(' ')[0]}</span> 👋
+            {greeting}, <span className="text-primary">{user?.name?.split(' ')[0]}</span> 👋
           </h1>
           <p className="text-secondary mt-1">
             Here's your workspace overview for today.

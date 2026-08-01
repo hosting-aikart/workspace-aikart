@@ -28,6 +28,16 @@ export type Department = $Result.DefaultSelection<Prisma.$DepartmentPayload>
  * 
  */
 export type User = $Result.DefaultSelection<Prisma.$UserPayload>
+/**
+ * Model Attendance
+ * 
+ */
+export type Attendance = $Result.DefaultSelection<Prisma.$AttendancePayload>
+/**
+ * Model TimerSegment
+ * 
+ */
+export type TimerSegment = $Result.DefaultSelection<Prisma.$TimerSegmentPayload>
 
 /**
  * Enums
@@ -41,11 +51,25 @@ export namespace $Enums {
 
 export type Role = (typeof Role)[keyof typeof Role]
 
+
+export const AttendanceStatus: {
+  NOT_STARTED: 'NOT_STARTED',
+  WORKING: 'WORKING',
+  PAUSED: 'PAUSED',
+  CHECKED_OUT: 'CHECKED_OUT'
+};
+
+export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
+
 }
 
 export type Role = $Enums.Role
 
 export const Role: typeof $Enums.Role
+
+export type AttendanceStatus = $Enums.AttendanceStatus
+
+export const AttendanceStatus: typeof $Enums.AttendanceStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -197,6 +221,26 @@ export class PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.attendance`: Exposes CRUD operations for the **Attendance** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Attendances
+    * const attendances = await prisma.attendance.findMany()
+    * ```
+    */
+  get attendance(): Prisma.AttendanceDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.timerSegment`: Exposes CRUD operations for the **TimerSegment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more TimerSegments
+    * const timerSegments = await prisma.timerSegment.findMany()
+    * ```
+    */
+  get timerSegment(): Prisma.TimerSegmentDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -646,7 +690,9 @@ export namespace Prisma {
   export const ModelName: {
     Workspace: 'Workspace',
     Department: 'Department',
-    User: 'User'
+    User: 'User',
+    Attendance: 'Attendance',
+    TimerSegment: 'TimerSegment'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -662,7 +708,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "workspace" | "department" | "user"
+      modelProps: "workspace" | "department" | "user" | "attendance" | "timerSegment"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -888,6 +934,154 @@ export namespace Prisma {
           }
         }
       }
+      Attendance: {
+        payload: Prisma.$AttendancePayload<ExtArgs>
+        fields: Prisma.AttendanceFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AttendanceFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AttendanceFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>
+          }
+          findFirst: {
+            args: Prisma.AttendanceFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AttendanceFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>
+          }
+          findMany: {
+            args: Prisma.AttendanceFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>[]
+          }
+          create: {
+            args: Prisma.AttendanceCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>
+          }
+          createMany: {
+            args: Prisma.AttendanceCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AttendanceCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>[]
+          }
+          delete: {
+            args: Prisma.AttendanceDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>
+          }
+          update: {
+            args: Prisma.AttendanceUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>
+          }
+          deleteMany: {
+            args: Prisma.AttendanceDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AttendanceUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AttendanceUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>[]
+          }
+          upsert: {
+            args: Prisma.AttendanceUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AttendancePayload>
+          }
+          aggregate: {
+            args: Prisma.AttendanceAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAttendance>
+          }
+          groupBy: {
+            args: Prisma.AttendanceGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AttendanceGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AttendanceCountArgs<ExtArgs>
+            result: $Utils.Optional<AttendanceCountAggregateOutputType> | number
+          }
+        }
+      }
+      TimerSegment: {
+        payload: Prisma.$TimerSegmentPayload<ExtArgs>
+        fields: Prisma.TimerSegmentFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TimerSegmentFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TimerSegmentFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>
+          }
+          findFirst: {
+            args: Prisma.TimerSegmentFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TimerSegmentFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>
+          }
+          findMany: {
+            args: Prisma.TimerSegmentFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>[]
+          }
+          create: {
+            args: Prisma.TimerSegmentCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>
+          }
+          createMany: {
+            args: Prisma.TimerSegmentCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TimerSegmentCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>[]
+          }
+          delete: {
+            args: Prisma.TimerSegmentDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>
+          }
+          update: {
+            args: Prisma.TimerSegmentUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>
+          }
+          deleteMany: {
+            args: Prisma.TimerSegmentDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TimerSegmentUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TimerSegmentUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>[]
+          }
+          upsert: {
+            args: Prisma.TimerSegmentUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TimerSegmentPayload>
+          }
+          aggregate: {
+            args: Prisma.TimerSegmentAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTimerSegment>
+          }
+          groupBy: {
+            args: Prisma.TimerSegmentGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TimerSegmentGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TimerSegmentCountArgs<ExtArgs>
+            result: $Utils.Optional<TimerSegmentCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1014,6 +1208,8 @@ export namespace Prisma {
     workspace?: WorkspaceOmit
     department?: DepartmentOmit
     user?: UserOmit
+    attendance?: AttendanceOmit
+    timerSegment?: TimerSegmentOmit
   }
 
   /* Types for Logging */
@@ -1167,11 +1363,13 @@ export namespace Prisma {
   export type UserCountOutputType = {
     directReports: number
     createdUsers: number
+    attendances: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     directReports?: boolean | UserCountOutputTypeCountDirectReportsArgs
     createdUsers?: boolean | UserCountOutputTypeCountCreatedUsersArgs
+    attendances?: boolean | UserCountOutputTypeCountAttendancesArgs
   }
 
   // Custom InputTypes
@@ -1197,6 +1395,44 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountCreatedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: UserWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAttendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttendanceWhereInput
+  }
+
+
+  /**
+   * Count Type AttendanceCountOutputType
+   */
+
+  export type AttendanceCountOutputType = {
+    timerSegments: number
+  }
+
+  export type AttendanceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    timerSegments?: boolean | AttendanceCountOutputTypeCountTimerSegmentsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AttendanceCountOutputType without action
+   */
+  export type AttendanceCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AttendanceCountOutputType
+     */
+    select?: AttendanceCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AttendanceCountOutputType without action
+   */
+  export type AttendanceCountOutputTypeCountTimerSegmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimerSegmentWhereInput
   }
 
 
@@ -3682,6 +3918,7 @@ export namespace Prisma {
     directReports?: boolean | User$directReportsArgs<ExtArgs>
     createdBy?: boolean | User$createdByArgs<ExtArgs>
     createdUsers?: boolean | User$createdUsersArgs<ExtArgs>
+    attendances?: boolean | User$attendancesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -3767,6 +4004,7 @@ export namespace Prisma {
     directReports?: boolean | User$directReportsArgs<ExtArgs>
     createdBy?: boolean | User$createdByArgs<ExtArgs>
     createdUsers?: boolean | User$createdUsersArgs<ExtArgs>
+    attendances?: boolean | User$attendancesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3791,6 +4029,7 @@ export namespace Prisma {
       directReports: Prisma.$UserPayload<ExtArgs>[]
       createdBy: Prisma.$UserPayload<ExtArgs> | null
       createdUsers: Prisma.$UserPayload<ExtArgs>[]
+      attendances: Prisma.$AttendancePayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4212,6 +4451,7 @@ export namespace Prisma {
     directReports<T extends User$directReportsArgs<ExtArgs> = {}>(args?: Subset<T, User$directReportsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdBy<T extends User$createdByArgs<ExtArgs> = {}>(args?: Subset<T, User$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     createdUsers<T extends User$createdUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$createdUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    attendances<T extends User$attendancesArgs<ExtArgs> = {}>(args?: Subset<T, User$attendancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4766,6 +5006,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.attendances
+   */
+  export type User$attendancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    where?: AttendanceWhereInput
+    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
+    cursor?: AttendanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+  }
+
+  /**
    * User without action
    */
   export type UserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4781,6 +5045,2248 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: UserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Attendance
+   */
+
+  export type AggregateAttendance = {
+    _count: AttendanceCountAggregateOutputType | null
+    _avg: AttendanceAvgAggregateOutputType | null
+    _sum: AttendanceSumAggregateOutputType | null
+    _min: AttendanceMinAggregateOutputType | null
+    _max: AttendanceMaxAggregateOutputType | null
+  }
+
+  export type AttendanceAvgAggregateOutputType = {
+    totalSeconds: number | null
+  }
+
+  export type AttendanceSumAggregateOutputType = {
+    totalSeconds: number | null
+  }
+
+  export type AttendanceMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    date: Date | null
+    checkIn: Date | null
+    checkOut: Date | null
+    totalSeconds: number | null
+    status: $Enums.AttendanceStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AttendanceMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    date: Date | null
+    checkIn: Date | null
+    checkOut: Date | null
+    totalSeconds: number | null
+    status: $Enums.AttendanceStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AttendanceCountAggregateOutputType = {
+    id: number
+    userId: number
+    date: number
+    checkIn: number
+    checkOut: number
+    totalSeconds: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AttendanceAvgAggregateInputType = {
+    totalSeconds?: true
+  }
+
+  export type AttendanceSumAggregateInputType = {
+    totalSeconds?: true
+  }
+
+  export type AttendanceMinAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    checkIn?: true
+    checkOut?: true
+    totalSeconds?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AttendanceMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    checkIn?: true
+    checkOut?: true
+    totalSeconds?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AttendanceCountAggregateInputType = {
+    id?: true
+    userId?: true
+    date?: true
+    checkIn?: true
+    checkOut?: true
+    totalSeconds?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AttendanceAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Attendance to aggregate.
+     */
+    where?: AttendanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attendances to fetch.
+     */
+    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AttendanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attendances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attendances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Attendances
+    **/
+    _count?: true | AttendanceCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: AttendanceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: AttendanceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AttendanceMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AttendanceMaxAggregateInputType
+  }
+
+  export type GetAttendanceAggregateType<T extends AttendanceAggregateArgs> = {
+        [P in keyof T & keyof AggregateAttendance]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAttendance[P]>
+      : GetScalarType<T[P], AggregateAttendance[P]>
+  }
+
+
+
+
+  export type AttendanceGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AttendanceWhereInput
+    orderBy?: AttendanceOrderByWithAggregationInput | AttendanceOrderByWithAggregationInput[]
+    by: AttendanceScalarFieldEnum[] | AttendanceScalarFieldEnum
+    having?: AttendanceScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AttendanceCountAggregateInputType | true
+    _avg?: AttendanceAvgAggregateInputType
+    _sum?: AttendanceSumAggregateInputType
+    _min?: AttendanceMinAggregateInputType
+    _max?: AttendanceMaxAggregateInputType
+  }
+
+  export type AttendanceGroupByOutputType = {
+    id: string
+    userId: string
+    date: Date
+    checkIn: Date | null
+    checkOut: Date | null
+    totalSeconds: number
+    status: $Enums.AttendanceStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: AttendanceCountAggregateOutputType | null
+    _avg: AttendanceAvgAggregateOutputType | null
+    _sum: AttendanceSumAggregateOutputType | null
+    _min: AttendanceMinAggregateOutputType | null
+    _max: AttendanceMaxAggregateOutputType | null
+  }
+
+  type GetAttendanceGroupByPayload<T extends AttendanceGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AttendanceGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AttendanceGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AttendanceGroupByOutputType[P]>
+            : GetScalarType<T[P], AttendanceGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AttendanceSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    checkIn?: boolean
+    checkOut?: boolean
+    totalSeconds?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    timerSegments?: boolean | Attendance$timerSegmentsArgs<ExtArgs>
+    _count?: boolean | AttendanceCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["attendance"]>
+
+  export type AttendanceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    checkIn?: boolean
+    checkOut?: boolean
+    totalSeconds?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["attendance"]>
+
+  export type AttendanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    checkIn?: boolean
+    checkOut?: boolean
+    totalSeconds?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["attendance"]>
+
+  export type AttendanceSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    date?: boolean
+    checkIn?: boolean
+    checkOut?: boolean
+    totalSeconds?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AttendanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "date" | "checkIn" | "checkOut" | "totalSeconds" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["attendance"]>
+  export type AttendanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+    timerSegments?: boolean | Attendance$timerSegmentsArgs<ExtArgs>
+    _count?: boolean | AttendanceCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AttendanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AttendanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AttendancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Attendance"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+      timerSegments: Prisma.$TimerSegmentPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      date: Date
+      checkIn: Date | null
+      checkOut: Date | null
+      totalSeconds: number
+      status: $Enums.AttendanceStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["attendance"]>
+    composites: {}
+  }
+
+  type AttendanceGetPayload<S extends boolean | null | undefined | AttendanceDefaultArgs> = $Result.GetResult<Prisma.$AttendancePayload, S>
+
+  type AttendanceCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AttendanceFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AttendanceCountAggregateInputType | true
+    }
+
+  export interface AttendanceDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Attendance'], meta: { name: 'Attendance' } }
+    /**
+     * Find zero or one Attendance that matches the filter.
+     * @param {AttendanceFindUniqueArgs} args - Arguments to find a Attendance
+     * @example
+     * // Get one Attendance
+     * const attendance = await prisma.attendance.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AttendanceFindUniqueArgs>(args: SelectSubset<T, AttendanceFindUniqueArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Attendance that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AttendanceFindUniqueOrThrowArgs} args - Arguments to find a Attendance
+     * @example
+     * // Get one Attendance
+     * const attendance = await prisma.attendance.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AttendanceFindUniqueOrThrowArgs>(args: SelectSubset<T, AttendanceFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Attendance that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttendanceFindFirstArgs} args - Arguments to find a Attendance
+     * @example
+     * // Get one Attendance
+     * const attendance = await prisma.attendance.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AttendanceFindFirstArgs>(args?: SelectSubset<T, AttendanceFindFirstArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Attendance that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttendanceFindFirstOrThrowArgs} args - Arguments to find a Attendance
+     * @example
+     * // Get one Attendance
+     * const attendance = await prisma.attendance.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AttendanceFindFirstOrThrowArgs>(args?: SelectSubset<T, AttendanceFindFirstOrThrowArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Attendances that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttendanceFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Attendances
+     * const attendances = await prisma.attendance.findMany()
+     * 
+     * // Get first 10 Attendances
+     * const attendances = await prisma.attendance.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const attendanceWithIdOnly = await prisma.attendance.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AttendanceFindManyArgs>(args?: SelectSubset<T, AttendanceFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Attendance.
+     * @param {AttendanceCreateArgs} args - Arguments to create a Attendance.
+     * @example
+     * // Create one Attendance
+     * const Attendance = await prisma.attendance.create({
+     *   data: {
+     *     // ... data to create a Attendance
+     *   }
+     * })
+     * 
+     */
+    create<T extends AttendanceCreateArgs>(args: SelectSubset<T, AttendanceCreateArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Attendances.
+     * @param {AttendanceCreateManyArgs} args - Arguments to create many Attendances.
+     * @example
+     * // Create many Attendances
+     * const attendance = await prisma.attendance.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AttendanceCreateManyArgs>(args?: SelectSubset<T, AttendanceCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Attendances and returns the data saved in the database.
+     * @param {AttendanceCreateManyAndReturnArgs} args - Arguments to create many Attendances.
+     * @example
+     * // Create many Attendances
+     * const attendance = await prisma.attendance.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Attendances and only return the `id`
+     * const attendanceWithIdOnly = await prisma.attendance.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AttendanceCreateManyAndReturnArgs>(args?: SelectSubset<T, AttendanceCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Attendance.
+     * @param {AttendanceDeleteArgs} args - Arguments to delete one Attendance.
+     * @example
+     * // Delete one Attendance
+     * const Attendance = await prisma.attendance.delete({
+     *   where: {
+     *     // ... filter to delete one Attendance
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AttendanceDeleteArgs>(args: SelectSubset<T, AttendanceDeleteArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Attendance.
+     * @param {AttendanceUpdateArgs} args - Arguments to update one Attendance.
+     * @example
+     * // Update one Attendance
+     * const attendance = await prisma.attendance.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AttendanceUpdateArgs>(args: SelectSubset<T, AttendanceUpdateArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Attendances.
+     * @param {AttendanceDeleteManyArgs} args - Arguments to filter Attendances to delete.
+     * @example
+     * // Delete a few Attendances
+     * const { count } = await prisma.attendance.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AttendanceDeleteManyArgs>(args?: SelectSubset<T, AttendanceDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Attendances.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttendanceUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Attendances
+     * const attendance = await prisma.attendance.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AttendanceUpdateManyArgs>(args: SelectSubset<T, AttendanceUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Attendances and returns the data updated in the database.
+     * @param {AttendanceUpdateManyAndReturnArgs} args - Arguments to update many Attendances.
+     * @example
+     * // Update many Attendances
+     * const attendance = await prisma.attendance.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Attendances and only return the `id`
+     * const attendanceWithIdOnly = await prisma.attendance.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AttendanceUpdateManyAndReturnArgs>(args: SelectSubset<T, AttendanceUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Attendance.
+     * @param {AttendanceUpsertArgs} args - Arguments to update or create a Attendance.
+     * @example
+     * // Update or create a Attendance
+     * const attendance = await prisma.attendance.upsert({
+     *   create: {
+     *     // ... data to create a Attendance
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Attendance we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AttendanceUpsertArgs>(args: SelectSubset<T, AttendanceUpsertArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Attendances.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttendanceCountArgs} args - Arguments to filter Attendances to count.
+     * @example
+     * // Count the number of Attendances
+     * const count = await prisma.attendance.count({
+     *   where: {
+     *     // ... the filter for the Attendances we want to count
+     *   }
+     * })
+    **/
+    count<T extends AttendanceCountArgs>(
+      args?: Subset<T, AttendanceCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AttendanceCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Attendance.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttendanceAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AttendanceAggregateArgs>(args: Subset<T, AttendanceAggregateArgs>): Prisma.PrismaPromise<GetAttendanceAggregateType<T>>
+
+    /**
+     * Group by Attendance.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AttendanceGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AttendanceGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AttendanceGroupByArgs['orderBy'] }
+        : { orderBy?: AttendanceGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AttendanceGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAttendanceGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Attendance model
+   */
+  readonly fields: AttendanceFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Attendance.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AttendanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    timerSegments<T extends Attendance$timerSegmentsArgs<ExtArgs> = {}>(args?: Subset<T, Attendance$timerSegmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Attendance model
+   */
+  interface AttendanceFieldRefs {
+    readonly id: FieldRef<"Attendance", 'String'>
+    readonly userId: FieldRef<"Attendance", 'String'>
+    readonly date: FieldRef<"Attendance", 'DateTime'>
+    readonly checkIn: FieldRef<"Attendance", 'DateTime'>
+    readonly checkOut: FieldRef<"Attendance", 'DateTime'>
+    readonly totalSeconds: FieldRef<"Attendance", 'Int'>
+    readonly status: FieldRef<"Attendance", 'AttendanceStatus'>
+    readonly createdAt: FieldRef<"Attendance", 'DateTime'>
+    readonly updatedAt: FieldRef<"Attendance", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Attendance findUnique
+   */
+  export type AttendanceFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which Attendance to fetch.
+     */
+    where: AttendanceWhereUniqueInput
+  }
+
+  /**
+   * Attendance findUniqueOrThrow
+   */
+  export type AttendanceFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which Attendance to fetch.
+     */
+    where: AttendanceWhereUniqueInput
+  }
+
+  /**
+   * Attendance findFirst
+   */
+  export type AttendanceFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which Attendance to fetch.
+     */
+    where?: AttendanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attendances to fetch.
+     */
+    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Attendances.
+     */
+    cursor?: AttendanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attendances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attendances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attendances.
+     */
+    distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * Attendance findFirstOrThrow
+   */
+  export type AttendanceFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which Attendance to fetch.
+     */
+    where?: AttendanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attendances to fetch.
+     */
+    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Attendances.
+     */
+    cursor?: AttendanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attendances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attendances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attendances.
+     */
+    distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * Attendance findMany
+   */
+  export type AttendanceFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * Filter, which Attendances to fetch.
+     */
+    where?: AttendanceWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Attendances to fetch.
+     */
+    orderBy?: AttendanceOrderByWithRelationInput | AttendanceOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Attendances.
+     */
+    cursor?: AttendanceWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Attendances from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Attendances.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Attendances.
+     */
+    distinct?: AttendanceScalarFieldEnum | AttendanceScalarFieldEnum[]
+  }
+
+  /**
+   * Attendance create
+   */
+  export type AttendanceCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Attendance.
+     */
+    data: XOR<AttendanceCreateInput, AttendanceUncheckedCreateInput>
+  }
+
+  /**
+   * Attendance createMany
+   */
+  export type AttendanceCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Attendances.
+     */
+    data: AttendanceCreateManyInput | AttendanceCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Attendance createManyAndReturn
+   */
+  export type AttendanceCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * The data used to create many Attendances.
+     */
+    data: AttendanceCreateManyInput | AttendanceCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Attendance update
+   */
+  export type AttendanceUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Attendance.
+     */
+    data: XOR<AttendanceUpdateInput, AttendanceUncheckedUpdateInput>
+    /**
+     * Choose, which Attendance to update.
+     */
+    where: AttendanceWhereUniqueInput
+  }
+
+  /**
+   * Attendance updateMany
+   */
+  export type AttendanceUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Attendances.
+     */
+    data: XOR<AttendanceUpdateManyMutationInput, AttendanceUncheckedUpdateManyInput>
+    /**
+     * Filter which Attendances to update
+     */
+    where?: AttendanceWhereInput
+    /**
+     * Limit how many Attendances to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Attendance updateManyAndReturn
+   */
+  export type AttendanceUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * The data used to update Attendances.
+     */
+    data: XOR<AttendanceUpdateManyMutationInput, AttendanceUncheckedUpdateManyInput>
+    /**
+     * Filter which Attendances to update
+     */
+    where?: AttendanceWhereInput
+    /**
+     * Limit how many Attendances to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Attendance upsert
+   */
+  export type AttendanceUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Attendance to update in case it exists.
+     */
+    where: AttendanceWhereUniqueInput
+    /**
+     * In case the Attendance found by the `where` argument doesn't exist, create a new Attendance with this data.
+     */
+    create: XOR<AttendanceCreateInput, AttendanceUncheckedCreateInput>
+    /**
+     * In case the Attendance was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AttendanceUpdateInput, AttendanceUncheckedUpdateInput>
+  }
+
+  /**
+   * Attendance delete
+   */
+  export type AttendanceDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+    /**
+     * Filter which Attendance to delete.
+     */
+    where: AttendanceWhereUniqueInput
+  }
+
+  /**
+   * Attendance deleteMany
+   */
+  export type AttendanceDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Attendances to delete
+     */
+    where?: AttendanceWhereInput
+    /**
+     * Limit how many Attendances to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Attendance.timerSegments
+   */
+  export type Attendance$timerSegmentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    where?: TimerSegmentWhereInput
+    orderBy?: TimerSegmentOrderByWithRelationInput | TimerSegmentOrderByWithRelationInput[]
+    cursor?: TimerSegmentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TimerSegmentScalarFieldEnum | TimerSegmentScalarFieldEnum[]
+  }
+
+  /**
+   * Attendance without action
+   */
+  export type AttendanceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Attendance
+     */
+    select?: AttendanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Attendance
+     */
+    omit?: AttendanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AttendanceInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model TimerSegment
+   */
+
+  export type AggregateTimerSegment = {
+    _count: TimerSegmentCountAggregateOutputType | null
+    _min: TimerSegmentMinAggregateOutputType | null
+    _max: TimerSegmentMaxAggregateOutputType | null
+  }
+
+  export type TimerSegmentMinAggregateOutputType = {
+    id: string | null
+    attendanceId: string | null
+    startedAt: Date | null
+    endedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type TimerSegmentMaxAggregateOutputType = {
+    id: string | null
+    attendanceId: string | null
+    startedAt: Date | null
+    endedAt: Date | null
+    createdAt: Date | null
+  }
+
+  export type TimerSegmentCountAggregateOutputType = {
+    id: number
+    attendanceId: number
+    startedAt: number
+    endedAt: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type TimerSegmentMinAggregateInputType = {
+    id?: true
+    attendanceId?: true
+    startedAt?: true
+    endedAt?: true
+    createdAt?: true
+  }
+
+  export type TimerSegmentMaxAggregateInputType = {
+    id?: true
+    attendanceId?: true
+    startedAt?: true
+    endedAt?: true
+    createdAt?: true
+  }
+
+  export type TimerSegmentCountAggregateInputType = {
+    id?: true
+    attendanceId?: true
+    startedAt?: true
+    endedAt?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type TimerSegmentAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimerSegment to aggregate.
+     */
+    where?: TimerSegmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimerSegments to fetch.
+     */
+    orderBy?: TimerSegmentOrderByWithRelationInput | TimerSegmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TimerSegmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimerSegments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimerSegments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned TimerSegments
+    **/
+    _count?: true | TimerSegmentCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TimerSegmentMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TimerSegmentMaxAggregateInputType
+  }
+
+  export type GetTimerSegmentAggregateType<T extends TimerSegmentAggregateArgs> = {
+        [P in keyof T & keyof AggregateTimerSegment]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTimerSegment[P]>
+      : GetScalarType<T[P], AggregateTimerSegment[P]>
+  }
+
+
+
+
+  export type TimerSegmentGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TimerSegmentWhereInput
+    orderBy?: TimerSegmentOrderByWithAggregationInput | TimerSegmentOrderByWithAggregationInput[]
+    by: TimerSegmentScalarFieldEnum[] | TimerSegmentScalarFieldEnum
+    having?: TimerSegmentScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TimerSegmentCountAggregateInputType | true
+    _min?: TimerSegmentMinAggregateInputType
+    _max?: TimerSegmentMaxAggregateInputType
+  }
+
+  export type TimerSegmentGroupByOutputType = {
+    id: string
+    attendanceId: string
+    startedAt: Date
+    endedAt: Date | null
+    createdAt: Date
+    _count: TimerSegmentCountAggregateOutputType | null
+    _min: TimerSegmentMinAggregateOutputType | null
+    _max: TimerSegmentMaxAggregateOutputType | null
+  }
+
+  type GetTimerSegmentGroupByPayload<T extends TimerSegmentGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TimerSegmentGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TimerSegmentGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TimerSegmentGroupByOutputType[P]>
+            : GetScalarType<T[P], TimerSegmentGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TimerSegmentSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    attendanceId?: boolean
+    startedAt?: boolean
+    endedAt?: boolean
+    createdAt?: boolean
+    attendance?: boolean | AttendanceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timerSegment"]>
+
+  export type TimerSegmentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    attendanceId?: boolean
+    startedAt?: boolean
+    endedAt?: boolean
+    createdAt?: boolean
+    attendance?: boolean | AttendanceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timerSegment"]>
+
+  export type TimerSegmentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    attendanceId?: boolean
+    startedAt?: boolean
+    endedAt?: boolean
+    createdAt?: boolean
+    attendance?: boolean | AttendanceDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["timerSegment"]>
+
+  export type TimerSegmentSelectScalar = {
+    id?: boolean
+    attendanceId?: boolean
+    startedAt?: boolean
+    endedAt?: boolean
+    createdAt?: boolean
+  }
+
+  export type TimerSegmentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "attendanceId" | "startedAt" | "endedAt" | "createdAt", ExtArgs["result"]["timerSegment"]>
+  export type TimerSegmentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    attendance?: boolean | AttendanceDefaultArgs<ExtArgs>
+  }
+  export type TimerSegmentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    attendance?: boolean | AttendanceDefaultArgs<ExtArgs>
+  }
+  export type TimerSegmentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    attendance?: boolean | AttendanceDefaultArgs<ExtArgs>
+  }
+
+  export type $TimerSegmentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "TimerSegment"
+    objects: {
+      attendance: Prisma.$AttendancePayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      attendanceId: string
+      startedAt: Date
+      endedAt: Date | null
+      createdAt: Date
+    }, ExtArgs["result"]["timerSegment"]>
+    composites: {}
+  }
+
+  type TimerSegmentGetPayload<S extends boolean | null | undefined | TimerSegmentDefaultArgs> = $Result.GetResult<Prisma.$TimerSegmentPayload, S>
+
+  type TimerSegmentCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TimerSegmentFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TimerSegmentCountAggregateInputType | true
+    }
+
+  export interface TimerSegmentDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['TimerSegment'], meta: { name: 'TimerSegment' } }
+    /**
+     * Find zero or one TimerSegment that matches the filter.
+     * @param {TimerSegmentFindUniqueArgs} args - Arguments to find a TimerSegment
+     * @example
+     * // Get one TimerSegment
+     * const timerSegment = await prisma.timerSegment.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TimerSegmentFindUniqueArgs>(args: SelectSubset<T, TimerSegmentFindUniqueArgs<ExtArgs>>): Prisma__TimerSegmentClient<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one TimerSegment that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TimerSegmentFindUniqueOrThrowArgs} args - Arguments to find a TimerSegment
+     * @example
+     * // Get one TimerSegment
+     * const timerSegment = await prisma.timerSegment.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TimerSegmentFindUniqueOrThrowArgs>(args: SelectSubset<T, TimerSegmentFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TimerSegmentClient<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TimerSegment that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimerSegmentFindFirstArgs} args - Arguments to find a TimerSegment
+     * @example
+     * // Get one TimerSegment
+     * const timerSegment = await prisma.timerSegment.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TimerSegmentFindFirstArgs>(args?: SelectSubset<T, TimerSegmentFindFirstArgs<ExtArgs>>): Prisma__TimerSegmentClient<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first TimerSegment that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimerSegmentFindFirstOrThrowArgs} args - Arguments to find a TimerSegment
+     * @example
+     * // Get one TimerSegment
+     * const timerSegment = await prisma.timerSegment.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TimerSegmentFindFirstOrThrowArgs>(args?: SelectSubset<T, TimerSegmentFindFirstOrThrowArgs<ExtArgs>>): Prisma__TimerSegmentClient<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more TimerSegments that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimerSegmentFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all TimerSegments
+     * const timerSegments = await prisma.timerSegment.findMany()
+     * 
+     * // Get first 10 TimerSegments
+     * const timerSegments = await prisma.timerSegment.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const timerSegmentWithIdOnly = await prisma.timerSegment.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TimerSegmentFindManyArgs>(args?: SelectSubset<T, TimerSegmentFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a TimerSegment.
+     * @param {TimerSegmentCreateArgs} args - Arguments to create a TimerSegment.
+     * @example
+     * // Create one TimerSegment
+     * const TimerSegment = await prisma.timerSegment.create({
+     *   data: {
+     *     // ... data to create a TimerSegment
+     *   }
+     * })
+     * 
+     */
+    create<T extends TimerSegmentCreateArgs>(args: SelectSubset<T, TimerSegmentCreateArgs<ExtArgs>>): Prisma__TimerSegmentClient<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many TimerSegments.
+     * @param {TimerSegmentCreateManyArgs} args - Arguments to create many TimerSegments.
+     * @example
+     * // Create many TimerSegments
+     * const timerSegment = await prisma.timerSegment.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TimerSegmentCreateManyArgs>(args?: SelectSubset<T, TimerSegmentCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many TimerSegments and returns the data saved in the database.
+     * @param {TimerSegmentCreateManyAndReturnArgs} args - Arguments to create many TimerSegments.
+     * @example
+     * // Create many TimerSegments
+     * const timerSegment = await prisma.timerSegment.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many TimerSegments and only return the `id`
+     * const timerSegmentWithIdOnly = await prisma.timerSegment.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TimerSegmentCreateManyAndReturnArgs>(args?: SelectSubset<T, TimerSegmentCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a TimerSegment.
+     * @param {TimerSegmentDeleteArgs} args - Arguments to delete one TimerSegment.
+     * @example
+     * // Delete one TimerSegment
+     * const TimerSegment = await prisma.timerSegment.delete({
+     *   where: {
+     *     // ... filter to delete one TimerSegment
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TimerSegmentDeleteArgs>(args: SelectSubset<T, TimerSegmentDeleteArgs<ExtArgs>>): Prisma__TimerSegmentClient<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one TimerSegment.
+     * @param {TimerSegmentUpdateArgs} args - Arguments to update one TimerSegment.
+     * @example
+     * // Update one TimerSegment
+     * const timerSegment = await prisma.timerSegment.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TimerSegmentUpdateArgs>(args: SelectSubset<T, TimerSegmentUpdateArgs<ExtArgs>>): Prisma__TimerSegmentClient<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more TimerSegments.
+     * @param {TimerSegmentDeleteManyArgs} args - Arguments to filter TimerSegments to delete.
+     * @example
+     * // Delete a few TimerSegments
+     * const { count } = await prisma.timerSegment.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TimerSegmentDeleteManyArgs>(args?: SelectSubset<T, TimerSegmentDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TimerSegments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimerSegmentUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many TimerSegments
+     * const timerSegment = await prisma.timerSegment.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TimerSegmentUpdateManyArgs>(args: SelectSubset<T, TimerSegmentUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more TimerSegments and returns the data updated in the database.
+     * @param {TimerSegmentUpdateManyAndReturnArgs} args - Arguments to update many TimerSegments.
+     * @example
+     * // Update many TimerSegments
+     * const timerSegment = await prisma.timerSegment.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more TimerSegments and only return the `id`
+     * const timerSegmentWithIdOnly = await prisma.timerSegment.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TimerSegmentUpdateManyAndReturnArgs>(args: SelectSubset<T, TimerSegmentUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one TimerSegment.
+     * @param {TimerSegmentUpsertArgs} args - Arguments to update or create a TimerSegment.
+     * @example
+     * // Update or create a TimerSegment
+     * const timerSegment = await prisma.timerSegment.upsert({
+     *   create: {
+     *     // ... data to create a TimerSegment
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the TimerSegment we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TimerSegmentUpsertArgs>(args: SelectSubset<T, TimerSegmentUpsertArgs<ExtArgs>>): Prisma__TimerSegmentClient<$Result.GetResult<Prisma.$TimerSegmentPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of TimerSegments.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimerSegmentCountArgs} args - Arguments to filter TimerSegments to count.
+     * @example
+     * // Count the number of TimerSegments
+     * const count = await prisma.timerSegment.count({
+     *   where: {
+     *     // ... the filter for the TimerSegments we want to count
+     *   }
+     * })
+    **/
+    count<T extends TimerSegmentCountArgs>(
+      args?: Subset<T, TimerSegmentCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TimerSegmentCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a TimerSegment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimerSegmentAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TimerSegmentAggregateArgs>(args: Subset<T, TimerSegmentAggregateArgs>): Prisma.PrismaPromise<GetTimerSegmentAggregateType<T>>
+
+    /**
+     * Group by TimerSegment.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TimerSegmentGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TimerSegmentGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TimerSegmentGroupByArgs['orderBy'] }
+        : { orderBy?: TimerSegmentGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TimerSegmentGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTimerSegmentGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the TimerSegment model
+   */
+  readonly fields: TimerSegmentFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for TimerSegment.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TimerSegmentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    attendance<T extends AttendanceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AttendanceDefaultArgs<ExtArgs>>): Prisma__AttendanceClient<$Result.GetResult<Prisma.$AttendancePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the TimerSegment model
+   */
+  interface TimerSegmentFieldRefs {
+    readonly id: FieldRef<"TimerSegment", 'String'>
+    readonly attendanceId: FieldRef<"TimerSegment", 'String'>
+    readonly startedAt: FieldRef<"TimerSegment", 'DateTime'>
+    readonly endedAt: FieldRef<"TimerSegment", 'DateTime'>
+    readonly createdAt: FieldRef<"TimerSegment", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * TimerSegment findUnique
+   */
+  export type TimerSegmentFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which TimerSegment to fetch.
+     */
+    where: TimerSegmentWhereUniqueInput
+  }
+
+  /**
+   * TimerSegment findUniqueOrThrow
+   */
+  export type TimerSegmentFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which TimerSegment to fetch.
+     */
+    where: TimerSegmentWhereUniqueInput
+  }
+
+  /**
+   * TimerSegment findFirst
+   */
+  export type TimerSegmentFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which TimerSegment to fetch.
+     */
+    where?: TimerSegmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimerSegments to fetch.
+     */
+    orderBy?: TimerSegmentOrderByWithRelationInput | TimerSegmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimerSegments.
+     */
+    cursor?: TimerSegmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimerSegments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimerSegments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimerSegments.
+     */
+    distinct?: TimerSegmentScalarFieldEnum | TimerSegmentScalarFieldEnum[]
+  }
+
+  /**
+   * TimerSegment findFirstOrThrow
+   */
+  export type TimerSegmentFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which TimerSegment to fetch.
+     */
+    where?: TimerSegmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimerSegments to fetch.
+     */
+    orderBy?: TimerSegmentOrderByWithRelationInput | TimerSegmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for TimerSegments.
+     */
+    cursor?: TimerSegmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimerSegments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimerSegments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimerSegments.
+     */
+    distinct?: TimerSegmentScalarFieldEnum | TimerSegmentScalarFieldEnum[]
+  }
+
+  /**
+   * TimerSegment findMany
+   */
+  export type TimerSegmentFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * Filter, which TimerSegments to fetch.
+     */
+    where?: TimerSegmentWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of TimerSegments to fetch.
+     */
+    orderBy?: TimerSegmentOrderByWithRelationInput | TimerSegmentOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing TimerSegments.
+     */
+    cursor?: TimerSegmentWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` TimerSegments from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` TimerSegments.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of TimerSegments.
+     */
+    distinct?: TimerSegmentScalarFieldEnum | TimerSegmentScalarFieldEnum[]
+  }
+
+  /**
+   * TimerSegment create
+   */
+  export type TimerSegmentCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * The data needed to create a TimerSegment.
+     */
+    data: XOR<TimerSegmentCreateInput, TimerSegmentUncheckedCreateInput>
+  }
+
+  /**
+   * TimerSegment createMany
+   */
+  export type TimerSegmentCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many TimerSegments.
+     */
+    data: TimerSegmentCreateManyInput | TimerSegmentCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * TimerSegment createManyAndReturn
+   */
+  export type TimerSegmentCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * The data used to create many TimerSegments.
+     */
+    data: TimerSegmentCreateManyInput | TimerSegmentCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TimerSegment update
+   */
+  export type TimerSegmentUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * The data needed to update a TimerSegment.
+     */
+    data: XOR<TimerSegmentUpdateInput, TimerSegmentUncheckedUpdateInput>
+    /**
+     * Choose, which TimerSegment to update.
+     */
+    where: TimerSegmentWhereUniqueInput
+  }
+
+  /**
+   * TimerSegment updateMany
+   */
+  export type TimerSegmentUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update TimerSegments.
+     */
+    data: XOR<TimerSegmentUpdateManyMutationInput, TimerSegmentUncheckedUpdateManyInput>
+    /**
+     * Filter which TimerSegments to update
+     */
+    where?: TimerSegmentWhereInput
+    /**
+     * Limit how many TimerSegments to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * TimerSegment updateManyAndReturn
+   */
+  export type TimerSegmentUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * The data used to update TimerSegments.
+     */
+    data: XOR<TimerSegmentUpdateManyMutationInput, TimerSegmentUncheckedUpdateManyInput>
+    /**
+     * Filter which TimerSegments to update
+     */
+    where?: TimerSegmentWhereInput
+    /**
+     * Limit how many TimerSegments to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * TimerSegment upsert
+   */
+  export type TimerSegmentUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * The filter to search for the TimerSegment to update in case it exists.
+     */
+    where: TimerSegmentWhereUniqueInput
+    /**
+     * In case the TimerSegment found by the `where` argument doesn't exist, create a new TimerSegment with this data.
+     */
+    create: XOR<TimerSegmentCreateInput, TimerSegmentUncheckedCreateInput>
+    /**
+     * In case the TimerSegment was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TimerSegmentUpdateInput, TimerSegmentUncheckedUpdateInput>
+  }
+
+  /**
+   * TimerSegment delete
+   */
+  export type TimerSegmentDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
+    /**
+     * Filter which TimerSegment to delete.
+     */
+    where: TimerSegmentWhereUniqueInput
+  }
+
+  /**
+   * TimerSegment deleteMany
+   */
+  export type TimerSegmentDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which TimerSegments to delete
+     */
+    where?: TimerSegmentWhereInput
+    /**
+     * Limit how many TimerSegments to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * TimerSegment without action
+   */
+  export type TimerSegmentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the TimerSegment
+     */
+    select?: TimerSegmentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the TimerSegment
+     */
+    omit?: TimerSegmentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TimerSegmentInclude<ExtArgs> | null
   }
 
 
@@ -4843,6 +7349,32 @@ export namespace Prisma {
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+  export const AttendanceScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    date: 'date',
+    checkIn: 'checkIn',
+    checkOut: 'checkOut',
+    totalSeconds: 'totalSeconds',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AttendanceScalarFieldEnum = (typeof AttendanceScalarFieldEnum)[keyof typeof AttendanceScalarFieldEnum]
+
+
+  export const TimerSegmentScalarFieldEnum: {
+    id: 'id',
+    attendanceId: 'attendanceId',
+    startedAt: 'startedAt',
+    endedAt: 'endedAt',
+    createdAt: 'createdAt'
+  };
+
+  export type TimerSegmentScalarFieldEnum = (typeof TimerSegmentScalarFieldEnum)[keyof typeof TimerSegmentScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -4934,6 +7466,34 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AttendanceStatus'
+   */
+  export type EnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AttendanceStatus[]'
+   */
+  export type ListEnumAttendanceStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AttendanceStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float'
+   */
+  export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+  /**
+   * Reference to a field of type 'Float[]'
+   */
+  export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
   /**
    * Deep Input Types
@@ -5086,6 +7646,7 @@ export namespace Prisma {
     directReports?: UserListRelationFilter
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     createdUsers?: UserListRelationFilter
+    attendances?: AttendanceListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -5114,6 +7675,7 @@ export namespace Prisma {
     directReports?: UserOrderByRelationAggregateInput
     createdBy?: UserOrderByWithRelationInput
     createdUsers?: UserOrderByRelationAggregateInput
+    attendances?: AttendanceOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -5146,6 +7708,7 @@ export namespace Prisma {
     directReports?: UserListRelationFilter
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     createdUsers?: UserListRelationFilter
+    attendances?: AttendanceListRelationFilter
   }, "id" | "email" | "workspaceId_employeeId">
 
   export type UserOrderByWithAggregationInput = {
@@ -5196,6 +7759,142 @@ export namespace Prisma {
     createdById?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
+  }
+
+  export type AttendanceWhereInput = {
+    AND?: AttendanceWhereInput | AttendanceWhereInput[]
+    OR?: AttendanceWhereInput[]
+    NOT?: AttendanceWhereInput | AttendanceWhereInput[]
+    id?: StringFilter<"Attendance"> | string
+    userId?: StringFilter<"Attendance"> | string
+    date?: DateTimeFilter<"Attendance"> | Date | string
+    checkIn?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    checkOut?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    totalSeconds?: IntFilter<"Attendance"> | number
+    status?: EnumAttendanceStatusFilter<"Attendance"> | $Enums.AttendanceStatus
+    createdAt?: DateTimeFilter<"Attendance"> | Date | string
+    updatedAt?: DateTimeFilter<"Attendance"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    timerSegments?: TimerSegmentListRelationFilter
+  }
+
+  export type AttendanceOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    checkIn?: SortOrderInput | SortOrder
+    checkOut?: SortOrderInput | SortOrder
+    totalSeconds?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+    timerSegments?: TimerSegmentOrderByRelationAggregateInput
+  }
+
+  export type AttendanceWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId_date?: AttendanceUserIdDateCompoundUniqueInput
+    AND?: AttendanceWhereInput | AttendanceWhereInput[]
+    OR?: AttendanceWhereInput[]
+    NOT?: AttendanceWhereInput | AttendanceWhereInput[]
+    userId?: StringFilter<"Attendance"> | string
+    date?: DateTimeFilter<"Attendance"> | Date | string
+    checkIn?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    checkOut?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    totalSeconds?: IntFilter<"Attendance"> | number
+    status?: EnumAttendanceStatusFilter<"Attendance"> | $Enums.AttendanceStatus
+    createdAt?: DateTimeFilter<"Attendance"> | Date | string
+    updatedAt?: DateTimeFilter<"Attendance"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    timerSegments?: TimerSegmentListRelationFilter
+  }, "id" | "userId_date">
+
+  export type AttendanceOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    checkIn?: SortOrderInput | SortOrder
+    checkOut?: SortOrderInput | SortOrder
+    totalSeconds?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AttendanceCountOrderByAggregateInput
+    _avg?: AttendanceAvgOrderByAggregateInput
+    _max?: AttendanceMaxOrderByAggregateInput
+    _min?: AttendanceMinOrderByAggregateInput
+    _sum?: AttendanceSumOrderByAggregateInput
+  }
+
+  export type AttendanceScalarWhereWithAggregatesInput = {
+    AND?: AttendanceScalarWhereWithAggregatesInput | AttendanceScalarWhereWithAggregatesInput[]
+    OR?: AttendanceScalarWhereWithAggregatesInput[]
+    NOT?: AttendanceScalarWhereWithAggregatesInput | AttendanceScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Attendance"> | string
+    userId?: StringWithAggregatesFilter<"Attendance"> | string
+    date?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
+    checkIn?: DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
+    checkOut?: DateTimeNullableWithAggregatesFilter<"Attendance"> | Date | string | null
+    totalSeconds?: IntWithAggregatesFilter<"Attendance"> | number
+    status?: EnumAttendanceStatusWithAggregatesFilter<"Attendance"> | $Enums.AttendanceStatus
+    createdAt?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Attendance"> | Date | string
+  }
+
+  export type TimerSegmentWhereInput = {
+    AND?: TimerSegmentWhereInput | TimerSegmentWhereInput[]
+    OR?: TimerSegmentWhereInput[]
+    NOT?: TimerSegmentWhereInput | TimerSegmentWhereInput[]
+    id?: StringFilter<"TimerSegment"> | string
+    attendanceId?: StringFilter<"TimerSegment"> | string
+    startedAt?: DateTimeFilter<"TimerSegment"> | Date | string
+    endedAt?: DateTimeNullableFilter<"TimerSegment"> | Date | string | null
+    createdAt?: DateTimeFilter<"TimerSegment"> | Date | string
+    attendance?: XOR<AttendanceScalarRelationFilter, AttendanceWhereInput>
+  }
+
+  export type TimerSegmentOrderByWithRelationInput = {
+    id?: SortOrder
+    attendanceId?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    attendance?: AttendanceOrderByWithRelationInput
+  }
+
+  export type TimerSegmentWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TimerSegmentWhereInput | TimerSegmentWhereInput[]
+    OR?: TimerSegmentWhereInput[]
+    NOT?: TimerSegmentWhereInput | TimerSegmentWhereInput[]
+    attendanceId?: StringFilter<"TimerSegment"> | string
+    startedAt?: DateTimeFilter<"TimerSegment"> | Date | string
+    endedAt?: DateTimeNullableFilter<"TimerSegment"> | Date | string | null
+    createdAt?: DateTimeFilter<"TimerSegment"> | Date | string
+    attendance?: XOR<AttendanceScalarRelationFilter, AttendanceWhereInput>
+  }, "id">
+
+  export type TimerSegmentOrderByWithAggregationInput = {
+    id?: SortOrder
+    attendanceId?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: TimerSegmentCountOrderByAggregateInput
+    _max?: TimerSegmentMaxOrderByAggregateInput
+    _min?: TimerSegmentMinOrderByAggregateInput
+  }
+
+  export type TimerSegmentScalarWhereWithAggregatesInput = {
+    AND?: TimerSegmentScalarWhereWithAggregatesInput | TimerSegmentScalarWhereWithAggregatesInput[]
+    OR?: TimerSegmentScalarWhereWithAggregatesInput[]
+    NOT?: TimerSegmentScalarWhereWithAggregatesInput | TimerSegmentScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"TimerSegment"> | string
+    attendanceId?: StringWithAggregatesFilter<"TimerSegment"> | string
+    startedAt?: DateTimeWithAggregatesFilter<"TimerSegment"> | Date | string
+    endedAt?: DateTimeNullableWithAggregatesFilter<"TimerSegment"> | Date | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"TimerSegment"> | Date | string
   }
 
   export type WorkspaceCreateInput = {
@@ -5343,6 +8042,7 @@ export namespace Prisma {
     directReports?: UserCreateNestedManyWithoutReportingManagerInput
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -5367,6 +8067,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -5391,6 +8092,7 @@ export namespace Prisma {
     directReports?: UserUpdateManyWithoutReportingManagerNestedInput
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -5415,6 +8117,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -5477,6 +8180,148 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttendanceCreateInput = {
+    id?: string
+    date: Date | string
+    checkIn?: Date | string | null
+    checkOut?: Date | string | null
+    totalSeconds?: number
+    status?: $Enums.AttendanceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAttendancesInput
+    timerSegments?: TimerSegmentCreateNestedManyWithoutAttendanceInput
+  }
+
+  export type AttendanceUncheckedCreateInput = {
+    id?: string
+    userId: string
+    date: Date | string
+    checkIn?: Date | string | null
+    checkOut?: Date | string | null
+    totalSeconds?: number
+    status?: $Enums.AttendanceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timerSegments?: TimerSegmentUncheckedCreateNestedManyWithoutAttendanceInput
+  }
+
+  export type AttendanceUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAttendancesNestedInput
+    timerSegments?: TimerSegmentUpdateManyWithoutAttendanceNestedInput
+  }
+
+  export type AttendanceUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timerSegments?: TimerSegmentUncheckedUpdateManyWithoutAttendanceNestedInput
+  }
+
+  export type AttendanceCreateManyInput = {
+    id?: string
+    userId: string
+    date: Date | string
+    checkIn?: Date | string | null
+    checkOut?: Date | string | null
+    totalSeconds?: number
+    status?: $Enums.AttendanceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AttendanceUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttendanceUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimerSegmentCreateInput = {
+    id?: string
+    startedAt: Date | string
+    endedAt?: Date | string | null
+    createdAt?: Date | string
+    attendance: AttendanceCreateNestedOneWithoutTimerSegmentsInput
+  }
+
+  export type TimerSegmentUncheckedCreateInput = {
+    id?: string
+    attendanceId: string
+    startedAt: Date | string
+    endedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TimerSegmentUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    attendance?: AttendanceUpdateOneRequiredWithoutTimerSegmentsNestedInput
+  }
+
+  export type TimerSegmentUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceId?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimerSegmentCreateManyInput = {
+    id?: string
+    attendanceId: string
+    startedAt: Date | string
+    endedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TimerSegmentUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimerSegmentUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    attendanceId?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -5686,6 +8531,16 @@ export namespace Prisma {
     isNot?: UserWhereInput | null
   }
 
+  export type AttendanceListRelationFilter = {
+    every?: AttendanceWhereInput
+    some?: AttendanceWhereInput
+    none?: AttendanceWhereInput
+  }
+
+  export type AttendanceOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type UserWorkspaceIdEmployeeIdCompoundUniqueInput = {
     workspaceId: string
     employeeId: string
@@ -5787,6 +8642,143 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
+  }
+
+  export type EnumAttendanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
+  }
+
+  export type UserScalarRelationFilter = {
+    is?: UserWhereInput
+    isNot?: UserWhereInput
+  }
+
+  export type TimerSegmentListRelationFilter = {
+    every?: TimerSegmentWhereInput
+    some?: TimerSegmentWhereInput
+    none?: TimerSegmentWhereInput
+  }
+
+  export type TimerSegmentOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AttendanceUserIdDateCompoundUniqueInput = {
+    userId: string
+    date: Date | string
+  }
+
+  export type AttendanceCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    checkIn?: SortOrder
+    checkOut?: SortOrder
+    totalSeconds?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AttendanceAvgOrderByAggregateInput = {
+    totalSeconds?: SortOrder
+  }
+
+  export type AttendanceMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    checkIn?: SortOrder
+    checkOut?: SortOrder
+    totalSeconds?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AttendanceMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    date?: SortOrder
+    checkIn?: SortOrder
+    checkOut?: SortOrder
+    totalSeconds?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AttendanceSumOrderByAggregateInput = {
+    totalSeconds?: SortOrder
+  }
+
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type EnumAttendanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+  }
+
+  export type AttendanceScalarRelationFilter = {
+    is?: AttendanceWhereInput
+    isNot?: AttendanceWhereInput
+  }
+
+  export type TimerSegmentCountOrderByAggregateInput = {
+    id?: SortOrder
+    attendanceId?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TimerSegmentMaxOrderByAggregateInput = {
+    id?: SortOrder
+    attendanceId?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type TimerSegmentMinOrderByAggregateInput = {
+    id?: SortOrder
+    attendanceId?: SortOrder
+    startedAt?: SortOrder
+    endedAt?: SortOrder
+    createdAt?: SortOrder
   }
 
   export type UserCreateNestedManyWithoutWorkspaceInput = {
@@ -5979,6 +8971,13 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
   }
 
+  export type AttendanceCreateNestedManyWithoutUserInput = {
+    create?: XOR<AttendanceCreateWithoutUserInput, AttendanceUncheckedCreateWithoutUserInput> | AttendanceCreateWithoutUserInput[] | AttendanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutUserInput | AttendanceCreateOrConnectWithoutUserInput[]
+    createMany?: AttendanceCreateManyUserInputEnvelope
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutReportingManagerInput = {
     create?: XOR<UserCreateWithoutReportingManagerInput, UserUncheckedCreateWithoutReportingManagerInput> | UserCreateWithoutReportingManagerInput[] | UserUncheckedCreateWithoutReportingManagerInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportingManagerInput | UserCreateOrConnectWithoutReportingManagerInput[]
@@ -5991,6 +8990,13 @@ export namespace Prisma {
     connectOrCreate?: UserCreateOrConnectWithoutCreatedByInput | UserCreateOrConnectWithoutCreatedByInput[]
     createMany?: UserCreateManyCreatedByInputEnvelope
     connect?: UserWhereUniqueInput | UserWhereUniqueInput[]
+  }
+
+  export type AttendanceUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AttendanceCreateWithoutUserInput, AttendanceUncheckedCreateWithoutUserInput> | AttendanceCreateWithoutUserInput[] | AttendanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutUserInput | AttendanceCreateOrConnectWithoutUserInput[]
+    createMany?: AttendanceCreateManyUserInputEnvelope
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -6071,6 +9077,20 @@ export namespace Prisma {
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
   }
 
+  export type AttendanceUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AttendanceCreateWithoutUserInput, AttendanceUncheckedCreateWithoutUserInput> | AttendanceCreateWithoutUserInput[] | AttendanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutUserInput | AttendanceCreateOrConnectWithoutUserInput[]
+    upsert?: AttendanceUpsertWithWhereUniqueWithoutUserInput | AttendanceUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AttendanceCreateManyUserInputEnvelope
+    set?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    disconnect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    delete?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    update?: AttendanceUpdateWithWhereUniqueWithoutUserInput | AttendanceUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AttendanceUpdateManyWithWhereWithoutUserInput | AttendanceUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutReportingManagerNestedInput = {
     create?: XOR<UserCreateWithoutReportingManagerInput, UserUncheckedCreateWithoutReportingManagerInput> | UserCreateWithoutReportingManagerInput[] | UserUncheckedCreateWithoutReportingManagerInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportingManagerInput | UserCreateOrConnectWithoutReportingManagerInput[]
@@ -6097,6 +9117,102 @@ export namespace Prisma {
     update?: UserUpdateWithWhereUniqueWithoutCreatedByInput | UserUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: UserUpdateManyWithWhereWithoutCreatedByInput | UserUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: UserScalarWhereInput | UserScalarWhereInput[]
+  }
+
+  export type AttendanceUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AttendanceCreateWithoutUserInput, AttendanceUncheckedCreateWithoutUserInput> | AttendanceCreateWithoutUserInput[] | AttendanceUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AttendanceCreateOrConnectWithoutUserInput | AttendanceCreateOrConnectWithoutUserInput[]
+    upsert?: AttendanceUpsertWithWhereUniqueWithoutUserInput | AttendanceUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AttendanceCreateManyUserInputEnvelope
+    set?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    disconnect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    delete?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    connect?: AttendanceWhereUniqueInput | AttendanceWhereUniqueInput[]
+    update?: AttendanceUpdateWithWhereUniqueWithoutUserInput | AttendanceUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AttendanceUpdateManyWithWhereWithoutUserInput | AttendanceUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+  }
+
+  export type UserCreateNestedOneWithoutAttendancesInput = {
+    create?: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAttendancesInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type TimerSegmentCreateNestedManyWithoutAttendanceInput = {
+    create?: XOR<TimerSegmentCreateWithoutAttendanceInput, TimerSegmentUncheckedCreateWithoutAttendanceInput> | TimerSegmentCreateWithoutAttendanceInput[] | TimerSegmentUncheckedCreateWithoutAttendanceInput[]
+    connectOrCreate?: TimerSegmentCreateOrConnectWithoutAttendanceInput | TimerSegmentCreateOrConnectWithoutAttendanceInput[]
+    createMany?: TimerSegmentCreateManyAttendanceInputEnvelope
+    connect?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+  }
+
+  export type TimerSegmentUncheckedCreateNestedManyWithoutAttendanceInput = {
+    create?: XOR<TimerSegmentCreateWithoutAttendanceInput, TimerSegmentUncheckedCreateWithoutAttendanceInput> | TimerSegmentCreateWithoutAttendanceInput[] | TimerSegmentUncheckedCreateWithoutAttendanceInput[]
+    connectOrCreate?: TimerSegmentCreateOrConnectWithoutAttendanceInput | TimerSegmentCreateOrConnectWithoutAttendanceInput[]
+    createMany?: TimerSegmentCreateManyAttendanceInputEnvelope
+    connect?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+  }
+
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type EnumAttendanceStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AttendanceStatus
+  }
+
+  export type UserUpdateOneRequiredWithoutAttendancesNestedInput = {
+    create?: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAttendancesInput
+    upsert?: UserUpsertWithoutAttendancesInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAttendancesInput, UserUpdateWithoutAttendancesInput>, UserUncheckedUpdateWithoutAttendancesInput>
+  }
+
+  export type TimerSegmentUpdateManyWithoutAttendanceNestedInput = {
+    create?: XOR<TimerSegmentCreateWithoutAttendanceInput, TimerSegmentUncheckedCreateWithoutAttendanceInput> | TimerSegmentCreateWithoutAttendanceInput[] | TimerSegmentUncheckedCreateWithoutAttendanceInput[]
+    connectOrCreate?: TimerSegmentCreateOrConnectWithoutAttendanceInput | TimerSegmentCreateOrConnectWithoutAttendanceInput[]
+    upsert?: TimerSegmentUpsertWithWhereUniqueWithoutAttendanceInput | TimerSegmentUpsertWithWhereUniqueWithoutAttendanceInput[]
+    createMany?: TimerSegmentCreateManyAttendanceInputEnvelope
+    set?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+    disconnect?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+    delete?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+    connect?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+    update?: TimerSegmentUpdateWithWhereUniqueWithoutAttendanceInput | TimerSegmentUpdateWithWhereUniqueWithoutAttendanceInput[]
+    updateMany?: TimerSegmentUpdateManyWithWhereWithoutAttendanceInput | TimerSegmentUpdateManyWithWhereWithoutAttendanceInput[]
+    deleteMany?: TimerSegmentScalarWhereInput | TimerSegmentScalarWhereInput[]
+  }
+
+  export type TimerSegmentUncheckedUpdateManyWithoutAttendanceNestedInput = {
+    create?: XOR<TimerSegmentCreateWithoutAttendanceInput, TimerSegmentUncheckedCreateWithoutAttendanceInput> | TimerSegmentCreateWithoutAttendanceInput[] | TimerSegmentUncheckedCreateWithoutAttendanceInput[]
+    connectOrCreate?: TimerSegmentCreateOrConnectWithoutAttendanceInput | TimerSegmentCreateOrConnectWithoutAttendanceInput[]
+    upsert?: TimerSegmentUpsertWithWhereUniqueWithoutAttendanceInput | TimerSegmentUpsertWithWhereUniqueWithoutAttendanceInput[]
+    createMany?: TimerSegmentCreateManyAttendanceInputEnvelope
+    set?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+    disconnect?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+    delete?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+    connect?: TimerSegmentWhereUniqueInput | TimerSegmentWhereUniqueInput[]
+    update?: TimerSegmentUpdateWithWhereUniqueWithoutAttendanceInput | TimerSegmentUpdateWithWhereUniqueWithoutAttendanceInput[]
+    updateMany?: TimerSegmentUpdateManyWithWhereWithoutAttendanceInput | TimerSegmentUpdateManyWithWhereWithoutAttendanceInput[]
+    deleteMany?: TimerSegmentScalarWhereInput | TimerSegmentScalarWhereInput[]
+  }
+
+  export type AttendanceCreateNestedOneWithoutTimerSegmentsInput = {
+    create?: XOR<AttendanceCreateWithoutTimerSegmentsInput, AttendanceUncheckedCreateWithoutTimerSegmentsInput>
+    connectOrCreate?: AttendanceCreateOrConnectWithoutTimerSegmentsInput
+    connect?: AttendanceWhereUniqueInput
+  }
+
+  export type AttendanceUpdateOneRequiredWithoutTimerSegmentsNestedInput = {
+    create?: XOR<AttendanceCreateWithoutTimerSegmentsInput, AttendanceUncheckedCreateWithoutTimerSegmentsInput>
+    connectOrCreate?: AttendanceCreateOrConnectWithoutTimerSegmentsInput
+    upsert?: AttendanceUpsertWithoutTimerSegmentsInput
+    connect?: AttendanceWhereUniqueInput
+    update?: XOR<XOR<AttendanceUpdateToOneWithWhereWithoutTimerSegmentsInput, AttendanceUpdateWithoutTimerSegmentsInput>, AttendanceUncheckedUpdateWithoutTimerSegmentsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -6263,6 +9379,50 @@ export namespace Prisma {
     _max?: NestedBoolFilter<$PrismaModel>
   }
 
+  export type NestedEnumAttendanceStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusFilter<$PrismaModel> | $Enums.AttendanceStatus
+  }
+
+  export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type NestedFloatFilter<$PrismaModel = never> = {
+    equals?: number | FloatFieldRefInput<$PrismaModel>
+    in?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListFloatFieldRefInput<$PrismaModel>
+    lt?: number | FloatFieldRefInput<$PrismaModel>
+    lte?: number | FloatFieldRefInput<$PrismaModel>
+    gt?: number | FloatFieldRefInput<$PrismaModel>
+    gte?: number | FloatFieldRefInput<$PrismaModel>
+    not?: NestedFloatFilter<$PrismaModel> | number
+  }
+
+  export type NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AttendanceStatus | EnumAttendanceStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AttendanceStatus[] | ListEnumAttendanceStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAttendanceStatusWithAggregatesFilter<$PrismaModel> | $Enums.AttendanceStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+    _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutWorkspaceInput = {
     id?: string
     name?: string | null
@@ -6284,6 +9444,7 @@ export namespace Prisma {
     directReports?: UserCreateNestedManyWithoutReportingManagerInput
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkspaceInput = {
@@ -6307,6 +9468,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkspaceInput = {
@@ -6457,6 +9619,7 @@ export namespace Prisma {
     directReports?: UserCreateNestedManyWithoutReportingManagerInput
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDepartmentInput = {
@@ -6480,6 +9643,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDepartmentInput = {
@@ -6602,6 +9766,7 @@ export namespace Prisma {
     reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDirectReportsInput = {
@@ -6625,6 +9790,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDirectReportsInput = {
@@ -6653,6 +9819,7 @@ export namespace Prisma {
     directReports?: UserCreateNestedManyWithoutReportingManagerInput
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportingManagerInput = {
@@ -6676,6 +9843,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportingManagerInput = {
@@ -6709,6 +9877,7 @@ export namespace Prisma {
     reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
     directReports?: UserCreateNestedManyWithoutReportingManagerInput
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedUsersInput = {
@@ -6732,6 +9901,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedUsersInput = {
@@ -6760,6 +9930,7 @@ export namespace Prisma {
     reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
     directReports?: UserCreateNestedManyWithoutReportingManagerInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedByInput = {
@@ -6783,6 +9954,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedByInput = {
@@ -6792,6 +9964,40 @@ export namespace Prisma {
 
   export type UserCreateManyCreatedByInputEnvelope = {
     data: UserCreateManyCreatedByInput | UserCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AttendanceCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    checkIn?: Date | string | null
+    checkOut?: Date | string | null
+    totalSeconds?: number
+    status?: $Enums.AttendanceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timerSegments?: TimerSegmentCreateNestedManyWithoutAttendanceInput
+  }
+
+  export type AttendanceUncheckedCreateWithoutUserInput = {
+    id?: string
+    date: Date | string
+    checkIn?: Date | string | null
+    checkOut?: Date | string | null
+    totalSeconds?: number
+    status?: $Enums.AttendanceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    timerSegments?: TimerSegmentUncheckedCreateNestedManyWithoutAttendanceInput
+  }
+
+  export type AttendanceCreateOrConnectWithoutUserInput = {
+    where: AttendanceWhereUniqueInput
+    create: XOR<AttendanceCreateWithoutUserInput, AttendanceUncheckedCreateWithoutUserInput>
+  }
+
+  export type AttendanceCreateManyUserInputEnvelope = {
+    data: AttendanceCreateManyUserInput | AttendanceCreateManyUserInput[]
     skipDuplicates?: boolean
   }
 
@@ -6883,6 +10089,7 @@ export namespace Prisma {
     reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDirectReportsInput = {
@@ -6906,6 +10113,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutReportingManagerInput = {
@@ -6956,6 +10164,7 @@ export namespace Prisma {
     reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
     directReports?: UserUpdateManyWithoutReportingManagerNestedInput
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedUsersInput = {
@@ -6979,6 +10188,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -6995,6 +10205,264 @@ export namespace Prisma {
   export type UserUpdateManyWithWhereWithoutCreatedByInput = {
     where: UserScalarWhereInput
     data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type AttendanceUpsertWithWhereUniqueWithoutUserInput = {
+    where: AttendanceWhereUniqueInput
+    update: XOR<AttendanceUpdateWithoutUserInput, AttendanceUncheckedUpdateWithoutUserInput>
+    create: XOR<AttendanceCreateWithoutUserInput, AttendanceUncheckedCreateWithoutUserInput>
+  }
+
+  export type AttendanceUpdateWithWhereUniqueWithoutUserInput = {
+    where: AttendanceWhereUniqueInput
+    data: XOR<AttendanceUpdateWithoutUserInput, AttendanceUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AttendanceUpdateManyWithWhereWithoutUserInput = {
+    where: AttendanceScalarWhereInput
+    data: XOR<AttendanceUpdateManyMutationInput, AttendanceUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AttendanceScalarWhereInput = {
+    AND?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+    OR?: AttendanceScalarWhereInput[]
+    NOT?: AttendanceScalarWhereInput | AttendanceScalarWhereInput[]
+    id?: StringFilter<"Attendance"> | string
+    userId?: StringFilter<"Attendance"> | string
+    date?: DateTimeFilter<"Attendance"> | Date | string
+    checkIn?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    checkOut?: DateTimeNullableFilter<"Attendance"> | Date | string | null
+    totalSeconds?: IntFilter<"Attendance"> | number
+    status?: EnumAttendanceStatusFilter<"Attendance"> | $Enums.AttendanceStatus
+    createdAt?: DateTimeFilter<"Attendance"> | Date | string
+    updatedAt?: DateTimeFilter<"Attendance"> | Date | string
+  }
+
+  export type UserCreateWithoutAttendancesInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutUsersInput
+    department?: DepartmentCreateNestedOneWithoutUsersInput
+    reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
+    directReports?: UserCreateNestedManyWithoutReportingManagerInput
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutAttendancesInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    workspaceId: string
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    departmentId?: string | null
+    reportingManagerId?: string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutAttendancesInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
+  }
+
+  export type TimerSegmentCreateWithoutAttendanceInput = {
+    id?: string
+    startedAt: Date | string
+    endedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TimerSegmentUncheckedCreateWithoutAttendanceInput = {
+    id?: string
+    startedAt: Date | string
+    endedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TimerSegmentCreateOrConnectWithoutAttendanceInput = {
+    where: TimerSegmentWhereUniqueInput
+    create: XOR<TimerSegmentCreateWithoutAttendanceInput, TimerSegmentUncheckedCreateWithoutAttendanceInput>
+  }
+
+  export type TimerSegmentCreateManyAttendanceInputEnvelope = {
+    data: TimerSegmentCreateManyAttendanceInput | TimerSegmentCreateManyAttendanceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutAttendancesInput = {
+    update: XOR<UserUpdateWithoutAttendancesInput, UserUncheckedUpdateWithoutAttendancesInput>
+    create: XOR<UserCreateWithoutAttendancesInput, UserUncheckedCreateWithoutAttendancesInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAttendancesInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAttendancesInput, UserUncheckedUpdateWithoutAttendancesInput>
+  }
+
+  export type UserUpdateWithoutAttendancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutUsersNestedInput
+    department?: DepartmentUpdateOneWithoutUsersNestedInput
+    reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
+    directReports?: UserUpdateManyWithoutReportingManagerNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAttendancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type TimerSegmentUpsertWithWhereUniqueWithoutAttendanceInput = {
+    where: TimerSegmentWhereUniqueInput
+    update: XOR<TimerSegmentUpdateWithoutAttendanceInput, TimerSegmentUncheckedUpdateWithoutAttendanceInput>
+    create: XOR<TimerSegmentCreateWithoutAttendanceInput, TimerSegmentUncheckedCreateWithoutAttendanceInput>
+  }
+
+  export type TimerSegmentUpdateWithWhereUniqueWithoutAttendanceInput = {
+    where: TimerSegmentWhereUniqueInput
+    data: XOR<TimerSegmentUpdateWithoutAttendanceInput, TimerSegmentUncheckedUpdateWithoutAttendanceInput>
+  }
+
+  export type TimerSegmentUpdateManyWithWhereWithoutAttendanceInput = {
+    where: TimerSegmentScalarWhereInput
+    data: XOR<TimerSegmentUpdateManyMutationInput, TimerSegmentUncheckedUpdateManyWithoutAttendanceInput>
+  }
+
+  export type TimerSegmentScalarWhereInput = {
+    AND?: TimerSegmentScalarWhereInput | TimerSegmentScalarWhereInput[]
+    OR?: TimerSegmentScalarWhereInput[]
+    NOT?: TimerSegmentScalarWhereInput | TimerSegmentScalarWhereInput[]
+    id?: StringFilter<"TimerSegment"> | string
+    attendanceId?: StringFilter<"TimerSegment"> | string
+    startedAt?: DateTimeFilter<"TimerSegment"> | Date | string
+    endedAt?: DateTimeNullableFilter<"TimerSegment"> | Date | string | null
+    createdAt?: DateTimeFilter<"TimerSegment"> | Date | string
+  }
+
+  export type AttendanceCreateWithoutTimerSegmentsInput = {
+    id?: string
+    date: Date | string
+    checkIn?: Date | string | null
+    checkOut?: Date | string | null
+    totalSeconds?: number
+    status?: $Enums.AttendanceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutAttendancesInput
+  }
+
+  export type AttendanceUncheckedCreateWithoutTimerSegmentsInput = {
+    id?: string
+    userId: string
+    date: Date | string
+    checkIn?: Date | string | null
+    checkOut?: Date | string | null
+    totalSeconds?: number
+    status?: $Enums.AttendanceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AttendanceCreateOrConnectWithoutTimerSegmentsInput = {
+    where: AttendanceWhereUniqueInput
+    create: XOR<AttendanceCreateWithoutTimerSegmentsInput, AttendanceUncheckedCreateWithoutTimerSegmentsInput>
+  }
+
+  export type AttendanceUpsertWithoutTimerSegmentsInput = {
+    update: XOR<AttendanceUpdateWithoutTimerSegmentsInput, AttendanceUncheckedUpdateWithoutTimerSegmentsInput>
+    create: XOR<AttendanceCreateWithoutTimerSegmentsInput, AttendanceUncheckedCreateWithoutTimerSegmentsInput>
+    where?: AttendanceWhereInput
+  }
+
+  export type AttendanceUpdateToOneWithWhereWithoutTimerSegmentsInput = {
+    where?: AttendanceWhereInput
+    data: XOR<AttendanceUpdateWithoutTimerSegmentsInput, AttendanceUncheckedUpdateWithoutTimerSegmentsInput>
+  }
+
+  export type AttendanceUpdateWithoutTimerSegmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAttendancesNestedInput
+  }
+
+  export type AttendanceUncheckedUpdateWithoutTimerSegmentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type UserCreateManyWorkspaceInput = {
@@ -7046,6 +10514,7 @@ export namespace Prisma {
     directReports?: UserUpdateManyWithoutReportingManagerNestedInput
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkspaceInput = {
@@ -7069,6 +10538,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -7157,6 +10627,7 @@ export namespace Prisma {
     directReports?: UserUpdateManyWithoutReportingManagerNestedInput
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDepartmentInput = {
@@ -7180,6 +10651,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutDepartmentInput = {
@@ -7245,6 +10717,17 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type AttendanceCreateManyUserInput = {
+    id?: string
+    date: Date | string
+    checkIn?: Date | string | null
+    checkOut?: Date | string | null
+    totalSeconds?: number
+    status?: $Enums.AttendanceStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutReportingManagerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -7266,6 +10749,7 @@ export namespace Prisma {
     directReports?: UserUpdateManyWithoutReportingManagerNestedInput
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportingManagerInput = {
@@ -7289,6 +10773,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutReportingManagerInput = {
@@ -7333,6 +10818,7 @@ export namespace Prisma {
     reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
     directReports?: UserUpdateManyWithoutReportingManagerNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedByInput = {
@@ -7356,6 +10842,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCreatedByInput = {
@@ -7377,6 +10864,69 @@ export namespace Prisma {
     profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AttendanceUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timerSegments?: TimerSegmentUpdateManyWithoutAttendanceNestedInput
+  }
+
+  export type AttendanceUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    timerSegments?: TimerSegmentUncheckedUpdateManyWithoutAttendanceNestedInput
+  }
+
+  export type AttendanceUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    checkIn?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    checkOut?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    totalSeconds?: IntFieldUpdateOperationsInput | number
+    status?: EnumAttendanceStatusFieldUpdateOperationsInput | $Enums.AttendanceStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimerSegmentCreateManyAttendanceInput = {
+    id?: string
+    startedAt: Date | string
+    endedAt?: Date | string | null
+    createdAt?: Date | string
+  }
+
+  export type TimerSegmentUpdateWithoutAttendanceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimerSegmentUncheckedUpdateWithoutAttendanceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TimerSegmentUncheckedUpdateManyWithoutAttendanceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    endedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

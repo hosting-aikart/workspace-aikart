@@ -4,7 +4,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 enum Role {
@@ -79,9 +81,52 @@ model User {
   createdBy   User?   @relation("CreatedUsers", fields: [createdById], references: [id])
 
   createdUsers User[] @relation("CreatedUsers")
+  attendances Attendance[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([workspaceId, employeeId])
+}
+
+enum AttendanceStatus {
+  NOT_STARTED
+  WORKING
+  PAUSED
+  CHECKED_OUT
+}
+
+model Attendance {
+  id String @id @default(cuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  date DateTime // normalized to midnight — one record per user per calendar day
+
+  checkIn  DateTime?
+  checkOut DateTime?
+
+  totalSeconds Int @default(0) // accumulated worked time for the day, in seconds
+
+  status AttendanceStatus @default(NOT_STARTED)
+
+  timerSegments TimerSegment[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, date])
+}
+
+model TimerSegment {
+  id String @id @default(cuid())
+
+  attendanceId String
+  attendance   Attendance @relation(fields: [attendanceId], references: [id])
+
+  startedAt DateTime
+  endedAt   DateTime? // null while this segment is still running (active work or currently paused)
+
+  createdAt DateTime @default(now())
 }

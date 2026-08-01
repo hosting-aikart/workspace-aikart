@@ -158,6 +158,26 @@ exports.Prisma.UserScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.AttendanceScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  date: 'date',
+  checkIn: 'checkIn',
+  checkOut: 'checkOut',
+  totalSeconds: 'totalSeconds',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.TimerSegmentScalarFieldEnum = {
+  id: 'id',
+  attendanceId: 'attendanceId',
+  startedAt: 'startedAt',
+  endedAt: 'endedAt',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -178,10 +198,19 @@ exports.Role = exports.$Enums.Role = {
   EMPLOYEE: 'EMPLOYEE'
 };
 
+exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
+  NOT_STARTED: 'NOT_STARTED',
+  WORKING: 'WORKING',
+  PAUSED: 'PAUSED',
+  CHECKED_OUT: 'CHECKED_OUT'
+};
+
 exports.Prisma.ModelName = {
   Workspace: 'Workspace',
   Department: 'Department',
-  User: 'User'
+  User: 'User',
+  Attendance: 'Attendance',
+  TimerSegment: 'TimerSegment'
 };
 
 /**

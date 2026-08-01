@@ -278,12 +278,12 @@ export default function DashboardLayout() {
                 />
               ) : (
                 <div className="avatar avatar-sm">
-                  {getInitials(user?.fullName)}
+                  {getInitials(user?.name)}
                 </div>
               )}
             </div>
             <div className="sidebar-user-info">
-              <p className="sidebar-user-name">{user?.fullName}</p>
+              <p className="sidebar-user-name">{user?.name}</p>
               <p className="sidebar-user-role">{user?.role}</p>
             </div>
             <button
@@ -323,19 +323,19 @@ export default function DashboardLayout() {
           {/* Topbar right — user name + avatar */}
           <div className="topbar-right">
             <div className="topbar-user-info">
-              <span className="topbar-user-name">{user?.fullName}</span>
+              <span className="topbar-user-name">{user?.name}</span>
               <span className="topbar-user-role">{user?.position || user?.role}</span>
             </div>
             <div className="topbar-avatar">
               {user?.profilePhotoUrl ? (
                 <img
                   src={user.profilePhotoUrl}
-                  alt={user.fullName}
+                  alt={user?.name}
                   className="topbar-avatar-img"
                 />
               ) : (
                 <div className="avatar avatar-sm">
-                  {getInitials(user?.fullName)}
+                  {getInitials(user?.name)}
                 </div>
               )}
             </div>
