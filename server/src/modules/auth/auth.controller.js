@@ -1,5 +1,6 @@
 const { loginSchema } = require("./auth.validation");
-const { loginUser, getUserById } = require("./auth.service");
+const { loginUser, rotateAccessToken, getUserById } = require("./auth.service");
+const { verifyRefreshToken } = require("../../utils/jwt");
 const { sendSuccess, sendError } = require("../../utils/apiResponse");
 
 /**
@@ -10,7 +11,18 @@ const login = async (req, res) => {
     const body = loginSchema.parse(req.body);
     const data = await loginUser(body.email, body.password);
 
-    return sendSuccess(res, data);
+    // Set httpOnly cookie for refresh token
+    res.cookie("refreshToken", data.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      path: "/",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    // Strip refreshToken from the response payload
+    const { refreshToken, ...responseData } = data;
+    return sendSuccess(res, responseData);
   } catch (err) {
     return sendError(res, err.message || "Login failed.", 400);
   }
@@ -31,20 +43,35 @@ const getMe = async (req, res) => {
 
 /**
  * POST /api/auth/refresh
- * Placeholder — for now returns 501 (not implemented).
- * TODO: Implement refresh-token rotation with httpOnly cookies.
+ * Refresh access token using httpOnly refresh token cookie
  */
-const refresh = async (_req, res) => {
-  return sendError(res, "Token refresh not yet implemented.", 501);
+const refresh = async (req, res) => {
+  try {
+    const refreshToken = req.cookies?.refreshToken;
+    if (!refreshToken) {
+      return sendError(res, "No refresh token provided.", 401);
+    }
+
+    const payload = verifyRefreshToken(refreshToken);
+    const newAccessToken = await rotateAccessToken(payload.userId);
+
+    return sendSuccess(res, { accessToken: newAccessToken });
+  } catch (err) {
+    return sendError(res, "Invalid or expired refresh token.", 401);
+  }
 };
 
 /**
  * POST /api/auth/logout
- * Clears session state. Currently a no-op on the server side
- * since JWTs are stateless, but the endpoint exists so the
- * client doesn't get a 404.
+ * Clears session state and httpOnly refresh token cookie.
  */
 const logout = async (_req, res) => {
+  res.clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+  });
   return sendSuccess(res, { message: "Logged out successfully." });
 };
 

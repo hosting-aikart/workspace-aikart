@@ -2520,3 +2520,275 @@ code {
   transition: color var(--transition-fast);
 }
 .profile-toast-close:hover { color: var(--color-text); }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   29. ADDITIONAL BUTTON VARIANTS
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+/* Success — Solid green */
+.btn-success {
+  background-color: var(--color-success);
+  color: var(--color-text-inverse);
+  border-color: var(--color-success);
+}
+
+.btn-success:hover {
+  background-color: var(--color-success-hover);
+  border-color: var(--color-success-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-success:active {
+  transform: translateY(1px);
+}
+
+/* Warning — Solid amber */
+.btn-warning {
+  background-color: var(--color-warning);
+  color: var(--color-text-inverse);
+  border-color: var(--color-warning);
+}
+
+.btn-warning:hover {
+  background-color: var(--color-warning-hover);
+  border-color: var(--color-warning-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-warning:active {
+  transform: translateY(1px);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   30. ALERT / INLINE MESSAGES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.alert {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+
+.alert-error {
+  background-color: var(--color-danger-light);
+  color: var(--color-danger);
+  border-color: var(--color-danger-border);
+}
+
+.alert-success {
+  background-color: var(--color-success-light);
+  color: var(--color-success);
+  border-color: var(--color-success-border);
+}
+
+.alert-warning {
+  background-color: var(--color-warning-light);
+  color: var(--color-warning);
+  border-color: var(--color-warning-border);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   31. LOADING STATE / SPINNER
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.page-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-4);
+  min-height: 300px;
+  color: var(--color-text-secondary);
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   32. TABLE UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.table-wrapper {
+  overflow-x: auto;
+}
+
+.table-empty {
+  text-align: center;
+  color: var(--color-text-muted);
+  padding: var(--space-10) var(--space-4) !important;
+  font-size: 14px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   33. CARD UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.card-title {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   34. PAGE LAYOUT UTILITIES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.page-title {
+  font-family: var(--font-heading);
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+/* Spacing utilities */
+.mt-4  { margin-top: var(--space-4);  }
+.mt-6  { margin-top: var(--space-6);  }
+.mt-8  { margin-top: var(--space-8);  }
+.mb-4  { margin-bottom: var(--space-4); }
+.mb-6  { margin-bottom: var(--space-6); }
+
+/* Font utilities */
+.font-mono {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════════════════
+   35. ATTENDANCE PAGE STYLES
+   ═══════════════════════════════════════════════════════════════════════════════ */
+
+.attendance-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* ── Timer hero card ────────────────────────────────────────────────────────── */
+
+.attendance-timer-card {
+  border: none;
+  background: linear-gradient(135deg, #fff 0%, #f8f9ff 100%);
+  box-shadow: var(--shadow-lg);
+}
+
+.attendance-timer-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-5);
+  padding: var(--space-10) var(--space-8) !important;
+}
+
+/* ── Digital clock ──────────────────────────────────────────────────────────── */
+
+.attendance-clock {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  font-size: 72px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+  line-height: 1;
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7C3AED 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  user-select: none;
+}
+
+/* ── Action buttons row ─────────────────────────────────────────────────────── */
+
+.attendance-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ── Check-in/out times ─────────────────────────────────────────────────────── */
+
+.attendance-times {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+.attendance-times strong {
+  color: var(--color-text-secondary);
+  font-weight: 600;
+}
+
+/* ── Summary cards grid ─────────────────────────────────────────────────────── */
+
+.attendance-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.attendance-summary-card {
+  text-align: center;
+}
+
+.attendance-summary-label {
+  font-family: var(--font-subheading);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.attendance-summary-value {
+  font-family: 'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+}
+
+@media (max-width: 480px) {
+  .attendance-clock {
+    font-size: 48px;
+  }
+
+  .attendance-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-page {
+    padding: var(--space-4);
+  }
+}

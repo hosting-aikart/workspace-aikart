@@ -3,12 +3,13 @@ import { AuthProvider } from './context/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
 
 // ─── Pages ────────────────────────────────────────────────────────────────────
-import LoginPage       from './pages/LoginPage';
-import HomePage        from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import HomePage from './pages/HomePage';
 import DashboardLayout from './layouts/DashboardLayout';
 
 // ─── Modules ──────────────────────────────────────────────────────────────────
 import ProfilePage from './modules/profile/ProfilePage';
+import AttendancePage from './attendance/AttendancePage';
 
 // ─── Placeholder pages ────────────────────────────────────────────────────────
 import {
@@ -17,7 +18,6 @@ import {
   MeetingsPage,
   TasksPage,
   ProjectsPage,
-  AttendancePage,
   NotificationsPage,
   FilesPage,
   DirectoryPage,
@@ -46,29 +46,29 @@ export default function App() {
             }
           >
             {/* Main */}
-            <Route index              element={<HomePage />} />
-            <Route path="profile"    element={<ProfilePage />} />
+            <Route index element={<HomePage />} />
+            <Route path="profile" element={<ProfilePage />} />
 
             {/* Communication */}
-            <Route path="chat"          element={<ChatPage />} />
-            <Route path="email"         element={<EmailPage />} />
+            <Route path="chat" element={<ChatPage />} />
+            <Route path="email" element={<EmailPage />} />
             <Route path="announcements" element={<AnnouncementsPage />} />
 
             {/* Work */}
-            <Route path="meetings"   element={<MeetingsPage />} />
-            <Route path="tasks"      element={<TasksPage />} />
-            <Route path="projects"   element={<ProjectsPage />} />
-            <Route path="files"      element={<FilesPage />} />
+            <Route path="meetings" element={<MeetingsPage />} />
+            <Route path="tasks" element={<TasksPage />} />
+            <Route path="projects" element={<ProjectsPage />} />
+            <Route path="files" element={<FilesPage />} />
 
             {/* HR & Operations */}
-            <Route path="attendance"    element={<AttendancePage />} />
-            <Route path="time-tracker"  element={<TimeTrackerPage />} />
-            <Route path="directory"     element={<DirectoryPage />} />
+            <Route path="attendance" element={<AttendancePage />} />
+            <Route path="time-tracker" element={<TimeTrackerPage />} />
+            <Route path="directory" element={<DirectoryPage />} />
 
             {/* Insights */}
-            <Route path="reports"       element={<ReportsPage />} />
+            <Route path="reports" element={<ReportsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
-            <Route path="admin"         element={<AdminPage />} />
+            <Route path="admin" element={<AdminPage />} />
           </Route>
 
           {/* ── Catch-all ────────────────────────────────────────────────── */}

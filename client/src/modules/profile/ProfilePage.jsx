@@ -139,9 +139,9 @@ export default function ProfilePage() {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
 
-      const newUrl = data.data.profilePhotoUrl;
-      setProfile((p) => ({ ...p, profilePhotoUrl: newUrl }));
-      updateUser({ profilePhotoUrl: newUrl });
+      const newUrl = data.data.profilePhoto;
+      setProfile((p) => ({ ...p, profilePhoto: newUrl }));
+      updateUser({ profilePhoto: newUrl });
       setPhotoFile(null);
       setPhotoPreview(null);
       setToast({ message: 'Profile photo updated!', type: 'success' });
@@ -232,7 +232,7 @@ export default function ProfilePage() {
   }
 
 
-  const displayPhoto = photoPreview || profile?.profilePhotoUrl;
+  const displayPhoto = photoPreview || profile?.profilePhoto;
 
   return (
     <div className="profile-page animate-fade-in">
@@ -264,12 +264,12 @@ export default function ProfilePage() {
                 {displayPhoto ? (
                   <img
                     src={displayPhoto}
-                    alt={profile.fullName}
+                    alt={profile.name}
                     className="profile-avatar-img"
                   />
                 ) : (
                   <div className="profile-avatar-initials">
-                    {getInitials(profile?.fullName)}
+                    {getInitials(profile?.name)}
                   </div>
                 )}
 
@@ -298,7 +298,7 @@ export default function ProfilePage() {
               />
 
               <div className="profile-avatar-name">
-                <h2>{profile?.fullName}</h2>
+                <h2>{profile?.name}</h2>
                 <span className="badge badge-primary">{profile?.role}</span>
               </div>
 
@@ -335,11 +335,22 @@ export default function ProfilePage() {
 
             {/* Identity Fields (read-only) */}
             <div className="profile-identity-fields">
+              <InfoField label="Email Address" value={profile?.email} />
               <InfoField label="Employee ID"   value={profile?.employeeId} />
               <InfoField label="Position"      value={profile?.position} />
               <InfoField label="Department"    value={profile?.department?.name} />
+              <InfoField label="Role"          value={profile?.role} />
               <InfoField label="Joining Date"  value={formatDate(profile?.joiningDate)} />
-              <InfoField label="Reports To"    value={profile?.reportingManager?.fullName} />
+              <InfoField label="Reports To"    value={profile?.reportingManager ? `${profile.reportingManager.name} (${profile.reportingManager.email})` : null} />
+            </div>
+
+            {/* System Information (read-only) */}
+            <h4 className="profile-section-title mt-6 text-sm">System Information</h4>
+            <div className="profile-identity-fields">
+              <InfoField label="Workspace"     value={profile?.workspace?.name} />
+              <InfoField label="Account Status" value={profile?.isActive ? 'Active' : 'Inactive'} />
+              <InfoField label="Last Login"    value={profile?.lastLogin ? new Date(profile.lastLogin).toLocaleString() : 'Never'} />
+              <InfoField label="Must Change Password" value={profile?.mustChangePassword ? 'Yes' : 'No'} />
             </div>
 
           </div>
@@ -364,21 +375,8 @@ export default function ProfilePage() {
 
             <form onSubmit={handleSave} className="profile-form" noValidate>
 
-              {/* Read-only: Email */}
-              <div className="form-group">
-                <label className="form-label">
-                  Email Address
-                  <span className="profile-readonly-badge">Read-only</span>
-                </label>
-                <input
-                  type="email"
-                  className="input"
-                  value={profile?.email || ''}
-                  readOnly
-                  disabled
-                  aria-readonly="true"
-                />
-              </div>
+              {/* Read-only: Email (Moved to Identity Fields but kept hidden here to avoid layout break, or removed) */}
+              {/* Removed Email from editable form since it is read-only and now displayed on the left */}
 
               {/* Editable: Phone */}
               <div className="form-group">
