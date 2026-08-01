@@ -2,13 +2,15 @@ const bcrypt = require('bcrypt');
 const { getPrisma } = require('../../config/prisma');
 
 // ─── Field Select (shared shape) ──────────────────────────────────────────────
-// Only includes fields that exist in the Prisma schema
 const PROFILE_SELECT = {
   id: true,
   name: true,
   email: true,
   role: true,
-  workspaceId: true,
+  employeeId: true,
+  phone: true,
+  position: true,
+  joiningDate: true,
   isActive: true,
   mustChangePassword: true,
   lastLogin: true,
@@ -16,14 +18,12 @@ const PROFILE_SELECT = {
   createdAt: true,
   updatedAt: true,
   workspace: { select: { id: true, name: true } },
+  department: { select: { id: true, name: true } },
+  reportingManager: { select: { id: true, name: true, email: true } },
 };
 
 // ─── Service Functions ────────────────────────────────────────────────────────
 
-/**
- * Returns the full profile for the given user id.
- * @param {string} userId
- */
 const getProfile = async (userId) => {
   const prisma = getPrisma();
   const user = await prisma.user.findUnique({
@@ -39,19 +39,20 @@ const getProfile = async (userId) => {
 };
 
 /**
- * Updates only the employee-editable fields: profilePhoto, password.
- * Password is hashed with bcrypt before saving.
- * @param {string} userId
- * @param {{ profilePhoto?: string, password?: string }} data
+ * Updates only the employee-editable fields: phone, profilePhoto, password.
+ * Name, position, department, employeeId, joiningDate, reportingManager are
+ * admin-only edits (handled in the Admin Panel module, not here).
  */
 const updateProfile = async (userId, data) => {
   const prisma = getPrisma();
 
   const updateData = {};
 
+  if (data.phone !== undefined) updateData.phone = data.phone;
   if (data.profilePhoto !== undefined) updateData.profilePhoto = data.profilePhoto;
   if (data.password) {
     updateData.passwordHash = await bcrypt.hash(data.password, 12);
+    updateData.mustChangePassword = false;
   }
 
   const updated = await prisma.user.update({

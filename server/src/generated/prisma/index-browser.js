@@ -128,6 +128,14 @@ exports.Prisma.WorkspaceScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.DepartmentScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  workspaceId: 'workspaceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.UserScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -135,6 +143,12 @@ exports.Prisma.UserScalarFieldEnum = {
   passwordHash: 'passwordHash',
   role: 'role',
   workspaceId: 'workspaceId',
+  employeeId: 'employeeId',
+  phone: 'phone',
+  position: 'position',
+  joiningDate: 'joiningDate',
+  departmentId: 'departmentId',
+  reportingManagerId: 'reportingManagerId',
   isActive: 'isActive',
   mustChangePassword: 'mustChangePassword',
   lastLogin: 'lastLogin',
@@ -166,6 +180,7 @@ exports.Role = exports.$Enums.Role = {
 
 exports.Prisma.ModelName = {
   Workspace: 'Workspace',
+  Department: 'Department',
   User: 'User'
 };
 

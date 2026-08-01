@@ -18,10 +18,26 @@ model Workspace {
   name        String
   description String?
 
+  users       User[]
+  departments Department[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Department {
+  id   String @id @default(cuid())
+  name String
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
   users User[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([workspaceId, name])
 }
 
 model User {
@@ -38,6 +54,19 @@ model User {
   workspaceId String
   workspace   Workspace @relation(fields: [workspaceId], references: [id])
 
+  // ── Employee profile fields ──────────────────────────────────────────
+  employeeId String?
+  phone      String?
+  position   String?
+  joiningDate DateTime?
+
+  departmentId String?
+  department   Department? @relation(fields: [departmentId], references: [id])
+
+  reportingManagerId String?
+  reportingManager   User?   @relation("ReportsTo", fields: [reportingManagerId], references: [id])
+  directReports      User[]  @relation("ReportsTo")
+
   isActive Boolean @default(true)
 
   mustChangePassword Boolean @default(true)
@@ -53,4 +82,6 @@ model User {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([workspaceId, employeeId])
 }

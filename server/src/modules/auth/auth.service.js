@@ -1,10 +1,10 @@
 const { getPrisma } = require("../../config/prisma");
 const { comparePassword } = require("../../utils/password");
-const { generateToken } = require("../../utils/jwt");
+const { generateToken, generateRefreshToken } = require("../../utils/jwt");
 
 /**
  * Authenticate a user by email/password.
- * Returns { accessToken, user } on success.
+ * Returns { accessToken, refreshToken, user } on success.
  */
 const loginUser = async (email, password) => {
   const prisma = getPrisma();
@@ -34,9 +34,11 @@ const loginUser = async (email, password) => {
   });
 
   const accessToken = generateToken(user);
+  const refreshToken = generateRefreshToken(user);
 
   return {
     accessToken,
+    refreshToken,
     user: {
       id: user.id,
       name: user.name,
@@ -47,6 +49,22 @@ const loginUser = async (email, password) => {
       profilePhoto: user.profilePhoto,
     },
   };
+};
+
+/**
+ * Issues a fresh access token from a valid refresh token's user id.
+ * Confirms the user still exists and is active before issuing.
+ */
+const rotateAccessToken = async (userId) => {
+  const prisma = getPrisma();
+
+  const user = await prisma.user.findUnique({ where: { id: userId } });
+
+  if (!user || !user.isActive) {
+    throw new Error("User not found or inactive");
+  }
+
+  return generateToken(user);
 };
 
 /**
@@ -79,4 +97,4 @@ const getUserById = async (userId) => {
   return user;
 };
 
-module.exports = { loginUser, getUserById };
+module.exports = { loginUser, rotateAccessToken, getUserById };
