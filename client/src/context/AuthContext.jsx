@@ -1,16 +1,45 @@
-import { createContext, useContext, useState, useEffect, useCallback } from 'react';
+import {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from 'react';
 import api from '../utils/api';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user,        setUser]        = useState(null);
-  const [accessToken, setAccessToken] = useState(null);
-  const [loading,     setLoading]     = useState(true);
+  const [user, setUser] = useState(() => {
+    try {
+      const storedUser = window.localStorage.getItem('aikart-user');
+      return storedUser ? JSON.parse(storedUser) : null;
+    } catch {
+      return null;
+    }
+  });
+  const [accessToken, setAccessToken] = useState(() => {
+    try {
+      return window.localStorage.getItem('aikart-access-token');
+    } catch {
+      return null;
+    }
+  });
+  const [loading, setLoading] = useState(true);
 
   // ─── Sync token onto axios instance whenever it changes ─────────────────────
   useEffect(() => {
     api.token = accessToken;
+
+    try {
+      if (accessToken) {
+        window.localStorage.setItem('aikart-access-token', accessToken);
+      } else {
+        window.localStorage.removeItem('aikart-access-token');
+      }
+    } catch {
+      // Ignore storage errors in private mode or blocked storage
+    }
   }, [accessToken]);
 
   // ─── Logout helper (shared by explicit logout + session-expired event) ───────
@@ -18,6 +47,13 @@ export function AuthProvider({ children }) {
     api.token = null;
     setAccessToken(null);
     setUser(null);
+
+    try {
+      window.localStorage.removeItem('aikart-access-token');
+      window.localStorage.removeItem('aikart-user');
+    } catch {
+      // Ignore storage errors
+    }
   }, []);
 
   // ─── Listen for session-expired event fired by the api interceptor ────────────
@@ -33,12 +69,13 @@ export function AuthProvider({ children }) {
       try {
         // Use plain axios here so the api interceptor doesn't interfere
         const { default: axios } = await import('axios');
-        const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+        const BASE_URL =
+          import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
         const refreshRes = await axios.post(
           `${BASE_URL}/auth/refresh`,
           {},
-          { withCredentials: true }
+          { withCredentials: true },
         );
         const token = refreshRes.data.data.accessToken;
 
@@ -50,18 +87,29 @@ export function AuthProvider({ children }) {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(meRes.data.data);
+
+        try {
+          window.localStorage.setItem(
+            'aikart-user',
+            JSON.stringify(meRes.data.data),
+          );
+        } catch {
+          // Ignore storage errors
+        }
       } catch {
-        // No valid cookie or server unreachable — start as logged-out
-        api.token = null;
-        setUser(null);
-        setAccessToken(null);
+        // If we already have a stored session, keep it and avoid clearing it on a transient refresh failure.
+        if (!accessToken && !user) {
+          api.token = null;
+          setUser(null);
+          setAccessToken(null);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     restoreSession();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // ─── Login ───────────────────────────────────────────────────────────────────
@@ -72,6 +120,12 @@ export function AuthProvider({ children }) {
     api.token = token;
     setAccessToken(token);
     setUser(loggedInUser);
+
+    try {
+      window.localStorage.setItem('aikart-user', JSON.stringify(loggedInUser));
+    } catch {
+      // Ignore storage errors
+    }
 
     return loggedInUser;
   }, []);
@@ -101,11 +155,7 @@ export function AuthProvider({ children }) {
     isAuthenticated: !!user && !!accessToken,
   };
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 export function useAuth() {
