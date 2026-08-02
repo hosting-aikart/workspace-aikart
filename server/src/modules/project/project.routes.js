@@ -23,9 +23,21 @@ router.get('/:id', getProject);
 
 router.post('/', requireRole('ADMIN', 'MANAGER'), createProjectHandler);
 router.patch('/:id', requireRole('ADMIN', 'MANAGER'), updateProjectHandler);
-router.patch('/:id/archive', requireRole('ADMIN', 'MANAGER'), archiveProjectHandler);
-router.patch('/:id/progress', requireRole('ADMIN', 'MANAGER'), progressProjectHandler);
+router.patch(
+  '/:id/archive',
+  requireRole('ADMIN', 'MANAGER'),
+  archiveProjectHandler,
+);
+router.patch(
+  '/:id/progress',
+  requireRole('ADMIN', 'MANAGER'),
+  progressProjectHandler,
+);
 router.post('/:id/members', requireRole('ADMIN', 'MANAGER'), addMemberHandler);
-router.delete('/:id/members/:userId', requireRole('ADMIN', 'MANAGER'), removeMemberHandler);
+router.delete(
+  '/:id/members/:userId',
+  requireRole('ADMIN', 'MANAGER'),
+  removeMemberHandler,
+);
 
 module.exports = router;

@@ -18,12 +18,15 @@ const createDefaultForm = () => ({
   deadline: '',
 });
 
-const getEmployeeDisplayName = (employee) => employee?.name || employee?.email || 'Unnamed employee';
+const getEmployeeDisplayName = (employee) =>
+  employee?.name || employee?.email || 'Unnamed employee';
 const getEmployeeInitials = (employee) => {
   const name = getEmployeeDisplayName(employee);
   const parts = name.split(/\s+/).filter(Boolean);
   if (!parts.length) return '?';
-  return parts.length === 1 ? parts[0].slice(0, 2).toUpperCase() : `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
+  return parts.length === 1
+    ? parts[0].slice(0, 2).toUpperCase()
+    : `${parts[0][0]}${parts[parts.length - 1][0]}`.toUpperCase();
 };
 
 const getErrorMessage = (error) =>
@@ -102,7 +105,9 @@ export default function ProjectsPage() {
             limit: 200,
           },
         });
-        const payload = Array.isArray(data?.data?.employees) ? data.data.employees : [];
+        const payload = Array.isArray(data?.data?.employees)
+          ? data.data.employees
+          : [];
         setEmployeeOptions(payload);
       } catch (err) {
         setEmployeeOptions([]);
@@ -120,7 +125,9 @@ export default function ProjectsPage() {
       const leftPriority = left.role === 'MANAGER' ? 0 : 1;
       const rightPriority = right.role === 'MANAGER' ? 0 : 1;
       if (leftPriority !== rightPriority) return leftPriority - rightPriority;
-      return (left.name || left.email || '').localeCompare(right.name || right.email || '');
+      return (left.name || left.email || '').localeCompare(
+        right.name || right.email || '',
+      );
     });
   }, [employeeOptions]);
 
@@ -129,7 +136,8 @@ export default function ProjectsPage() {
 
     return sortedEmployeeOptions.filter((employee) => {
       if (!query) return true;
-      const haystack = `${employee.name || ''} ${employee.employeeId || ''} ${employee.email || ''}`.toLowerCase();
+      const haystack =
+        `${employee.name || ''} ${employee.employeeId || ''} ${employee.email || ''}`.toLowerCase();
       return haystack.includes(query);
     });
   }, [sortedEmployeeOptions, teamMemberSearch]);
@@ -155,7 +163,11 @@ export default function ProjectsPage() {
       deadline: project.deadline ? project.deadline.slice(0, 10) : '',
     });
     setManagerId(project.manager?.id || '');
-    setTeamMemberIds(Array.isArray(project.members) ? project.members.map((member) => member.user?.id).filter(Boolean) : []);
+    setTeamMemberIds(
+      Array.isArray(project.members)
+        ? project.members.map((member) => member.user?.id).filter(Boolean)
+        : [],
+    );
     setTeamMemberSearch('');
     setIsModalOpen(true);
   };
@@ -194,7 +206,11 @@ export default function ProjectsPage() {
       return;
     }
 
-    if (form.startDate && form.deadline && new Date(form.deadline) < new Date(form.startDate)) {
+    if (
+      form.startDate &&
+      form.deadline &&
+      new Date(form.deadline) < new Date(form.startDate)
+    ) {
       setError('Deadline cannot be before the start date.');
       return;
     }
@@ -296,13 +312,27 @@ export default function ProjectsPage() {
       />
 
       {notice ? (
-        <div className="card" style={{ padding: '0.75rem 1rem', marginBottom: '1rem', borderColor: 'var(--color-success)' }}>
+        <div
+          className="card"
+          style={{
+            padding: '0.75rem 1rem',
+            marginBottom: '1rem',
+            borderColor: 'var(--color-success)',
+          }}
+        >
           <p style={{ margin: 0 }}>{notice}</p>
         </div>
       ) : null}
 
       {error ? (
-        <div className="card" style={{ padding: '0.75rem 1rem', marginBottom: '1rem', borderColor: 'var(--color-danger)' }}>
+        <div
+          className="card"
+          style={{
+            padding: '0.75rem 1rem',
+            marginBottom: '1rem',
+            borderColor: 'var(--color-danger)',
+          }}
+        >
           <p style={{ margin: 0 }}>{error}</p>
         </div>
       ) : null}
@@ -314,7 +344,14 @@ export default function ProjectsPage() {
             value={search}
             onChange={setSearch}
           />
-          <select className="input" value={statusFilter} onChange={(event) => { setStatusFilter(event.target.value); setPage(1); }}>
+          <select
+            className="input"
+            value={statusFilter}
+            onChange={(event) => {
+              setStatusFilter(event.target.value);
+              setPage(1);
+            }}
+          >
             <option value="">All Status</option>
             <option value="ACTIVE">Active</option>
             <option value="PLANNING">Planning</option>
@@ -322,7 +359,14 @@ export default function ProjectsPage() {
             <option value="COMPLETED">Completed</option>
             <option value="ARCHIVED">Archived</option>
           </select>
-          <select className="input" value={priorityFilter} onChange={(event) => { setPriorityFilter(event.target.value); setPage(1); }}>
+          <select
+            className="input"
+            value={priorityFilter}
+            onChange={(event) => {
+              setPriorityFilter(event.target.value);
+              setPage(1);
+            }}
+          >
             <option value="">All Priority</option>
             <option value="LOW">Low</option>
             <option value="MEDIUM">Medium</option>
@@ -339,91 +383,255 @@ export default function ProjectsPage() {
       ) : null}
 
       {!isLoading && !error && !projects.length ? (
-        <EmptyState title="No projects found" description="Create your first project to start tracking work." />
+        <EmptyState
+          title="No projects found"
+          description="Create your first project to start tracking work."
+        />
       ) : null}
 
       {!isLoading && !error && projects.length ? (
         <>
-          <DataTable columns={columns} rows={projects} emptyMessage="No projects found." />
-          <Pagination page={pagination.page} totalPages={pagination.totalPages} total={pagination.total} onPageChange={(nextPage) => setPage(nextPage)} />
+          <DataTable
+            columns={columns}
+            rows={projects}
+            emptyMessage="No projects found."
+          />
+          <Pagination
+            page={pagination.page}
+            totalPages={pagination.totalPages}
+            total={pagination.total}
+            onPageChange={(nextPage) => setPage(nextPage)}
+          />
         </>
       ) : null}
 
-      <Modal open={isModalOpen} title={editingProject ? 'Edit Project' : 'Create Project'} footer={[
-        <button key="cancel" className="btn btn-outline" onClick={handleCloseModal}>Cancel</button>,
-        <button key="save" className="btn btn-primary" onClick={handleSave} disabled={isSaving}>
-          {isSaving ? 'Saving…' : 'Save'}
-        </button>,
-      ]}>
+      <Modal
+        open={isModalOpen}
+        title={editingProject ? 'Edit Project' : 'Create Project'}
+        footer={[
+          <button
+            key="cancel"
+            className="btn btn-outline"
+            onClick={handleCloseModal}
+          >
+            Cancel
+          </button>,
+          <button
+            key="save"
+            className="btn btn-primary"
+            onClick={handleSave}
+            disabled={isSaving}
+          >
+            {isSaving ? 'Saving…' : 'Save'}
+          </button>,
+        ]}
+      >
         <div style={{ display: 'grid', gap: '0.85rem' }}>
-          <input className="input" placeholder="Project Name" value={form.name} onChange={(event) => setForm({ ...form, name: event.target.value })} />
-          <textarea className="input" placeholder="Description" value={form.description} onChange={(event) => setForm({ ...form, description: event.target.value })} style={{ minHeight: '90px' }} />
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem' }}>
-            <select className="input" value={form.status} onChange={(event) => setForm({ ...form, status: event.target.value })}>
+          <input
+            className="input"
+            placeholder="Project Name"
+            value={form.name}
+            onChange={(event) => setForm({ ...form, name: event.target.value })}
+          />
+          <textarea
+            className="input"
+            placeholder="Description"
+            value={form.description}
+            onChange={(event) =>
+              setForm({ ...form, description: event.target.value })
+            }
+            style={{ minHeight: '90px' }}
+          />
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+              gap: '0.75rem',
+            }}
+          >
+            <select
+              className="input"
+              value={form.status}
+              onChange={(event) =>
+                setForm({ ...form, status: event.target.value })
+              }
+            >
               <option value="ACTIVE">Active</option>
               <option value="PLANNING">Planning</option>
               <option value="ON_HOLD">On Hold</option>
               <option value="COMPLETED">Completed</option>
               <option value="ARCHIVED">Archived</option>
             </select>
-            <select className="input" value={form.priority} onChange={(event) => setForm({ ...form, priority: event.target.value })}>
+            <select
+              className="input"
+              value={form.priority}
+              onChange={(event) =>
+                setForm({ ...form, priority: event.target.value })
+              }
+            >
               <option value="LOW">Low</option>
               <option value="MEDIUM">Medium</option>
               <option value="HIGH">High</option>
               <option value="URGENT">Urgent</option>
             </select>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: '0.75rem' }}>
-            <input className="input" type="number" min="0" max="100" value={form.progress} onChange={(event) => setForm({ ...form, progress: Number(event.target.value) })} />
-            <input className="input" type="date" value={form.startDate} onChange={(event) => setForm({ ...form, startDate: event.target.value })} />
-            <input className="input" type="date" value={form.deadline} onChange={(event) => setForm({ ...form, deadline: event.target.value })} />
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+              gap: '0.75rem',
+            }}
+          >
+            <input
+              className="input"
+              type="number"
+              min="0"
+              max="100"
+              value={form.progress}
+              onChange={(event) =>
+                setForm({ ...form, progress: Number(event.target.value) })
+              }
+            />
+            <input
+              className="input"
+              type="date"
+              value={form.startDate}
+              onChange={(event) =>
+                setForm({ ...form, startDate: event.target.value })
+              }
+            />
+            <input
+              className="input"
+              type="date"
+              value={form.deadline}
+              onChange={(event) =>
+                setForm({ ...form, deadline: event.target.value })
+              }
+            />
           </div>
           <div style={{ display: 'grid', gap: '0.45rem' }}>
-            <label className="text-secondary" style={{ fontSize: '0.85rem' }}>Project Manager</label>
-            <select className="input" value={managerId} onChange={(event) => setManagerId(event.target.value)}>
+            <label className="text-secondary" style={{ fontSize: '0.85rem' }}>
+              Project Manager
+            </label>
+            <select
+              className="input"
+              value={managerId}
+              onChange={(event) => setManagerId(event.target.value)}
+            >
               <option value="">Select a manager</option>
-              {isEmployeeLoading ? <option value="" disabled>Loading employees…</option> : null}
-              {!isEmployeeLoading && !employeeOptions.length ? <option value="" disabled>No active employees found</option> : null}
+              {isEmployeeLoading ? (
+                <option value="" disabled>
+                  Loading employees…
+                </option>
+              ) : null}
+              {!isEmployeeLoading && !employeeOptions.length ? (
+                <option value="" disabled>
+                  No active employees found
+                </option>
+              ) : null}
               {sortedEmployeeOptions.map((employee) => (
                 <option key={employee.id} value={employee.id}>
-                  {getEmployeeDisplayName(employee)}{employee.role === 'MANAGER' ? ' (Manager)' : ''}
+                  {getEmployeeDisplayName(employee)}
+                  {employee.role === 'MANAGER' ? ' (Manager)' : ''}
                 </option>
               ))}
             </select>
           </div>
           <div style={{ display: 'grid', gap: '0.45rem' }}>
-            <label className="text-secondary" style={{ fontSize: '0.85rem' }}>Team Members ({teamMemberIds.length} selected)</label>
-            <input className="input" placeholder="Search employee by name or employee ID" value={teamMemberSearch} onChange={(event) => setTeamMemberSearch(event.target.value)} />
-            <div style={{ display: 'grid', gap: '0.45rem', maxHeight: '170px', overflowY: 'auto', border: '1px solid var(--color-border)', borderRadius: '0.45rem', padding: '0.6rem' }}>
-              {employeeError ? <p className="text-secondary" style={{ margin: 0 }}>{employeeError}</p> : null}
-              {!employeeError && filteredEmployeeOptions.length ? filteredEmployeeOptions.map((employee) => (
-                <button
-                  key={employee.id}
-                  type="button"
-                  className="btn btn-outline"
-                  style={{ justifyContent: 'flex-start', textAlign: 'left', padding: '0.6rem 0.7rem' }}
-                  onClick={() => handleToggleMember(employee.id)}
-                >
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                    <span style={{ width: '1.9rem', height: '1.9rem', borderRadius: '999px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-primary-soft)', color: 'var(--color-primary)' }}>
-                      {getEmployeeInitials(employee)}
-                    </span>
-                    <span>
-                      <strong>{getEmployeeDisplayName(employee)}</strong>
-                      <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{employee.employeeId || 'No employee ID'}</div>
-                    </span>
-                  </span>
-                </button>
-              )) : null}
-              {!employeeError && !filteredEmployeeOptions.length ? <p className="text-secondary" style={{ margin: 0 }}>No matching employees.</p> : null}
+            <label className="text-secondary" style={{ fontSize: '0.85rem' }}>
+              Team Members ({teamMemberIds.length} selected)
+            </label>
+            <input
+              className="input"
+              placeholder="Search employee by name or employee ID"
+              value={teamMemberSearch}
+              onChange={(event) => setTeamMemberSearch(event.target.value)}
+            />
+            <div
+              style={{
+                display: 'grid',
+                gap: '0.45rem',
+                maxHeight: '170px',
+                overflowY: 'auto',
+                border: '1px solid var(--color-border)',
+                borderRadius: '0.45rem',
+                padding: '0.6rem',
+              }}
+            >
+              {employeeError ? (
+                <p className="text-secondary" style={{ margin: 0 }}>
+                  {employeeError}
+                </p>
+              ) : null}
+              {!employeeError && filteredEmployeeOptions.length
+                ? filteredEmployeeOptions.map((employee) => (
+                    <button
+                      key={employee.id}
+                      type="button"
+                      className="btn btn-outline"
+                      style={{
+                        justifyContent: 'flex-start',
+                        textAlign: 'left',
+                        padding: '0.6rem 0.7rem',
+                      }}
+                      onClick={() => handleToggleMember(employee.id)}
+                    >
+                      <span
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.5rem',
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: '1.9rem',
+                            height: '1.9rem',
+                            borderRadius: '999px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: 'var(--color-primary-soft)',
+                            color: 'var(--color-primary)',
+                          }}
+                        >
+                          {getEmployeeInitials(employee)}
+                        </span>
+                        <span>
+                          <strong>{getEmployeeDisplayName(employee)}</strong>
+                          <div
+                            className="text-secondary"
+                            style={{ fontSize: '0.8rem' }}
+                          >
+                            {employee.employeeId || 'No employee ID'}
+                          </div>
+                        </span>
+                      </span>
+                    </button>
+                  ))
+                : null}
+              {!employeeError && !filteredEmployeeOptions.length ? (
+                <p className="text-secondary" style={{ margin: 0 }}>
+                  No matching employees.
+                </p>
+              ) : null}
             </div>
             {teamMemberIds.length ? (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}>
+              <div
+                style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem' }}
+              >
                 {teamMemberIds.map((memberId) => {
-                  const employee = sortedEmployeeOptions.find((option) => option.id === memberId);
+                  const employee = sortedEmployeeOptions.find(
+                    (option) => option.id === memberId,
+                  );
                   if (!employee) return null;
                   return (
-                    <button key={memberId} type="button" className="btn btn-outline btn-sm" onClick={() => handleToggleMember(memberId)}>
+                    <button
+                      key={memberId}
+                      type="button"
+                      className="btn btn-outline btn-sm"
+                      onClick={() => handleToggleMember(memberId)}
+                    >
                       {getEmployeeDisplayName(employee)} ×
                     </button>
                   );
@@ -432,31 +640,96 @@ export default function ProjectsPage() {
             ) : null}
           </div>
           {editingProject ? (
-            <div className="card" style={{ padding: '0.8rem', display: 'grid', gap: '0.6rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div
+              className="card"
+              style={{ padding: '0.8rem', display: 'grid', gap: '0.6rem' }}
+            >
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                }}
+              >
                 <strong>Project Details</strong>
-                <span className="text-secondary">{teamMemberIds.length} member{teamMemberIds.length === 1 ? '' : 's'}</span>
+                <span className="text-secondary">
+                  {teamMemberIds.length} member
+                  {teamMemberIds.length === 1 ? '' : 's'}
+                </span>
               </div>
               <div style={{ display: 'grid', gap: '0.4rem' }}>
-                <div><span className="text-secondary">Project Manager:</span> {managerId ? getEmployeeDisplayName(sortedEmployeeOptions.find((employee) => employee.id === managerId) || {}) : 'Not selected'}</div>
-                <div><span className="text-secondary">Team Members:</span> {teamMemberIds.length ? teamMemberIds.map((memberId) => {
-                  const employee = sortedEmployeeOptions.find((option) => option.id === memberId);
-                  return employee ? `${getEmployeeDisplayName(employee)} (${employee.employeeId || 'No ID'})` : null;
-                }).filter(Boolean).join(', ') : 'No team members selected'}</div>
+                <div>
+                  <span className="text-secondary">Project Manager:</span>{' '}
+                  {managerId
+                    ? getEmployeeDisplayName(
+                        sortedEmployeeOptions.find(
+                          (employee) => employee.id === managerId,
+                        ) || {},
+                      )
+                    : 'Not selected'}
+                </div>
+                <div>
+                  <span className="text-secondary">Team Members:</span>{' '}
+                  {teamMemberIds.length
+                    ? teamMemberIds
+                        .map((memberId) => {
+                          const employee = sortedEmployeeOptions.find(
+                            (option) => option.id === memberId,
+                          );
+                          return employee
+                            ? `${getEmployeeDisplayName(employee)} (${employee.employeeId || 'No ID'})`
+                            : null;
+                        })
+                        .filter(Boolean)
+                        .join(', ')
+                    : 'No team members selected'}
+                </div>
               </div>
               {teamMemberIds.length ? (
                 <div style={{ display: 'grid', gap: '0.4rem' }}>
                   {teamMemberIds.map((memberId) => {
-                    const employee = sortedEmployeeOptions.find((option) => option.id === memberId);
+                    const employee = sortedEmployeeOptions.find(
+                      (option) => option.id === memberId,
+                    );
                     if (!employee) return null;
                     return (
-                      <div key={memberId} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', padding: '0.45rem 0.55rem', border: '1px solid var(--color-border)', borderRadius: '0.4rem' }}>
-                        <span style={{ width: '2.1rem', height: '2.1rem', borderRadius: '999px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', background: 'var(--color-primary-soft)', color: 'var(--color-primary)' }}>
+                      <div
+                        key={memberId}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.65rem',
+                          padding: '0.45rem 0.55rem',
+                          border: '1px solid var(--color-border)',
+                          borderRadius: '0.4rem',
+                        }}
+                      >
+                        <span
+                          style={{
+                            width: '2.1rem',
+                            height: '2.1rem',
+                            borderRadius: '999px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            background: 'var(--color-primary-soft)',
+                            color: 'var(--color-primary)',
+                          }}
+                        >
                           {getEmployeeInitials(employee)}
                         </span>
                         <div>
-                          <div><strong>{getEmployeeDisplayName(employee)}</strong></div>
-                          <div className="text-secondary" style={{ fontSize: '0.8rem' }}>{employee.employeeId || 'No employee ID'} • {employee.department?.name || 'No department'} • {employee.position || 'No position'}</div>
+                          <div>
+                            <strong>{getEmployeeDisplayName(employee)}</strong>
+                          </div>
+                          <div
+                            className="text-secondary"
+                            style={{ fontSize: '0.8rem' }}
+                          >
+                            {employee.employeeId || 'No employee ID'} •{' '}
+                            {employee.department?.name || 'No department'} •{' '}
+                            {employee.position || 'No position'}
+                          </div>
                         </div>
                       </div>
                     );
@@ -468,7 +741,13 @@ export default function ProjectsPage() {
         </div>
       </Modal>
 
-      <ConfirmDialog open={!!confirmArchiveProject} title="Archive project" description={`Archive ${confirmArchiveProject?.name || 'this project'}?`} onCancel={() => setConfirmArchiveProject(null)} onConfirm={handleArchive} />
+      <ConfirmDialog
+        open={!!confirmArchiveProject}
+        title="Archive project"
+        description={`Archive ${confirmArchiveProject?.name || 'this project'}?`}
+        onCancel={() => setConfirmArchiveProject(null)}
+        onConfirm={handleArchive}
+      />
     </div>
   );
 }

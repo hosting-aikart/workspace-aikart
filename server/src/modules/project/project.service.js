@@ -16,7 +16,9 @@ const normalizeMemberIds = (memberIds = []) => {
   const seen = new Set();
   return (Array.isArray(memberIds) ? memberIds : [])
     .map((memberId) => String(memberId || '').trim())
-    .filter((memberId) => memberId && !seen.has(memberId) && seen.add(memberId));
+    .filter(
+      (memberId) => memberId && !seen.has(memberId) && seen.add(memberId),
+    );
 };
 
 const ensureWorkspaceUser = async (prisma, workspaceId, userId, message) => {
@@ -34,7 +36,12 @@ const ensureWorkspaceUser = async (prisma, workspaceId, userId, message) => {
   return user;
 };
 
-const syncProjectMembers = async (prisma, workspaceId, projectId, memberIds = []) => {
+const syncProjectMembers = async (
+  prisma,
+  workspaceId,
+  projectId,
+  memberIds = [],
+) => {
   const desiredIds = normalizeMemberIds(memberIds);
   const currentMemberships = await prisma.projectMember.findMany({
     where: { projectId },
@@ -161,7 +168,12 @@ const createProject = async (workspaceId, payload = {}) => {
   });
 
   if (payload.memberIds !== undefined) {
-    await syncProjectMembers(prisma, workspaceId, createdProject.id, payload.memberIds);
+    await syncProjectMembers(
+      prisma,
+      workspaceId,
+      createdProject.id,
+      payload.memberIds,
+    );
   }
 
   return prisma.project.findFirst({
@@ -177,8 +189,12 @@ const listProjects = async (workspaceId, options = {}) => {
   const skip = (page - 1) * limit;
 
   const where = { workspaceId, isArchived: false };
-  const status = String(options.status || '').trim().toUpperCase();
-  const priority = String(options.priority || '').trim().toUpperCase();
+  const status = String(options.status || '')
+    .trim()
+    .toUpperCase();
+  const priority = String(options.priority || '')
+    .trim()
+    .toUpperCase();
   const search = String(options.search || '').trim();
 
   if (status) {
@@ -290,7 +306,9 @@ const updateProject = async (workspaceId, projectId, payload = {}) => {
   if (payload.progress !== undefined)
     updateData.progress = Number(payload.progress || 0);
   if (payload.startDate !== undefined)
-    updateData.startDate = payload.startDate ? new Date(payload.startDate) : null;
+    updateData.startDate = payload.startDate
+      ? new Date(payload.startDate)
+      : null;
   if (payload.deadline !== undefined)
     updateData.deadline = payload.deadline ? new Date(payload.deadline) : null;
 

@@ -108,7 +108,11 @@ const progressProjectHandler = async (req, res) => {
 
 const addMemberHandler = async (req, res) => {
   try {
-    const data = await addProjectMember(req.user.workspaceId, req.params.id, req.body.userId);
+    const data = await addProjectMember(
+      req.user.workspaceId,
+      req.params.id,
+      req.body.userId,
+    );
     return sendSuccess(res, data);
   } catch (err) {
     const statusCode = err.statusCode || 400;
@@ -122,7 +126,11 @@ const addMemberHandler = async (req, res) => {
 
 const removeMemberHandler = async (req, res) => {
   try {
-    const data = await removeProjectMember(req.user.workspaceId, req.params.id, req.params.userId);
+    const data = await removeProjectMember(
+      req.user.workspaceId,
+      req.params.id,
+      req.params.userId,
+    );
     return sendSuccess(res, data);
   } catch (err) {
     const statusCode = err.statusCode || 400;
