@@ -5,6 +5,7 @@ const prismaConfig = require('../src/config/prisma');
 const {
   createProject,
   archiveProject,
+  addProjectMember,
 } = require('../src/modules/project/project.service');
 
 test('createProject rejects duplicate project names inside the same workspace', async () => {
@@ -41,4 +42,66 @@ test('archiveProject updates a project to archived state without deleting it', a
   const result = await archiveProject('ws1', 'p1');
 
   assert.equal(result.isArchived, true);
+});
+
+test('createProject stores manager and creates memberships for selected members', async () => {
+  let memberCreateCount = 0;
+  let findFirstCalls = 0;
+
+  const mockPrisma = {
+    project: {
+      findFirst: async () => {
+        findFirstCalls += 1;
+        return findFirstCalls === 1 ? null : { id: 'p1', managerId: 'u1' };
+      },
+      create: async ({ data }) => ({ id: 'p1', ...data }),
+    },
+    projectMember: {
+      findMany: async () => [],
+      findFirst: async () => null,
+      create: async () => {
+        memberCreateCount += 1;
+        return { id: `pm${memberCreateCount}` };
+      },
+      deleteMany: async () => ({ count: 0 }),
+    },
+    user: {
+      findFirst: async () => ({ id: 'u2', workspaceId: 'ws1' }),
+    },
+  };
+
+  prismaConfig.getPrisma = () => mockPrisma;
+
+  const result = await createProject('ws1', {
+    name: 'CRM Launch',
+    managerId: 'u1',
+    memberIds: ['u2', 'u3'],
+  });
+
+  assert.equal(result.id, 'p1');
+  assert.equal(result.managerId, 'u1');
+  assert.equal(memberCreateCount, 2);
+});
+
+test('addProjectMember creates a membership when the user is not already assigned', async () => {
+  const mockPrisma = {
+    project: {
+      findFirst: async () => ({ id: 'p1', workspaceId: 'ws1' }),
+      findUnique: async () => null,
+      update: async ({ data }) => ({ id: 'p1', members: data.members }),
+    },
+    projectMember: {
+      findFirst: async () => null,
+      create: async () => ({ id: 'pm1' }),
+    },
+    user: {
+      findFirst: async () => ({ id: 'u2', workspaceId: 'ws1' }),
+    },
+  };
+
+  prismaConfig.getPrisma = () => mockPrisma;
+
+  const result = await addProjectMember('ws1', 'p1', 'u2');
+
+  assert.equal(result.id, 'p1');
 });

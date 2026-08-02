@@ -9,17 +9,23 @@ const {
   getProject,
   updateProjectHandler,
   archiveProjectHandler,
+  progressProjectHandler,
+  addMemberHandler,
+  removeMemberHandler,
 } = require('./project.controller');
 
 const router = Router();
 
 router.use(requireAuth);
-router.use(requireRole('ADMIN'));
 
 router.get('/', getProjects);
-router.post('/', createProjectHandler);
 router.get('/:id', getProject);
-router.patch('/:id', updateProjectHandler);
-router.post('/:id/archive', archiveProjectHandler);
+
+router.post('/', requireRole('ADMIN', 'MANAGER'), createProjectHandler);
+router.patch('/:id', requireRole('ADMIN', 'MANAGER'), updateProjectHandler);
+router.patch('/:id/archive', requireRole('ADMIN', 'MANAGER'), archiveProjectHandler);
+router.patch('/:id/progress', requireRole('ADMIN', 'MANAGER'), progressProjectHandler);
+router.post('/:id/members', requireRole('ADMIN', 'MANAGER'), addMemberHandler);
+router.delete('/:id/members/:userId', requireRole('ADMIN', 'MANAGER'), removeMemberHandler);
 
 module.exports = router;

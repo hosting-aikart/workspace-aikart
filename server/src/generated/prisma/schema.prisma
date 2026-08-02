@@ -20,6 +20,7 @@ model Workspace {
 
   users       User[]
   departments Department[]
+  projects    Project[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -78,8 +79,11 @@ model User {
   createdById String?
   createdBy   User?   @relation("CreatedUsers", fields: [createdById], references: [id])
 
-  createdUsers User[]       @relation("CreatedUsers")
-  attendances  Attendance[]
+  createdUsers    User[]          @relation("CreatedUsers")
+  attendances     Attendance[]
+  createdProjects Project[]       @relation("ProjectCreatedBy")
+  managedProjects Project[]       @relation("ProjectManager")
+  projectMembers  ProjectMember[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -127,4 +131,47 @@ model TimerSegment {
   endedAt   DateTime? // null while this segment is still running (active work or currently paused)
 
   createdAt DateTime @default(now())
+}
+
+model Project {
+  id String @id @default(cuid())
+
+  name        String
+  description String?
+  status      String    @default("ACTIVE")
+  priority    String    @default("MEDIUM")
+  progress    Int       @default(0)
+  startDate   DateTime?
+  deadline    DateTime?
+  isArchived  Boolean   @default(false)
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+  createdById String?
+  createdBy   User?   @relation("ProjectCreatedBy", fields: [createdById], references: [id])
+
+  managerId String?
+  manager   User?   @relation("ProjectManager", fields: [managerId], references: [id])
+
+  members ProjectMember[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([workspaceId, name])
+}
+
+model ProjectMember {
+  id String @id @default(cuid())
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@unique([projectId, userId])
 }

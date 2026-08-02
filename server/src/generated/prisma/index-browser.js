@@ -178,6 +178,30 @@ exports.Prisma.TimerSegmentScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.ProjectScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  description: 'description',
+  status: 'status',
+  priority: 'priority',
+  progress: 'progress',
+  startDate: 'startDate',
+  deadline: 'deadline',
+  isArchived: 'isArchived',
+  workspaceId: 'workspaceId',
+  createdById: 'createdById',
+  managerId: 'managerId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ProjectMemberScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -210,7 +234,9 @@ exports.Prisma.ModelName = {
   Department: 'Department',
   User: 'User',
   Attendance: 'Attendance',
-  TimerSegment: 'TimerSegment'
+  TimerSegment: 'TimerSegment',
+  Project: 'Project',
+  ProjectMember: 'ProjectMember'
 };
 
 /**
