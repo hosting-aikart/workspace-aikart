@@ -1,11 +1,13 @@
-const express = require("express");
-const cors = require("cors");
-const helmet = require("helmet");
-const cookieParser = require("cookie-parser");
-const morgan = require("morgan");
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const cookieParser = require('cookie-parser');
+const morgan = require('morgan');
 
-const authRoutes = require("./modules/auth/auth.routes");
-const profileRoutes = require("./modules/profile/profile.routes");
+const authRoutes = require('./modules/auth/auth.routes');
+const profileRoutes = require('./modules/profile/profile.routes');
+const adminRoutes = require('./modules/admin/admin.routes');
+const projectRoutes = require('./modules/project/project.routes');
 
 const app = express();
 
@@ -26,26 +28,28 @@ app.use(
       }
     },
     credentials: true,
-  })
+  }),
 );
 
 // Logging
-app.use(morgan("dev"));
+app.use(morgan('dev'));
 
 // Body parser
 app.use(express.json());
 app.use(cookieParser());
 
 // Health
-app.get("/api/health", (req, res) => {
+app.get('/api/health', (req, res) => {
   res.json({
-    status: "ok",
-    message: "AIKart Workspace API is running",
+    status: 'ok',
+    message: 'AIKart Workspace API is running',
   });
 });
 
 // Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/me", profileRoutes);
-app.use("/api/attendance", require("./modules/attendance/attendance.routes"));
+app.use('/api/auth', authRoutes);
+app.use('/api/me', profileRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/projects', projectRoutes);
+app.use('/api/attendance', require('./modules/attendance/attendance.routes'));
 module.exports = app;

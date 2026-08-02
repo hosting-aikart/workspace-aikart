@@ -94,7 +94,7 @@ enum AttendanceStatus {
   WORKING
   PAUSED
   CHECKED_OUT
-}
+} 
 
 model Attendance {
   id String @id @default(cuid())

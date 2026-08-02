@@ -1,12 +1,14 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { isAllowedRole } from '../utils/roleRoutes';
 
 /**
  * Wraps routes that require authentication.
  * Redirects to /login if not authenticated.
  */
-export default function ProtectedRoute({ children }) {
-  const { isAuthenticated, loading } = useAuth();
+export default function ProtectedRoute({ children, allowedRoles = [] }) {
+  const { isAuthenticated, loading, user } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -19,5 +21,13 @@ export default function ProtectedRoute({ children }) {
     );
   }
 
-  return isAuthenticated ? children : <Navigate to="/login" replace />;
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace state={{ from: location }} />;
+  }
+
+  if (allowedRoles.length && !isAllowedRole(user?.role, allowedRoles)) {
+    return <Navigate to="/attendance" replace />;
+  }
+
+  return children;
 }

@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec \"node --import tsx/esm\" src/server.js",
     "start": "node --import tsx/esm src/server.js",
+    "test": "node --test tests/**/*.test.js",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "node --import tsx/esm prisma/seed.js"

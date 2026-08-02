@@ -10,6 +10,17 @@ import DashboardLayout from './layouts/DashboardLayout';
 // ─── Modules ──────────────────────────────────────────────────────────────────
 import ProfilePage from './modules/profile/ProfilePage';
 import AttendancePage from './attendance/AttendancePage';
+import AdminLayout from './admin/layout/AdminLayout';
+import AdminDashboardPage from './admin/pages/AdminDashboard';
+import EmployeesPage from './admin/pages/EmployeesPage';
+import DepartmentsPage from './admin/pages/DepartmentsPage';
+import RolesPage from './admin/pages/RolesPage';
+import AttendanceManagementPage from './admin/pages/AttendanceManagement';
+import ProjectsPageAdmin from './admin/pages/ProjectsPage';
+import TasksPageAdmin from './admin/pages/TasksPage';
+import MeetingsPageAdmin from './admin/pages/MeetingsPage';
+import AnnouncementsPageAdmin from './admin/pages/AnnouncementsPage';
+import ReportsPageAdmin from './admin/pages/ReportsPage';
 
 // ─── Placeholder pages ────────────────────────────────────────────────────────
 import {
@@ -24,7 +35,6 @@ import {
   AnnouncementsPage,
   TimeTrackerPage,
   ReportsPage,
-  AdminPage,
 } from './pages/PlaceholderPages';
 
 export default function App() {
@@ -32,7 +42,6 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
-
           {/* ── Public ──────────────────────────────────────────────────── */}
           <Route path="/login" element={<LoginPage />} />
 
@@ -68,12 +77,32 @@ export default function App() {
             {/* Insights */}
             <Route path="reports" element={<ReportsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
-            <Route path="admin" element={<AdminPage />} />
+            <Route
+              path="admin"
+              element={
+                <ProtectedRoute allowedRoles={['ADMIN']}>
+                  <AdminLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route index element={<AdminDashboardPage />} />
+              <Route path="employees" element={<EmployeesPage />} />
+              <Route path="departments" element={<DepartmentsPage />} />
+              <Route path="roles" element={<RolesPage />} />
+              <Route path="attendance" element={<AttendanceManagementPage />} />
+              <Route path="projects" element={<ProjectsPageAdmin />} />
+              <Route path="tasks" element={<TasksPageAdmin />} />
+              <Route path="meetings" element={<MeetingsPageAdmin />} />
+              <Route
+                path="announcements"
+                element={<AnnouncementsPageAdmin />}
+              />
+              <Route path="reports" element={<ReportsPageAdmin />} />
+            </Route>
           </Route>
 
           {/* ── Catch-all ────────────────────────────────────────────────── */}
           <Route path="*" element={<Navigate to="/" replace />} />
-
         </Routes>
       </AuthProvider>
     </BrowserRouter>
