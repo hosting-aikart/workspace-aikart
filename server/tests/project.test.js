@@ -6,6 +6,7 @@ const {
   createProject,
   archiveProject,
   addProjectMember,
+  listProjects,
 } = require('../src/modules/project/project.service');
 
 test('createProject rejects duplicate project names inside the same workspace', async () => {
@@ -81,6 +82,37 @@ test('createProject stores manager and creates memberships for selected members'
   assert.equal(result.id, 'p1');
   assert.equal(result.managerId, 'u1');
   assert.equal(memberCreateCount, 2);
+});
+
+test('listProjects limits visibility to the current employee projects', async () => {
+  let capturedWhere = null;
+
+  const mockPrisma = {
+    project: {
+      findMany: async ({ where }) => {
+        capturedWhere = where;
+        return [{ id: 'p1' }];
+      },
+      count: async ({ where }) => {
+        capturedWhere = where;
+        return 1;
+      },
+    },
+  };
+
+  prismaConfig.getPrisma = () => mockPrisma;
+
+  const result = await listProjects('ws1', {
+    userId: 'u2',
+    userRole: 'EMPLOYEE',
+    page: 1,
+    limit: 10,
+  });
+
+  assert.equal(result.projects.length, 1);
+  assert.ok(Array.isArray(capturedWhere.OR));
+  assert.ok(capturedWhere.OR.some((entry) => entry.managerId === 'u2'));
+  assert.ok(capturedWhere.OR.some((entry) => entry.members?.some?.userId === 'u2'));
 });
 
 test('addProjectMember creates a membership when the user is not already assigned', async () => {

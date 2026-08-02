@@ -196,6 +196,8 @@ const listProjects = async (workspaceId, options = {}) => {
     .trim()
     .toUpperCase();
   const search = String(options.search || '').trim();
+  const userRole = String(options.userRole || '').toUpperCase();
+  const userId = String(options.userId || '').trim();
 
   if (status) {
     where.status = status;
@@ -209,6 +211,17 @@ const listProjects = async (workspaceId, options = {}) => {
     where.OR = [
       { name: { contains: search, mode: 'insensitive' } },
       { description: { contains: search, mode: 'insensitive' } },
+    ];
+  }
+
+  if (userRole === 'EMPLOYEE' && userId) {
+    where.OR = [
+      { managerId: userId },
+      {
+        members: {
+          some: { userId },
+        },
+      },
     ];
   }
 

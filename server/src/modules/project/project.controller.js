@@ -35,6 +35,8 @@ const getProjects = async (req, res) => {
       priority: req.query.priority,
       page: req.query.page,
       limit: req.query.limit,
+      userId: req.user.id,
+      userRole: req.user.role,
     });
     return sendSuccess(res, data);
   } catch (err) {
