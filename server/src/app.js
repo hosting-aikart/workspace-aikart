@@ -8,6 +8,7 @@ const authRoutes = require('./modules/auth/auth.routes');
 const profileRoutes = require('./modules/profile/profile.routes');
 const adminRoutes = require('./modules/admin/admin.routes');
 const projectRoutes = require('./modules/project/project.routes');
+const taskRoutes = require('./modules/tasks/tasks.routes');
 
 const app = express();
 
@@ -51,5 +52,6 @@ app.use('/api/auth', authRoutes);
 app.use('/api/me', profileRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/projects', projectRoutes);
+app.use('/api/tasks', taskRoutes);
 app.use('/api/attendance', require('./modules/attendance/attendance.routes'));
 module.exports = app;

@@ -21,14 +21,16 @@ import TasksPageAdmin from './admin/pages/TasksPage';
 import MeetingsPageAdmin from './admin/pages/MeetingsPage';
 import AnnouncementsPageAdmin from './admin/pages/AnnouncementsPage';
 import ReportsPageAdmin from './admin/pages/ReportsPage';
+import TasksPage from './modules/tasks/TasksPage';
+import ProjectsListPage from './modules/projects/ProjectsListPage';
+import ProjectDetailPage from './modules/projects/ProjectDetailPage';
 
 // ─── Placeholder pages ────────────────────────────────────────────────────────
 import {
   ChatPage,
   EmailPage,
   MeetingsPage,
-  TasksPage,
-  ProjectsPage,
+  ProjectsPage as PlaceholderProjectsPage,
   NotificationsPage,
   FilesPage,
   DirectoryPage,
@@ -66,7 +68,8 @@ export default function App() {
             {/* Work */}
             <Route path="meetings" element={<MeetingsPage />} />
             <Route path="tasks" element={<TasksPage />} />
-            <Route path="projects" element={<ProjectsPage />} />
+            <Route path="projects" element={<ProjectsListPage />} />
+            <Route path="projects/:id" element={<ProjectDetailPage />} />
             <Route path="files" element={<FilesPage />} />
 
             {/* HR & Operations */}
