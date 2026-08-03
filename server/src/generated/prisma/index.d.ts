@@ -48,6 +48,26 @@ export type Project = $Result.DefaultSelection<Prisma.$ProjectPayload>
  * 
  */
 export type ProjectMember = $Result.DefaultSelection<Prisma.$ProjectMemberPayload>
+/**
+ * Model Task
+ * 
+ */
+export type Task = $Result.DefaultSelection<Prisma.$TaskPayload>
+/**
+ * Model Announcement
+ * 
+ */
+export type Announcement = $Result.DefaultSelection<Prisma.$AnnouncementPayload>
+/**
+ * Model AnnouncementTargetUser
+ * 
+ */
+export type AnnouncementTargetUser = $Result.DefaultSelection<Prisma.$AnnouncementTargetUserPayload>
+/**
+ * Model AnnouncementRead
+ * 
+ */
+export type AnnouncementRead = $Result.DefaultSelection<Prisma.$AnnouncementReadPayload>
 
 /**
  * Enums
@@ -71,6 +91,53 @@ export const AttendanceStatus: {
 
 export type AttendanceStatus = (typeof AttendanceStatus)[keyof typeof AttendanceStatus]
 
+
+export const TaskStatus: {
+  TODO: 'TODO',
+  IN_PROGRESS: 'IN_PROGRESS',
+  DONE: 'DONE',
+  ITERATE: 'ITERATE'
+};
+
+export type TaskStatus = (typeof TaskStatus)[keyof typeof TaskStatus]
+
+
+export const TaskPriority: {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+export type TaskPriority = (typeof TaskPriority)[keyof typeof TaskPriority]
+
+
+export const AnnouncementPriority: {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+export type AnnouncementPriority = (typeof AnnouncementPriority)[keyof typeof AnnouncementPriority]
+
+
+export const AnnouncementTargetType: {
+  ALL: 'ALL',
+  SELECTED_USERS: 'SELECTED_USERS'
+};
+
+export type AnnouncementTargetType = (typeof AnnouncementTargetType)[keyof typeof AnnouncementTargetType]
+
+
+export const AnnouncementStatus: {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+};
+
+export type AnnouncementStatus = (typeof AnnouncementStatus)[keyof typeof AnnouncementStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -80,6 +147,26 @@ export const Role: typeof $Enums.Role
 export type AttendanceStatus = $Enums.AttendanceStatus
 
 export const AttendanceStatus: typeof $Enums.AttendanceStatus
+
+export type TaskStatus = $Enums.TaskStatus
+
+export const TaskStatus: typeof $Enums.TaskStatus
+
+export type TaskPriority = $Enums.TaskPriority
+
+export const TaskPriority: typeof $Enums.TaskPriority
+
+export type AnnouncementPriority = $Enums.AnnouncementPriority
+
+export const AnnouncementPriority: typeof $Enums.AnnouncementPriority
+
+export type AnnouncementTargetType = $Enums.AnnouncementTargetType
+
+export const AnnouncementTargetType: typeof $Enums.AnnouncementTargetType
+
+export type AnnouncementStatus = $Enums.AnnouncementStatus
+
+export const AnnouncementStatus: typeof $Enums.AnnouncementStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -271,6 +358,46 @@ export class PrismaClient<
     * ```
     */
   get projectMember(): Prisma.ProjectMemberDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.task`: Exposes CRUD operations for the **Task** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Tasks
+    * const tasks = await prisma.task.findMany()
+    * ```
+    */
+  get task(): Prisma.TaskDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.announcement`: Exposes CRUD operations for the **Announcement** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Announcements
+    * const announcements = await prisma.announcement.findMany()
+    * ```
+    */
+  get announcement(): Prisma.AnnouncementDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.announcementTargetUser`: Exposes CRUD operations for the **AnnouncementTargetUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AnnouncementTargetUsers
+    * const announcementTargetUsers = await prisma.announcementTargetUser.findMany()
+    * ```
+    */
+  get announcementTargetUser(): Prisma.AnnouncementTargetUserDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.announcementRead`: Exposes CRUD operations for the **AnnouncementRead** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more AnnouncementReads
+    * const announcementReads = await prisma.announcementRead.findMany()
+    * ```
+    */
+  get announcementRead(): Prisma.AnnouncementReadDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -724,7 +851,11 @@ export namespace Prisma {
     Attendance: 'Attendance',
     TimerSegment: 'TimerSegment',
     Project: 'Project',
-    ProjectMember: 'ProjectMember'
+    ProjectMember: 'ProjectMember',
+    Task: 'Task',
+    Announcement: 'Announcement',
+    AnnouncementTargetUser: 'AnnouncementTargetUser',
+    AnnouncementRead: 'AnnouncementRead'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -740,7 +871,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "workspace" | "department" | "user" | "attendance" | "timerSegment" | "project" | "projectMember"
+      modelProps: "workspace" | "department" | "user" | "attendance" | "timerSegment" | "project" | "projectMember" | "task" | "announcement" | "announcementTargetUser" | "announcementRead"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1262,6 +1393,302 @@ export namespace Prisma {
           }
         }
       }
+      Task: {
+        payload: Prisma.$TaskPayload<ExtArgs>
+        fields: Prisma.TaskFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.TaskFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.TaskFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          findFirst: {
+            args: Prisma.TaskFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.TaskFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          findMany: {
+            args: Prisma.TaskFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>[]
+          }
+          create: {
+            args: Prisma.TaskCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          createMany: {
+            args: Prisma.TaskCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.TaskCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>[]
+          }
+          delete: {
+            args: Prisma.TaskDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          update: {
+            args: Prisma.TaskUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          deleteMany: {
+            args: Prisma.TaskDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.TaskUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.TaskUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>[]
+          }
+          upsert: {
+            args: Prisma.TaskUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$TaskPayload>
+          }
+          aggregate: {
+            args: Prisma.TaskAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateTask>
+          }
+          groupBy: {
+            args: Prisma.TaskGroupByArgs<ExtArgs>
+            result: $Utils.Optional<TaskGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.TaskCountArgs<ExtArgs>
+            result: $Utils.Optional<TaskCountAggregateOutputType> | number
+          }
+        }
+      }
+      Announcement: {
+        payload: Prisma.$AnnouncementPayload<ExtArgs>
+        fields: Prisma.AnnouncementFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnnouncementFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnnouncementFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          findFirst: {
+            args: Prisma.AnnouncementFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnnouncementFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          findMany: {
+            args: Prisma.AnnouncementFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>[]
+          }
+          create: {
+            args: Prisma.AnnouncementCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          createMany: {
+            args: Prisma.AnnouncementCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnnouncementCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>[]
+          }
+          delete: {
+            args: Prisma.AnnouncementDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          update: {
+            args: Prisma.AnnouncementUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnnouncementDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnnouncementUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnnouncementUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnnouncementUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementPayload>
+          }
+          aggregate: {
+            args: Prisma.AnnouncementAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnnouncement>
+          }
+          groupBy: {
+            args: Prisma.AnnouncementGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnnouncementCountArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementCountAggregateOutputType> | number
+          }
+        }
+      }
+      AnnouncementTargetUser: {
+        payload: Prisma.$AnnouncementTargetUserPayload<ExtArgs>
+        fields: Prisma.AnnouncementTargetUserFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnnouncementTargetUserFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnnouncementTargetUserFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>
+          }
+          findFirst: {
+            args: Prisma.AnnouncementTargetUserFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnnouncementTargetUserFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>
+          }
+          findMany: {
+            args: Prisma.AnnouncementTargetUserFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>[]
+          }
+          create: {
+            args: Prisma.AnnouncementTargetUserCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>
+          }
+          createMany: {
+            args: Prisma.AnnouncementTargetUserCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnnouncementTargetUserCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>[]
+          }
+          delete: {
+            args: Prisma.AnnouncementTargetUserDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>
+          }
+          update: {
+            args: Prisma.AnnouncementTargetUserUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnnouncementTargetUserDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnnouncementTargetUserUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnnouncementTargetUserUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnnouncementTargetUserUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementTargetUserPayload>
+          }
+          aggregate: {
+            args: Prisma.AnnouncementTargetUserAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnnouncementTargetUser>
+          }
+          groupBy: {
+            args: Prisma.AnnouncementTargetUserGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementTargetUserGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnnouncementTargetUserCountArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementTargetUserCountAggregateOutputType> | number
+          }
+        }
+      }
+      AnnouncementRead: {
+        payload: Prisma.$AnnouncementReadPayload<ExtArgs>
+        fields: Prisma.AnnouncementReadFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.AnnouncementReadFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.AnnouncementReadFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>
+          }
+          findFirst: {
+            args: Prisma.AnnouncementReadFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.AnnouncementReadFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>
+          }
+          findMany: {
+            args: Prisma.AnnouncementReadFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>[]
+          }
+          create: {
+            args: Prisma.AnnouncementReadCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>
+          }
+          createMany: {
+            args: Prisma.AnnouncementReadCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.AnnouncementReadCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>[]
+          }
+          delete: {
+            args: Prisma.AnnouncementReadDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>
+          }
+          update: {
+            args: Prisma.AnnouncementReadUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>
+          }
+          deleteMany: {
+            args: Prisma.AnnouncementReadDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.AnnouncementReadUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.AnnouncementReadUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>[]
+          }
+          upsert: {
+            args: Prisma.AnnouncementReadUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$AnnouncementReadPayload>
+          }
+          aggregate: {
+            args: Prisma.AnnouncementReadAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateAnnouncementRead>
+          }
+          groupBy: {
+            args: Prisma.AnnouncementReadGroupByArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementReadGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.AnnouncementReadCountArgs<ExtArgs>
+            result: $Utils.Optional<AnnouncementReadCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1392,6 +1819,10 @@ export namespace Prisma {
     timerSegment?: TimerSegmentOmit
     project?: ProjectOmit
     projectMember?: ProjectMemberOmit
+    task?: TaskOmit
+    announcement?: AnnouncementOmit
+    announcementTargetUser?: AnnouncementTargetUserOmit
+    announcementRead?: AnnouncementReadOmit
   }
 
   /* Types for Logging */
@@ -1475,12 +1906,14 @@ export namespace Prisma {
     users: number
     departments: number
     projects: number
+    announcements: number
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     users?: boolean | WorkspaceCountOutputTypeCountUsersArgs
     departments?: boolean | WorkspaceCountOutputTypeCountDepartmentsArgs
     projects?: boolean | WorkspaceCountOutputTypeCountProjectsArgs
+    announcements?: boolean | WorkspaceCountOutputTypeCountAnnouncementsArgs
   }
 
   // Custom InputTypes
@@ -1513,6 +1946,13 @@ export namespace Prisma {
    */
   export type WorkspaceCountOutputTypeCountProjectsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProjectWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountAnnouncementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementWhereInput
   }
 
 
@@ -1558,6 +1998,10 @@ export namespace Prisma {
     createdProjects: number
     managedProjects: number
     projectMembers: number
+    createdTasks: number
+    createdAnnouncements: number
+    announcementTargets: number
+    announcementReads: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1567,6 +2011,10 @@ export namespace Prisma {
     createdProjects?: boolean | UserCountOutputTypeCountCreatedProjectsArgs
     managedProjects?: boolean | UserCountOutputTypeCountManagedProjectsArgs
     projectMembers?: boolean | UserCountOutputTypeCountProjectMembersArgs
+    createdTasks?: boolean | UserCountOutputTypeCountCreatedTasksArgs
+    createdAnnouncements?: boolean | UserCountOutputTypeCountCreatedAnnouncementsArgs
+    announcementTargets?: boolean | UserCountOutputTypeCountAnnouncementTargetsArgs
+    announcementReads?: boolean | UserCountOutputTypeCountAnnouncementReadsArgs
   }
 
   // Custom InputTypes
@@ -1622,6 +2070,34 @@ export namespace Prisma {
     where?: ProjectMemberWhereInput
   }
 
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedAnnouncementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAnnouncementTargetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementTargetUserWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountAnnouncementReadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementReadWhereInput
+  }
+
 
   /**
    * Count Type AttendanceCountOutputType
@@ -1660,10 +2136,12 @@ export namespace Prisma {
 
   export type ProjectCountOutputType = {
     members: number
+    tasks: number
   }
 
   export type ProjectCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     members?: boolean | ProjectCountOutputTypeCountMembersArgs
+    tasks?: boolean | ProjectCountOutputTypeCountTasksArgs
   }
 
   // Custom InputTypes
@@ -1682,6 +2160,53 @@ export namespace Prisma {
    */
   export type ProjectCountOutputTypeCountMembersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ProjectMemberWhereInput
+  }
+
+  /**
+   * ProjectCountOutputType without action
+   */
+  export type ProjectCountOutputTypeCountTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+  }
+
+
+  /**
+   * Count Type AnnouncementCountOutputType
+   */
+
+  export type AnnouncementCountOutputType = {
+    selectedUsers: number
+    readRecords: number
+  }
+
+  export type AnnouncementCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    selectedUsers?: boolean | AnnouncementCountOutputTypeCountSelectedUsersArgs
+    readRecords?: boolean | AnnouncementCountOutputTypeCountReadRecordsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * AnnouncementCountOutputType without action
+   */
+  export type AnnouncementCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementCountOutputType
+     */
+    select?: AnnouncementCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * AnnouncementCountOutputType without action
+   */
+  export type AnnouncementCountOutputTypeCountSelectedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementTargetUserWhereInput
+  }
+
+  /**
+   * AnnouncementCountOutputType without action
+   */
+  export type AnnouncementCountOutputTypeCountReadRecordsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementReadWhereInput
   }
 
 
@@ -1856,6 +2381,7 @@ export namespace Prisma {
     users?: boolean | Workspace$usersArgs<ExtArgs>
     departments?: boolean | Workspace$departmentsArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
+    announcements?: boolean | Workspace$announcementsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
@@ -1888,6 +2414,7 @@ export namespace Prisma {
     users?: boolean | Workspace$usersArgs<ExtArgs>
     departments?: boolean | Workspace$departmentsArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
+    announcements?: boolean | Workspace$announcementsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -1899,6 +2426,7 @@ export namespace Prisma {
       users: Prisma.$UserPayload<ExtArgs>[]
       departments: Prisma.$DepartmentPayload<ExtArgs>[]
       projects: Prisma.$ProjectPayload<ExtArgs>[]
+      announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2303,6 +2831,7 @@ export namespace Prisma {
     users<T extends Workspace$usersArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$usersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     departments<T extends Workspace$departmentsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$departmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends Workspace$projectsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    announcements<T extends Workspace$announcementsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2799,6 +3328,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProjectScalarFieldEnum | ProjectScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.announcements
+   */
+  export type Workspace$announcementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    where?: AnnouncementWhereInput
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    cursor?: AnnouncementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
   }
 
   /**
@@ -4199,6 +4752,10 @@ export namespace Prisma {
     createdProjects?: boolean | User$createdProjectsArgs<ExtArgs>
     managedProjects?: boolean | User$managedProjectsArgs<ExtArgs>
     projectMembers?: boolean | User$projectMembersArgs<ExtArgs>
+    createdTasks?: boolean | User$createdTasksArgs<ExtArgs>
+    createdAnnouncements?: boolean | User$createdAnnouncementsArgs<ExtArgs>
+    announcementTargets?: boolean | User$announcementTargetsArgs<ExtArgs>
+    announcementReads?: boolean | User$announcementReadsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4288,6 +4845,10 @@ export namespace Prisma {
     createdProjects?: boolean | User$createdProjectsArgs<ExtArgs>
     managedProjects?: boolean | User$managedProjectsArgs<ExtArgs>
     projectMembers?: boolean | User$projectMembersArgs<ExtArgs>
+    createdTasks?: boolean | User$createdTasksArgs<ExtArgs>
+    createdAnnouncements?: boolean | User$createdAnnouncementsArgs<ExtArgs>
+    announcementTargets?: boolean | User$announcementTargetsArgs<ExtArgs>
+    announcementReads?: boolean | User$announcementReadsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4316,6 +4877,10 @@ export namespace Prisma {
       createdProjects: Prisma.$ProjectPayload<ExtArgs>[]
       managedProjects: Prisma.$ProjectPayload<ExtArgs>[]
       projectMembers: Prisma.$ProjectMemberPayload<ExtArgs>[]
+      createdTasks: Prisma.$TaskPayload<ExtArgs>[]
+      createdAnnouncements: Prisma.$AnnouncementPayload<ExtArgs>[]
+      announcementTargets: Prisma.$AnnouncementTargetUserPayload<ExtArgs>[]
+      announcementReads: Prisma.$AnnouncementReadPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -4741,6 +5306,10 @@ export namespace Prisma {
     createdProjects<T extends User$createdProjectsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     managedProjects<T extends User$managedProjectsArgs<ExtArgs> = {}>(args?: Subset<T, User$managedProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projectMembers<T extends User$projectMembersArgs<ExtArgs> = {}>(args?: Subset<T, User$projectMembersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdTasks<T extends User$createdTasksArgs<ExtArgs> = {}>(args?: Subset<T, User$createdTasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdAnnouncements<T extends User$createdAnnouncementsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdAnnouncementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    announcementTargets<T extends User$announcementTargetsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementTargetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    announcementReads<T extends User$announcementReadsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementReadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -5388,6 +5957,102 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProjectMemberScalarFieldEnum | ProjectMemberScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdTasks
+   */
+  export type User$createdTasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * User.createdAnnouncements
+   */
+  export type User$createdAnnouncementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    where?: AnnouncementWhereInput
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    cursor?: AnnouncementWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * User.announcementTargets
+   */
+  export type User$announcementTargetsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    where?: AnnouncementTargetUserWhereInput
+    orderBy?: AnnouncementTargetUserOrderByWithRelationInput | AnnouncementTargetUserOrderByWithRelationInput[]
+    cursor?: AnnouncementTargetUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementTargetUserScalarFieldEnum | AnnouncementTargetUserScalarFieldEnum[]
+  }
+
+  /**
+   * User.announcementReads
+   */
+  export type User$announcementReadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    where?: AnnouncementReadWhereInput
+    orderBy?: AnnouncementReadOrderByWithRelationInput | AnnouncementReadOrderByWithRelationInput[]
+    cursor?: AnnouncementReadWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementReadScalarFieldEnum | AnnouncementReadScalarFieldEnum[]
   }
 
   /**
@@ -7925,6 +8590,7 @@ export namespace Prisma {
     createdBy?: boolean | Project$createdByArgs<ExtArgs>
     manager?: boolean | Project$managerArgs<ExtArgs>
     members?: boolean | Project$membersArgs<ExtArgs>
+    tasks?: boolean | Project$tasksArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["project"]>
 
@@ -7991,6 +8657,7 @@ export namespace Prisma {
     createdBy?: boolean | Project$createdByArgs<ExtArgs>
     manager?: boolean | Project$managerArgs<ExtArgs>
     members?: boolean | Project$membersArgs<ExtArgs>
+    tasks?: boolean | Project$tasksArgs<ExtArgs>
     _count?: boolean | ProjectCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ProjectIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8011,6 +8678,7 @@ export namespace Prisma {
       createdBy: Prisma.$UserPayload<ExtArgs> | null
       manager: Prisma.$UserPayload<ExtArgs> | null
       members: Prisma.$ProjectMemberPayload<ExtArgs>[]
+      tasks: Prisma.$TaskPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -8425,6 +9093,7 @@ export namespace Prisma {
     createdBy<T extends Project$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Project$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     manager<T extends Project$managerArgs<ExtArgs> = {}>(args?: Subset<T, Project$managerArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     members<T extends Project$membersArgs<ExtArgs> = {}>(args?: Subset<T, Project$membersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    tasks<T extends Project$tasksArgs<ExtArgs> = {}>(args?: Subset<T, Project$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8928,6 +9597,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: ProjectMemberScalarFieldEnum | ProjectMemberScalarFieldEnum[]
+  }
+
+  /**
+   * Project.tasks
+   */
+  export type Project$tasksArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    cursor?: TaskWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
   }
 
   /**
@@ -10008,6 +10701,4529 @@ export namespace Prisma {
 
 
   /**
+   * Model Task
+   */
+
+  export type AggregateTask = {
+    _count: TaskCountAggregateOutputType | null
+    _min: TaskMinAggregateOutputType | null
+    _max: TaskMaxAggregateOutputType | null
+  }
+
+  export type TaskMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    status: $Enums.TaskStatus | null
+    priority: $Enums.TaskPriority | null
+    dueDate: Date | null
+    projectId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TaskMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    status: $Enums.TaskStatus | null
+    priority: $Enums.TaskPriority | null
+    dueDate: Date | null
+    projectId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type TaskCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    status: number
+    priority: number
+    dueDate: number
+    projectId: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type TaskMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    dueDate?: true
+    projectId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TaskMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    dueDate?: true
+    projectId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type TaskCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    status?: true
+    priority?: true
+    dueDate?: true
+    projectId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type TaskAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Task to aggregate.
+     */
+    where?: TaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tasks to fetch.
+     */
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: TaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Tasks
+    **/
+    _count?: true | TaskCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: TaskMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: TaskMaxAggregateInputType
+  }
+
+  export type GetTaskAggregateType<T extends TaskAggregateArgs> = {
+        [P in keyof T & keyof AggregateTask]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateTask[P]>
+      : GetScalarType<T[P], AggregateTask[P]>
+  }
+
+
+
+
+  export type TaskGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: TaskWhereInput
+    orderBy?: TaskOrderByWithAggregationInput | TaskOrderByWithAggregationInput[]
+    by: TaskScalarFieldEnum[] | TaskScalarFieldEnum
+    having?: TaskScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: TaskCountAggregateInputType | true
+    _min?: TaskMinAggregateInputType
+    _max?: TaskMaxAggregateInputType
+  }
+
+  export type TaskGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    status: $Enums.TaskStatus
+    priority: $Enums.TaskPriority
+    dueDate: Date | null
+    projectId: string
+    createdById: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: TaskCountAggregateOutputType | null
+    _min: TaskMinAggregateOutputType | null
+    _max: TaskMaxAggregateOutputType | null
+  }
+
+  type GetTaskGroupByPayload<T extends TaskGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<TaskGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof TaskGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], TaskGroupByOutputType[P]>
+            : GetScalarType<T[P], TaskGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type TaskSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    projectId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | Task$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["task"]>
+
+  export type TaskSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    projectId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | Task$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["task"]>
+
+  export type TaskSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    projectId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | Task$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["task"]>
+
+  export type TaskSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    priority?: boolean
+    dueDate?: boolean
+    projectId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type TaskOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "status" | "priority" | "dueDate" | "projectId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["task"]>
+  export type TaskInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | Task$createdByArgs<ExtArgs>
+  }
+  export type TaskIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | Task$createdByArgs<ExtArgs>
+  }
+  export type TaskIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    project?: boolean | ProjectDefaultArgs<ExtArgs>
+    createdBy?: boolean | Task$createdByArgs<ExtArgs>
+  }
+
+  export type $TaskPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Task"
+    objects: {
+      project: Prisma.$ProjectPayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      status: $Enums.TaskStatus
+      priority: $Enums.TaskPriority
+      dueDate: Date | null
+      projectId: string
+      createdById: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["task"]>
+    composites: {}
+  }
+
+  type TaskGetPayload<S extends boolean | null | undefined | TaskDefaultArgs> = $Result.GetResult<Prisma.$TaskPayload, S>
+
+  type TaskCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<TaskFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: TaskCountAggregateInputType | true
+    }
+
+  export interface TaskDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Task'], meta: { name: 'Task' } }
+    /**
+     * Find zero or one Task that matches the filter.
+     * @param {TaskFindUniqueArgs} args - Arguments to find a Task
+     * @example
+     * // Get one Task
+     * const task = await prisma.task.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends TaskFindUniqueArgs>(args: SelectSubset<T, TaskFindUniqueArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Task that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {TaskFindUniqueOrThrowArgs} args - Arguments to find a Task
+     * @example
+     * // Get one Task
+     * const task = await prisma.task.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends TaskFindUniqueOrThrowArgs>(args: SelectSubset<T, TaskFindUniqueOrThrowArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Task that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskFindFirstArgs} args - Arguments to find a Task
+     * @example
+     * // Get one Task
+     * const task = await prisma.task.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends TaskFindFirstArgs>(args?: SelectSubset<T, TaskFindFirstArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Task that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskFindFirstOrThrowArgs} args - Arguments to find a Task
+     * @example
+     * // Get one Task
+     * const task = await prisma.task.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends TaskFindFirstOrThrowArgs>(args?: SelectSubset<T, TaskFindFirstOrThrowArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Tasks that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Tasks
+     * const tasks = await prisma.task.findMany()
+     * 
+     * // Get first 10 Tasks
+     * const tasks = await prisma.task.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const taskWithIdOnly = await prisma.task.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends TaskFindManyArgs>(args?: SelectSubset<T, TaskFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Task.
+     * @param {TaskCreateArgs} args - Arguments to create a Task.
+     * @example
+     * // Create one Task
+     * const Task = await prisma.task.create({
+     *   data: {
+     *     // ... data to create a Task
+     *   }
+     * })
+     * 
+     */
+    create<T extends TaskCreateArgs>(args: SelectSubset<T, TaskCreateArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Tasks.
+     * @param {TaskCreateManyArgs} args - Arguments to create many Tasks.
+     * @example
+     * // Create many Tasks
+     * const task = await prisma.task.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends TaskCreateManyArgs>(args?: SelectSubset<T, TaskCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Tasks and returns the data saved in the database.
+     * @param {TaskCreateManyAndReturnArgs} args - Arguments to create many Tasks.
+     * @example
+     * // Create many Tasks
+     * const task = await prisma.task.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Tasks and only return the `id`
+     * const taskWithIdOnly = await prisma.task.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends TaskCreateManyAndReturnArgs>(args?: SelectSubset<T, TaskCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Task.
+     * @param {TaskDeleteArgs} args - Arguments to delete one Task.
+     * @example
+     * // Delete one Task
+     * const Task = await prisma.task.delete({
+     *   where: {
+     *     // ... filter to delete one Task
+     *   }
+     * })
+     * 
+     */
+    delete<T extends TaskDeleteArgs>(args: SelectSubset<T, TaskDeleteArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Task.
+     * @param {TaskUpdateArgs} args - Arguments to update one Task.
+     * @example
+     * // Update one Task
+     * const task = await prisma.task.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends TaskUpdateArgs>(args: SelectSubset<T, TaskUpdateArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Tasks.
+     * @param {TaskDeleteManyArgs} args - Arguments to filter Tasks to delete.
+     * @example
+     * // Delete a few Tasks
+     * const { count } = await prisma.task.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends TaskDeleteManyArgs>(args?: SelectSubset<T, TaskDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Tasks
+     * const task = await prisma.task.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends TaskUpdateManyArgs>(args: SelectSubset<T, TaskUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Tasks and returns the data updated in the database.
+     * @param {TaskUpdateManyAndReturnArgs} args - Arguments to update many Tasks.
+     * @example
+     * // Update many Tasks
+     * const task = await prisma.task.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Tasks and only return the `id`
+     * const taskWithIdOnly = await prisma.task.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends TaskUpdateManyAndReturnArgs>(args: SelectSubset<T, TaskUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Task.
+     * @param {TaskUpsertArgs} args - Arguments to update or create a Task.
+     * @example
+     * // Update or create a Task
+     * const task = await prisma.task.upsert({
+     *   create: {
+     *     // ... data to create a Task
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Task we want to update
+     *   }
+     * })
+     */
+    upsert<T extends TaskUpsertArgs>(args: SelectSubset<T, TaskUpsertArgs<ExtArgs>>): Prisma__TaskClient<$Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Tasks.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskCountArgs} args - Arguments to filter Tasks to count.
+     * @example
+     * // Count the number of Tasks
+     * const count = await prisma.task.count({
+     *   where: {
+     *     // ... the filter for the Tasks we want to count
+     *   }
+     * })
+    **/
+    count<T extends TaskCountArgs>(
+      args?: Subset<T, TaskCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], TaskCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Task.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends TaskAggregateArgs>(args: Subset<T, TaskAggregateArgs>): Prisma.PrismaPromise<GetTaskAggregateType<T>>
+
+    /**
+     * Group by Task.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {TaskGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends TaskGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: TaskGroupByArgs['orderBy'] }
+        : { orderBy?: TaskGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, TaskGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetTaskGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Task model
+   */
+  readonly fields: TaskFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Task.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__TaskClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    project<T extends ProjectDefaultArgs<ExtArgs> = {}>(args?: Subset<T, ProjectDefaultArgs<ExtArgs>>): Prisma__ProjectClient<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends Task$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Task$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Task model
+   */
+  interface TaskFieldRefs {
+    readonly id: FieldRef<"Task", 'String'>
+    readonly title: FieldRef<"Task", 'String'>
+    readonly description: FieldRef<"Task", 'String'>
+    readonly status: FieldRef<"Task", 'TaskStatus'>
+    readonly priority: FieldRef<"Task", 'TaskPriority'>
+    readonly dueDate: FieldRef<"Task", 'DateTime'>
+    readonly projectId: FieldRef<"Task", 'String'>
+    readonly createdById: FieldRef<"Task", 'String'>
+    readonly createdAt: FieldRef<"Task", 'DateTime'>
+    readonly updatedAt: FieldRef<"Task", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Task findUnique
+   */
+  export type TaskFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Task to fetch.
+     */
+    where: TaskWhereUniqueInput
+  }
+
+  /**
+   * Task findUniqueOrThrow
+   */
+  export type TaskFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Task to fetch.
+     */
+    where: TaskWhereUniqueInput
+  }
+
+  /**
+   * Task findFirst
+   */
+  export type TaskFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Task to fetch.
+     */
+    where?: TaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tasks to fetch.
+     */
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tasks.
+     */
+    cursor?: TaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tasks.
+     */
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * Task findFirstOrThrow
+   */
+  export type TaskFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Task to fetch.
+     */
+    where?: TaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tasks to fetch.
+     */
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Tasks.
+     */
+    cursor?: TaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tasks.
+     */
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * Task findMany
+   */
+  export type TaskFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter, which Tasks to fetch.
+     */
+    where?: TaskWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Tasks to fetch.
+     */
+    orderBy?: TaskOrderByWithRelationInput | TaskOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Tasks.
+     */
+    cursor?: TaskWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Tasks from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Tasks.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Tasks.
+     */
+    distinct?: TaskScalarFieldEnum | TaskScalarFieldEnum[]
+  }
+
+  /**
+   * Task create
+   */
+  export type TaskCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Task.
+     */
+    data: XOR<TaskCreateInput, TaskUncheckedCreateInput>
+  }
+
+  /**
+   * Task createMany
+   */
+  export type TaskCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Tasks.
+     */
+    data: TaskCreateManyInput | TaskCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Task createManyAndReturn
+   */
+  export type TaskCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * The data used to create many Tasks.
+     */
+    data: TaskCreateManyInput | TaskCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Task update
+   */
+  export type TaskUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Task.
+     */
+    data: XOR<TaskUpdateInput, TaskUncheckedUpdateInput>
+    /**
+     * Choose, which Task to update.
+     */
+    where: TaskWhereUniqueInput
+  }
+
+  /**
+   * Task updateMany
+   */
+  export type TaskUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Tasks.
+     */
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyInput>
+    /**
+     * Filter which Tasks to update
+     */
+    where?: TaskWhereInput
+    /**
+     * Limit how many Tasks to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Task updateManyAndReturn
+   */
+  export type TaskUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * The data used to update Tasks.
+     */
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyInput>
+    /**
+     * Filter which Tasks to update
+     */
+    where?: TaskWhereInput
+    /**
+     * Limit how many Tasks to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Task upsert
+   */
+  export type TaskUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Task to update in case it exists.
+     */
+    where: TaskWhereUniqueInput
+    /**
+     * In case the Task found by the `where` argument doesn't exist, create a new Task with this data.
+     */
+    create: XOR<TaskCreateInput, TaskUncheckedCreateInput>
+    /**
+     * In case the Task was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<TaskUpdateInput, TaskUncheckedUpdateInput>
+  }
+
+  /**
+   * Task delete
+   */
+  export type TaskDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+    /**
+     * Filter which Task to delete.
+     */
+    where: TaskWhereUniqueInput
+  }
+
+  /**
+   * Task deleteMany
+   */
+  export type TaskDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Tasks to delete
+     */
+    where?: TaskWhereInput
+    /**
+     * Limit how many Tasks to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Task.createdBy
+   */
+  export type Task$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Task without action
+   */
+  export type TaskDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Task
+     */
+    select?: TaskSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Task
+     */
+    omit?: TaskOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: TaskInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model Announcement
+   */
+
+  export type AggregateAnnouncement = {
+    _count: AnnouncementCountAggregateOutputType | null
+    _min: AnnouncementMinAggregateOutputType | null
+    _max: AnnouncementMaxAggregateOutputType | null
+  }
+
+  export type AnnouncementMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    priority: $Enums.AnnouncementPriority | null
+    targetType: $Enums.AnnouncementTargetType | null
+    status: $Enums.AnnouncementStatus | null
+    publishDate: Date | null
+    expiryDate: Date | null
+    workspaceId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AnnouncementMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    priority: $Enums.AnnouncementPriority | null
+    targetType: $Enums.AnnouncementTargetType | null
+    status: $Enums.AnnouncementStatus | null
+    publishDate: Date | null
+    expiryDate: Date | null
+    workspaceId: string | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type AnnouncementCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    priority: number
+    targetType: number
+    status: number
+    publishDate: number
+    expiryDate: number
+    workspaceId: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type AnnouncementMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    priority?: true
+    targetType?: true
+    status?: true
+    publishDate?: true
+    expiryDate?: true
+    workspaceId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AnnouncementMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    priority?: true
+    targetType?: true
+    status?: true
+    publishDate?: true
+    expiryDate?: true
+    workspaceId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type AnnouncementCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    priority?: true
+    targetType?: true
+    status?: true
+    publishDate?: true
+    expiryDate?: true
+    workspaceId?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type AnnouncementAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Announcement to aggregate.
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Announcements to fetch.
+     */
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnnouncementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Announcements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Announcements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Announcements
+    **/
+    _count?: true | AnnouncementCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnnouncementMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnnouncementMaxAggregateInputType
+  }
+
+  export type GetAnnouncementAggregateType<T extends AnnouncementAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnnouncement]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnnouncement[P]>
+      : GetScalarType<T[P], AggregateAnnouncement[P]>
+  }
+
+
+
+
+  export type AnnouncementGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementWhereInput
+    orderBy?: AnnouncementOrderByWithAggregationInput | AnnouncementOrderByWithAggregationInput[]
+    by: AnnouncementScalarFieldEnum[] | AnnouncementScalarFieldEnum
+    having?: AnnouncementScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnnouncementCountAggregateInputType | true
+    _min?: AnnouncementMinAggregateInputType
+    _max?: AnnouncementMaxAggregateInputType
+  }
+
+  export type AnnouncementGroupByOutputType = {
+    id: string
+    title: string
+    description: string
+    priority: $Enums.AnnouncementPriority
+    targetType: $Enums.AnnouncementTargetType
+    status: $Enums.AnnouncementStatus
+    publishDate: Date
+    expiryDate: Date | null
+    workspaceId: string
+    createdById: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: AnnouncementCountAggregateOutputType | null
+    _min: AnnouncementMinAggregateOutputType | null
+    _max: AnnouncementMaxAggregateOutputType | null
+  }
+
+  type GetAnnouncementGroupByPayload<T extends AnnouncementGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnnouncementGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnnouncementGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnnouncementGroupByOutputType[P]>
+            : GetScalarType<T[P], AnnouncementGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnnouncementSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    targetType?: boolean
+    status?: boolean
+    publishDate?: boolean
+    expiryDate?: boolean
+    workspaceId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | Announcement$createdByArgs<ExtArgs>
+    selectedUsers?: boolean | Announcement$selectedUsersArgs<ExtArgs>
+    readRecords?: boolean | Announcement$readRecordsArgs<ExtArgs>
+    _count?: boolean | AnnouncementCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcement"]>
+
+  export type AnnouncementSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    targetType?: boolean
+    status?: boolean
+    publishDate?: boolean
+    expiryDate?: boolean
+    workspaceId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | Announcement$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["announcement"]>
+
+  export type AnnouncementSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    targetType?: boolean
+    status?: boolean
+    publishDate?: boolean
+    expiryDate?: boolean
+    workspaceId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | Announcement$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["announcement"]>
+
+  export type AnnouncementSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    priority?: boolean
+    targetType?: boolean
+    status?: boolean
+    publishDate?: boolean
+    expiryDate?: boolean
+    workspaceId?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type AnnouncementOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "priority" | "targetType" | "status" | "publishDate" | "expiryDate" | "workspaceId" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["announcement"]>
+  export type AnnouncementInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | Announcement$createdByArgs<ExtArgs>
+    selectedUsers?: boolean | Announcement$selectedUsersArgs<ExtArgs>
+    readRecords?: boolean | Announcement$readRecordsArgs<ExtArgs>
+    _count?: boolean | AnnouncementCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type AnnouncementIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | Announcement$createdByArgs<ExtArgs>
+  }
+  export type AnnouncementIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    createdBy?: boolean | Announcement$createdByArgs<ExtArgs>
+  }
+
+  export type $AnnouncementPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Announcement"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
+      selectedUsers: Prisma.$AnnouncementTargetUserPayload<ExtArgs>[]
+      readRecords: Prisma.$AnnouncementReadPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string
+      priority: $Enums.AnnouncementPriority
+      targetType: $Enums.AnnouncementTargetType
+      status: $Enums.AnnouncementStatus
+      publishDate: Date
+      expiryDate: Date | null
+      workspaceId: string
+      createdById: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["announcement"]>
+    composites: {}
+  }
+
+  type AnnouncementGetPayload<S extends boolean | null | undefined | AnnouncementDefaultArgs> = $Result.GetResult<Prisma.$AnnouncementPayload, S>
+
+  type AnnouncementCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnnouncementFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnnouncementCountAggregateInputType | true
+    }
+
+  export interface AnnouncementDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Announcement'], meta: { name: 'Announcement' } }
+    /**
+     * Find zero or one Announcement that matches the filter.
+     * @param {AnnouncementFindUniqueArgs} args - Arguments to find a Announcement
+     * @example
+     * // Get one Announcement
+     * const announcement = await prisma.announcement.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnnouncementFindUniqueArgs>(args: SelectSubset<T, AnnouncementFindUniqueArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Announcement that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnnouncementFindUniqueOrThrowArgs} args - Arguments to find a Announcement
+     * @example
+     * // Get one Announcement
+     * const announcement = await prisma.announcement.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnnouncementFindUniqueOrThrowArgs>(args: SelectSubset<T, AnnouncementFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Announcement that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementFindFirstArgs} args - Arguments to find a Announcement
+     * @example
+     * // Get one Announcement
+     * const announcement = await prisma.announcement.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnnouncementFindFirstArgs>(args?: SelectSubset<T, AnnouncementFindFirstArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Announcement that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementFindFirstOrThrowArgs} args - Arguments to find a Announcement
+     * @example
+     * // Get one Announcement
+     * const announcement = await prisma.announcement.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnnouncementFindFirstOrThrowArgs>(args?: SelectSubset<T, AnnouncementFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Announcements that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Announcements
+     * const announcements = await prisma.announcement.findMany()
+     * 
+     * // Get first 10 Announcements
+     * const announcements = await prisma.announcement.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const announcementWithIdOnly = await prisma.announcement.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnnouncementFindManyArgs>(args?: SelectSubset<T, AnnouncementFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Announcement.
+     * @param {AnnouncementCreateArgs} args - Arguments to create a Announcement.
+     * @example
+     * // Create one Announcement
+     * const Announcement = await prisma.announcement.create({
+     *   data: {
+     *     // ... data to create a Announcement
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnnouncementCreateArgs>(args: SelectSubset<T, AnnouncementCreateArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Announcements.
+     * @param {AnnouncementCreateManyArgs} args - Arguments to create many Announcements.
+     * @example
+     * // Create many Announcements
+     * const announcement = await prisma.announcement.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnnouncementCreateManyArgs>(args?: SelectSubset<T, AnnouncementCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Announcements and returns the data saved in the database.
+     * @param {AnnouncementCreateManyAndReturnArgs} args - Arguments to create many Announcements.
+     * @example
+     * // Create many Announcements
+     * const announcement = await prisma.announcement.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Announcements and only return the `id`
+     * const announcementWithIdOnly = await prisma.announcement.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnnouncementCreateManyAndReturnArgs>(args?: SelectSubset<T, AnnouncementCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Announcement.
+     * @param {AnnouncementDeleteArgs} args - Arguments to delete one Announcement.
+     * @example
+     * // Delete one Announcement
+     * const Announcement = await prisma.announcement.delete({
+     *   where: {
+     *     // ... filter to delete one Announcement
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnnouncementDeleteArgs>(args: SelectSubset<T, AnnouncementDeleteArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Announcement.
+     * @param {AnnouncementUpdateArgs} args - Arguments to update one Announcement.
+     * @example
+     * // Update one Announcement
+     * const announcement = await prisma.announcement.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnnouncementUpdateArgs>(args: SelectSubset<T, AnnouncementUpdateArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Announcements.
+     * @param {AnnouncementDeleteManyArgs} args - Arguments to filter Announcements to delete.
+     * @example
+     * // Delete a few Announcements
+     * const { count } = await prisma.announcement.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnnouncementDeleteManyArgs>(args?: SelectSubset<T, AnnouncementDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Announcements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Announcements
+     * const announcement = await prisma.announcement.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnnouncementUpdateManyArgs>(args: SelectSubset<T, AnnouncementUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Announcements and returns the data updated in the database.
+     * @param {AnnouncementUpdateManyAndReturnArgs} args - Arguments to update many Announcements.
+     * @example
+     * // Update many Announcements
+     * const announcement = await prisma.announcement.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Announcements and only return the `id`
+     * const announcementWithIdOnly = await prisma.announcement.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnnouncementUpdateManyAndReturnArgs>(args: SelectSubset<T, AnnouncementUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Announcement.
+     * @param {AnnouncementUpsertArgs} args - Arguments to update or create a Announcement.
+     * @example
+     * // Update or create a Announcement
+     * const announcement = await prisma.announcement.upsert({
+     *   create: {
+     *     // ... data to create a Announcement
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Announcement we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnnouncementUpsertArgs>(args: SelectSubset<T, AnnouncementUpsertArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Announcements.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementCountArgs} args - Arguments to filter Announcements to count.
+     * @example
+     * // Count the number of Announcements
+     * const count = await prisma.announcement.count({
+     *   where: {
+     *     // ... the filter for the Announcements we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnnouncementCountArgs>(
+      args?: Subset<T, AnnouncementCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnnouncementCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Announcement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnnouncementAggregateArgs>(args: Subset<T, AnnouncementAggregateArgs>): Prisma.PrismaPromise<GetAnnouncementAggregateType<T>>
+
+    /**
+     * Group by Announcement.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnnouncementGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnnouncementGroupByArgs['orderBy'] }
+        : { orderBy?: AnnouncementGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnnouncementGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnnouncementGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Announcement model
+   */
+  readonly fields: AnnouncementFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Announcement.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnnouncementClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    createdBy<T extends Announcement$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Announcement$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    selectedUsers<T extends Announcement$selectedUsersArgs<ExtArgs> = {}>(args?: Subset<T, Announcement$selectedUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    readRecords<T extends Announcement$readRecordsArgs<ExtArgs> = {}>(args?: Subset<T, Announcement$readRecordsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Announcement model
+   */
+  interface AnnouncementFieldRefs {
+    readonly id: FieldRef<"Announcement", 'String'>
+    readonly title: FieldRef<"Announcement", 'String'>
+    readonly description: FieldRef<"Announcement", 'String'>
+    readonly priority: FieldRef<"Announcement", 'AnnouncementPriority'>
+    readonly targetType: FieldRef<"Announcement", 'AnnouncementTargetType'>
+    readonly status: FieldRef<"Announcement", 'AnnouncementStatus'>
+    readonly publishDate: FieldRef<"Announcement", 'DateTime'>
+    readonly expiryDate: FieldRef<"Announcement", 'DateTime'>
+    readonly workspaceId: FieldRef<"Announcement", 'String'>
+    readonly createdById: FieldRef<"Announcement", 'String'>
+    readonly createdAt: FieldRef<"Announcement", 'DateTime'>
+    readonly updatedAt: FieldRef<"Announcement", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Announcement findUnique
+   */
+  export type AnnouncementFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcement to fetch.
+     */
+    where: AnnouncementWhereUniqueInput
+  }
+
+  /**
+   * Announcement findUniqueOrThrow
+   */
+  export type AnnouncementFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcement to fetch.
+     */
+    where: AnnouncementWhereUniqueInput
+  }
+
+  /**
+   * Announcement findFirst
+   */
+  export type AnnouncementFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcement to fetch.
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Announcements to fetch.
+     */
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Announcements.
+     */
+    cursor?: AnnouncementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Announcements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Announcements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Announcements.
+     */
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement findFirstOrThrow
+   */
+  export type AnnouncementFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcement to fetch.
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Announcements to fetch.
+     */
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Announcements.
+     */
+    cursor?: AnnouncementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Announcements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Announcements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Announcements.
+     */
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement findMany
+   */
+  export type AnnouncementFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter, which Announcements to fetch.
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Announcements to fetch.
+     */
+    orderBy?: AnnouncementOrderByWithRelationInput | AnnouncementOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Announcements.
+     */
+    cursor?: AnnouncementWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Announcements from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Announcements.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Announcements.
+     */
+    distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement create
+   */
+  export type AnnouncementCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Announcement.
+     */
+    data: XOR<AnnouncementCreateInput, AnnouncementUncheckedCreateInput>
+  }
+
+  /**
+   * Announcement createMany
+   */
+  export type AnnouncementCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Announcements.
+     */
+    data: AnnouncementCreateManyInput | AnnouncementCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Announcement createManyAndReturn
+   */
+  export type AnnouncementCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * The data used to create many Announcements.
+     */
+    data: AnnouncementCreateManyInput | AnnouncementCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Announcement update
+   */
+  export type AnnouncementUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Announcement.
+     */
+    data: XOR<AnnouncementUpdateInput, AnnouncementUncheckedUpdateInput>
+    /**
+     * Choose, which Announcement to update.
+     */
+    where: AnnouncementWhereUniqueInput
+  }
+
+  /**
+   * Announcement updateMany
+   */
+  export type AnnouncementUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Announcements.
+     */
+    data: XOR<AnnouncementUpdateManyMutationInput, AnnouncementUncheckedUpdateManyInput>
+    /**
+     * Filter which Announcements to update
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * Limit how many Announcements to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Announcement updateManyAndReturn
+   */
+  export type AnnouncementUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * The data used to update Announcements.
+     */
+    data: XOR<AnnouncementUpdateManyMutationInput, AnnouncementUncheckedUpdateManyInput>
+    /**
+     * Filter which Announcements to update
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * Limit how many Announcements to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Announcement upsert
+   */
+  export type AnnouncementUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Announcement to update in case it exists.
+     */
+    where: AnnouncementWhereUniqueInput
+    /**
+     * In case the Announcement found by the `where` argument doesn't exist, create a new Announcement with this data.
+     */
+    create: XOR<AnnouncementCreateInput, AnnouncementUncheckedCreateInput>
+    /**
+     * In case the Announcement was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnnouncementUpdateInput, AnnouncementUncheckedUpdateInput>
+  }
+
+  /**
+   * Announcement delete
+   */
+  export type AnnouncementDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+    /**
+     * Filter which Announcement to delete.
+     */
+    where: AnnouncementWhereUniqueInput
+  }
+
+  /**
+   * Announcement deleteMany
+   */
+  export type AnnouncementDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Announcements to delete
+     */
+    where?: AnnouncementWhereInput
+    /**
+     * Limit how many Announcements to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Announcement.createdBy
+   */
+  export type Announcement$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Announcement.selectedUsers
+   */
+  export type Announcement$selectedUsersArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    where?: AnnouncementTargetUserWhereInput
+    orderBy?: AnnouncementTargetUserOrderByWithRelationInput | AnnouncementTargetUserOrderByWithRelationInput[]
+    cursor?: AnnouncementTargetUserWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementTargetUserScalarFieldEnum | AnnouncementTargetUserScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement.readRecords
+   */
+  export type Announcement$readRecordsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    where?: AnnouncementReadWhereInput
+    orderBy?: AnnouncementReadOrderByWithRelationInput | AnnouncementReadOrderByWithRelationInput[]
+    cursor?: AnnouncementReadWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: AnnouncementReadScalarFieldEnum | AnnouncementReadScalarFieldEnum[]
+  }
+
+  /**
+   * Announcement without action
+   */
+  export type AnnouncementDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Announcement
+     */
+    select?: AnnouncementSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Announcement
+     */
+    omit?: AnnouncementOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AnnouncementTargetUser
+   */
+
+  export type AggregateAnnouncementTargetUser = {
+    _count: AnnouncementTargetUserCountAggregateOutputType | null
+    _min: AnnouncementTargetUserMinAggregateOutputType | null
+    _max: AnnouncementTargetUserMaxAggregateOutputType | null
+  }
+
+  export type AnnouncementTargetUserMinAggregateOutputType = {
+    id: string | null
+    announcementId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type AnnouncementTargetUserMaxAggregateOutputType = {
+    id: string | null
+    announcementId: string | null
+    userId: string | null
+    createdAt: Date | null
+  }
+
+  export type AnnouncementTargetUserCountAggregateOutputType = {
+    id: number
+    announcementId: number
+    userId: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type AnnouncementTargetUserMinAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type AnnouncementTargetUserMaxAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    createdAt?: true
+  }
+
+  export type AnnouncementTargetUserCountAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type AnnouncementTargetUserAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnnouncementTargetUser to aggregate.
+     */
+    where?: AnnouncementTargetUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementTargetUsers to fetch.
+     */
+    orderBy?: AnnouncementTargetUserOrderByWithRelationInput | AnnouncementTargetUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnnouncementTargetUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementTargetUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementTargetUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AnnouncementTargetUsers
+    **/
+    _count?: true | AnnouncementTargetUserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnnouncementTargetUserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnnouncementTargetUserMaxAggregateInputType
+  }
+
+  export type GetAnnouncementTargetUserAggregateType<T extends AnnouncementTargetUserAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnnouncementTargetUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnnouncementTargetUser[P]>
+      : GetScalarType<T[P], AggregateAnnouncementTargetUser[P]>
+  }
+
+
+
+
+  export type AnnouncementTargetUserGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementTargetUserWhereInput
+    orderBy?: AnnouncementTargetUserOrderByWithAggregationInput | AnnouncementTargetUserOrderByWithAggregationInput[]
+    by: AnnouncementTargetUserScalarFieldEnum[] | AnnouncementTargetUserScalarFieldEnum
+    having?: AnnouncementTargetUserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnnouncementTargetUserCountAggregateInputType | true
+    _min?: AnnouncementTargetUserMinAggregateInputType
+    _max?: AnnouncementTargetUserMaxAggregateInputType
+  }
+
+  export type AnnouncementTargetUserGroupByOutputType = {
+    id: string
+    announcementId: string
+    userId: string
+    createdAt: Date
+    _count: AnnouncementTargetUserCountAggregateOutputType | null
+    _min: AnnouncementTargetUserMinAggregateOutputType | null
+    _max: AnnouncementTargetUserMaxAggregateOutputType | null
+  }
+
+  type GetAnnouncementTargetUserGroupByPayload<T extends AnnouncementTargetUserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnnouncementTargetUserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnnouncementTargetUserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnnouncementTargetUserGroupByOutputType[P]>
+            : GetScalarType<T[P], AnnouncementTargetUserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnnouncementTargetUserSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementTargetUser"]>
+
+  export type AnnouncementTargetUserSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementTargetUser"]>
+
+  export type AnnouncementTargetUserSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementTargetUser"]>
+
+  export type AnnouncementTargetUserSelectScalar = {
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    createdAt?: boolean
+  }
+
+  export type AnnouncementTargetUserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "announcementId" | "userId" | "createdAt", ExtArgs["result"]["announcementTargetUser"]>
+  export type AnnouncementTargetUserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AnnouncementTargetUserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AnnouncementTargetUserIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AnnouncementTargetUserPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AnnouncementTargetUser"
+    objects: {
+      announcement: Prisma.$AnnouncementPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      announcementId: string
+      userId: string
+      createdAt: Date
+    }, ExtArgs["result"]["announcementTargetUser"]>
+    composites: {}
+  }
+
+  type AnnouncementTargetUserGetPayload<S extends boolean | null | undefined | AnnouncementTargetUserDefaultArgs> = $Result.GetResult<Prisma.$AnnouncementTargetUserPayload, S>
+
+  type AnnouncementTargetUserCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnnouncementTargetUserFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnnouncementTargetUserCountAggregateInputType | true
+    }
+
+  export interface AnnouncementTargetUserDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AnnouncementTargetUser'], meta: { name: 'AnnouncementTargetUser' } }
+    /**
+     * Find zero or one AnnouncementTargetUser that matches the filter.
+     * @param {AnnouncementTargetUserFindUniqueArgs} args - Arguments to find a AnnouncementTargetUser
+     * @example
+     * // Get one AnnouncementTargetUser
+     * const announcementTargetUser = await prisma.announcementTargetUser.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnnouncementTargetUserFindUniqueArgs>(args: SelectSubset<T, AnnouncementTargetUserFindUniqueArgs<ExtArgs>>): Prisma__AnnouncementTargetUserClient<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AnnouncementTargetUser that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnnouncementTargetUserFindUniqueOrThrowArgs} args - Arguments to find a AnnouncementTargetUser
+     * @example
+     * // Get one AnnouncementTargetUser
+     * const announcementTargetUser = await prisma.announcementTargetUser.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnnouncementTargetUserFindUniqueOrThrowArgs>(args: SelectSubset<T, AnnouncementTargetUserFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnnouncementTargetUserClient<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnnouncementTargetUser that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementTargetUserFindFirstArgs} args - Arguments to find a AnnouncementTargetUser
+     * @example
+     * // Get one AnnouncementTargetUser
+     * const announcementTargetUser = await prisma.announcementTargetUser.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnnouncementTargetUserFindFirstArgs>(args?: SelectSubset<T, AnnouncementTargetUserFindFirstArgs<ExtArgs>>): Prisma__AnnouncementTargetUserClient<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnnouncementTargetUser that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementTargetUserFindFirstOrThrowArgs} args - Arguments to find a AnnouncementTargetUser
+     * @example
+     * // Get one AnnouncementTargetUser
+     * const announcementTargetUser = await prisma.announcementTargetUser.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnnouncementTargetUserFindFirstOrThrowArgs>(args?: SelectSubset<T, AnnouncementTargetUserFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnnouncementTargetUserClient<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AnnouncementTargetUsers that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementTargetUserFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AnnouncementTargetUsers
+     * const announcementTargetUsers = await prisma.announcementTargetUser.findMany()
+     * 
+     * // Get first 10 AnnouncementTargetUsers
+     * const announcementTargetUsers = await prisma.announcementTargetUser.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const announcementTargetUserWithIdOnly = await prisma.announcementTargetUser.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnnouncementTargetUserFindManyArgs>(args?: SelectSubset<T, AnnouncementTargetUserFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AnnouncementTargetUser.
+     * @param {AnnouncementTargetUserCreateArgs} args - Arguments to create a AnnouncementTargetUser.
+     * @example
+     * // Create one AnnouncementTargetUser
+     * const AnnouncementTargetUser = await prisma.announcementTargetUser.create({
+     *   data: {
+     *     // ... data to create a AnnouncementTargetUser
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnnouncementTargetUserCreateArgs>(args: SelectSubset<T, AnnouncementTargetUserCreateArgs<ExtArgs>>): Prisma__AnnouncementTargetUserClient<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AnnouncementTargetUsers.
+     * @param {AnnouncementTargetUserCreateManyArgs} args - Arguments to create many AnnouncementTargetUsers.
+     * @example
+     * // Create many AnnouncementTargetUsers
+     * const announcementTargetUser = await prisma.announcementTargetUser.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnnouncementTargetUserCreateManyArgs>(args?: SelectSubset<T, AnnouncementTargetUserCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AnnouncementTargetUsers and returns the data saved in the database.
+     * @param {AnnouncementTargetUserCreateManyAndReturnArgs} args - Arguments to create many AnnouncementTargetUsers.
+     * @example
+     * // Create many AnnouncementTargetUsers
+     * const announcementTargetUser = await prisma.announcementTargetUser.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AnnouncementTargetUsers and only return the `id`
+     * const announcementTargetUserWithIdOnly = await prisma.announcementTargetUser.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnnouncementTargetUserCreateManyAndReturnArgs>(args?: SelectSubset<T, AnnouncementTargetUserCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AnnouncementTargetUser.
+     * @param {AnnouncementTargetUserDeleteArgs} args - Arguments to delete one AnnouncementTargetUser.
+     * @example
+     * // Delete one AnnouncementTargetUser
+     * const AnnouncementTargetUser = await prisma.announcementTargetUser.delete({
+     *   where: {
+     *     // ... filter to delete one AnnouncementTargetUser
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnnouncementTargetUserDeleteArgs>(args: SelectSubset<T, AnnouncementTargetUserDeleteArgs<ExtArgs>>): Prisma__AnnouncementTargetUserClient<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AnnouncementTargetUser.
+     * @param {AnnouncementTargetUserUpdateArgs} args - Arguments to update one AnnouncementTargetUser.
+     * @example
+     * // Update one AnnouncementTargetUser
+     * const announcementTargetUser = await prisma.announcementTargetUser.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnnouncementTargetUserUpdateArgs>(args: SelectSubset<T, AnnouncementTargetUserUpdateArgs<ExtArgs>>): Prisma__AnnouncementTargetUserClient<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AnnouncementTargetUsers.
+     * @param {AnnouncementTargetUserDeleteManyArgs} args - Arguments to filter AnnouncementTargetUsers to delete.
+     * @example
+     * // Delete a few AnnouncementTargetUsers
+     * const { count } = await prisma.announcementTargetUser.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnnouncementTargetUserDeleteManyArgs>(args?: SelectSubset<T, AnnouncementTargetUserDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnnouncementTargetUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementTargetUserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AnnouncementTargetUsers
+     * const announcementTargetUser = await prisma.announcementTargetUser.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnnouncementTargetUserUpdateManyArgs>(args: SelectSubset<T, AnnouncementTargetUserUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnnouncementTargetUsers and returns the data updated in the database.
+     * @param {AnnouncementTargetUserUpdateManyAndReturnArgs} args - Arguments to update many AnnouncementTargetUsers.
+     * @example
+     * // Update many AnnouncementTargetUsers
+     * const announcementTargetUser = await prisma.announcementTargetUser.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AnnouncementTargetUsers and only return the `id`
+     * const announcementTargetUserWithIdOnly = await prisma.announcementTargetUser.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnnouncementTargetUserUpdateManyAndReturnArgs>(args: SelectSubset<T, AnnouncementTargetUserUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AnnouncementTargetUser.
+     * @param {AnnouncementTargetUserUpsertArgs} args - Arguments to update or create a AnnouncementTargetUser.
+     * @example
+     * // Update or create a AnnouncementTargetUser
+     * const announcementTargetUser = await prisma.announcementTargetUser.upsert({
+     *   create: {
+     *     // ... data to create a AnnouncementTargetUser
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AnnouncementTargetUser we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnnouncementTargetUserUpsertArgs>(args: SelectSubset<T, AnnouncementTargetUserUpsertArgs<ExtArgs>>): Prisma__AnnouncementTargetUserClient<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AnnouncementTargetUsers.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementTargetUserCountArgs} args - Arguments to filter AnnouncementTargetUsers to count.
+     * @example
+     * // Count the number of AnnouncementTargetUsers
+     * const count = await prisma.announcementTargetUser.count({
+     *   where: {
+     *     // ... the filter for the AnnouncementTargetUsers we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnnouncementTargetUserCountArgs>(
+      args?: Subset<T, AnnouncementTargetUserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnnouncementTargetUserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AnnouncementTargetUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementTargetUserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnnouncementTargetUserAggregateArgs>(args: Subset<T, AnnouncementTargetUserAggregateArgs>): Prisma.PrismaPromise<GetAnnouncementTargetUserAggregateType<T>>
+
+    /**
+     * Group by AnnouncementTargetUser.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementTargetUserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnnouncementTargetUserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnnouncementTargetUserGroupByArgs['orderBy'] }
+        : { orderBy?: AnnouncementTargetUserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnnouncementTargetUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnnouncementTargetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AnnouncementTargetUser model
+   */
+  readonly fields: AnnouncementTargetUserFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AnnouncementTargetUser.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnnouncementTargetUserClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    announcement<T extends AnnouncementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementDefaultArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AnnouncementTargetUser model
+   */
+  interface AnnouncementTargetUserFieldRefs {
+    readonly id: FieldRef<"AnnouncementTargetUser", 'String'>
+    readonly announcementId: FieldRef<"AnnouncementTargetUser", 'String'>
+    readonly userId: FieldRef<"AnnouncementTargetUser", 'String'>
+    readonly createdAt: FieldRef<"AnnouncementTargetUser", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AnnouncementTargetUser findUnique
+   */
+  export type AnnouncementTargetUserFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementTargetUser to fetch.
+     */
+    where: AnnouncementTargetUserWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementTargetUser findUniqueOrThrow
+   */
+  export type AnnouncementTargetUserFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementTargetUser to fetch.
+     */
+    where: AnnouncementTargetUserWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementTargetUser findFirst
+   */
+  export type AnnouncementTargetUserFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementTargetUser to fetch.
+     */
+    where?: AnnouncementTargetUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementTargetUsers to fetch.
+     */
+    orderBy?: AnnouncementTargetUserOrderByWithRelationInput | AnnouncementTargetUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnnouncementTargetUsers.
+     */
+    cursor?: AnnouncementTargetUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementTargetUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementTargetUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnouncementTargetUsers.
+     */
+    distinct?: AnnouncementTargetUserScalarFieldEnum | AnnouncementTargetUserScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementTargetUser findFirstOrThrow
+   */
+  export type AnnouncementTargetUserFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementTargetUser to fetch.
+     */
+    where?: AnnouncementTargetUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementTargetUsers to fetch.
+     */
+    orderBy?: AnnouncementTargetUserOrderByWithRelationInput | AnnouncementTargetUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnnouncementTargetUsers.
+     */
+    cursor?: AnnouncementTargetUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementTargetUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementTargetUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnouncementTargetUsers.
+     */
+    distinct?: AnnouncementTargetUserScalarFieldEnum | AnnouncementTargetUserScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementTargetUser findMany
+   */
+  export type AnnouncementTargetUserFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementTargetUsers to fetch.
+     */
+    where?: AnnouncementTargetUserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementTargetUsers to fetch.
+     */
+    orderBy?: AnnouncementTargetUserOrderByWithRelationInput | AnnouncementTargetUserOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AnnouncementTargetUsers.
+     */
+    cursor?: AnnouncementTargetUserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementTargetUsers from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementTargetUsers.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnouncementTargetUsers.
+     */
+    distinct?: AnnouncementTargetUserScalarFieldEnum | AnnouncementTargetUserScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementTargetUser create
+   */
+  export type AnnouncementTargetUserCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AnnouncementTargetUser.
+     */
+    data: XOR<AnnouncementTargetUserCreateInput, AnnouncementTargetUserUncheckedCreateInput>
+  }
+
+  /**
+   * AnnouncementTargetUser createMany
+   */
+  export type AnnouncementTargetUserCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AnnouncementTargetUsers.
+     */
+    data: AnnouncementTargetUserCreateManyInput | AnnouncementTargetUserCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnnouncementTargetUser createManyAndReturn
+   */
+  export type AnnouncementTargetUserCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * The data used to create many AnnouncementTargetUsers.
+     */
+    data: AnnouncementTargetUserCreateManyInput | AnnouncementTargetUserCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AnnouncementTargetUser update
+   */
+  export type AnnouncementTargetUserUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AnnouncementTargetUser.
+     */
+    data: XOR<AnnouncementTargetUserUpdateInput, AnnouncementTargetUserUncheckedUpdateInput>
+    /**
+     * Choose, which AnnouncementTargetUser to update.
+     */
+    where: AnnouncementTargetUserWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementTargetUser updateMany
+   */
+  export type AnnouncementTargetUserUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AnnouncementTargetUsers.
+     */
+    data: XOR<AnnouncementTargetUserUpdateManyMutationInput, AnnouncementTargetUserUncheckedUpdateManyInput>
+    /**
+     * Filter which AnnouncementTargetUsers to update
+     */
+    where?: AnnouncementTargetUserWhereInput
+    /**
+     * Limit how many AnnouncementTargetUsers to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnnouncementTargetUser updateManyAndReturn
+   */
+  export type AnnouncementTargetUserUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * The data used to update AnnouncementTargetUsers.
+     */
+    data: XOR<AnnouncementTargetUserUpdateManyMutationInput, AnnouncementTargetUserUncheckedUpdateManyInput>
+    /**
+     * Filter which AnnouncementTargetUsers to update
+     */
+    where?: AnnouncementTargetUserWhereInput
+    /**
+     * Limit how many AnnouncementTargetUsers to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AnnouncementTargetUser upsert
+   */
+  export type AnnouncementTargetUserUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AnnouncementTargetUser to update in case it exists.
+     */
+    where: AnnouncementTargetUserWhereUniqueInput
+    /**
+     * In case the AnnouncementTargetUser found by the `where` argument doesn't exist, create a new AnnouncementTargetUser with this data.
+     */
+    create: XOR<AnnouncementTargetUserCreateInput, AnnouncementTargetUserUncheckedCreateInput>
+    /**
+     * In case the AnnouncementTargetUser was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnnouncementTargetUserUpdateInput, AnnouncementTargetUserUncheckedUpdateInput>
+  }
+
+  /**
+   * AnnouncementTargetUser delete
+   */
+  export type AnnouncementTargetUserDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+    /**
+     * Filter which AnnouncementTargetUser to delete.
+     */
+    where: AnnouncementTargetUserWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementTargetUser deleteMany
+   */
+  export type AnnouncementTargetUserDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnnouncementTargetUsers to delete
+     */
+    where?: AnnouncementTargetUserWhereInput
+    /**
+     * Limit how many AnnouncementTargetUsers to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnnouncementTargetUser without action
+   */
+  export type AnnouncementTargetUserDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementTargetUser
+     */
+    select?: AnnouncementTargetUserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementTargetUser
+     */
+    omit?: AnnouncementTargetUserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementTargetUserInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model AnnouncementRead
+   */
+
+  export type AggregateAnnouncementRead = {
+    _count: AnnouncementReadCountAggregateOutputType | null
+    _min: AnnouncementReadMinAggregateOutputType | null
+    _max: AnnouncementReadMaxAggregateOutputType | null
+  }
+
+  export type AnnouncementReadMinAggregateOutputType = {
+    id: string | null
+    announcementId: string | null
+    userId: string | null
+    isRead: boolean | null
+    readAt: Date | null
+  }
+
+  export type AnnouncementReadMaxAggregateOutputType = {
+    id: string | null
+    announcementId: string | null
+    userId: string | null
+    isRead: boolean | null
+    readAt: Date | null
+  }
+
+  export type AnnouncementReadCountAggregateOutputType = {
+    id: number
+    announcementId: number
+    userId: number
+    isRead: number
+    readAt: number
+    _all: number
+  }
+
+
+  export type AnnouncementReadMinAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    isRead?: true
+    readAt?: true
+  }
+
+  export type AnnouncementReadMaxAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    isRead?: true
+    readAt?: true
+  }
+
+  export type AnnouncementReadCountAggregateInputType = {
+    id?: true
+    announcementId?: true
+    userId?: true
+    isRead?: true
+    readAt?: true
+    _all?: true
+  }
+
+  export type AnnouncementReadAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnnouncementRead to aggregate.
+     */
+    where?: AnnouncementReadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementReads to fetch.
+     */
+    orderBy?: AnnouncementReadOrderByWithRelationInput | AnnouncementReadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: AnnouncementReadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementReads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementReads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned AnnouncementReads
+    **/
+    _count?: true | AnnouncementReadCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: AnnouncementReadMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: AnnouncementReadMaxAggregateInputType
+  }
+
+  export type GetAnnouncementReadAggregateType<T extends AnnouncementReadAggregateArgs> = {
+        [P in keyof T & keyof AggregateAnnouncementRead]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAnnouncementRead[P]>
+      : GetScalarType<T[P], AggregateAnnouncementRead[P]>
+  }
+
+
+
+
+  export type AnnouncementReadGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: AnnouncementReadWhereInput
+    orderBy?: AnnouncementReadOrderByWithAggregationInput | AnnouncementReadOrderByWithAggregationInput[]
+    by: AnnouncementReadScalarFieldEnum[] | AnnouncementReadScalarFieldEnum
+    having?: AnnouncementReadScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: AnnouncementReadCountAggregateInputType | true
+    _min?: AnnouncementReadMinAggregateInputType
+    _max?: AnnouncementReadMaxAggregateInputType
+  }
+
+  export type AnnouncementReadGroupByOutputType = {
+    id: string
+    announcementId: string
+    userId: string
+    isRead: boolean
+    readAt: Date
+    _count: AnnouncementReadCountAggregateOutputType | null
+    _min: AnnouncementReadMinAggregateOutputType | null
+    _max: AnnouncementReadMaxAggregateOutputType | null
+  }
+
+  type GetAnnouncementReadGroupByPayload<T extends AnnouncementReadGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<AnnouncementReadGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof AnnouncementReadGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], AnnouncementReadGroupByOutputType[P]>
+            : GetScalarType<T[P], AnnouncementReadGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type AnnouncementReadSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    isRead?: boolean
+    readAt?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementRead"]>
+
+  export type AnnouncementReadSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    isRead?: boolean
+    readAt?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementRead"]>
+
+  export type AnnouncementReadSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    isRead?: boolean
+    readAt?: boolean
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["announcementRead"]>
+
+  export type AnnouncementReadSelectScalar = {
+    id?: boolean
+    announcementId?: boolean
+    userId?: boolean
+    isRead?: boolean
+    readAt?: boolean
+  }
+
+  export type AnnouncementReadOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "announcementId" | "userId" | "isRead" | "readAt", ExtArgs["result"]["announcementRead"]>
+  export type AnnouncementReadInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AnnouncementReadIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type AnnouncementReadIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    announcement?: boolean | AnnouncementDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $AnnouncementReadPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "AnnouncementRead"
+    objects: {
+      announcement: Prisma.$AnnouncementPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      announcementId: string
+      userId: string
+      isRead: boolean
+      readAt: Date
+    }, ExtArgs["result"]["announcementRead"]>
+    composites: {}
+  }
+
+  type AnnouncementReadGetPayload<S extends boolean | null | undefined | AnnouncementReadDefaultArgs> = $Result.GetResult<Prisma.$AnnouncementReadPayload, S>
+
+  type AnnouncementReadCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<AnnouncementReadFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: AnnouncementReadCountAggregateInputType | true
+    }
+
+  export interface AnnouncementReadDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['AnnouncementRead'], meta: { name: 'AnnouncementRead' } }
+    /**
+     * Find zero or one AnnouncementRead that matches the filter.
+     * @param {AnnouncementReadFindUniqueArgs} args - Arguments to find a AnnouncementRead
+     * @example
+     * // Get one AnnouncementRead
+     * const announcementRead = await prisma.announcementRead.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends AnnouncementReadFindUniqueArgs>(args: SelectSubset<T, AnnouncementReadFindUniqueArgs<ExtArgs>>): Prisma__AnnouncementReadClient<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one AnnouncementRead that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {AnnouncementReadFindUniqueOrThrowArgs} args - Arguments to find a AnnouncementRead
+     * @example
+     * // Get one AnnouncementRead
+     * const announcementRead = await prisma.announcementRead.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends AnnouncementReadFindUniqueOrThrowArgs>(args: SelectSubset<T, AnnouncementReadFindUniqueOrThrowArgs<ExtArgs>>): Prisma__AnnouncementReadClient<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnnouncementRead that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementReadFindFirstArgs} args - Arguments to find a AnnouncementRead
+     * @example
+     * // Get one AnnouncementRead
+     * const announcementRead = await prisma.announcementRead.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends AnnouncementReadFindFirstArgs>(args?: SelectSubset<T, AnnouncementReadFindFirstArgs<ExtArgs>>): Prisma__AnnouncementReadClient<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first AnnouncementRead that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementReadFindFirstOrThrowArgs} args - Arguments to find a AnnouncementRead
+     * @example
+     * // Get one AnnouncementRead
+     * const announcementRead = await prisma.announcementRead.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends AnnouncementReadFindFirstOrThrowArgs>(args?: SelectSubset<T, AnnouncementReadFindFirstOrThrowArgs<ExtArgs>>): Prisma__AnnouncementReadClient<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more AnnouncementReads that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementReadFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all AnnouncementReads
+     * const announcementReads = await prisma.announcementRead.findMany()
+     * 
+     * // Get first 10 AnnouncementReads
+     * const announcementReads = await prisma.announcementRead.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const announcementReadWithIdOnly = await prisma.announcementRead.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends AnnouncementReadFindManyArgs>(args?: SelectSubset<T, AnnouncementReadFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a AnnouncementRead.
+     * @param {AnnouncementReadCreateArgs} args - Arguments to create a AnnouncementRead.
+     * @example
+     * // Create one AnnouncementRead
+     * const AnnouncementRead = await prisma.announcementRead.create({
+     *   data: {
+     *     // ... data to create a AnnouncementRead
+     *   }
+     * })
+     * 
+     */
+    create<T extends AnnouncementReadCreateArgs>(args: SelectSubset<T, AnnouncementReadCreateArgs<ExtArgs>>): Prisma__AnnouncementReadClient<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many AnnouncementReads.
+     * @param {AnnouncementReadCreateManyArgs} args - Arguments to create many AnnouncementReads.
+     * @example
+     * // Create many AnnouncementReads
+     * const announcementRead = await prisma.announcementRead.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends AnnouncementReadCreateManyArgs>(args?: SelectSubset<T, AnnouncementReadCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many AnnouncementReads and returns the data saved in the database.
+     * @param {AnnouncementReadCreateManyAndReturnArgs} args - Arguments to create many AnnouncementReads.
+     * @example
+     * // Create many AnnouncementReads
+     * const announcementRead = await prisma.announcementRead.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many AnnouncementReads and only return the `id`
+     * const announcementReadWithIdOnly = await prisma.announcementRead.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends AnnouncementReadCreateManyAndReturnArgs>(args?: SelectSubset<T, AnnouncementReadCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a AnnouncementRead.
+     * @param {AnnouncementReadDeleteArgs} args - Arguments to delete one AnnouncementRead.
+     * @example
+     * // Delete one AnnouncementRead
+     * const AnnouncementRead = await prisma.announcementRead.delete({
+     *   where: {
+     *     // ... filter to delete one AnnouncementRead
+     *   }
+     * })
+     * 
+     */
+    delete<T extends AnnouncementReadDeleteArgs>(args: SelectSubset<T, AnnouncementReadDeleteArgs<ExtArgs>>): Prisma__AnnouncementReadClient<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one AnnouncementRead.
+     * @param {AnnouncementReadUpdateArgs} args - Arguments to update one AnnouncementRead.
+     * @example
+     * // Update one AnnouncementRead
+     * const announcementRead = await prisma.announcementRead.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends AnnouncementReadUpdateArgs>(args: SelectSubset<T, AnnouncementReadUpdateArgs<ExtArgs>>): Prisma__AnnouncementReadClient<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more AnnouncementReads.
+     * @param {AnnouncementReadDeleteManyArgs} args - Arguments to filter AnnouncementReads to delete.
+     * @example
+     * // Delete a few AnnouncementReads
+     * const { count } = await prisma.announcementRead.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends AnnouncementReadDeleteManyArgs>(args?: SelectSubset<T, AnnouncementReadDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnnouncementReads.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementReadUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many AnnouncementReads
+     * const announcementRead = await prisma.announcementRead.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends AnnouncementReadUpdateManyArgs>(args: SelectSubset<T, AnnouncementReadUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more AnnouncementReads and returns the data updated in the database.
+     * @param {AnnouncementReadUpdateManyAndReturnArgs} args - Arguments to update many AnnouncementReads.
+     * @example
+     * // Update many AnnouncementReads
+     * const announcementRead = await prisma.announcementRead.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more AnnouncementReads and only return the `id`
+     * const announcementReadWithIdOnly = await prisma.announcementRead.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends AnnouncementReadUpdateManyAndReturnArgs>(args: SelectSubset<T, AnnouncementReadUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one AnnouncementRead.
+     * @param {AnnouncementReadUpsertArgs} args - Arguments to update or create a AnnouncementRead.
+     * @example
+     * // Update or create a AnnouncementRead
+     * const announcementRead = await prisma.announcementRead.upsert({
+     *   create: {
+     *     // ... data to create a AnnouncementRead
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the AnnouncementRead we want to update
+     *   }
+     * })
+     */
+    upsert<T extends AnnouncementReadUpsertArgs>(args: SelectSubset<T, AnnouncementReadUpsertArgs<ExtArgs>>): Prisma__AnnouncementReadClient<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of AnnouncementReads.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementReadCountArgs} args - Arguments to filter AnnouncementReads to count.
+     * @example
+     * // Count the number of AnnouncementReads
+     * const count = await prisma.announcementRead.count({
+     *   where: {
+     *     // ... the filter for the AnnouncementReads we want to count
+     *   }
+     * })
+    **/
+    count<T extends AnnouncementReadCountArgs>(
+      args?: Subset<T, AnnouncementReadCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AnnouncementReadCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a AnnouncementRead.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementReadAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends AnnouncementReadAggregateArgs>(args: Subset<T, AnnouncementReadAggregateArgs>): Prisma.PrismaPromise<GetAnnouncementReadAggregateType<T>>
+
+    /**
+     * Group by AnnouncementRead.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {AnnouncementReadGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends AnnouncementReadGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: AnnouncementReadGroupByArgs['orderBy'] }
+        : { orderBy?: AnnouncementReadGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, AnnouncementReadGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAnnouncementReadGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the AnnouncementRead model
+   */
+  readonly fields: AnnouncementReadFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for AnnouncementRead.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__AnnouncementReadClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    announcement<T extends AnnouncementDefaultArgs<ExtArgs> = {}>(args?: Subset<T, AnnouncementDefaultArgs<ExtArgs>>): Prisma__AnnouncementClient<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the AnnouncementRead model
+   */
+  interface AnnouncementReadFieldRefs {
+    readonly id: FieldRef<"AnnouncementRead", 'String'>
+    readonly announcementId: FieldRef<"AnnouncementRead", 'String'>
+    readonly userId: FieldRef<"AnnouncementRead", 'String'>
+    readonly isRead: FieldRef<"AnnouncementRead", 'Boolean'>
+    readonly readAt: FieldRef<"AnnouncementRead", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * AnnouncementRead findUnique
+   */
+  export type AnnouncementReadFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRead to fetch.
+     */
+    where: AnnouncementReadWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementRead findUniqueOrThrow
+   */
+  export type AnnouncementReadFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRead to fetch.
+     */
+    where: AnnouncementReadWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementRead findFirst
+   */
+  export type AnnouncementReadFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRead to fetch.
+     */
+    where?: AnnouncementReadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementReads to fetch.
+     */
+    orderBy?: AnnouncementReadOrderByWithRelationInput | AnnouncementReadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnnouncementReads.
+     */
+    cursor?: AnnouncementReadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementReads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementReads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnouncementReads.
+     */
+    distinct?: AnnouncementReadScalarFieldEnum | AnnouncementReadScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementRead findFirstOrThrow
+   */
+  export type AnnouncementReadFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementRead to fetch.
+     */
+    where?: AnnouncementReadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementReads to fetch.
+     */
+    orderBy?: AnnouncementReadOrderByWithRelationInput | AnnouncementReadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for AnnouncementReads.
+     */
+    cursor?: AnnouncementReadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementReads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementReads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnouncementReads.
+     */
+    distinct?: AnnouncementReadScalarFieldEnum | AnnouncementReadScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementRead findMany
+   */
+  export type AnnouncementReadFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * Filter, which AnnouncementReads to fetch.
+     */
+    where?: AnnouncementReadWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of AnnouncementReads to fetch.
+     */
+    orderBy?: AnnouncementReadOrderByWithRelationInput | AnnouncementReadOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing AnnouncementReads.
+     */
+    cursor?: AnnouncementReadWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` AnnouncementReads from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` AnnouncementReads.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of AnnouncementReads.
+     */
+    distinct?: AnnouncementReadScalarFieldEnum | AnnouncementReadScalarFieldEnum[]
+  }
+
+  /**
+   * AnnouncementRead create
+   */
+  export type AnnouncementReadCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * The data needed to create a AnnouncementRead.
+     */
+    data: XOR<AnnouncementReadCreateInput, AnnouncementReadUncheckedCreateInput>
+  }
+
+  /**
+   * AnnouncementRead createMany
+   */
+  export type AnnouncementReadCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many AnnouncementReads.
+     */
+    data: AnnouncementReadCreateManyInput | AnnouncementReadCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * AnnouncementRead createManyAndReturn
+   */
+  export type AnnouncementReadCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * The data used to create many AnnouncementReads.
+     */
+    data: AnnouncementReadCreateManyInput | AnnouncementReadCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AnnouncementRead update
+   */
+  export type AnnouncementReadUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * The data needed to update a AnnouncementRead.
+     */
+    data: XOR<AnnouncementReadUpdateInput, AnnouncementReadUncheckedUpdateInput>
+    /**
+     * Choose, which AnnouncementRead to update.
+     */
+    where: AnnouncementReadWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementRead updateMany
+   */
+  export type AnnouncementReadUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update AnnouncementReads.
+     */
+    data: XOR<AnnouncementReadUpdateManyMutationInput, AnnouncementReadUncheckedUpdateManyInput>
+    /**
+     * Filter which AnnouncementReads to update
+     */
+    where?: AnnouncementReadWhereInput
+    /**
+     * Limit how many AnnouncementReads to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnnouncementRead updateManyAndReturn
+   */
+  export type AnnouncementReadUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * The data used to update AnnouncementReads.
+     */
+    data: XOR<AnnouncementReadUpdateManyMutationInput, AnnouncementReadUncheckedUpdateManyInput>
+    /**
+     * Filter which AnnouncementReads to update
+     */
+    where?: AnnouncementReadWhereInput
+    /**
+     * Limit how many AnnouncementReads to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * AnnouncementRead upsert
+   */
+  export type AnnouncementReadUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * The filter to search for the AnnouncementRead to update in case it exists.
+     */
+    where: AnnouncementReadWhereUniqueInput
+    /**
+     * In case the AnnouncementRead found by the `where` argument doesn't exist, create a new AnnouncementRead with this data.
+     */
+    create: XOR<AnnouncementReadCreateInput, AnnouncementReadUncheckedCreateInput>
+    /**
+     * In case the AnnouncementRead was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<AnnouncementReadUpdateInput, AnnouncementReadUncheckedUpdateInput>
+  }
+
+  /**
+   * AnnouncementRead delete
+   */
+  export type AnnouncementReadDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+    /**
+     * Filter which AnnouncementRead to delete.
+     */
+    where: AnnouncementReadWhereUniqueInput
+  }
+
+  /**
+   * AnnouncementRead deleteMany
+   */
+  export type AnnouncementReadDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which AnnouncementReads to delete
+     */
+    where?: AnnouncementReadWhereInput
+    /**
+     * Limit how many AnnouncementReads to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * AnnouncementRead without action
+   */
+  export type AnnouncementReadDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the AnnouncementRead
+     */
+    select?: AnnouncementReadSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the AnnouncementRead
+     */
+    omit?: AnnouncementReadOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: AnnouncementReadInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -10124,6 +15340,61 @@ export namespace Prisma {
   export type ProjectMemberScalarFieldEnum = (typeof ProjectMemberScalarFieldEnum)[keyof typeof ProjectMemberScalarFieldEnum]
 
 
+  export const TaskScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    status: 'status',
+    priority: 'priority',
+    dueDate: 'dueDate',
+    projectId: 'projectId',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type TaskScalarFieldEnum = (typeof TaskScalarFieldEnum)[keyof typeof TaskScalarFieldEnum]
+
+
+  export const AnnouncementScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    priority: 'priority',
+    targetType: 'targetType',
+    status: 'status',
+    publishDate: 'publishDate',
+    expiryDate: 'expiryDate',
+    workspaceId: 'workspaceId',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type AnnouncementScalarFieldEnum = (typeof AnnouncementScalarFieldEnum)[keyof typeof AnnouncementScalarFieldEnum]
+
+
+  export const AnnouncementTargetUserScalarFieldEnum: {
+    id: 'id',
+    announcementId: 'announcementId',
+    userId: 'userId',
+    createdAt: 'createdAt'
+  };
+
+  export type AnnouncementTargetUserScalarFieldEnum = (typeof AnnouncementTargetUserScalarFieldEnum)[keyof typeof AnnouncementTargetUserScalarFieldEnum]
+
+
+  export const AnnouncementReadScalarFieldEnum: {
+    id: 'id',
+    announcementId: 'announcementId',
+    userId: 'userId',
+    isRead: 'isRead',
+    readAt: 'readAt'
+  };
+
+  export type AnnouncementReadScalarFieldEnum = (typeof AnnouncementReadScalarFieldEnum)[keyof typeof AnnouncementReadScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -10231,6 +15502,76 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'TaskStatus'
+   */
+  export type EnumTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaskStatus[]'
+   */
+  export type ListEnumTaskStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaskPriority'
+   */
+  export type EnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'TaskPriority[]'
+   */
+  export type ListEnumTaskPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'TaskPriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AnnouncementPriority'
+   */
+  export type EnumAnnouncementPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnnouncementPriority'>
+    
+
+
+  /**
+   * Reference to a field of type 'AnnouncementPriority[]'
+   */
+  export type ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnnouncementPriority[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AnnouncementTargetType'
+   */
+  export type EnumAnnouncementTargetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnnouncementTargetType'>
+    
+
+
+  /**
+   * Reference to a field of type 'AnnouncementTargetType[]'
+   */
+  export type ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnnouncementTargetType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'AnnouncementStatus'
+   */
+  export type EnumAnnouncementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnnouncementStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'AnnouncementStatus[]'
+   */
+  export type ListEnumAnnouncementStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'AnnouncementStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -10259,6 +15600,7 @@ export namespace Prisma {
     users?: UserListRelationFilter
     departments?: DepartmentListRelationFilter
     projects?: ProjectListRelationFilter
+    announcements?: AnnouncementListRelationFilter
   }
 
   export type WorkspaceOrderByWithRelationInput = {
@@ -10270,6 +15612,7 @@ export namespace Prisma {
     users?: UserOrderByRelationAggregateInput
     departments?: DepartmentOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
+    announcements?: AnnouncementOrderByRelationAggregateInput
   }
 
   export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -10284,6 +15627,7 @@ export namespace Prisma {
     users?: UserListRelationFilter
     departments?: DepartmentListRelationFilter
     projects?: ProjectListRelationFilter
+    announcements?: AnnouncementListRelationFilter
   }, "id">
 
   export type WorkspaceOrderByWithAggregationInput = {
@@ -10400,6 +15744,10 @@ export namespace Prisma {
     createdProjects?: ProjectListRelationFilter
     managedProjects?: ProjectListRelationFilter
     projectMembers?: ProjectMemberListRelationFilter
+    createdTasks?: TaskListRelationFilter
+    createdAnnouncements?: AnnouncementListRelationFilter
+    announcementTargets?: AnnouncementTargetUserListRelationFilter
+    announcementReads?: AnnouncementReadListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -10432,6 +15780,10 @@ export namespace Prisma {
     createdProjects?: ProjectOrderByRelationAggregateInput
     managedProjects?: ProjectOrderByRelationAggregateInput
     projectMembers?: ProjectMemberOrderByRelationAggregateInput
+    createdTasks?: TaskOrderByRelationAggregateInput
+    createdAnnouncements?: AnnouncementOrderByRelationAggregateInput
+    announcementTargets?: AnnouncementTargetUserOrderByRelationAggregateInput
+    announcementReads?: AnnouncementReadOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -10468,6 +15820,10 @@ export namespace Prisma {
     createdProjects?: ProjectListRelationFilter
     managedProjects?: ProjectListRelationFilter
     projectMembers?: ProjectMemberListRelationFilter
+    createdTasks?: TaskListRelationFilter
+    createdAnnouncements?: AnnouncementListRelationFilter
+    announcementTargets?: AnnouncementTargetUserListRelationFilter
+    announcementReads?: AnnouncementReadListRelationFilter
   }, "id" | "email" | "workspaceId_employeeId">
 
   export type UserOrderByWithAggregationInput = {
@@ -10678,6 +16034,7 @@ export namespace Prisma {
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     manager?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     members?: ProjectMemberListRelationFilter
+    tasks?: TaskListRelationFilter
   }
 
   export type ProjectOrderByWithRelationInput = {
@@ -10699,6 +16056,7 @@ export namespace Prisma {
     createdBy?: UserOrderByWithRelationInput
     manager?: UserOrderByWithRelationInput
     members?: ProjectMemberOrderByRelationAggregateInput
+    tasks?: TaskOrderByRelationAggregateInput
   }
 
   export type ProjectWhereUniqueInput = Prisma.AtLeast<{
@@ -10724,6 +16082,7 @@ export namespace Prisma {
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     manager?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     members?: ProjectMemberListRelationFilter
+    tasks?: TaskListRelationFilter
   }, "id" | "workspaceId_name">
 
   export type ProjectOrderByWithAggregationInput = {
@@ -10822,6 +16181,301 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"ProjectMember"> | Date | string
   }
 
+  export type TaskWhereInput = {
+    AND?: TaskWhereInput | TaskWhereInput[]
+    OR?: TaskWhereInput[]
+    NOT?: TaskWhereInput | TaskWhereInput[]
+    id?: StringFilter<"Task"> | string
+    title?: StringFilter<"Task"> | string
+    description?: StringNullableFilter<"Task"> | string | null
+    status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    projectId?: StringFilter<"Task"> | string
+    createdById?: StringNullableFilter<"Task"> | string | null
+    createdAt?: DateTimeFilter<"Task"> | Date | string
+    updatedAt?: DateTimeFilter<"Task"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }
+
+  export type TaskOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    projectId?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    project?: ProjectOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+  }
+
+  export type TaskWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: TaskWhereInput | TaskWhereInput[]
+    OR?: TaskWhereInput[]
+    NOT?: TaskWhereInput | TaskWhereInput[]
+    title?: StringFilter<"Task"> | string
+    description?: StringNullableFilter<"Task"> | string | null
+    status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    projectId?: StringFilter<"Task"> | string
+    createdById?: StringNullableFilter<"Task"> | string | null
+    createdAt?: DateTimeFilter<"Task"> | Date | string
+    updatedAt?: DateTimeFilter<"Task"> | Date | string
+    project?: XOR<ProjectScalarRelationFilter, ProjectWhereInput>
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+  }, "id">
+
+  export type TaskOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrderInput | SortOrder
+    projectId?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: TaskCountOrderByAggregateInput
+    _max?: TaskMaxOrderByAggregateInput
+    _min?: TaskMinOrderByAggregateInput
+  }
+
+  export type TaskScalarWhereWithAggregatesInput = {
+    AND?: TaskScalarWhereWithAggregatesInput | TaskScalarWhereWithAggregatesInput[]
+    OR?: TaskScalarWhereWithAggregatesInput[]
+    NOT?: TaskScalarWhereWithAggregatesInput | TaskScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Task"> | string
+    title?: StringWithAggregatesFilter<"Task"> | string
+    description?: StringNullableWithAggregatesFilter<"Task"> | string | null
+    status?: EnumTaskStatusWithAggregatesFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityWithAggregatesFilter<"Task"> | $Enums.TaskPriority
+    dueDate?: DateTimeNullableWithAggregatesFilter<"Task"> | Date | string | null
+    projectId?: StringWithAggregatesFilter<"Task"> | string
+    createdById?: StringNullableWithAggregatesFilter<"Task"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Task"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Task"> | Date | string
+  }
+
+  export type AnnouncementWhereInput = {
+    AND?: AnnouncementWhereInput | AnnouncementWhereInput[]
+    OR?: AnnouncementWhereInput[]
+    NOT?: AnnouncementWhereInput | AnnouncementWhereInput[]
+    id?: StringFilter<"Announcement"> | string
+    title?: StringFilter<"Announcement"> | string
+    description?: StringFilter<"Announcement"> | string
+    priority?: EnumAnnouncementPriorityFilter<"Announcement"> | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFilter<"Announcement"> | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFilter<"Announcement"> | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFilter<"Announcement"> | Date | string
+    expiryDate?: DateTimeNullableFilter<"Announcement"> | Date | string | null
+    workspaceId?: StringFilter<"Announcement"> | string
+    createdById?: StringNullableFilter<"Announcement"> | string | null
+    createdAt?: DateTimeFilter<"Announcement"> | Date | string
+    updatedAt?: DateTimeFilter<"Announcement"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    selectedUsers?: AnnouncementTargetUserListRelationFilter
+    readRecords?: AnnouncementReadListRelationFilter
+  }
+
+  export type AnnouncementOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    targetType?: SortOrder
+    status?: SortOrder
+    publishDate?: SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    workspaceId?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    createdBy?: UserOrderByWithRelationInput
+    selectedUsers?: AnnouncementTargetUserOrderByRelationAggregateInput
+    readRecords?: AnnouncementReadOrderByRelationAggregateInput
+  }
+
+  export type AnnouncementWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: AnnouncementWhereInput | AnnouncementWhereInput[]
+    OR?: AnnouncementWhereInput[]
+    NOT?: AnnouncementWhereInput | AnnouncementWhereInput[]
+    title?: StringFilter<"Announcement"> | string
+    description?: StringFilter<"Announcement"> | string
+    priority?: EnumAnnouncementPriorityFilter<"Announcement"> | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFilter<"Announcement"> | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFilter<"Announcement"> | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFilter<"Announcement"> | Date | string
+    expiryDate?: DateTimeNullableFilter<"Announcement"> | Date | string | null
+    workspaceId?: StringFilter<"Announcement"> | string
+    createdById?: StringNullableFilter<"Announcement"> | string | null
+    createdAt?: DateTimeFilter<"Announcement"> | Date | string
+    updatedAt?: DateTimeFilter<"Announcement"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    selectedUsers?: AnnouncementTargetUserListRelationFilter
+    readRecords?: AnnouncementReadListRelationFilter
+  }, "id">
+
+  export type AnnouncementOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    targetType?: SortOrder
+    status?: SortOrder
+    publishDate?: SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    workspaceId?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: AnnouncementCountOrderByAggregateInput
+    _max?: AnnouncementMaxOrderByAggregateInput
+    _min?: AnnouncementMinOrderByAggregateInput
+  }
+
+  export type AnnouncementScalarWhereWithAggregatesInput = {
+    AND?: AnnouncementScalarWhereWithAggregatesInput | AnnouncementScalarWhereWithAggregatesInput[]
+    OR?: AnnouncementScalarWhereWithAggregatesInput[]
+    NOT?: AnnouncementScalarWhereWithAggregatesInput | AnnouncementScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Announcement"> | string
+    title?: StringWithAggregatesFilter<"Announcement"> | string
+    description?: StringWithAggregatesFilter<"Announcement"> | string
+    priority?: EnumAnnouncementPriorityWithAggregatesFilter<"Announcement"> | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeWithAggregatesFilter<"Announcement"> | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusWithAggregatesFilter<"Announcement"> | $Enums.AnnouncementStatus
+    publishDate?: DateTimeWithAggregatesFilter<"Announcement"> | Date | string
+    expiryDate?: DateTimeNullableWithAggregatesFilter<"Announcement"> | Date | string | null
+    workspaceId?: StringWithAggregatesFilter<"Announcement"> | string
+    createdById?: StringNullableWithAggregatesFilter<"Announcement"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Announcement"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Announcement"> | Date | string
+  }
+
+  export type AnnouncementTargetUserWhereInput = {
+    AND?: AnnouncementTargetUserWhereInput | AnnouncementTargetUserWhereInput[]
+    OR?: AnnouncementTargetUserWhereInput[]
+    NOT?: AnnouncementTargetUserWhereInput | AnnouncementTargetUserWhereInput[]
+    id?: StringFilter<"AnnouncementTargetUser"> | string
+    announcementId?: StringFilter<"AnnouncementTargetUser"> | string
+    userId?: StringFilter<"AnnouncementTargetUser"> | string
+    createdAt?: DateTimeFilter<"AnnouncementTargetUser"> | Date | string
+    announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AnnouncementTargetUserOrderByWithRelationInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    announcement?: AnnouncementOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AnnouncementTargetUserWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    announcementId_userId?: AnnouncementTargetUserAnnouncementIdUserIdCompoundUniqueInput
+    AND?: AnnouncementTargetUserWhereInput | AnnouncementTargetUserWhereInput[]
+    OR?: AnnouncementTargetUserWhereInput[]
+    NOT?: AnnouncementTargetUserWhereInput | AnnouncementTargetUserWhereInput[]
+    announcementId?: StringFilter<"AnnouncementTargetUser"> | string
+    userId?: StringFilter<"AnnouncementTargetUser"> | string
+    createdAt?: DateTimeFilter<"AnnouncementTargetUser"> | Date | string
+    announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "announcementId_userId">
+
+  export type AnnouncementTargetUserOrderByWithAggregationInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+    _count?: AnnouncementTargetUserCountOrderByAggregateInput
+    _max?: AnnouncementTargetUserMaxOrderByAggregateInput
+    _min?: AnnouncementTargetUserMinOrderByAggregateInput
+  }
+
+  export type AnnouncementTargetUserScalarWhereWithAggregatesInput = {
+    AND?: AnnouncementTargetUserScalarWhereWithAggregatesInput | AnnouncementTargetUserScalarWhereWithAggregatesInput[]
+    OR?: AnnouncementTargetUserScalarWhereWithAggregatesInput[]
+    NOT?: AnnouncementTargetUserScalarWhereWithAggregatesInput | AnnouncementTargetUserScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AnnouncementTargetUser"> | string
+    announcementId?: StringWithAggregatesFilter<"AnnouncementTargetUser"> | string
+    userId?: StringWithAggregatesFilter<"AnnouncementTargetUser"> | string
+    createdAt?: DateTimeWithAggregatesFilter<"AnnouncementTargetUser"> | Date | string
+  }
+
+  export type AnnouncementReadWhereInput = {
+    AND?: AnnouncementReadWhereInput | AnnouncementReadWhereInput[]
+    OR?: AnnouncementReadWhereInput[]
+    NOT?: AnnouncementReadWhereInput | AnnouncementReadWhereInput[]
+    id?: StringFilter<"AnnouncementRead"> | string
+    announcementId?: StringFilter<"AnnouncementRead"> | string
+    userId?: StringFilter<"AnnouncementRead"> | string
+    isRead?: BoolFilter<"AnnouncementRead"> | boolean
+    readAt?: DateTimeFilter<"AnnouncementRead"> | Date | string
+    announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type AnnouncementReadOrderByWithRelationInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    isRead?: SortOrder
+    readAt?: SortOrder
+    announcement?: AnnouncementOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type AnnouncementReadWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    announcementId_userId?: AnnouncementReadAnnouncementIdUserIdCompoundUniqueInput
+    AND?: AnnouncementReadWhereInput | AnnouncementReadWhereInput[]
+    OR?: AnnouncementReadWhereInput[]
+    NOT?: AnnouncementReadWhereInput | AnnouncementReadWhereInput[]
+    announcementId?: StringFilter<"AnnouncementRead"> | string
+    userId?: StringFilter<"AnnouncementRead"> | string
+    isRead?: BoolFilter<"AnnouncementRead"> | boolean
+    readAt?: DateTimeFilter<"AnnouncementRead"> | Date | string
+    announcement?: XOR<AnnouncementScalarRelationFilter, AnnouncementWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "announcementId_userId">
+
+  export type AnnouncementReadOrderByWithAggregationInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    isRead?: SortOrder
+    readAt?: SortOrder
+    _count?: AnnouncementReadCountOrderByAggregateInput
+    _max?: AnnouncementReadMaxOrderByAggregateInput
+    _min?: AnnouncementReadMinOrderByAggregateInput
+  }
+
+  export type AnnouncementReadScalarWhereWithAggregatesInput = {
+    AND?: AnnouncementReadScalarWhereWithAggregatesInput | AnnouncementReadScalarWhereWithAggregatesInput[]
+    OR?: AnnouncementReadScalarWhereWithAggregatesInput[]
+    NOT?: AnnouncementReadScalarWhereWithAggregatesInput | AnnouncementReadScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"AnnouncementRead"> | string
+    announcementId?: StringWithAggregatesFilter<"AnnouncementRead"> | string
+    userId?: StringWithAggregatesFilter<"AnnouncementRead"> | string
+    isRead?: BoolWithAggregatesFilter<"AnnouncementRead"> | boolean
+    readAt?: DateTimeWithAggregatesFilter<"AnnouncementRead"> | Date | string
+  }
+
   export type WorkspaceCreateInput = {
     id?: string
     name: string
@@ -10831,6 +16485,7 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutWorkspaceInput
     departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateInput = {
@@ -10842,6 +16497,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutWorkspaceInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUpdateInput = {
@@ -10853,6 +16509,7 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutWorkspaceNestedInput
     departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateInput = {
@@ -10864,6 +16521,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutWorkspaceNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateManyInput = {
@@ -10975,6 +16633,10 @@ export namespace Prisma {
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -11003,6 +16665,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -11031,6 +16697,10 @@ export namespace Prisma {
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -11059,6 +16729,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -11281,6 +16955,7 @@ export namespace Prisma {
     createdBy?: UserCreateNestedOneWithoutCreatedProjectsInput
     manager?: UserCreateNestedOneWithoutManagedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateInput = {
@@ -11299,6 +16974,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUpdateInput = {
@@ -11317,6 +16993,7 @@ export namespace Prisma {
     createdBy?: UserUpdateOneWithoutCreatedProjectsNestedInput
     manager?: UserUpdateOneWithoutManagedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateInput = {
@@ -11335,6 +17012,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectCreateManyInput = {
@@ -11432,6 +17110,307 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TaskCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutTasksInput
+    createdBy?: UserCreateNestedOneWithoutCreatedTasksInput
+  }
+
+  export type TaskUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    projectId: string
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutTasksNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedTasksNestedInput
+  }
+
+  export type TaskUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    projectId: string
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementCreateInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutAnnouncementsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedAnnouncementsInput
+    selectedUsers?: AnnouncementTargetUserCreateNestedManyWithoutAnnouncementInput
+    readRecords?: AnnouncementReadCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    workspaceId: string
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    selectedUsers?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutAnnouncementInput
+    readRecords?: AnnouncementReadUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutAnnouncementsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedAnnouncementsNestedInput
+    selectedUsers?: AnnouncementTargetUserUpdateManyWithoutAnnouncementNestedInput
+    readRecords?: AnnouncementReadUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    selectedUsers?: AnnouncementTargetUserUncheckedUpdateManyWithoutAnnouncementNestedInput
+    readRecords?: AnnouncementReadUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementCreateManyInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    workspaceId: string
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnnouncementUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementTargetUserCreateInput = {
+    id?: string
+    createdAt?: Date | string
+    announcement: AnnouncementCreateNestedOneWithoutSelectedUsersInput
+    user: UserCreateNestedOneWithoutAnnouncementTargetsInput
+  }
+
+  export type AnnouncementTargetUserUncheckedCreateInput = {
+    id?: string
+    announcementId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type AnnouncementTargetUserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    announcement?: AnnouncementUpdateOneRequiredWithoutSelectedUsersNestedInput
+    user?: UserUpdateOneRequiredWithoutAnnouncementTargetsNestedInput
+  }
+
+  export type AnnouncementTargetUserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementTargetUserCreateManyInput = {
+    id?: string
+    announcementId: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type AnnouncementTargetUserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementTargetUserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementReadCreateInput = {
+    id?: string
+    isRead?: boolean
+    readAt?: Date | string
+    announcement: AnnouncementCreateNestedOneWithoutReadRecordsInput
+    user: UserCreateNestedOneWithoutAnnouncementReadsInput
+  }
+
+  export type AnnouncementReadUncheckedCreateInput = {
+    id?: string
+    announcementId: string
+    userId: string
+    isRead?: boolean
+    readAt?: Date | string
+  }
+
+  export type AnnouncementReadUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    announcement?: AnnouncementUpdateOneRequiredWithoutReadRecordsNestedInput
+    user?: UserUpdateOneRequiredWithoutAnnouncementReadsNestedInput
+  }
+
+  export type AnnouncementReadUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementReadCreateManyInput = {
+    id?: string
+    announcementId: string
+    userId: string
+    isRead?: boolean
+    readAt?: Date | string
+  }
+
+  export type AnnouncementReadUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementReadUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -11491,6 +17470,12 @@ export namespace Prisma {
     none?: ProjectWhereInput
   }
 
+  export type AnnouncementListRelationFilter = {
+    every?: AnnouncementWhereInput
+    some?: AnnouncementWhereInput
+    none?: AnnouncementWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -11505,6 +17490,10 @@ export namespace Prisma {
   }
 
   export type ProjectOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnnouncementOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -11661,11 +17650,41 @@ export namespace Prisma {
     none?: ProjectMemberWhereInput
   }
 
+  export type TaskListRelationFilter = {
+    every?: TaskWhereInput
+    some?: TaskWhereInput
+    none?: TaskWhereInput
+  }
+
+  export type AnnouncementTargetUserListRelationFilter = {
+    every?: AnnouncementTargetUserWhereInput
+    some?: AnnouncementTargetUserWhereInput
+    none?: AnnouncementTargetUserWhereInput
+  }
+
+  export type AnnouncementReadListRelationFilter = {
+    every?: AnnouncementReadWhereInput
+    some?: AnnouncementReadWhereInput
+    none?: AnnouncementReadWhereInput
+  }
+
   export type AttendanceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
   export type ProjectMemberOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type TaskOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnnouncementTargetUserOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type AnnouncementReadOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -12004,6 +18023,235 @@ export namespace Prisma {
     createdAt?: SortOrder
   }
 
+  export type EnumTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
+  }
+
+  export type EnumTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityFilter<$PrismaModel> | $Enums.TaskPriority
+  }
+
+  export type TaskCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    projectId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaskMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    projectId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type TaskMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    priority?: SortOrder
+    dueDate?: SortOrder
+    projectId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.TaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumTaskStatusFilter<$PrismaModel>
+  }
+
+  export type EnumTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityWithAggregatesFilter<$PrismaModel> | $Enums.TaskPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaskPriorityFilter<$PrismaModel>
+    _max?: NestedEnumTaskPriorityFilter<$PrismaModel>
+  }
+
+  export type EnumAnnouncementPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementPriority | EnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementPriority[] | ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementPriority[] | ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementPriorityFilter<$PrismaModel> | $Enums.AnnouncementPriority
+  }
+
+  export type EnumAnnouncementTargetTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementTargetType | EnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementTargetType[] | ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementTargetType[] | ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementTargetTypeFilter<$PrismaModel> | $Enums.AnnouncementTargetType
+  }
+
+  export type EnumAnnouncementStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementStatus | EnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementStatus[] | ListEnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementStatus[] | ListEnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementStatusFilter<$PrismaModel> | $Enums.AnnouncementStatus
+  }
+
+  export type AnnouncementCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    targetType?: SortOrder
+    status?: SortOrder
+    publishDate?: SortOrder
+    expiryDate?: SortOrder
+    workspaceId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AnnouncementMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    targetType?: SortOrder
+    status?: SortOrder
+    publishDate?: SortOrder
+    expiryDate?: SortOrder
+    workspaceId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type AnnouncementMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    priority?: SortOrder
+    targetType?: SortOrder
+    status?: SortOrder
+    publishDate?: SortOrder
+    expiryDate?: SortOrder
+    workspaceId?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumAnnouncementPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementPriority | EnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementPriority[] | ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementPriority[] | ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementPriorityWithAggregatesFilter<$PrismaModel> | $Enums.AnnouncementPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAnnouncementPriorityFilter<$PrismaModel>
+    _max?: NestedEnumAnnouncementPriorityFilter<$PrismaModel>
+  }
+
+  export type EnumAnnouncementTargetTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementTargetType | EnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementTargetType[] | ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementTargetType[] | ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementTargetTypeWithAggregatesFilter<$PrismaModel> | $Enums.AnnouncementTargetType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAnnouncementTargetTypeFilter<$PrismaModel>
+    _max?: NestedEnumAnnouncementTargetTypeFilter<$PrismaModel>
+  }
+
+  export type EnumAnnouncementStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementStatus | EnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementStatus[] | ListEnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementStatus[] | ListEnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AnnouncementStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAnnouncementStatusFilter<$PrismaModel>
+    _max?: NestedEnumAnnouncementStatusFilter<$PrismaModel>
+  }
+
+  export type AnnouncementScalarRelationFilter = {
+    is?: AnnouncementWhereInput
+    isNot?: AnnouncementWhereInput
+  }
+
+  export type AnnouncementTargetUserAnnouncementIdUserIdCompoundUniqueInput = {
+    announcementId: string
+    userId: string
+  }
+
+  export type AnnouncementTargetUserCountOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AnnouncementTargetUserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AnnouncementTargetUserMinOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type AnnouncementReadAnnouncementIdUserIdCompoundUniqueInput = {
+    announcementId: string
+    userId: string
+  }
+
+  export type AnnouncementReadCountOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    isRead?: SortOrder
+    readAt?: SortOrder
+  }
+
+  export type AnnouncementReadMaxOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    isRead?: SortOrder
+    readAt?: SortOrder
+  }
+
+  export type AnnouncementReadMinOrderByAggregateInput = {
+    id?: SortOrder
+    announcementId?: SortOrder
+    userId?: SortOrder
+    isRead?: SortOrder
+    readAt?: SortOrder
+  }
+
   export type UserCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<UserCreateWithoutWorkspaceInput, UserUncheckedCreateWithoutWorkspaceInput> | UserCreateWithoutWorkspaceInput[] | UserUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspaceInput | UserCreateOrConnectWithoutWorkspaceInput[]
@@ -12025,6 +18273,13 @@ export namespace Prisma {
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
   }
 
+  export type AnnouncementCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<AnnouncementCreateWithoutWorkspaceInput, AnnouncementUncheckedCreateWithoutWorkspaceInput> | AnnouncementCreateWithoutWorkspaceInput[] | AnnouncementUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutWorkspaceInput | AnnouncementCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: AnnouncementCreateManyWorkspaceInputEnvelope
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<UserCreateWithoutWorkspaceInput, UserUncheckedCreateWithoutWorkspaceInput> | UserCreateWithoutWorkspaceInput[] | UserUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspaceInput | UserCreateOrConnectWithoutWorkspaceInput[]
@@ -12044,6 +18299,13 @@ export namespace Prisma {
     connectOrCreate?: ProjectCreateOrConnectWithoutWorkspaceInput | ProjectCreateOrConnectWithoutWorkspaceInput[]
     createMany?: ProjectCreateManyWorkspaceInputEnvelope
     connect?: ProjectWhereUniqueInput | ProjectWhereUniqueInput[]
+  }
+
+  export type AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<AnnouncementCreateWithoutWorkspaceInput, AnnouncementUncheckedCreateWithoutWorkspaceInput> | AnnouncementCreateWithoutWorkspaceInput[] | AnnouncementUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutWorkspaceInput | AnnouncementCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: AnnouncementCreateManyWorkspaceInputEnvelope
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -12100,6 +18362,20 @@ export namespace Prisma {
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
   }
 
+  export type AnnouncementUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutWorkspaceInput, AnnouncementUncheckedCreateWithoutWorkspaceInput> | AnnouncementCreateWithoutWorkspaceInput[] | AnnouncementUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutWorkspaceInput | AnnouncementCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: AnnouncementUpsertWithWhereUniqueWithoutWorkspaceInput | AnnouncementUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: AnnouncementCreateManyWorkspaceInputEnvelope
+    set?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    disconnect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    delete?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    update?: AnnouncementUpdateWithWhereUniqueWithoutWorkspaceInput | AnnouncementUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: AnnouncementUpdateManyWithWhereWithoutWorkspaceInput | AnnouncementUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutWorkspaceNestedInput = {
     create?: XOR<UserCreateWithoutWorkspaceInput, UserUncheckedCreateWithoutWorkspaceInput> | UserCreateWithoutWorkspaceInput[] | UserUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspaceInput | UserCreateOrConnectWithoutWorkspaceInput[]
@@ -12140,6 +18416,20 @@ export namespace Prisma {
     update?: ProjectUpdateWithWhereUniqueWithoutWorkspaceInput | ProjectUpdateWithWhereUniqueWithoutWorkspaceInput[]
     updateMany?: ProjectUpdateManyWithWhereWithoutWorkspaceInput | ProjectUpdateManyWithWhereWithoutWorkspaceInput[]
     deleteMany?: ProjectScalarWhereInput | ProjectScalarWhereInput[]
+  }
+
+  export type AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutWorkspaceInput, AnnouncementUncheckedCreateWithoutWorkspaceInput> | AnnouncementCreateWithoutWorkspaceInput[] | AnnouncementUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutWorkspaceInput | AnnouncementCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: AnnouncementUpsertWithWhereUniqueWithoutWorkspaceInput | AnnouncementUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: AnnouncementCreateManyWorkspaceInputEnvelope
+    set?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    disconnect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    delete?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    update?: AnnouncementUpdateWithWhereUniqueWithoutWorkspaceInput | AnnouncementUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: AnnouncementUpdateManyWithWhereWithoutWorkspaceInput | AnnouncementUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
   }
 
   export type WorkspaceCreateNestedOneWithoutDepartmentsInput = {
@@ -12264,6 +18554,34 @@ export namespace Prisma {
     connect?: ProjectMemberWhereUniqueInput | ProjectMemberWhereUniqueInput[]
   }
 
+  export type TaskCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput> | TaskCreateWithoutCreatedByInput[] | TaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutCreatedByInput | TaskCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TaskCreateManyCreatedByInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type AnnouncementCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<AnnouncementCreateWithoutCreatedByInput, AnnouncementUncheckedCreateWithoutCreatedByInput> | AnnouncementCreateWithoutCreatedByInput[] | AnnouncementUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutCreatedByInput | AnnouncementCreateOrConnectWithoutCreatedByInput[]
+    createMany?: AnnouncementCreateManyCreatedByInputEnvelope
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+  }
+
+  export type AnnouncementTargetUserCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnnouncementTargetUserCreateWithoutUserInput, AnnouncementTargetUserUncheckedCreateWithoutUserInput> | AnnouncementTargetUserCreateWithoutUserInput[] | AnnouncementTargetUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementTargetUserCreateOrConnectWithoutUserInput | AnnouncementTargetUserCreateOrConnectWithoutUserInput[]
+    createMany?: AnnouncementTargetUserCreateManyUserInputEnvelope
+    connect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+  }
+
+  export type AnnouncementReadCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnnouncementReadCreateWithoutUserInput, AnnouncementReadUncheckedCreateWithoutUserInput> | AnnouncementReadCreateWithoutUserInput[] | AnnouncementReadUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementReadCreateOrConnectWithoutUserInput | AnnouncementReadCreateOrConnectWithoutUserInput[]
+    createMany?: AnnouncementReadCreateManyUserInputEnvelope
+    connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutReportingManagerInput = {
     create?: XOR<UserCreateWithoutReportingManagerInput, UserUncheckedCreateWithoutReportingManagerInput> | UserCreateWithoutReportingManagerInput[] | UserUncheckedCreateWithoutReportingManagerInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportingManagerInput | UserCreateOrConnectWithoutReportingManagerInput[]
@@ -12304,6 +18622,34 @@ export namespace Prisma {
     connectOrCreate?: ProjectMemberCreateOrConnectWithoutUserInput | ProjectMemberCreateOrConnectWithoutUserInput[]
     createMany?: ProjectMemberCreateManyUserInputEnvelope
     connect?: ProjectMemberWhereUniqueInput | ProjectMemberWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput> | TaskCreateWithoutCreatedByInput[] | TaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutCreatedByInput | TaskCreateOrConnectWithoutCreatedByInput[]
+    createMany?: TaskCreateManyCreatedByInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
+  export type AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<AnnouncementCreateWithoutCreatedByInput, AnnouncementUncheckedCreateWithoutCreatedByInput> | AnnouncementCreateWithoutCreatedByInput[] | AnnouncementUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutCreatedByInput | AnnouncementCreateOrConnectWithoutCreatedByInput[]
+    createMany?: AnnouncementCreateManyCreatedByInputEnvelope
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+  }
+
+  export type AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnnouncementTargetUserCreateWithoutUserInput, AnnouncementTargetUserUncheckedCreateWithoutUserInput> | AnnouncementTargetUserCreateWithoutUserInput[] | AnnouncementTargetUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementTargetUserCreateOrConnectWithoutUserInput | AnnouncementTargetUserCreateOrConnectWithoutUserInput[]
+    createMany?: AnnouncementTargetUserCreateManyUserInputEnvelope
+    connect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+  }
+
+  export type AnnouncementReadUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<AnnouncementReadCreateWithoutUserInput, AnnouncementReadUncheckedCreateWithoutUserInput> | AnnouncementReadCreateWithoutUserInput[] | AnnouncementReadUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementReadCreateOrConnectWithoutUserInput | AnnouncementReadCreateOrConnectWithoutUserInput[]
+    createMany?: AnnouncementReadCreateManyUserInputEnvelope
+    connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -12440,6 +18786,62 @@ export namespace Prisma {
     deleteMany?: ProjectMemberScalarWhereInput | ProjectMemberScalarWhereInput[]
   }
 
+  export type TaskUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput> | TaskCreateWithoutCreatedByInput[] | TaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutCreatedByInput | TaskCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutCreatedByInput | TaskUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TaskCreateManyCreatedByInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutCreatedByInput | TaskUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutCreatedByInput | TaskUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type AnnouncementUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutCreatedByInput, AnnouncementUncheckedCreateWithoutCreatedByInput> | AnnouncementCreateWithoutCreatedByInput[] | AnnouncementUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutCreatedByInput | AnnouncementCreateOrConnectWithoutCreatedByInput[]
+    upsert?: AnnouncementUpsertWithWhereUniqueWithoutCreatedByInput | AnnouncementUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: AnnouncementCreateManyCreatedByInputEnvelope
+    set?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    disconnect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    delete?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    update?: AnnouncementUpdateWithWhereUniqueWithoutCreatedByInput | AnnouncementUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: AnnouncementUpdateManyWithWhereWithoutCreatedByInput | AnnouncementUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+  }
+
+  export type AnnouncementTargetUserUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnnouncementTargetUserCreateWithoutUserInput, AnnouncementTargetUserUncheckedCreateWithoutUserInput> | AnnouncementTargetUserCreateWithoutUserInput[] | AnnouncementTargetUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementTargetUserCreateOrConnectWithoutUserInput | AnnouncementTargetUserCreateOrConnectWithoutUserInput[]
+    upsert?: AnnouncementTargetUserUpsertWithWhereUniqueWithoutUserInput | AnnouncementTargetUserUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnnouncementTargetUserCreateManyUserInputEnvelope
+    set?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    disconnect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    delete?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    connect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    update?: AnnouncementTargetUserUpdateWithWhereUniqueWithoutUserInput | AnnouncementTargetUserUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnnouncementTargetUserUpdateManyWithWhereWithoutUserInput | AnnouncementTargetUserUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnnouncementTargetUserScalarWhereInput | AnnouncementTargetUserScalarWhereInput[]
+  }
+
+  export type AnnouncementReadUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnnouncementReadCreateWithoutUserInput, AnnouncementReadUncheckedCreateWithoutUserInput> | AnnouncementReadCreateWithoutUserInput[] | AnnouncementReadUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementReadCreateOrConnectWithoutUserInput | AnnouncementReadCreateOrConnectWithoutUserInput[]
+    upsert?: AnnouncementReadUpsertWithWhereUniqueWithoutUserInput | AnnouncementReadUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnnouncementReadCreateManyUserInputEnvelope
+    set?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    disconnect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    delete?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    update?: AnnouncementReadUpdateWithWhereUniqueWithoutUserInput | AnnouncementReadUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnnouncementReadUpdateManyWithWhereWithoutUserInput | AnnouncementReadUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnnouncementReadScalarWhereInput | AnnouncementReadScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutReportingManagerNestedInput = {
     create?: XOR<UserCreateWithoutReportingManagerInput, UserUncheckedCreateWithoutReportingManagerInput> | UserCreateWithoutReportingManagerInput[] | UserUncheckedCreateWithoutReportingManagerInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportingManagerInput | UserCreateOrConnectWithoutReportingManagerInput[]
@@ -12522,6 +18924,62 @@ export namespace Prisma {
     update?: ProjectMemberUpdateWithWhereUniqueWithoutUserInput | ProjectMemberUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: ProjectMemberUpdateManyWithWhereWithoutUserInput | ProjectMemberUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: ProjectMemberScalarWhereInput | ProjectMemberScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput> | TaskCreateWithoutCreatedByInput[] | TaskUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutCreatedByInput | TaskCreateOrConnectWithoutCreatedByInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutCreatedByInput | TaskUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: TaskCreateManyCreatedByInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutCreatedByInput | TaskUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutCreatedByInput | TaskUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
+  export type AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutCreatedByInput, AnnouncementUncheckedCreateWithoutCreatedByInput> | AnnouncementCreateWithoutCreatedByInput[] | AnnouncementUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutCreatedByInput | AnnouncementCreateOrConnectWithoutCreatedByInput[]
+    upsert?: AnnouncementUpsertWithWhereUniqueWithoutCreatedByInput | AnnouncementUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: AnnouncementCreateManyCreatedByInputEnvelope
+    set?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    disconnect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    delete?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+    update?: AnnouncementUpdateWithWhereUniqueWithoutCreatedByInput | AnnouncementUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: AnnouncementUpdateManyWithWhereWithoutCreatedByInput | AnnouncementUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+  }
+
+  export type AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnnouncementTargetUserCreateWithoutUserInput, AnnouncementTargetUserUncheckedCreateWithoutUserInput> | AnnouncementTargetUserCreateWithoutUserInput[] | AnnouncementTargetUserUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementTargetUserCreateOrConnectWithoutUserInput | AnnouncementTargetUserCreateOrConnectWithoutUserInput[]
+    upsert?: AnnouncementTargetUserUpsertWithWhereUniqueWithoutUserInput | AnnouncementTargetUserUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnnouncementTargetUserCreateManyUserInputEnvelope
+    set?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    disconnect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    delete?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    connect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    update?: AnnouncementTargetUserUpdateWithWhereUniqueWithoutUserInput | AnnouncementTargetUserUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnnouncementTargetUserUpdateManyWithWhereWithoutUserInput | AnnouncementTargetUserUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnnouncementTargetUserScalarWhereInput | AnnouncementTargetUserScalarWhereInput[]
+  }
+
+  export type AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<AnnouncementReadCreateWithoutUserInput, AnnouncementReadUncheckedCreateWithoutUserInput> | AnnouncementReadCreateWithoutUserInput[] | AnnouncementReadUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: AnnouncementReadCreateOrConnectWithoutUserInput | AnnouncementReadCreateOrConnectWithoutUserInput[]
+    upsert?: AnnouncementReadUpsertWithWhereUniqueWithoutUserInput | AnnouncementReadUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: AnnouncementReadCreateManyUserInputEnvelope
+    set?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    disconnect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    delete?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    update?: AnnouncementReadUpdateWithWhereUniqueWithoutUserInput | AnnouncementReadUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: AnnouncementReadUpdateManyWithWhereWithoutUserInput | AnnouncementReadUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: AnnouncementReadScalarWhereInput | AnnouncementReadScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAttendancesInput = {
@@ -12631,11 +19089,25 @@ export namespace Prisma {
     connect?: ProjectMemberWhereUniqueInput | ProjectMemberWhereUniqueInput[]
   }
 
+  export type TaskCreateNestedManyWithoutProjectInput = {
+    create?: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput> | TaskCreateWithoutProjectInput[] | TaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
+    createMany?: TaskCreateManyProjectInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+  }
+
   export type ProjectMemberUncheckedCreateNestedManyWithoutProjectInput = {
     create?: XOR<ProjectMemberCreateWithoutProjectInput, ProjectMemberUncheckedCreateWithoutProjectInput> | ProjectMemberCreateWithoutProjectInput[] | ProjectMemberUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: ProjectMemberCreateOrConnectWithoutProjectInput | ProjectMemberCreateOrConnectWithoutProjectInput[]
     createMany?: ProjectMemberCreateManyProjectInputEnvelope
     connect?: ProjectMemberWhereUniqueInput | ProjectMemberWhereUniqueInput[]
+  }
+
+  export type TaskUncheckedCreateNestedManyWithoutProjectInput = {
+    create?: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput> | TaskCreateWithoutProjectInput[] | TaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
+    createMany?: TaskCreateManyProjectInputEnvelope
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
   }
 
   export type WorkspaceUpdateOneRequiredWithoutProjectsNestedInput = {
@@ -12680,6 +19152,20 @@ export namespace Prisma {
     deleteMany?: ProjectMemberScalarWhereInput | ProjectMemberScalarWhereInput[]
   }
 
+  export type TaskUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput> | TaskCreateWithoutProjectInput[] | TaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutProjectInput | TaskUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: TaskCreateManyProjectInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutProjectInput | TaskUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutProjectInput | TaskUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
+  }
+
   export type ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput = {
     create?: XOR<ProjectMemberCreateWithoutProjectInput, ProjectMemberUncheckedCreateWithoutProjectInput> | ProjectMemberCreateWithoutProjectInput[] | ProjectMemberUncheckedCreateWithoutProjectInput[]
     connectOrCreate?: ProjectMemberCreateOrConnectWithoutProjectInput | ProjectMemberCreateOrConnectWithoutProjectInput[]
@@ -12692,6 +19178,20 @@ export namespace Prisma {
     update?: ProjectMemberUpdateWithWhereUniqueWithoutProjectInput | ProjectMemberUpdateWithWhereUniqueWithoutProjectInput[]
     updateMany?: ProjectMemberUpdateManyWithWhereWithoutProjectInput | ProjectMemberUpdateManyWithWhereWithoutProjectInput[]
     deleteMany?: ProjectMemberScalarWhereInput | ProjectMemberScalarWhereInput[]
+  }
+
+  export type TaskUncheckedUpdateManyWithoutProjectNestedInput = {
+    create?: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput> | TaskCreateWithoutProjectInput[] | TaskUncheckedCreateWithoutProjectInput[]
+    connectOrCreate?: TaskCreateOrConnectWithoutProjectInput | TaskCreateOrConnectWithoutProjectInput[]
+    upsert?: TaskUpsertWithWhereUniqueWithoutProjectInput | TaskUpsertWithWhereUniqueWithoutProjectInput[]
+    createMany?: TaskCreateManyProjectInputEnvelope
+    set?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    disconnect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    delete?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    connect?: TaskWhereUniqueInput | TaskWhereUniqueInput[]
+    update?: TaskUpdateWithWhereUniqueWithoutProjectInput | TaskUpdateWithWhereUniqueWithoutProjectInput[]
+    updateMany?: TaskUpdateManyWithWhereWithoutProjectInput | TaskUpdateManyWithWhereWithoutProjectInput[]
+    deleteMany?: TaskScalarWhereInput | TaskScalarWhereInput[]
   }
 
   export type ProjectCreateNestedOneWithoutMembersInput = {
@@ -12720,6 +19220,226 @@ export namespace Prisma {
     upsert?: UserUpsertWithoutProjectMembersInput
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutProjectMembersInput, UserUpdateWithoutProjectMembersInput>, UserUncheckedUpdateWithoutProjectMembersInput>
+  }
+
+  export type ProjectCreateNestedOneWithoutTasksInput = {
+    create?: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutTasksInput
+    connect?: ProjectWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedTasksInput = {
+    create?: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedTasksInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumTaskStatusFieldUpdateOperationsInput = {
+    set?: $Enums.TaskStatus
+  }
+
+  export type EnumTaskPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.TaskPriority
+  }
+
+  export type ProjectUpdateOneRequiredWithoutTasksNestedInput = {
+    create?: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
+    connectOrCreate?: ProjectCreateOrConnectWithoutTasksInput
+    upsert?: ProjectUpsertWithoutTasksInput
+    connect?: ProjectWhereUniqueInput
+    update?: XOR<XOR<ProjectUpdateToOneWithWhereWithoutTasksInput, ProjectUpdateWithoutTasksInput>, ProjectUncheckedUpdateWithoutTasksInput>
+  }
+
+  export type UserUpdateOneWithoutCreatedTasksNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedTasksInput
+    upsert?: UserUpsertWithoutCreatedTasksInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedTasksInput, UserUpdateWithoutCreatedTasksInput>, UserUncheckedUpdateWithoutCreatedTasksInput>
+  }
+
+  export type WorkspaceCreateNestedOneWithoutAnnouncementsInput = {
+    create?: XOR<WorkspaceCreateWithoutAnnouncementsInput, WorkspaceUncheckedCreateWithoutAnnouncementsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutAnnouncementsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutCreatedAnnouncementsInput = {
+    create?: XOR<UserCreateWithoutCreatedAnnouncementsInput, UserUncheckedCreateWithoutCreatedAnnouncementsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedAnnouncementsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AnnouncementTargetUserCreateNestedManyWithoutAnnouncementInput = {
+    create?: XOR<AnnouncementTargetUserCreateWithoutAnnouncementInput, AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput> | AnnouncementTargetUserCreateWithoutAnnouncementInput[] | AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput | AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput[]
+    createMany?: AnnouncementTargetUserCreateManyAnnouncementInputEnvelope
+    connect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+  }
+
+  export type AnnouncementReadCreateNestedManyWithoutAnnouncementInput = {
+    create?: XOR<AnnouncementReadCreateWithoutAnnouncementInput, AnnouncementReadUncheckedCreateWithoutAnnouncementInput> | AnnouncementReadCreateWithoutAnnouncementInput[] | AnnouncementReadUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementReadCreateOrConnectWithoutAnnouncementInput | AnnouncementReadCreateOrConnectWithoutAnnouncementInput[]
+    createMany?: AnnouncementReadCreateManyAnnouncementInputEnvelope
+    connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+  }
+
+  export type AnnouncementTargetUserUncheckedCreateNestedManyWithoutAnnouncementInput = {
+    create?: XOR<AnnouncementTargetUserCreateWithoutAnnouncementInput, AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput> | AnnouncementTargetUserCreateWithoutAnnouncementInput[] | AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput | AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput[]
+    createMany?: AnnouncementTargetUserCreateManyAnnouncementInputEnvelope
+    connect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+  }
+
+  export type AnnouncementReadUncheckedCreateNestedManyWithoutAnnouncementInput = {
+    create?: XOR<AnnouncementReadCreateWithoutAnnouncementInput, AnnouncementReadUncheckedCreateWithoutAnnouncementInput> | AnnouncementReadCreateWithoutAnnouncementInput[] | AnnouncementReadUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementReadCreateOrConnectWithoutAnnouncementInput | AnnouncementReadCreateOrConnectWithoutAnnouncementInput[]
+    createMany?: AnnouncementReadCreateManyAnnouncementInputEnvelope
+    connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+  }
+
+  export type EnumAnnouncementPriorityFieldUpdateOperationsInput = {
+    set?: $Enums.AnnouncementPriority
+  }
+
+  export type EnumAnnouncementTargetTypeFieldUpdateOperationsInput = {
+    set?: $Enums.AnnouncementTargetType
+  }
+
+  export type EnumAnnouncementStatusFieldUpdateOperationsInput = {
+    set?: $Enums.AnnouncementStatus
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutAnnouncementsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutAnnouncementsInput, WorkspaceUncheckedCreateWithoutAnnouncementsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutAnnouncementsInput
+    upsert?: WorkspaceUpsertWithoutAnnouncementsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutAnnouncementsInput, WorkspaceUpdateWithoutAnnouncementsInput>, WorkspaceUncheckedUpdateWithoutAnnouncementsInput>
+  }
+
+  export type UserUpdateOneWithoutCreatedAnnouncementsNestedInput = {
+    create?: XOR<UserCreateWithoutCreatedAnnouncementsInput, UserUncheckedCreateWithoutCreatedAnnouncementsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutCreatedAnnouncementsInput
+    upsert?: UserUpsertWithoutCreatedAnnouncementsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutCreatedAnnouncementsInput, UserUpdateWithoutCreatedAnnouncementsInput>, UserUncheckedUpdateWithoutCreatedAnnouncementsInput>
+  }
+
+  export type AnnouncementTargetUserUpdateManyWithoutAnnouncementNestedInput = {
+    create?: XOR<AnnouncementTargetUserCreateWithoutAnnouncementInput, AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput> | AnnouncementTargetUserCreateWithoutAnnouncementInput[] | AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput | AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput[]
+    upsert?: AnnouncementTargetUserUpsertWithWhereUniqueWithoutAnnouncementInput | AnnouncementTargetUserUpsertWithWhereUniqueWithoutAnnouncementInput[]
+    createMany?: AnnouncementTargetUserCreateManyAnnouncementInputEnvelope
+    set?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    disconnect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    delete?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    connect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    update?: AnnouncementTargetUserUpdateWithWhereUniqueWithoutAnnouncementInput | AnnouncementTargetUserUpdateWithWhereUniqueWithoutAnnouncementInput[]
+    updateMany?: AnnouncementTargetUserUpdateManyWithWhereWithoutAnnouncementInput | AnnouncementTargetUserUpdateManyWithWhereWithoutAnnouncementInput[]
+    deleteMany?: AnnouncementTargetUserScalarWhereInput | AnnouncementTargetUserScalarWhereInput[]
+  }
+
+  export type AnnouncementReadUpdateManyWithoutAnnouncementNestedInput = {
+    create?: XOR<AnnouncementReadCreateWithoutAnnouncementInput, AnnouncementReadUncheckedCreateWithoutAnnouncementInput> | AnnouncementReadCreateWithoutAnnouncementInput[] | AnnouncementReadUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementReadCreateOrConnectWithoutAnnouncementInput | AnnouncementReadCreateOrConnectWithoutAnnouncementInput[]
+    upsert?: AnnouncementReadUpsertWithWhereUniqueWithoutAnnouncementInput | AnnouncementReadUpsertWithWhereUniqueWithoutAnnouncementInput[]
+    createMany?: AnnouncementReadCreateManyAnnouncementInputEnvelope
+    set?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    disconnect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    delete?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    update?: AnnouncementReadUpdateWithWhereUniqueWithoutAnnouncementInput | AnnouncementReadUpdateWithWhereUniqueWithoutAnnouncementInput[]
+    updateMany?: AnnouncementReadUpdateManyWithWhereWithoutAnnouncementInput | AnnouncementReadUpdateManyWithWhereWithoutAnnouncementInput[]
+    deleteMany?: AnnouncementReadScalarWhereInput | AnnouncementReadScalarWhereInput[]
+  }
+
+  export type AnnouncementTargetUserUncheckedUpdateManyWithoutAnnouncementNestedInput = {
+    create?: XOR<AnnouncementTargetUserCreateWithoutAnnouncementInput, AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput> | AnnouncementTargetUserCreateWithoutAnnouncementInput[] | AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput | AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput[]
+    upsert?: AnnouncementTargetUserUpsertWithWhereUniqueWithoutAnnouncementInput | AnnouncementTargetUserUpsertWithWhereUniqueWithoutAnnouncementInput[]
+    createMany?: AnnouncementTargetUserCreateManyAnnouncementInputEnvelope
+    set?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    disconnect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    delete?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    connect?: AnnouncementTargetUserWhereUniqueInput | AnnouncementTargetUserWhereUniqueInput[]
+    update?: AnnouncementTargetUserUpdateWithWhereUniqueWithoutAnnouncementInput | AnnouncementTargetUserUpdateWithWhereUniqueWithoutAnnouncementInput[]
+    updateMany?: AnnouncementTargetUserUpdateManyWithWhereWithoutAnnouncementInput | AnnouncementTargetUserUpdateManyWithWhereWithoutAnnouncementInput[]
+    deleteMany?: AnnouncementTargetUserScalarWhereInput | AnnouncementTargetUserScalarWhereInput[]
+  }
+
+  export type AnnouncementReadUncheckedUpdateManyWithoutAnnouncementNestedInput = {
+    create?: XOR<AnnouncementReadCreateWithoutAnnouncementInput, AnnouncementReadUncheckedCreateWithoutAnnouncementInput> | AnnouncementReadCreateWithoutAnnouncementInput[] | AnnouncementReadUncheckedCreateWithoutAnnouncementInput[]
+    connectOrCreate?: AnnouncementReadCreateOrConnectWithoutAnnouncementInput | AnnouncementReadCreateOrConnectWithoutAnnouncementInput[]
+    upsert?: AnnouncementReadUpsertWithWhereUniqueWithoutAnnouncementInput | AnnouncementReadUpsertWithWhereUniqueWithoutAnnouncementInput[]
+    createMany?: AnnouncementReadCreateManyAnnouncementInputEnvelope
+    set?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    disconnect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    delete?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+    update?: AnnouncementReadUpdateWithWhereUniqueWithoutAnnouncementInput | AnnouncementReadUpdateWithWhereUniqueWithoutAnnouncementInput[]
+    updateMany?: AnnouncementReadUpdateManyWithWhereWithoutAnnouncementInput | AnnouncementReadUpdateManyWithWhereWithoutAnnouncementInput[]
+    deleteMany?: AnnouncementReadScalarWhereInput | AnnouncementReadScalarWhereInput[]
+  }
+
+  export type AnnouncementCreateNestedOneWithoutSelectedUsersInput = {
+    create?: XOR<AnnouncementCreateWithoutSelectedUsersInput, AnnouncementUncheckedCreateWithoutSelectedUsersInput>
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutSelectedUsersInput
+    connect?: AnnouncementWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAnnouncementTargetsInput = {
+    create?: XOR<UserCreateWithoutAnnouncementTargetsInput, UserUncheckedCreateWithoutAnnouncementTargetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnouncementTargetsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AnnouncementUpdateOneRequiredWithoutSelectedUsersNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutSelectedUsersInput, AnnouncementUncheckedCreateWithoutSelectedUsersInput>
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutSelectedUsersInput
+    upsert?: AnnouncementUpsertWithoutSelectedUsersInput
+    connect?: AnnouncementWhereUniqueInput
+    update?: XOR<XOR<AnnouncementUpdateToOneWithWhereWithoutSelectedUsersInput, AnnouncementUpdateWithoutSelectedUsersInput>, AnnouncementUncheckedUpdateWithoutSelectedUsersInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAnnouncementTargetsNestedInput = {
+    create?: XOR<UserCreateWithoutAnnouncementTargetsInput, UserUncheckedCreateWithoutAnnouncementTargetsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnouncementTargetsInput
+    upsert?: UserUpsertWithoutAnnouncementTargetsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAnnouncementTargetsInput, UserUpdateWithoutAnnouncementTargetsInput>, UserUncheckedUpdateWithoutAnnouncementTargetsInput>
+  }
+
+  export type AnnouncementCreateNestedOneWithoutReadRecordsInput = {
+    create?: XOR<AnnouncementCreateWithoutReadRecordsInput, AnnouncementUncheckedCreateWithoutReadRecordsInput>
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutReadRecordsInput
+    connect?: AnnouncementWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutAnnouncementReadsInput = {
+    create?: XOR<UserCreateWithoutAnnouncementReadsInput, UserUncheckedCreateWithoutAnnouncementReadsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnouncementReadsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type AnnouncementUpdateOneRequiredWithoutReadRecordsNestedInput = {
+    create?: XOR<AnnouncementCreateWithoutReadRecordsInput, AnnouncementUncheckedCreateWithoutReadRecordsInput>
+    connectOrCreate?: AnnouncementCreateOrConnectWithoutReadRecordsInput
+    upsert?: AnnouncementUpsertWithoutReadRecordsInput
+    connect?: AnnouncementWhereUniqueInput
+    update?: XOR<XOR<AnnouncementUpdateToOneWithWhereWithoutReadRecordsInput, AnnouncementUpdateWithoutReadRecordsInput>, AnnouncementUncheckedUpdateWithoutReadRecordsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutAnnouncementReadsNestedInput = {
+    create?: XOR<UserCreateWithoutAnnouncementReadsInput, UserUncheckedCreateWithoutAnnouncementReadsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutAnnouncementReadsInput
+    upsert?: UserUpsertWithoutAnnouncementReadsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAnnouncementReadsInput, UserUpdateWithoutAnnouncementReadsInput>, UserUncheckedUpdateWithoutAnnouncementReadsInput>
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -12930,6 +19650,91 @@ export namespace Prisma {
     _max?: NestedEnumAttendanceStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumTaskStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusFilter<$PrismaModel> | $Enums.TaskStatus
+  }
+
+  export type NestedEnumTaskPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityFilter<$PrismaModel> | $Enums.TaskPriority
+  }
+
+  export type NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskStatus | EnumTaskStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskStatus[] | ListEnumTaskStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskStatusWithAggregatesFilter<$PrismaModel> | $Enums.TaskStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaskStatusFilter<$PrismaModel>
+    _max?: NestedEnumTaskStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTaskPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.TaskPriority | EnumTaskPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.TaskPriority[] | ListEnumTaskPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumTaskPriorityWithAggregatesFilter<$PrismaModel> | $Enums.TaskPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTaskPriorityFilter<$PrismaModel>
+    _max?: NestedEnumTaskPriorityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAnnouncementPriorityFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementPriority | EnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementPriority[] | ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementPriority[] | ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementPriorityFilter<$PrismaModel> | $Enums.AnnouncementPriority
+  }
+
+  export type NestedEnumAnnouncementTargetTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementTargetType | EnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementTargetType[] | ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementTargetType[] | ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementTargetTypeFilter<$PrismaModel> | $Enums.AnnouncementTargetType
+  }
+
+  export type NestedEnumAnnouncementStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementStatus | EnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementStatus[] | ListEnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementStatus[] | ListEnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementStatusFilter<$PrismaModel> | $Enums.AnnouncementStatus
+  }
+
+  export type NestedEnumAnnouncementPriorityWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementPriority | EnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementPriority[] | ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementPriority[] | ListEnumAnnouncementPriorityFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementPriorityWithAggregatesFilter<$PrismaModel> | $Enums.AnnouncementPriority
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAnnouncementPriorityFilter<$PrismaModel>
+    _max?: NestedEnumAnnouncementPriorityFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAnnouncementTargetTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementTargetType | EnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementTargetType[] | ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementTargetType[] | ListEnumAnnouncementTargetTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementTargetTypeWithAggregatesFilter<$PrismaModel> | $Enums.AnnouncementTargetType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAnnouncementTargetTypeFilter<$PrismaModel>
+    _max?: NestedEnumAnnouncementTargetTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumAnnouncementStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.AnnouncementStatus | EnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.AnnouncementStatus[] | ListEnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.AnnouncementStatus[] | ListEnumAnnouncementStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumAnnouncementStatusWithAggregatesFilter<$PrismaModel> | $Enums.AnnouncementStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumAnnouncementStatusFilter<$PrismaModel>
+    _max?: NestedEnumAnnouncementStatusFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutWorkspaceInput = {
     id?: string
     name?: string | null
@@ -12955,6 +19760,10 @@ export namespace Prisma {
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkspaceInput = {
@@ -12982,6 +19791,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkspaceInput = {
@@ -13035,6 +19848,7 @@ export namespace Prisma {
     createdBy?: UserCreateNestedOneWithoutCreatedProjectsInput
     manager?: UserCreateNestedOneWithoutManagedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutWorkspaceInput = {
@@ -13052,6 +19866,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutWorkspaceInput = {
@@ -13061,6 +19876,48 @@ export namespace Prisma {
 
   export type ProjectCreateManyWorkspaceInputEnvelope = {
     data: ProjectCreateManyWorkspaceInput | ProjectCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnouncementCreateWithoutWorkspaceInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedAnnouncementsInput
+    selectedUsers?: AnnouncementTargetUserCreateNestedManyWithoutAnnouncementInput
+    readRecords?: AnnouncementReadCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    selectedUsers?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutAnnouncementInput
+    readRecords?: AnnouncementReadUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementCreateOrConnectWithoutWorkspaceInput = {
+    where: AnnouncementWhereUniqueInput
+    create: XOR<AnnouncementCreateWithoutWorkspaceInput, AnnouncementUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type AnnouncementCreateManyWorkspaceInputEnvelope = {
+    data: AnnouncementCreateManyWorkspaceInput | AnnouncementCreateManyWorkspaceInput[]
     skipDuplicates?: boolean
   }
 
@@ -13168,6 +20025,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Project"> | Date | string
   }
 
+  export type AnnouncementUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: AnnouncementWhereUniqueInput
+    update: XOR<AnnouncementUpdateWithoutWorkspaceInput, AnnouncementUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<AnnouncementCreateWithoutWorkspaceInput, AnnouncementUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type AnnouncementUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: AnnouncementWhereUniqueInput
+    data: XOR<AnnouncementUpdateWithoutWorkspaceInput, AnnouncementUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type AnnouncementUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: AnnouncementScalarWhereInput
+    data: XOR<AnnouncementUpdateManyMutationInput, AnnouncementUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type AnnouncementScalarWhereInput = {
+    AND?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+    OR?: AnnouncementScalarWhereInput[]
+    NOT?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+    id?: StringFilter<"Announcement"> | string
+    title?: StringFilter<"Announcement"> | string
+    description?: StringFilter<"Announcement"> | string
+    priority?: EnumAnnouncementPriorityFilter<"Announcement"> | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFilter<"Announcement"> | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFilter<"Announcement"> | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFilter<"Announcement"> | Date | string
+    expiryDate?: DateTimeNullableFilter<"Announcement"> | Date | string | null
+    workspaceId?: StringFilter<"Announcement"> | string
+    createdById?: StringNullableFilter<"Announcement"> | string | null
+    createdAt?: DateTimeFilter<"Announcement"> | Date | string
+    updatedAt?: DateTimeFilter<"Announcement"> | Date | string
+  }
+
   export type WorkspaceCreateWithoutDepartmentsInput = {
     id?: string
     name: string
@@ -13176,6 +20067,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDepartmentsInput = {
@@ -13186,6 +20078,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDepartmentsInput = {
@@ -13218,6 +20111,10 @@ export namespace Prisma {
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDepartmentInput = {
@@ -13245,6 +20142,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDepartmentInput = {
@@ -13276,6 +20177,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDepartmentsInput = {
@@ -13286,6 +20188,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutDepartmentInput = {
@@ -13312,6 +20215,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutUsersInput = {
@@ -13322,6 +20226,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutUsersInput = {
@@ -13375,6 +20280,10 @@ export namespace Prisma {
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDirectReportsInput = {
@@ -13402,6 +20311,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDirectReportsInput = {
@@ -13434,6 +20347,10 @@ export namespace Prisma {
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportingManagerInput = {
@@ -13461,6 +20378,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportingManagerInput = {
@@ -13498,6 +20419,10 @@ export namespace Prisma {
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedUsersInput = {
@@ -13525,6 +20450,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedUsersInput = {
@@ -13557,6 +20486,10 @@ export namespace Prisma {
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedByInput = {
@@ -13584,6 +20517,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedByInput = {
@@ -13645,6 +20582,7 @@ export namespace Prisma {
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
     manager?: UserCreateNestedOneWithoutManagedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutCreatedByInput = {
@@ -13662,6 +20600,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutCreatedByInput = {
@@ -13689,6 +20628,7 @@ export namespace Prisma {
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedProjectsInput
     members?: ProjectMemberCreateNestedManyWithoutProjectInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutManagerInput = {
@@ -13706,6 +20646,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutManagerInput = {
@@ -13740,6 +20681,128 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TaskCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    project: ProjectCreateNestedOneWithoutTasksInput
+  }
+
+  export type TaskUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    projectId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateOrConnectWithoutCreatedByInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TaskCreateManyCreatedByInputEnvelope = {
+    data: TaskCreateManyCreatedByInput | TaskCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnouncementCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutAnnouncementsInput
+    selectedUsers?: AnnouncementTargetUserCreateNestedManyWithoutAnnouncementInput
+    readRecords?: AnnouncementReadCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    workspaceId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    selectedUsers?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutAnnouncementInput
+    readRecords?: AnnouncementReadUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementCreateOrConnectWithoutCreatedByInput = {
+    where: AnnouncementWhereUniqueInput
+    create: XOR<AnnouncementCreateWithoutCreatedByInput, AnnouncementUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type AnnouncementCreateManyCreatedByInputEnvelope = {
+    data: AnnouncementCreateManyCreatedByInput | AnnouncementCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnouncementTargetUserCreateWithoutUserInput = {
+    id?: string
+    createdAt?: Date | string
+    announcement: AnnouncementCreateNestedOneWithoutSelectedUsersInput
+  }
+
+  export type AnnouncementTargetUserUncheckedCreateWithoutUserInput = {
+    id?: string
+    announcementId: string
+    createdAt?: Date | string
+  }
+
+  export type AnnouncementTargetUserCreateOrConnectWithoutUserInput = {
+    where: AnnouncementTargetUserWhereUniqueInput
+    create: XOR<AnnouncementTargetUserCreateWithoutUserInput, AnnouncementTargetUserUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnnouncementTargetUserCreateManyUserInputEnvelope = {
+    data: AnnouncementTargetUserCreateManyUserInput | AnnouncementTargetUserCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnouncementReadCreateWithoutUserInput = {
+    id?: string
+    isRead?: boolean
+    readAt?: Date | string
+    announcement: AnnouncementCreateNestedOneWithoutReadRecordsInput
+  }
+
+  export type AnnouncementReadUncheckedCreateWithoutUserInput = {
+    id?: string
+    announcementId: string
+    isRead?: boolean
+    readAt?: Date | string
+  }
+
+  export type AnnouncementReadCreateOrConnectWithoutUserInput = {
+    where: AnnouncementReadWhereUniqueInput
+    create: XOR<AnnouncementReadCreateWithoutUserInput, AnnouncementReadUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnnouncementReadCreateManyUserInputEnvelope = {
+    data: AnnouncementReadCreateManyUserInput | AnnouncementReadCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutUsersInput = {
     update: XOR<WorkspaceUpdateWithoutUsersInput, WorkspaceUncheckedUpdateWithoutUsersInput>
     create: XOR<WorkspaceCreateWithoutUsersInput, WorkspaceUncheckedCreateWithoutUsersInput>
@@ -13759,6 +20822,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutUsersInput = {
@@ -13769,6 +20833,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DepartmentUpsertWithoutUsersInput = {
@@ -13834,6 +20899,10 @@ export namespace Prisma {
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDirectReportsInput = {
@@ -13861,6 +20930,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutReportingManagerInput = {
@@ -13915,6 +20988,10 @@ export namespace Prisma {
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedUsersInput = {
@@ -13942,6 +21019,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -14049,6 +21130,107 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"ProjectMember"> | Date | string
   }
 
+  export type TaskUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutCreatedByInput, TaskUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<TaskCreateWithoutCreatedByInput, TaskUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutCreatedByInput, TaskUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutCreatedByInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type TaskScalarWhereInput = {
+    AND?: TaskScalarWhereInput | TaskScalarWhereInput[]
+    OR?: TaskScalarWhereInput[]
+    NOT?: TaskScalarWhereInput | TaskScalarWhereInput[]
+    id?: StringFilter<"Task"> | string
+    title?: StringFilter<"Task"> | string
+    description?: StringNullableFilter<"Task"> | string | null
+    status?: EnumTaskStatusFilter<"Task"> | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFilter<"Task"> | $Enums.TaskPriority
+    dueDate?: DateTimeNullableFilter<"Task"> | Date | string | null
+    projectId?: StringFilter<"Task"> | string
+    createdById?: StringNullableFilter<"Task"> | string | null
+    createdAt?: DateTimeFilter<"Task"> | Date | string
+    updatedAt?: DateTimeFilter<"Task"> | Date | string
+  }
+
+  export type AnnouncementUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: AnnouncementWhereUniqueInput
+    update: XOR<AnnouncementUpdateWithoutCreatedByInput, AnnouncementUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<AnnouncementCreateWithoutCreatedByInput, AnnouncementUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type AnnouncementUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: AnnouncementWhereUniqueInput
+    data: XOR<AnnouncementUpdateWithoutCreatedByInput, AnnouncementUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type AnnouncementUpdateManyWithWhereWithoutCreatedByInput = {
+    where: AnnouncementScalarWhereInput
+    data: XOR<AnnouncementUpdateManyMutationInput, AnnouncementUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type AnnouncementTargetUserUpsertWithWhereUniqueWithoutUserInput = {
+    where: AnnouncementTargetUserWhereUniqueInput
+    update: XOR<AnnouncementTargetUserUpdateWithoutUserInput, AnnouncementTargetUserUncheckedUpdateWithoutUserInput>
+    create: XOR<AnnouncementTargetUserCreateWithoutUserInput, AnnouncementTargetUserUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnnouncementTargetUserUpdateWithWhereUniqueWithoutUserInput = {
+    where: AnnouncementTargetUserWhereUniqueInput
+    data: XOR<AnnouncementTargetUserUpdateWithoutUserInput, AnnouncementTargetUserUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AnnouncementTargetUserUpdateManyWithWhereWithoutUserInput = {
+    where: AnnouncementTargetUserScalarWhereInput
+    data: XOR<AnnouncementTargetUserUpdateManyMutationInput, AnnouncementTargetUserUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AnnouncementTargetUserScalarWhereInput = {
+    AND?: AnnouncementTargetUserScalarWhereInput | AnnouncementTargetUserScalarWhereInput[]
+    OR?: AnnouncementTargetUserScalarWhereInput[]
+    NOT?: AnnouncementTargetUserScalarWhereInput | AnnouncementTargetUserScalarWhereInput[]
+    id?: StringFilter<"AnnouncementTargetUser"> | string
+    announcementId?: StringFilter<"AnnouncementTargetUser"> | string
+    userId?: StringFilter<"AnnouncementTargetUser"> | string
+    createdAt?: DateTimeFilter<"AnnouncementTargetUser"> | Date | string
+  }
+
+  export type AnnouncementReadUpsertWithWhereUniqueWithoutUserInput = {
+    where: AnnouncementReadWhereUniqueInput
+    update: XOR<AnnouncementReadUpdateWithoutUserInput, AnnouncementReadUncheckedUpdateWithoutUserInput>
+    create: XOR<AnnouncementReadCreateWithoutUserInput, AnnouncementReadUncheckedCreateWithoutUserInput>
+  }
+
+  export type AnnouncementReadUpdateWithWhereUniqueWithoutUserInput = {
+    where: AnnouncementReadWhereUniqueInput
+    data: XOR<AnnouncementReadUpdateWithoutUserInput, AnnouncementReadUncheckedUpdateWithoutUserInput>
+  }
+
+  export type AnnouncementReadUpdateManyWithWhereWithoutUserInput = {
+    where: AnnouncementReadScalarWhereInput
+    data: XOR<AnnouncementReadUpdateManyMutationInput, AnnouncementReadUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type AnnouncementReadScalarWhereInput = {
+    AND?: AnnouncementReadScalarWhereInput | AnnouncementReadScalarWhereInput[]
+    OR?: AnnouncementReadScalarWhereInput[]
+    NOT?: AnnouncementReadScalarWhereInput | AnnouncementReadScalarWhereInput[]
+    id?: StringFilter<"AnnouncementRead"> | string
+    announcementId?: StringFilter<"AnnouncementRead"> | string
+    userId?: StringFilter<"AnnouncementRead"> | string
+    isRead?: BoolFilter<"AnnouncementRead"> | boolean
+    readAt?: DateTimeFilter<"AnnouncementRead"> | Date | string
+  }
+
   export type UserCreateWithoutAttendancesInput = {
     id?: string
     name?: string | null
@@ -14074,6 +21256,10 @@ export namespace Prisma {
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAttendancesInput = {
@@ -14101,6 +21287,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAttendancesInput = {
@@ -14168,6 +21358,10 @@ export namespace Prisma {
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAttendancesInput = {
@@ -14195,6 +21389,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TimerSegmentUpsertWithWhereUniqueWithoutAttendanceInput = {
@@ -14296,6 +21494,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserCreateNestedManyWithoutWorkspaceInput
     departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutProjectsInput = {
@@ -14306,6 +21505,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     users?: UserUncheckedCreateNestedManyWithoutWorkspaceInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutProjectsInput = {
@@ -14338,6 +21538,10 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutUserInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedProjectsInput = {
@@ -14365,6 +21569,10 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedProjectsInput = {
@@ -14397,6 +21605,10 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutUserInput
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutManagedProjectsInput = {
@@ -14424,6 +21636,10 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutManagedProjectsInput = {
@@ -14453,6 +21669,40 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type TaskCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedTasksInput
+  }
+
+  export type TaskUncheckedCreateWithoutProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type TaskCreateOrConnectWithoutProjectInput = {
+    where: TaskWhereUniqueInput
+    create: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput>
+  }
+
+  export type TaskCreateManyProjectInputEnvelope = {
+    data: TaskCreateManyProjectInput | TaskCreateManyProjectInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutProjectsInput = {
     update: XOR<WorkspaceUpdateWithoutProjectsInput, WorkspaceUncheckedUpdateWithoutProjectsInput>
     create: XOR<WorkspaceCreateWithoutProjectsInput, WorkspaceUncheckedCreateWithoutProjectsInput>
@@ -14472,6 +21722,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUpdateManyWithoutWorkspaceNestedInput
     departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
@@ -14482,6 +21733,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     users?: UserUncheckedUpdateManyWithoutWorkspaceNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutCreatedProjectsInput = {
@@ -14520,6 +21772,10 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutUserNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
@@ -14547,6 +21803,10 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutManagedProjectsInput = {
@@ -14585,6 +21845,10 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutUserNestedInput
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedProjectsInput = {
@@ -14612,6 +21876,10 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectMemberUpsertWithWhereUniqueWithoutProjectInput = {
@@ -14630,6 +21898,22 @@ export namespace Prisma {
     data: XOR<ProjectMemberUpdateManyMutationInput, ProjectMemberUncheckedUpdateManyWithoutProjectInput>
   }
 
+  export type TaskUpsertWithWhereUniqueWithoutProjectInput = {
+    where: TaskWhereUniqueInput
+    update: XOR<TaskUpdateWithoutProjectInput, TaskUncheckedUpdateWithoutProjectInput>
+    create: XOR<TaskCreateWithoutProjectInput, TaskUncheckedCreateWithoutProjectInput>
+  }
+
+  export type TaskUpdateWithWhereUniqueWithoutProjectInput = {
+    where: TaskWhereUniqueInput
+    data: XOR<TaskUpdateWithoutProjectInput, TaskUncheckedUpdateWithoutProjectInput>
+  }
+
+  export type TaskUpdateManyWithWhereWithoutProjectInput = {
+    where: TaskScalarWhereInput
+    data: XOR<TaskUpdateManyMutationInput, TaskUncheckedUpdateManyWithoutProjectInput>
+  }
+
   export type ProjectCreateWithoutMembersInput = {
     id?: string
     name: string
@@ -14645,6 +21929,7 @@ export namespace Prisma {
     workspace: WorkspaceCreateNestedOneWithoutProjectsInput
     createdBy?: UserCreateNestedOneWithoutCreatedProjectsInput
     manager?: UserCreateNestedOneWithoutManagedProjectsInput
+    tasks?: TaskCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectUncheckedCreateWithoutMembersInput = {
@@ -14662,6 +21947,7 @@ export namespace Prisma {
     managerId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+    tasks?: TaskUncheckedCreateNestedManyWithoutProjectInput
   }
 
   export type ProjectCreateOrConnectWithoutMembersInput = {
@@ -14694,6 +21980,10 @@ export namespace Prisma {
     attendances?: AttendanceCreateNestedManyWithoutUserInput
     createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectCreateNestedManyWithoutManagerInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProjectMembersInput = {
@@ -14721,6 +22011,10 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
     createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
     managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProjectMembersInput = {
@@ -14754,6 +22048,7 @@ export namespace Prisma {
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedProjectsNestedInput
     manager?: UserUpdateOneWithoutManagedProjectsNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutMembersInput = {
@@ -14771,6 +22066,7 @@ export namespace Prisma {
     managerId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type UserUpsertWithoutProjectMembersInput = {
@@ -14809,6 +22105,10 @@ export namespace Prisma {
     attendances?: AttendanceUpdateManyWithoutUserNestedInput
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectMembersInput = {
@@ -14836,6 +22136,956 @@ export namespace Prisma {
     attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type ProjectCreateWithoutTasksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    status?: string
+    priority?: string
+    progress?: number
+    startDate?: Date | string | null
+    deadline?: Date | string | null
+    isArchived?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutProjectsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedProjectsInput
+    manager?: UserCreateNestedOneWithoutManagedProjectsInput
+    members?: ProjectMemberCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectUncheckedCreateWithoutTasksInput = {
+    id?: string
+    name: string
+    description?: string | null
+    status?: string
+    priority?: string
+    progress?: number
+    startDate?: Date | string | null
+    deadline?: Date | string | null
+    isArchived?: boolean
+    workspaceId: string
+    createdById?: string | null
+    managerId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    members?: ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
+  }
+
+  export type ProjectCreateOrConnectWithoutTasksInput = {
+    where: ProjectWhereUniqueInput
+    create: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
+  }
+
+  export type UserCreateWithoutCreatedTasksInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutUsersInput
+    department?: DepartmentCreateNestedOneWithoutUsersInput
+    reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
+    directReports?: UserCreateNestedManyWithoutReportingManagerInput
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedTasksInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    workspaceId: string
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    departmentId?: string | null
+    reportingManagerId?: string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedTasksInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
+  }
+
+  export type ProjectUpsertWithoutTasksInput = {
+    update: XOR<ProjectUpdateWithoutTasksInput, ProjectUncheckedUpdateWithoutTasksInput>
+    create: XOR<ProjectCreateWithoutTasksInput, ProjectUncheckedCreateWithoutTasksInput>
+    where?: ProjectWhereInput
+  }
+
+  export type ProjectUpdateToOneWithWhereWithoutTasksInput = {
+    where?: ProjectWhereInput
+    data: XOR<ProjectUpdateWithoutTasksInput, ProjectUncheckedUpdateWithoutTasksInput>
+  }
+
+  export type ProjectUpdateWithoutTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedProjectsNestedInput
+    manager?: UserUpdateOneWithoutManagedProjectsNestedInput
+    members?: ProjectMemberUpdateManyWithoutProjectNestedInput
+  }
+
+  export type ProjectUncheckedUpdateWithoutTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: StringFieldUpdateOperationsInput | string
+    priority?: StringFieldUpdateOperationsInput | string
+    progress?: IntFieldUpdateOperationsInput | number
+    startDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    deadline?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isArchived?: BoolFieldUpdateOperationsInput | boolean
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedTasksInput = {
+    update: XOR<UserUpdateWithoutCreatedTasksInput, UserUncheckedUpdateWithoutCreatedTasksInput>
+    create: XOR<UserCreateWithoutCreatedTasksInput, UserUncheckedCreateWithoutCreatedTasksInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedTasksInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedTasksInput, UserUncheckedUpdateWithoutCreatedTasksInput>
+  }
+
+  export type UserUpdateWithoutCreatedTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutUsersNestedInput
+    department?: DepartmentUpdateOneWithoutUsersNestedInput
+    reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
+    directReports?: UserUpdateManyWithoutReportingManagerNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedTasksInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type WorkspaceCreateWithoutAnnouncementsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutWorkspaceInput
+    departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
+    projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutAnnouncementsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutWorkspaceInput
+    departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutAnnouncementsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutAnnouncementsInput, WorkspaceUncheckedCreateWithoutAnnouncementsInput>
+  }
+
+  export type UserCreateWithoutCreatedAnnouncementsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutUsersInput
+    department?: DepartmentCreateNestedOneWithoutUsersInput
+    reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
+    directReports?: UserCreateNestedManyWithoutReportingManagerInput
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutCreatedAnnouncementsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    workspaceId: string
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    departmentId?: string | null
+    reportingManagerId?: string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutCreatedAnnouncementsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutCreatedAnnouncementsInput, UserUncheckedCreateWithoutCreatedAnnouncementsInput>
+  }
+
+  export type AnnouncementTargetUserCreateWithoutAnnouncementInput = {
+    id?: string
+    createdAt?: Date | string
+    user: UserCreateNestedOneWithoutAnnouncementTargetsInput
+  }
+
+  export type AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type AnnouncementTargetUserCreateOrConnectWithoutAnnouncementInput = {
+    where: AnnouncementTargetUserWhereUniqueInput
+    create: XOR<AnnouncementTargetUserCreateWithoutAnnouncementInput, AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementTargetUserCreateManyAnnouncementInputEnvelope = {
+    data: AnnouncementTargetUserCreateManyAnnouncementInput | AnnouncementTargetUserCreateManyAnnouncementInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type AnnouncementReadCreateWithoutAnnouncementInput = {
+    id?: string
+    isRead?: boolean
+    readAt?: Date | string
+    user: UserCreateNestedOneWithoutAnnouncementReadsInput
+  }
+
+  export type AnnouncementReadUncheckedCreateWithoutAnnouncementInput = {
+    id?: string
+    userId: string
+    isRead?: boolean
+    readAt?: Date | string
+  }
+
+  export type AnnouncementReadCreateOrConnectWithoutAnnouncementInput = {
+    where: AnnouncementReadWhereUniqueInput
+    create: XOR<AnnouncementReadCreateWithoutAnnouncementInput, AnnouncementReadUncheckedCreateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementReadCreateManyAnnouncementInputEnvelope = {
+    data: AnnouncementReadCreateManyAnnouncementInput | AnnouncementReadCreateManyAnnouncementInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WorkspaceUpsertWithoutAnnouncementsInput = {
+    update: XOR<WorkspaceUpdateWithoutAnnouncementsInput, WorkspaceUncheckedUpdateWithoutAnnouncementsInput>
+    create: XOR<WorkspaceCreateWithoutAnnouncementsInput, WorkspaceUncheckedCreateWithoutAnnouncementsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutAnnouncementsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutAnnouncementsInput, WorkspaceUncheckedUpdateWithoutAnnouncementsInput>
+  }
+
+  export type WorkspaceUpdateWithoutAnnouncementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutWorkspaceNestedInput
+    departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
+    projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutAnnouncementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutWorkspaceNestedInput
+    departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type UserUpsertWithoutCreatedAnnouncementsInput = {
+    update: XOR<UserUpdateWithoutCreatedAnnouncementsInput, UserUncheckedUpdateWithoutCreatedAnnouncementsInput>
+    create: XOR<UserCreateWithoutCreatedAnnouncementsInput, UserUncheckedCreateWithoutCreatedAnnouncementsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutCreatedAnnouncementsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutCreatedAnnouncementsInput, UserUncheckedUpdateWithoutCreatedAnnouncementsInput>
+  }
+
+  export type UserUpdateWithoutCreatedAnnouncementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutUsersNestedInput
+    department?: DepartmentUpdateOneWithoutUsersNestedInput
+    reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
+    directReports?: UserUpdateManyWithoutReportingManagerNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutCreatedAnnouncementsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type AnnouncementTargetUserUpsertWithWhereUniqueWithoutAnnouncementInput = {
+    where: AnnouncementTargetUserWhereUniqueInput
+    update: XOR<AnnouncementTargetUserUpdateWithoutAnnouncementInput, AnnouncementTargetUserUncheckedUpdateWithoutAnnouncementInput>
+    create: XOR<AnnouncementTargetUserCreateWithoutAnnouncementInput, AnnouncementTargetUserUncheckedCreateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementTargetUserUpdateWithWhereUniqueWithoutAnnouncementInput = {
+    where: AnnouncementTargetUserWhereUniqueInput
+    data: XOR<AnnouncementTargetUserUpdateWithoutAnnouncementInput, AnnouncementTargetUserUncheckedUpdateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementTargetUserUpdateManyWithWhereWithoutAnnouncementInput = {
+    where: AnnouncementTargetUserScalarWhereInput
+    data: XOR<AnnouncementTargetUserUpdateManyMutationInput, AnnouncementTargetUserUncheckedUpdateManyWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementReadUpsertWithWhereUniqueWithoutAnnouncementInput = {
+    where: AnnouncementReadWhereUniqueInput
+    update: XOR<AnnouncementReadUpdateWithoutAnnouncementInput, AnnouncementReadUncheckedUpdateWithoutAnnouncementInput>
+    create: XOR<AnnouncementReadCreateWithoutAnnouncementInput, AnnouncementReadUncheckedCreateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementReadUpdateWithWhereUniqueWithoutAnnouncementInput = {
+    where: AnnouncementReadWhereUniqueInput
+    data: XOR<AnnouncementReadUpdateWithoutAnnouncementInput, AnnouncementReadUncheckedUpdateWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementReadUpdateManyWithWhereWithoutAnnouncementInput = {
+    where: AnnouncementReadScalarWhereInput
+    data: XOR<AnnouncementReadUpdateManyMutationInput, AnnouncementReadUncheckedUpdateManyWithoutAnnouncementInput>
+  }
+
+  export type AnnouncementCreateWithoutSelectedUsersInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutAnnouncementsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedAnnouncementsInput
+    readRecords?: AnnouncementReadCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateWithoutSelectedUsersInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    workspaceId: string
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    readRecords?: AnnouncementReadUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementCreateOrConnectWithoutSelectedUsersInput = {
+    where: AnnouncementWhereUniqueInput
+    create: XOR<AnnouncementCreateWithoutSelectedUsersInput, AnnouncementUncheckedCreateWithoutSelectedUsersInput>
+  }
+
+  export type UserCreateWithoutAnnouncementTargetsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutUsersInput
+    department?: DepartmentCreateNestedOneWithoutUsersInput
+    reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
+    directReports?: UserCreateNestedManyWithoutReportingManagerInput
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAnnouncementTargetsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    workspaceId: string
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    departmentId?: string | null
+    reportingManagerId?: string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAnnouncementTargetsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAnnouncementTargetsInput, UserUncheckedCreateWithoutAnnouncementTargetsInput>
+  }
+
+  export type AnnouncementUpsertWithoutSelectedUsersInput = {
+    update: XOR<AnnouncementUpdateWithoutSelectedUsersInput, AnnouncementUncheckedUpdateWithoutSelectedUsersInput>
+    create: XOR<AnnouncementCreateWithoutSelectedUsersInput, AnnouncementUncheckedCreateWithoutSelectedUsersInput>
+    where?: AnnouncementWhereInput
+  }
+
+  export type AnnouncementUpdateToOneWithWhereWithoutSelectedUsersInput = {
+    where?: AnnouncementWhereInput
+    data: XOR<AnnouncementUpdateWithoutSelectedUsersInput, AnnouncementUncheckedUpdateWithoutSelectedUsersInput>
+  }
+
+  export type AnnouncementUpdateWithoutSelectedUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutAnnouncementsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedAnnouncementsNestedInput
+    readRecords?: AnnouncementReadUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateWithoutSelectedUsersInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    readRecords?: AnnouncementReadUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type UserUpsertWithoutAnnouncementTargetsInput = {
+    update: XOR<UserUpdateWithoutAnnouncementTargetsInput, UserUncheckedUpdateWithoutAnnouncementTargetsInput>
+    create: XOR<UserCreateWithoutAnnouncementTargetsInput, UserUncheckedCreateWithoutAnnouncementTargetsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAnnouncementTargetsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAnnouncementTargetsInput, UserUncheckedUpdateWithoutAnnouncementTargetsInput>
+  }
+
+  export type UserUpdateWithoutAnnouncementTargetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutUsersNestedInput
+    department?: DepartmentUpdateOneWithoutUsersNestedInput
+    reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
+    directReports?: UserUpdateManyWithoutReportingManagerNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAnnouncementTargetsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type AnnouncementCreateWithoutReadRecordsInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutAnnouncementsInput
+    createdBy?: UserCreateNestedOneWithoutCreatedAnnouncementsInput
+    selectedUsers?: AnnouncementTargetUserCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementUncheckedCreateWithoutReadRecordsInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    workspaceId: string
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    selectedUsers?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutAnnouncementInput
+  }
+
+  export type AnnouncementCreateOrConnectWithoutReadRecordsInput = {
+    where: AnnouncementWhereUniqueInput
+    create: XOR<AnnouncementCreateWithoutReadRecordsInput, AnnouncementUncheckedCreateWithoutReadRecordsInput>
+  }
+
+  export type UserCreateWithoutAnnouncementReadsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutUsersInput
+    department?: DepartmentCreateNestedOneWithoutUsersInput
+    reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
+    directReports?: UserCreateNestedManyWithoutReportingManagerInput
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutAnnouncementReadsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    workspaceId: string
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    departmentId?: string | null
+    reportingManagerId?: string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutAnnouncementReadsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutAnnouncementReadsInput, UserUncheckedCreateWithoutAnnouncementReadsInput>
+  }
+
+  export type AnnouncementUpsertWithoutReadRecordsInput = {
+    update: XOR<AnnouncementUpdateWithoutReadRecordsInput, AnnouncementUncheckedUpdateWithoutReadRecordsInput>
+    create: XOR<AnnouncementCreateWithoutReadRecordsInput, AnnouncementUncheckedCreateWithoutReadRecordsInput>
+    where?: AnnouncementWhereInput
+  }
+
+  export type AnnouncementUpdateToOneWithWhereWithoutReadRecordsInput = {
+    where?: AnnouncementWhereInput
+    data: XOR<AnnouncementUpdateWithoutReadRecordsInput, AnnouncementUncheckedUpdateWithoutReadRecordsInput>
+  }
+
+  export type AnnouncementUpdateWithoutReadRecordsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutAnnouncementsNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedAnnouncementsNestedInput
+    selectedUsers?: AnnouncementTargetUserUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateWithoutReadRecordsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    selectedUsers?: AnnouncementTargetUserUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type UserUpsertWithoutAnnouncementReadsInput = {
+    update: XOR<UserUpdateWithoutAnnouncementReadsInput, UserUncheckedUpdateWithoutAnnouncementReadsInput>
+    create: XOR<UserCreateWithoutAnnouncementReadsInput, UserUncheckedCreateWithoutAnnouncementReadsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutAnnouncementReadsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutAnnouncementReadsInput, UserUncheckedUpdateWithoutAnnouncementReadsInput>
+  }
+
+  export type UserUpdateWithoutAnnouncementReadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutUsersNestedInput
+    department?: DepartmentUpdateOneWithoutUsersNestedInput
+    reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
+    directReports?: UserUpdateManyWithoutReportingManagerNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutAnnouncementReadsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyWorkspaceInput = {
@@ -14882,6 +23132,20 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type AnnouncementCreateManyWorkspaceInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -14907,6 +23171,10 @@ export namespace Prisma {
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkspaceInput = {
@@ -14934,6 +23202,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -14995,6 +23267,7 @@ export namespace Prisma {
     createdBy?: UserUpdateOneWithoutCreatedProjectsNestedInput
     manager?: UserUpdateOneWithoutManagedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutWorkspaceInput = {
@@ -15012,6 +23285,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -15026,6 +23300,52 @@ export namespace Prisma {
     isArchived?: BoolFieldUpdateOperationsInput | boolean
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     managerId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedAnnouncementsNestedInput
+    selectedUsers?: AnnouncementTargetUserUpdateManyWithoutAnnouncementNestedInput
+    readRecords?: AnnouncementReadUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    selectedUsers?: AnnouncementTargetUserUncheckedUpdateManyWithoutAnnouncementNestedInput
+    readRecords?: AnnouncementReadUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15076,6 +23396,10 @@ export namespace Prisma {
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDepartmentInput = {
@@ -15103,6 +23427,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutDepartmentInput = {
@@ -15217,6 +23545,45 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type TaskCreateManyCreatedByInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    projectId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnnouncementCreateManyCreatedByInput = {
+    id?: string
+    title: string
+    description: string
+    priority?: $Enums.AnnouncementPriority
+    targetType?: $Enums.AnnouncementTargetType
+    status?: $Enums.AnnouncementStatus
+    publishDate?: Date | string
+    expiryDate?: Date | string | null
+    workspaceId: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type AnnouncementTargetUserCreateManyUserInput = {
+    id?: string
+    announcementId: string
+    createdAt?: Date | string
+  }
+
+  export type AnnouncementReadCreateManyUserInput = {
+    id?: string
+    announcementId: string
+    isRead?: boolean
+    readAt?: Date | string
+  }
+
   export type UserUpdateWithoutReportingManagerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -15242,6 +23609,10 @@ export namespace Prisma {
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportingManagerInput = {
@@ -15269,6 +23640,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutReportingManagerInput = {
@@ -15317,6 +23692,10 @@ export namespace Prisma {
     createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedByInput = {
@@ -15344,6 +23723,10 @@ export namespace Prisma {
     createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
     managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
     projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCreatedByInput = {
@@ -15417,6 +23800,7 @@ export namespace Prisma {
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
     manager?: UserUpdateOneWithoutManagedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutCreatedByInput = {
@@ -15434,6 +23818,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutCreatedByInput = {
@@ -15467,6 +23852,7 @@ export namespace Prisma {
     workspace?: WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
     createdBy?: UserUpdateOneWithoutCreatedProjectsNestedInput
     members?: ProjectMemberUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateWithoutManagerInput = {
@@ -15484,6 +23870,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     members?: ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+    tasks?: TaskUncheckedUpdateManyWithoutProjectNestedInput
   }
 
   export type ProjectUncheckedUpdateManyWithoutManagerInput = {
@@ -15520,6 +23907,127 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type TaskUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    project?: ProjectUpdateOneRequiredWithoutTasksNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    projectId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutAnnouncementsNestedInput
+    selectedUsers?: AnnouncementTargetUserUpdateManyWithoutAnnouncementNestedInput
+    readRecords?: AnnouncementReadUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    selectedUsers?: AnnouncementTargetUserUncheckedUpdateManyWithoutAnnouncementNestedInput
+    readRecords?: AnnouncementReadUncheckedUpdateManyWithoutAnnouncementNestedInput
+  }
+
+  export type AnnouncementUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: StringFieldUpdateOperationsInput | string
+    priority?: EnumAnnouncementPriorityFieldUpdateOperationsInput | $Enums.AnnouncementPriority
+    targetType?: EnumAnnouncementTargetTypeFieldUpdateOperationsInput | $Enums.AnnouncementTargetType
+    status?: EnumAnnouncementStatusFieldUpdateOperationsInput | $Enums.AnnouncementStatus
+    publishDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementTargetUserUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    announcement?: AnnouncementUpdateOneRequiredWithoutSelectedUsersNestedInput
+  }
+
+  export type AnnouncementTargetUserUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementTargetUserUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementReadUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    announcement?: AnnouncementUpdateOneRequiredWithoutReadRecordsNestedInput
+  }
+
+  export type AnnouncementReadUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementReadUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    announcementId?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TimerSegmentCreateManyAttendanceInput = {
     id?: string
     startedAt: Date | string
@@ -15554,6 +24062,18 @@ export namespace Prisma {
     createdAt?: Date | string
   }
 
+  export type TaskCreateManyProjectInput = {
+    id?: string
+    title: string
+    description?: string | null
+    status?: $Enums.TaskStatus
+    priority?: $Enums.TaskPriority
+    dueDate?: Date | string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type ProjectMemberUpdateWithoutProjectInput = {
     id?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15570,6 +24090,94 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     userId?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedTasksNestedInput
+  }
+
+  export type TaskUncheckedUpdateWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type TaskUncheckedUpdateManyWithoutProjectInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+    priority?: EnumTaskPriorityFieldUpdateOperationsInput | $Enums.TaskPriority
+    dueDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementTargetUserCreateManyAnnouncementInput = {
+    id?: string
+    userId: string
+    createdAt?: Date | string
+  }
+
+  export type AnnouncementReadCreateManyAnnouncementInput = {
+    id?: string
+    userId: string
+    isRead?: boolean
+    readAt?: Date | string
+  }
+
+  export type AnnouncementTargetUserUpdateWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAnnouncementTargetsNestedInput
+  }
+
+  export type AnnouncementTargetUserUncheckedUpdateWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementTargetUserUncheckedUpdateManyWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementReadUpdateWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutAnnouncementReadsNestedInput
+  }
+
+  export type AnnouncementReadUncheckedUpdateWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type AnnouncementReadUncheckedUpdateManyWithoutAnnouncementInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    isRead?: BoolFieldUpdateOperationsInput | boolean
+    readAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

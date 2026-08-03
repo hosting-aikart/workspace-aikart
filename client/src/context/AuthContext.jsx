@@ -67,6 +67,27 @@ export function AuthProvider({ children }) {
   useEffect(() => {
     const restoreSession = async () => {
       try {
+        const storedToken = window.localStorage.getItem('aikart-access-token');
+        if (storedToken) {
+          api.token = storedToken;
+          setAccessToken(storedToken);
+
+          const meRes = await api.get('/auth/me', {
+            headers: { Authorization: `Bearer ${storedToken}` },
+          });
+          setUser(meRes.data.data);
+
+          try {
+            window.localStorage.setItem(
+              'aikart-user',
+              JSON.stringify(meRes.data.data),
+            );
+          } catch {
+            // Ignore storage errors
+          }
+          return;
+        }
+
         // Use plain axios here so the api interceptor doesn't interfere
         const { default: axios } = await import('axios');
         const BASE_URL =

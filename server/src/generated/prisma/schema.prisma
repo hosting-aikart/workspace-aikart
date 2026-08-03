@@ -18,9 +18,10 @@ model Workspace {
   name        String
   description String?
 
-  users       User[]
-  departments Department[]
-  projects    Project[]
+  users         User[]
+  departments   Department[]
+  projects      Project[]
+  announcements Announcement[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -79,11 +80,15 @@ model User {
   createdById String?
   createdBy   User?   @relation("CreatedUsers", fields: [createdById], references: [id])
 
-  createdUsers    User[]          @relation("CreatedUsers")
-  attendances     Attendance[]
-  createdProjects Project[]       @relation("ProjectCreatedBy")
-  managedProjects Project[]       @relation("ProjectManager")
-  projectMembers  ProjectMember[]
+  createdUsers         User[]                   @relation("CreatedUsers")
+  attendances          Attendance[]
+  createdProjects      Project[]                @relation("ProjectCreatedBy")
+  managedProjects      Project[]                @relation("ProjectManager")
+  projectMembers       ProjectMember[]
+  createdTasks         Task[]                   @relation("TaskCreatedBy")
+  createdAnnouncements Announcement[]           @relation("AnnouncementCreatedBy")
+  announcementTargets  AnnouncementTargetUser[]
+  announcementReads    AnnouncementRead[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -96,6 +101,20 @@ enum AttendanceStatus {
   WORKING
   PAUSED
   CHECKED_OUT
+}
+
+enum TaskStatus {
+  TODO
+  IN_PROGRESS
+  DONE
+  ITERATE
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
 }
 
 model Attendance {
@@ -155,6 +174,7 @@ model Project {
   manager   User?   @relation("ProjectManager", fields: [managerId], references: [id])
 
   members ProjectMember[]
+  tasks   Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -174,4 +194,93 @@ model ProjectMember {
   createdAt DateTime @default(now())
 
   @@unique([projectId, userId])
+}
+
+model Task {
+  id String @id @default(cuid())
+
+  title       String
+  description String?
+  status      TaskStatus   @default(TODO)
+  priority    TaskPriority @default(MEDIUM)
+  dueDate     DateTime?
+
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id])
+
+  createdById String?
+  createdBy   User?   @relation("TaskCreatedBy", fields: [createdById], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([projectId])
+}
+
+enum AnnouncementPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+enum AnnouncementTargetType {
+  ALL
+  SELECTED_USERS
+}
+
+enum AnnouncementStatus {
+  DRAFT
+  PUBLISHED
+  ARCHIVED
+}
+
+model Announcement {
+  id          String                 @id @default(cuid())
+  title       String
+  description String
+  priority    AnnouncementPriority   @default(MEDIUM)
+  targetType  AnnouncementTargetType @default(ALL)
+  status      AnnouncementStatus     @default(PUBLISHED)
+  publishDate DateTime               @default(now())
+  expiryDate  DateTime?
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id])
+
+  createdById String?
+  createdBy   User?   @relation("AnnouncementCreatedBy", fields: [createdById], references: [id])
+
+  selectedUsers AnnouncementTargetUser[]
+  readRecords   AnnouncementRead[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model AnnouncementTargetUser {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+
+  @@unique([announcementId, userId])
+}
+
+model AnnouncementRead {
+  id             String       @id @default(cuid())
+  announcementId String
+  announcement   Announcement @relation(fields: [announcementId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  isRead Boolean  @default(true)
+  readAt DateTime @default(now())
+
+  @@unique([announcementId, userId])
 }

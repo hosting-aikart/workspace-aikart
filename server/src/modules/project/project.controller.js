@@ -1,4 +1,5 @@
 const { sendSuccess, sendError } = require('../../utils/apiResponse');
+const tasksService = require('../tasks/tasks.service');
 const {
   createProject,
   listProjects,
@@ -144,6 +145,38 @@ const removeMemberHandler = async (req, res) => {
   }
 };
 
+const getProjectTasksHandler = async (req, res) => {
+  try {
+    const data = await tasksService.getTasks(
+      req.user.workspaceId,
+      { projectId: req.params.id },
+      req.user.id,
+      req.user.role,
+    );
+    return sendSuccess(res, data);
+  } catch (err) {
+    return sendError(res, err.message || 'Failed to fetch project tasks.', 500);
+  }
+};
+
+const createProjectTaskHandler = async (req, res) => {
+  try {
+    const data = await tasksService.createTask(
+      req.user.workspaceId,
+      req.user.id,
+      req.user.role,
+      {
+        ...req.body,
+        projectId: req.params.id,
+      },
+    );
+    return sendSuccess(res, data, 201);
+  } catch (err) {
+    const statusCode = err.statusCode || 400;
+    return sendError(res, err.message || 'Failed to create task.', statusCode);
+  }
+};
+
 module.exports = {
   createProjectHandler,
   getProjects,
@@ -153,4 +186,6 @@ module.exports = {
   progressProjectHandler,
   addMemberHandler,
   removeMemberHandler,
+  getProjectTasksHandler,
+  createProjectTaskHandler,
 };

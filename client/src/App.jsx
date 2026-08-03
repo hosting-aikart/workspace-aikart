@@ -25,16 +25,16 @@ import TasksPage from './modules/tasks/TasksPage';
 import ProjectsListPage from './modules/projects/ProjectsListPage';
 import ProjectDetailPage from './modules/projects/ProjectDetailPage';
 
+import NotificationsPage from './pages/NotificationsPage';
+
 // ─── Placeholder pages ────────────────────────────────────────────────────────
 import {
   ChatPage,
   EmailPage,
   MeetingsPage,
   ProjectsPage as PlaceholderProjectsPage,
-  NotificationsPage,
   FilesPage,
   DirectoryPage,
-  AnnouncementsPage,
   TimeTrackerPage,
   ReportsPage,
 } from './pages/PlaceholderPages';
@@ -63,7 +63,7 @@ export default function App() {
             {/* Communication */}
             <Route path="chat" element={<ChatPage />} />
             <Route path="email" element={<EmailPage />} />
-            <Route path="announcements" element={<AnnouncementsPage />} />
+            <Route path="announcements" element={<NotificationsPage />} />
 
             {/* Work */}
             <Route path="meetings" element={<MeetingsPage />} />

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
+import TaskBoard from './components/TaskBoard';
 
 export default function ProjectDetailPage() {
   const { id } = useParams();
@@ -16,16 +17,27 @@ export default function ProjectDetailPage() {
   const [users, setUsers] = useState([]);
   const [selectedUserId, setSelectedUserId] = useState('');
   const [addingMember, setAddingMember] = useState(false);
+  const [taskForm, setTaskForm] = useState({
+    id: null,
+    title: '',
+    description: '',
+    priority: 'MEDIUM',
+    status: 'TODO',
+    dueDate: '',
+  });
+  const [showTaskModal, setShowTaskModal] = useState(false);
+  const [taskSubmitting, setTaskSubmitting] = useState(false);
+  const [taskError, setTaskError] = useState('');
 
-  const fetchProject = async () => {
+  const fetchProject = async (showLoading = true) => {
     try {
-      setLoading(true);
+      if (showLoading) setLoading(true);
       const { data } = await api.get(`/projects/${id}`);
       setProject(data?.data);
     } catch (err) {
       setError(err.message);
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   };
 
@@ -83,6 +95,82 @@ export default function ProjectDetailPage() {
       if (data?.success) fetchProject();
     } catch (err) {
       alert('Failed to remove member');
+    }
+  };
+
+  const openTaskModal = (task = null, status = 'TODO') => {
+    if (task) {
+      setTaskForm({
+        id: task.id,
+        title: task.title || '',
+        description: task.description || '',
+        priority: task.priority || 'MEDIUM',
+        status: task.status || status,
+        dueDate: task.dueDate ? task.dueDate.slice(0, 10) : '',
+      });
+    } else {
+      setTaskForm({
+        id: null,
+        title: '',
+        description: '',
+        priority: 'MEDIUM',
+        status,
+        dueDate: '',
+      });
+    }
+    setTaskError('');
+    setShowTaskModal(true);
+  };
+
+  const handleTaskSubmit = async (event) => {
+    event.preventDefault();
+    setTaskSubmitting(true);
+    setTaskError('');
+
+    try {
+      const payload = {
+        title: taskForm.title.trim(),
+        description: taskForm.description?.trim() || null,
+        priority: taskForm.priority,
+        status: taskForm.status,
+        dueDate: taskForm.dueDate
+          ? new Date(taskForm.dueDate).toISOString()
+          : null,
+      };
+
+      if (taskForm.id) {
+        await api.patch(`/tasks/${taskForm.id}`, payload);
+      } else {
+        await api.post(`/projects/${id}/tasks`, payload);
+      }
+
+      setShowTaskModal(false);
+      await fetchProject(false);
+    } catch (err) {
+      setTaskError(
+        err?.response?.data?.message || err.message || 'Failed to save task',
+      );
+    } finally {
+      setTaskSubmitting(false);
+    }
+  };
+
+  const handleDeleteTask = async (task) => {
+    if (!window.confirm(`Delete task "${task.title}"?`)) return;
+    try {
+      await api.delete(`/tasks/${task.id}`);
+      fetchProject(false);
+    } catch (err) {
+      alert(err?.response?.data?.message || 'Failed to delete task');
+    }
+  };
+
+  const handleMoveTask = async (taskId, status) => {
+    try {
+      await api.patch(`/tasks/${taskId}/status`, { status });
+      fetchProject(false);
+    } catch (err) {
+      alert(err?.response?.data?.message || 'Failed to move task');
     }
   };
 
@@ -203,45 +291,24 @@ export default function ProjectDetailPage() {
               <h2 className="text-lg font-semibold text-gray-900">
                 Project Tasks
               </h2>
+              {canEdit ? (
+                <button
+                  type="button"
+                  onClick={() => openTaskModal(null, 'TODO')}
+                  className="rounded-lg bg-indigo-600 px-3 py-2 text-sm font-medium text-white hover:bg-indigo-700"
+                >
+                  + New Task
+                </button>
+              ) : null}
             </div>
-            {project.tasks?.length === 0 ? (
-              <p className="text-gray-500 text-sm italic">
-                No tasks assigned to this project yet.
-              </p>
-            ) : (
-              <div className="space-y-3">
-                {project.tasks?.map((task) => (
-                  <div
-                    key={task.id}
-                    className="flex justify-between items-center p-3 hover:bg-gray-50 rounded-lg border border-gray-100 transition-colors"
-                  >
-                    <div>
-                      <h4 className="text-sm font-medium text-gray-900">
-                        {task.title}
-                      </h4>
-                      <div className="flex items-center gap-2 mt-1">
-                        <span
-                          className={`text-[10px] px-2 py-0.5 rounded-full font-medium ${
-                            task.priority === 'URGENT'
-                              ? 'bg-red-100 text-red-700'
-                              : task.priority === 'HIGH'
-                                ? 'bg-orange-100 text-orange-700'
-                                : task.priority === 'MEDIUM'
-                                  ? 'bg-blue-100 text-blue-700'
-                                  : 'bg-gray-100 text-gray-700'
-                          }`}
-                        >
-                          {task.priority}
-                        </span>
-                        <span className="text-xs text-gray-500">
-                          {task.status.replace('_', ' ')}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+            <TaskBoard
+              tasks={project.tasks || []}
+              canManage={canEdit}
+              onMoveTask={handleMoveTask}
+              onCreateTask={(status) => openTaskModal(null, status)}
+              onEditTask={(task) => openTaskModal(task)}
+              onDeleteTask={handleDeleteTask}
+            />
           </div>
         </div>
 
@@ -345,6 +412,129 @@ export default function ProjectDetailPage() {
           </div>
         </div>
       </div>
+
+      {showTaskModal ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gray-900/50 p-4">
+          <div className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-xl">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-gray-900">
+                {taskForm.id ? 'Edit Task' : 'Create Task'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => setShowTaskModal(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                ✕
+              </button>
+            </div>
+            {taskError ? (
+              <div className="mb-4 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                {taskError}
+              </div>
+            ) : null}
+            <form onSubmit={handleTaskSubmit} className="space-y-4">
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Title
+                </label>
+                <input
+                  required
+                  value={taskForm.title}
+                  onChange={(event) =>
+                    setTaskForm({ ...taskForm, title: event.target.value })
+                  }
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Description
+                </label>
+                <textarea
+                  value={taskForm.description}
+                  onChange={(event) =>
+                    setTaskForm({
+                      ...taskForm,
+                      description: event.target.value,
+                    })
+                  }
+                  className="min-h-22.5 w-full rounded-lg border border-gray-300 px-3 py-2 focus:border-indigo-500 focus:outline-none"
+                />
+              </div>
+              <div className="grid gap-4 md:grid-cols-2">
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">
+                    Priority
+                  </label>
+                  <select
+                    value={taskForm.priority}
+                    onChange={(event) =>
+                      setTaskForm({ ...taskForm, priority: event.target.value })
+                    }
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                  >
+                    <option value="LOW">Low</option>
+                    <option value="MEDIUM">Medium</option>
+                    <option value="HIGH">High</option>
+                    <option value="URGENT">Urgent</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="mb-1 block text-sm font-medium text-gray-700">
+                    Status
+                  </label>
+                  <select
+                    value={taskForm.status}
+                    onChange={(event) =>
+                      setTaskForm({ ...taskForm, status: event.target.value })
+                    }
+                    className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                  >
+                    <option value="TODO">Todo</option>
+                    <option value="IN_PROGRESS">In Progress</option>
+                    <option value="DONE">Done</option>
+                    <option value="ITERATE">Iterate</option>
+                  </select>
+                </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-sm font-medium text-gray-700">
+                  Due Date
+                </label>
+                <input
+                  type="date"
+                  value={taskForm.dueDate}
+                  onChange={(event) =>
+                    setTaskForm({ ...taskForm, dueDate: event.target.value })
+                  }
+                  className="w-full rounded-lg border border-gray-300 px-3 py-2"
+                />
+              </div>
+              <div className="flex justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowTaskModal(false)}
+                  className="rounded-lg px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  disabled={taskSubmitting}
+                  className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-700 disabled:opacity-60"
+                >
+                  {taskSubmitting
+                    ? 'Saving...'
+                    : taskForm.id
+                      ? 'Save Changes'
+                      : 'Create Task'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

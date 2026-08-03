@@ -1,0 +1,887 @@
+[
+  Layer {
+    handle: [Function: helmetMiddleware],
+    keys: [],
+    name: 'helmetMiddleware',
+    params: undefined,
+    path: undefined,
+    slash: true,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: corsMiddleware],
+    keys: [],
+    name: 'corsMiddleware',
+    params: undefined,
+    path: undefined,
+    slash: true,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: logger],
+    keys: [],
+    name: 'logger',
+    params: undefined,
+    path: undefined,
+    slash: true,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: jsonParser],
+    keys: [],
+    name: 'jsonParser',
+    params: undefined,
+    path: undefined,
+    slash: true,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: cookieParser],
+    keys: [],
+    name: 'cookieParser',
+    params: undefined,
+    path: undefined,
+    slash: true,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: handle],
+    keys: [],
+    name: 'handle',
+    params: undefined,
+    path: undefined,
+    slash: false,
+    matchers: [ [Function: match] ],
+    route: Route {
+      path: '/api/health',
+      stack: [
+        Layer {
+          handle: [Function (anonymous)],
+          keys: [],
+          name: '<anonymous>',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          method: 'get'
+        }
+      ],
+      methods: [Object: null prototype] { get: true }
+    }
+  },
+  Layer {
+    handle: [Function: router] {
+      caseSensitive: undefined,
+      mergeParams: undefined,
+      params: {},
+      strict: undefined,
+      stack: [
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/login',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/me',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/refresh',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/logout',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        }
+      ]
+    },
+    keys: [],
+    name: 'router',
+    params: undefined,
+    path: undefined,
+    slash: false,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: router] {
+      caseSensitive: undefined,
+      mergeParams: undefined,
+      params: {},
+      strict: undefined,
+      stack: [
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/profile',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/profile',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/profile/photo',
+            stack: [ [Layer], [Layer], [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        }
+      ]
+    },
+    keys: [],
+    name: 'router',
+    params: undefined,
+    path: undefined,
+    slash: false,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: router] {
+      caseSensitive: undefined,
+      mergeParams: undefined,
+      params: {},
+      strict: undefined,
+      stack: [
+        Layer {
+          handle: [Function: requireAuth],
+          keys: [],
+          name: 'requireAuth',
+          params: undefined,
+          path: undefined,
+          slash: true,
+          matchers: [ [Function: match] ],
+          route: undefined
+        },
+        Layer {
+          handle: [Function (anonymous)],
+          keys: [],
+          name: '<anonymous>',
+          params: undefined,
+          path: undefined,
+          slash: true,
+          matchers: [ [Function: match] ],
+          route: undefined
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/employees',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/employees/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/employees',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/employees/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/employees/:id/role',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/employees/:id/status',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/employees/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { delete: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/departments',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/departments/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/departments',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/departments/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/departments/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { delete: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/attendance',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/attendance/stats',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/reports',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/dashboard',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        }
+      ]
+    },
+    keys: [],
+    name: 'router',
+    params: undefined,
+    path: undefined,
+    slash: false,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: router] {
+      caseSensitive: undefined,
+      mergeParams: undefined,
+      params: {},
+      strict: undefined,
+      stack: [
+        Layer {
+          handle: [Function: requireAuth],
+          keys: [],
+          name: 'requireAuth',
+          params: undefined,
+          path: undefined,
+          slash: true,
+          matchers: [ [Function: match] ],
+          route: undefined
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id/tasks',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id/tasks',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id/archive',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id/progress',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id/members',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id/members/:userId',
+            stack: [ [Layer], [Layer] ],
+            methods: [Object: null prototype] { delete: true }
+          }
+        }
+      ]
+    },
+    keys: [],
+    name: 'router',
+    params: undefined,
+    path: undefined,
+    slash: false,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: router] {
+      caseSensitive: undefined,
+      mergeParams: undefined,
+      params: {},
+      strict: undefined,
+      stack: [
+        Layer {
+          handle: [Function: requireAuth],
+          keys: [],
+          name: 'requireAuth',
+          params: undefined,
+          path: undefined,
+          slash: true,
+          matchers: [ [Function: match] ],
+          route: undefined
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id/status',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { patch: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/:id',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { delete: true }
+          }
+        }
+      ]
+    },
+    keys: [],
+    name: 'router',
+    params: undefined,
+    path: undefined,
+    slash: false,
+    matchers: [ [Function: match] ],
+    route: undefined
+  },
+  Layer {
+    handle: [Function: router] {
+      caseSensitive: undefined,
+      mergeParams: undefined,
+      params: {},
+      strict: undefined,
+      stack: [
+        Layer {
+          handle: [Function: requireAuth],
+          keys: [],
+          name: 'requireAuth',
+          params: undefined,
+          path: undefined,
+          slash: true,
+          matchers: [ [Function: match] ],
+          route: undefined
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/check-in',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/pause',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/resume',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/check-out',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { post: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/today',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/history',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/summary/weekly',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        },
+        Layer {
+          handle: [Function: handle],
+          keys: [],
+          name: 'handle',
+          params: undefined,
+          path: undefined,
+          slash: false,
+          matchers: [ [Function: match] ],
+          route: Route {
+            path: '/summary/monthly',
+            stack: [ [Layer] ],
+            methods: [Object: null prototype] { get: true }
+          }
+        }
+      ]
+    },
+    keys: [],
+    name: 'router',
+    params: undefined,
+    path: undefined,
+    slash: false,
+    matchers: [ [Function: match] ],
+    route: undefined
+  }
+]

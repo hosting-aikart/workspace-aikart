@@ -202,6 +202,49 @@ exports.Prisma.ProjectMemberScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.TaskScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  status: 'status',
+  priority: 'priority',
+  dueDate: 'dueDate',
+  projectId: 'projectId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AnnouncementScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  priority: 'priority',
+  targetType: 'targetType',
+  status: 'status',
+  publishDate: 'publishDate',
+  expiryDate: 'expiryDate',
+  workspaceId: 'workspaceId',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.AnnouncementTargetUserScalarFieldEnum = {
+  id: 'id',
+  announcementId: 'announcementId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.AnnouncementReadScalarFieldEnum = {
+  id: 'id',
+  announcementId: 'announcementId',
+  userId: 'userId',
+  isRead: 'isRead',
+  readAt: 'readAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -229,6 +272,38 @@ exports.AttendanceStatus = exports.$Enums.AttendanceStatus = {
   CHECKED_OUT: 'CHECKED_OUT'
 };
 
+exports.TaskStatus = exports.$Enums.TaskStatus = {
+  TODO: 'TODO',
+  IN_PROGRESS: 'IN_PROGRESS',
+  DONE: 'DONE',
+  ITERATE: 'ITERATE'
+};
+
+exports.TaskPriority = exports.$Enums.TaskPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+exports.AnnouncementPriority = exports.$Enums.AnnouncementPriority = {
+  LOW: 'LOW',
+  MEDIUM: 'MEDIUM',
+  HIGH: 'HIGH',
+  URGENT: 'URGENT'
+};
+
+exports.AnnouncementTargetType = exports.$Enums.AnnouncementTargetType = {
+  ALL: 'ALL',
+  SELECTED_USERS: 'SELECTED_USERS'
+};
+
+exports.AnnouncementStatus = exports.$Enums.AnnouncementStatus = {
+  DRAFT: 'DRAFT',
+  PUBLISHED: 'PUBLISHED',
+  ARCHIVED: 'ARCHIVED'
+};
+
 exports.Prisma.ModelName = {
   Workspace: 'Workspace',
   Department: 'Department',
@@ -236,7 +311,11 @@ exports.Prisma.ModelName = {
   Attendance: 'Attendance',
   TimerSegment: 'TimerSegment',
   Project: 'Project',
-  ProjectMember: 'ProjectMember'
+  ProjectMember: 'ProjectMember',
+  Task: 'Task',
+  Announcement: 'Announcement',
+  AnnouncementTargetUser: 'AnnouncementTargetUser',
+  AnnouncementRead: 'AnnouncementRead'
 };
 
 /**

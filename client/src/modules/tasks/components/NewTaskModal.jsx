@@ -27,19 +27,21 @@ export default function NewTaskModal({
 
     try {
       const payload = {
-        title: formData.title,
-        description: formData.description || undefined,
-        projectId: formData.projectId || undefined,
-        assignedToId: formData.assignedToId || undefined,
+        title: formData.title.trim(),
+        description: formData.description?.trim() || null,
+        projectId: formData.projectId || null,
         priority: formData.priority,
         dueDate: formData.dueDate
           ? new Date(formData.dueDate).toISOString()
-          : undefined,
+          : null,
       };
 
       const { data } = await api.post('/tasks', payload);
-      if (data?.success) onSuccess(data.data);
-      else setError(data?.message || 'Failed to create task');
+      if (data?.status === 'success' || data?.success) {
+        onSuccess(data.data);
+      } else {
+        setError(data?.message || 'Failed to create task');
+      }
     } catch (err) {
       setError(err.message || 'An error occurred');
     } finally {
