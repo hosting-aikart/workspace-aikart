@@ -1,48 +1,44 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import ProtectedRoute from './components/ProtectedRoute';
+import ProtectedRoute from './components/layout/ProtectedRoute';
 import { getDefaultRouteByRole } from './utils/roleRoutes';
 
 // ─── Layouts ──────────────────────────────────────────────────────────────────
-import AdminLayout from './layouts/AdminLayout';
-import AppLayout from './layouts/AppLayout';
+import AdminLayout from './components/layout/AdminLayout';
+import AppLayout from './components/layout/AppLayout';
 
 // ─── Core Pages ───────────────────────────────────────────────────────────────
-import LoginPage from './pages/LoginPage';
-import HomePage from './pages/HomePage';
-import NotificationsPage from './pages/NotificationsPage';
+import LoginPage from './pages/auth/LoginPage';
+import HomePage from './pages/employee/HomePage';
+import NotificationsPage from './pages/employee/NotificationsPage';
 
 // ─── Admin Pages ──────────────────────────────────────────────────────────────
-import AdminDashboardPage from './admin/pages/AdminDashboard';
-import EmployeesPage from './admin/pages/EmployeesPage';
-import DepartmentsPage from './admin/pages/DepartmentsPage';
-import RolesPage from './admin/pages/RolesPage';
-import AttendanceManagementPage from './admin/pages/AttendanceManagement';
-import ProjectsPageAdmin from './admin/pages/ProjectsPage';
-import TasksPageAdmin from './admin/pages/TasksPage';
-import MeetingsPageAdmin from './admin/pages/MeetingsPage';
-import AnnouncementsPageAdmin from './admin/pages/AnnouncementsPage';
-import ReportsPageAdmin from './admin/pages/ReportsPage';
+import AdminDashboardPage from './pages/admin/AdminDashboard';
+import EmployeesPage from './pages/admin/EmployeesPage';
+import DepartmentsPage from './pages/admin/DepartmentsPage';
+import RolesPage from './pages/admin/RolesPage';
+import AttendanceManagementPage from './pages/admin/AttendanceManagement';
+import ProjectsPageAdmin from './pages/admin/ProjectsPage';
+import TasksPageAdmin from './pages/admin/TasksPage';
+import MeetingsPageAdmin from './pages/admin/MeetingsPage';
+import AnnouncementsPageAdmin from './pages/admin/AnnouncementsPage';
+import ReportsPageAdmin from './pages/admin/ReportsPage';
 
 // ─── Employee / Manager Pages ─────────────────────────────────────────────────
-import ProfilePage from './modules/profile/ProfilePage';
-import AttendancePage from './attendance/AttendancePage';
-import TasksPage from './modules/tasks/TasksPage';
-import ProjectsListPage from './modules/projects/ProjectsListPage';
-import ProjectDetailPage from './modules/projects/ProjectDetailPage';
-import TeamDashboardPage from './pages/TeamDashboardPage';
-import TeamAttendancePage from './pages/TeamAttendancePage';
-import TeamAnnouncementsPage from './pages/TeamAnnouncementsPage';
-import DirectoryPage from './pages/DirectoryPage';
-
-import SettingsPage from './pages/SettingsPage';
-
-import ReportsPage from './pages/ReportsPage';
+import ProfilePage from './pages/profile/ProfilePage';
+import AttendancePage from './pages/employee/AttendancePage';
+import TasksPage from './pages/tasks/TasksPage';
+import ProjectsListPage from './pages/projects/ProjectsListPage';
+import ProjectDetailPage from './pages/projects/ProjectDetailPage';
+import TeamDashboardPage from './pages/manager/TeamDashboardPage';
+import TeamAttendancePage from './pages/manager/TeamAttendancePage';
+import TeamAnnouncementsPage from './pages/manager/TeamAnnouncementsPage';
+import DirectoryPage from './pages/employee/DirectoryPage';
+import SettingsPage from './pages/settings/SettingsPage';
+import ReportsPage from './pages/reports/ReportsPage';
 
 // ─── Placeholder Pages ────────────────────────────────────────────────────────
-import {
-  MeetingsPage,
-} from './pages/PlaceholderPages';
+import { MeetingsPage } from './pages/PlaceholderPages';
 
 /**
  * RoleBasedRoot
