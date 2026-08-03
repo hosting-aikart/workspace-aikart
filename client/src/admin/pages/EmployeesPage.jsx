@@ -4,8 +4,8 @@ import PageHeader from '../components/PageHeader';
 import DataTable from '../components/DataTable';
 import Modal from '../components/Modal';
 import EmptyState from '../components/EmptyState';
-import ConfirmDialog from '../components/ConfirmDialog';
 import Pagination from '../components/Pagination';
+import Badge from '../components/Badge';
 
 const createDefaultForm = () => ({
   name: '',
@@ -25,12 +25,13 @@ const getErrorMessage = (error) =>
   error?.response?.data?.message || error?.message || 'Request failed.';
 
 export default function EmployeesPage() {
+  const [activeTab, setActiveTab] = useState('active'); // 'active' | 'inactive'
   const [employees, setEmployees] = useState([]);
   const [departments, setDepartments] = useState([]);
+  const [allEmployeesList, setAllEmployeesList] = useState([]); // for manager select options
   const [search, setSearch] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
   const [sortBy, setSortBy] = useState('createdAt');
   const [page, setPage] = useState(1);
   const [pagination, setPagination] = useState({
@@ -39,14 +40,15 @@ export default function EmployeesPage() {
     total: 0,
     totalPages: 1,
   });
+  const [activeCount, setActiveCount] = useState(0);
+  const [inactiveCount, setInactiveCount] = useState(0);
+
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingEmployee, setEditingEmployee] = useState(null);
-  const [confirmDeleteEmployee, setConfirmDeleteEmployee] = useState(null);
   const [form, setForm] = useState(createDefaultForm());
 
   const loadDepartments = useCallback(async () => {
@@ -61,6 +63,18 @@ export default function EmployeesPage() {
     }
   }, []);
 
+  const loadAllEmployeesForSelect = useCallback(async () => {
+    try {
+      const { data } = await api.get('/admin/employees', {
+        params: { limit: 200 },
+      });
+      const payload = data?.data || {};
+      setAllEmployeesList(payload.employees || []);
+    } catch (err) {
+      console.error(err);
+    }
+  }, []);
+
   const loadEmployees = useCallback(async () => {
     setIsLoading(true);
     setError('');
@@ -70,7 +84,7 @@ export default function EmployeesPage() {
           search,
           departmentId: departmentFilter,
           role: roleFilter,
-          status: statusFilter,
+          status: activeTab,
           page,
           limit: 10,
           sortBy,
@@ -81,33 +95,28 @@ export default function EmployeesPage() {
       setPagination(
         payload.pagination || { page: 1, limit: 10, total: 0, totalPages: 1 },
       );
+
+      // Fetch summary stats for tab badges
+      const { data: statsRes } = await api.get('/admin/dashboard');
+      if (statsRes?.data) {
+        setActiveCount(statsRes.data.activeEmployees || 0);
+        setInactiveCount((statsRes.data.totalEmployees || 0) - (statsRes.data.activeEmployees || 0));
+      }
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
       setIsLoading(false);
     }
-  }, [departmentFilter, page, roleFilter, search, sortBy, statusFilter]);
+  }, [activeTab, departmentFilter, page, roleFilter, search, sortBy]);
 
   useEffect(() => {
     loadDepartments();
-  }, [loadDepartments]);
+    loadAllEmployeesForSelect();
+  }, [loadDepartments, loadAllEmployeesForSelect]);
 
   useEffect(() => {
     loadEmployees();
   }, [loadEmployees]);
-
-  const tableRows = useMemo(
-    () =>
-      employees.map((employee) => ({
-        ...employee,
-        departmentName: employee.department?.name || '—',
-        managerName: employee.reportingManager?.name || '—',
-        statusLabel: employee.isActive ? 'Active' : 'Inactive',
-        roleLabel: employee.role,
-        employeeIdValue: employee.employeeId || employee.id,
-      })),
-    [employees],
-  );
 
   const handleAddEmployee = () => {
     setEditingEmployee(null);
@@ -167,7 +176,7 @@ export default function EmployeesPage() {
 
       if (editingEmployee) {
         await api.patch(`/admin/employees/${editingEmployee.id}`, payload);
-        setNotice('Employee updated successfully.');
+        setNotice('Employee record updated successfully.');
       } else {
         await api.post('/admin/employees', payload);
         setNotice('Employee created successfully.');
@@ -182,22 +191,22 @@ export default function EmployeesPage() {
     }
   };
 
-  const handleDelete = async () => {
-    if (!confirmDeleteEmployee) return;
-
-    setIsDeleting(true);
+  const handleToggleStatus = async (employee) => {
+    const nextStatus = !employee.isActive;
     setError('');
     setNotice('');
-
     try {
-      await api.delete(`/admin/employees/${confirmDeleteEmployee.id}`);
-      setNotice('Employee deactivated successfully.');
-      setConfirmDeleteEmployee(null);
+      await api.patch(`/admin/employees/${employee.id}/status`, {
+        isActive: nextStatus,
+      });
+      setNotice(
+        nextStatus
+          ? `${employee.name} has been activated.`
+          : `${employee.name} has been deactivated.`,
+      );
       loadEmployees();
     } catch (err) {
       setError(getErrorMessage(err));
-    } finally {
-      setIsDeleting(false);
     }
   };
 
@@ -211,80 +220,75 @@ export default function EmployeesPage() {
           item.id === employee.id ? { ...item, role: nextRole } : item,
         ),
       );
-      setNotice(`Role updated to ${nextRole}.`);
+      setNotice(`${employee.name}'s role updated to ${nextRole}.`);
     } catch (err) {
       setError(getErrorMessage(err));
     }
   };
 
-  const handleStatusChange = async (employee, nextStatus) => {
-    try {
-      await api.patch(`/admin/employees/${employee.id}/status`, {
-        isActive: nextStatus === 'active',
-      });
-      setEmployees((prev) =>
-        prev.map((item) =>
-          item.id === employee.id
-            ? { ...item, isActive: nextStatus === 'active' }
-            : item,
-        ),
-      );
-      setNotice(`Status updated to ${nextStatus}.`);
-    } catch (err) {
-      setError(getErrorMessage(err));
-    }
-  };
+  const tableRows = useMemo(
+    () =>
+      employees.map((employee) => ({
+        ...employee,
+        departmentName: employee.department?.name || '—',
+        managerName: employee.reportingManager?.name || '—',
+        roleLabel: employee.role,
+        employeeIdValue: employee.employeeId || employee.id,
+      })),
+    [employees],
+  );
 
   const columns = useMemo(
     () => [
       { key: 'employeeIdValue', label: 'Employee ID' },
-      { key: 'name', label: 'Name' },
-      { key: 'email', label: 'Email' },
+      {
+        key: 'name',
+        label: 'Name',
+        render: (emp) => (
+          <div>
+            <strong>{emp.name}</strong>
+            <div className="text-secondary" style={{ fontSize: '0.8rem' }}>
+              {emp.email}
+            </div>
+          </div>
+        ),
+      },
       { key: 'departmentName', label: 'Department' },
       { key: 'position', label: 'Position' },
       { key: 'managerName', label: 'Reporting Manager' },
-      { key: 'roleLabel', label: 'Role' },
-      { key: 'statusLabel', label: 'Status' },
+      {
+        key: 'roleLabel',
+        label: 'Role',
+        render: (emp) => (
+          <select
+            className="input"
+            style={{ padding: '0.25rem 0.5rem', fontSize: '0.85rem' }}
+            value={emp.role}
+            onChange={(e) => handleRoleChange(emp, e.target.value)}
+          >
+            <option value="EMPLOYEE">Employee</option>
+            <option value="MANAGER">Manager</option>
+            <option value="ADMIN">Admin</option>
+          </select>
+        ),
+      },
       {
         key: 'actions',
         label: 'Actions',
-        render: (employee) => (
-          <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
+        render: (emp) => (
+          <div style={{ display: 'flex', gap: '0.4rem', alignItems: 'center' }}>
             <button
               className="btn btn-outline btn-sm"
-              onClick={() => handleEditEmployee(employee)}
+              onClick={() => handleEditEmployee(emp)}
             >
               Edit
             </button>
             <button
-              className="btn btn-danger btn-sm"
-              onClick={() => setConfirmDeleteEmployee(employee)}
+              className={`btn btn-sm ${emp.isActive ? 'btn-danger' : 'btn-primary'}`}
+              onClick={() => handleToggleStatus(emp)}
             >
-              Delete
+              {emp.isActive ? 'Deactivate' : 'Activate'}
             </button>
-            <select
-              className="input"
-              style={{ minWidth: '110px', padding: '0.25rem 0.5rem' }}
-              value={employee.role}
-              onChange={(event) =>
-                handleRoleChange(employee, event.target.value)
-              }
-            >
-              <option value="EMPLOYEE">Employee</option>
-              <option value="MANAGER">Manager</option>
-              <option value="ADMIN">Admin</option>
-            </select>
-            <select
-              className="input"
-              style={{ minWidth: '110px', padding: '0.25rem 0.5rem' }}
-              value={employee.isActive ? 'active' : 'inactive'}
-              onChange={(event) =>
-                handleStatusChange(employee, event.target.value)
-              }
-            >
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
           </div>
         ),
       },
@@ -295,8 +299,8 @@ export default function EmployeesPage() {
   return (
     <div>
       <PageHeader
-        title="Employees"
-        subtitle="Manage employee records, roles, and status."
+        title="Employee Directory"
+        subtitle="Manage employee profiles, role assignments, and workspace activation status."
         action={
           <button className="btn btn-primary" onClick={handleAddEmployee}>
             + Add Employee
@@ -313,7 +317,7 @@ export default function EmployeesPage() {
             borderColor: 'var(--color-success)',
           }}
         >
-          <p style={{ margin: 0 }}>{notice}</p>
+          <p style={{ margin: 0, color: 'var(--color-success)' }}>{notice}</p>
         </div>
       ) : null}
 
@@ -326,10 +330,41 @@ export default function EmployeesPage() {
             borderColor: 'var(--color-danger)',
           }}
         >
-          <p style={{ margin: 0 }}>{error}</p>
+          <p style={{ margin: 0, color: 'var(--color-danger)' }}>{error}</p>
         </div>
       ) : null}
 
+      {/* Tabs navigation */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '0.5rem',
+          marginBottom: '1rem',
+          borderBottom: '1px solid var(--color-border)',
+          paddingBottom: '0.5rem',
+        }}
+      >
+        <button
+          className={`btn ${activeTab === 'active' ? 'btn-primary' : 'btn-ghost'}`}
+          onClick={() => {
+            setActiveTab('active');
+            setPage(1);
+          }}
+        >
+          Active Employees {activeCount > 0 && <Badge tone="secondary">{activeCount}</Badge>}
+        </button>
+        <button
+          className={`btn ${activeTab === 'inactive' ? 'btn-primary' : 'btn-ghost'}`}
+          onClick={() => {
+            setActiveTab('inactive');
+            setPage(1);
+          }}
+        >
+          Deactivated Employees {inactiveCount > 0 && <Badge tone="warning">{inactiveCount}</Badge>}
+        </button>
+      </div>
+
+      {/* Filter toolbar */}
       <div
         className="card"
         style={{ padding: '1rem 1.25rem', marginBottom: '1rem' }}
@@ -337,12 +372,13 @@ export default function EmployeesPage() {
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <input
             className="input"
-            placeholder="Search employee"
+            placeholder="Search employee name, email or ID..."
             value={search}
             onChange={(event) => {
               setSearch(event.target.value);
               setPage(1);
             }}
+            style={{ flex: 1, minWidth: '220px' }}
           />
           <select
             className="input"
@@ -351,8 +387,9 @@ export default function EmployeesPage() {
               setDepartmentFilter(event.target.value);
               setPage(1);
             }}
+            style={{ width: '160px' }}
           >
-            <option value="">Department</option>
+            <option value="">All Departments</option>
             {departments.map((department) => (
               <option key={department.id} value={department.id}>
                 {department.name}
@@ -366,23 +403,12 @@ export default function EmployeesPage() {
               setRoleFilter(event.target.value);
               setPage(1);
             }}
+            style={{ width: '140px' }}
           >
-            <option value="">Role</option>
+            <option value="">All Roles</option>
             <option value="ADMIN">Admin</option>
             <option value="MANAGER">Manager</option>
             <option value="EMPLOYEE">Employee</option>
-          </select>
-          <select
-            className="input"
-            value={statusFilter}
-            onChange={(event) => {
-              setStatusFilter(event.target.value);
-              setPage(1);
-            }}
-          >
-            <option value="">Status</option>
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
           </select>
           <select
             className="input"
@@ -391,8 +417,9 @@ export default function EmployeesPage() {
               setSortBy(event.target.value);
               setPage(1);
             }}
+            style={{ width: '140px' }}
           >
-            <option value="createdAt">Newest</option>
+            <option value="createdAt">Newest First</option>
             <option value="name">Name</option>
             <option value="role">Role</option>
           </select>
@@ -400,19 +427,23 @@ export default function EmployeesPage() {
       </div>
 
       {isLoading ? (
-        <div className="card" style={{ padding: '1rem' }}>
+        <div className="card" style={{ padding: '1.5rem', textAlign: 'center' }}>
           <p className="text-secondary">Loading employees…</p>
         </div>
       ) : null}
 
-      {!isLoading && !error && !tableRows.length ? (
+      {!isLoading && !error && tableRows.length === 0 ? (
         <EmptyState
-          title="No employees found"
-          description="Try a different search or create a new employee."
+          title={activeTab === 'active' ? 'No active employees' : 'No deactivated employees'}
+          description={
+            activeTab === 'active'
+              ? 'Add a new employee to get started.'
+              : 'There are no deactivated employee accounts.'
+          }
         />
       ) : null}
 
-      {!isLoading && !error && tableRows.length ? (
+      {!isLoading && !error && tableRows.length > 0 ? (
         <>
           <DataTable
             columns={columns}
@@ -428,9 +459,10 @@ export default function EmployeesPage() {
         </>
       ) : null}
 
+      {/* Create / Edit Employee Modal */}
       <Modal
         open={isModalOpen}
-        title={editingEmployee ? 'Edit Employee' : 'Add Employee'}
+        title={editingEmployee ? 'Edit Employee' : 'Add New Employee'}
         footer={[
           <button
             key="cancel"
@@ -445,124 +477,164 @@ export default function EmployeesPage() {
             onClick={handleSave}
             disabled={isSaving}
           >
-            {isSaving ? 'Saving…' : 'Save'}
+            {isSaving ? 'Saving…' : 'Save Employee'}
           </button>,
         ]}
       >
         <div style={{ display: 'grid', gap: '0.8rem' }}>
-          <input
-            className="input"
-            placeholder="Full Name"
-            value={form.name}
-            onChange={(event) => setForm({ ...form, name: event.target.value })}
-          />
-          <input
-            className="input"
-            placeholder="Email"
-            value={form.email}
-            onChange={(event) =>
-              setForm({ ...form, email: event.target.value })
-            }
-          />
-          <input
-            className="input"
-            placeholder="Employee ID"
-            value={form.employeeId}
-            onChange={(event) =>
-              setForm({ ...form, employeeId: event.target.value })
-            }
-          />
-          <input
-            className="input"
-            placeholder="Phone"
-            value={form.phone}
-            onChange={(event) =>
-              setForm({ ...form, phone: event.target.value })
-            }
-          />
-          <input
-            className="input"
-            placeholder="Position"
-            value={form.position}
-            onChange={(event) =>
-              setForm({ ...form, position: event.target.value })
-            }
-          />
-          <select
-            className="input"
-            value={form.departmentId}
-            onChange={(event) =>
-              setForm({ ...form, departmentId: event.target.value })
-            }
-          >
-            <option value="">Select department</option>
-            {departments.map((department) => (
-              <option key={department.id} value={department.id}>
-                {department.name}
-              </option>
-            ))}
-          </select>
-          <select
-            className="input"
-            value={form.reportingManagerId}
-            onChange={(event) =>
-              setForm({ ...form, reportingManagerId: event.target.value })
-            }
-          >
-            <option value="">Select reporting manager</option>
-            {employees.map((employee) => (
-              <option key={employee.id} value={employee.id}>
-                {employee.name}
-              </option>
-            ))}
-          </select>
-          <select
-            className="input"
-            value={form.role}
-            onChange={(event) => setForm({ ...form, role: event.target.value })}
-          >
-            <option value="EMPLOYEE">Employee</option>
-            <option value="MANAGER">Manager</option>
-            <option value="ADMIN">Admin</option>
-          </select>
-          <select
-            className="input"
-            value={form.isActive ? 'active' : 'inactive'}
-            onChange={(event) =>
-              setForm({ ...form, isActive: event.target.value === 'active' })
-            }
-          >
-            <option value="active">Active</option>
-            <option value="inactive">Inactive</option>
-          </select>
-          <input
-            className="input"
-            placeholder="Joining Date"
-            type="date"
-            value={form.joiningDate}
-            onChange={(event) =>
-              setForm({ ...form, joiningDate: event.target.value })
-            }
-          />
-          <input
-            className="input"
-            placeholder="Temporary Password"
-            type="password"
-            value={form.password}
-            onChange={(event) =>
-              setForm({ ...form, password: event.target.value })
-            }
-          />
+          <div>
+            <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+              Full Name <span style={{ color: 'var(--color-danger)' }}>*</span>
+            </label>
+            <input
+              className="input"
+              style={{ width: '100%' }}
+              placeholder="e.g. John Doe"
+              value={form.name}
+              onChange={(event) => setForm({ ...form, name: event.target.value })}
+            />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Email Address <span style={{ color: 'var(--color-danger)' }}>*</span>
+              </label>
+              <input
+                className="input"
+                style={{ width: '100%' }}
+                placeholder="john@aikart.com"
+                value={form.email}
+                onChange={(event) => setForm({ ...form, email: event.target.value })}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Employee ID <span style={{ color: 'var(--color-danger)' }}>*</span>
+              </label>
+              <input
+                className="input"
+                style={{ width: '100%' }}
+                placeholder="EMP-101"
+                value={form.employeeId}
+                onChange={(event) => setForm({ ...form, employeeId: event.target.value })}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Phone Number
+              </label>
+              <input
+                className="input"
+                style={{ width: '100%' }}
+                placeholder="+1 234 567 890"
+                value={form.phone}
+                onChange={(event) => setForm({ ...form, phone: event.target.value })}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Position / Job Title
+              </label>
+              <input
+                className="input"
+                style={{ width: '100%' }}
+                placeholder="Senior Software Engineer"
+                value={form.position}
+                onChange={(event) => setForm({ ...form, position: event.target.value })}
+              />
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Department
+              </label>
+              <select
+                className="input"
+                style={{ width: '100%' }}
+                value={form.departmentId}
+                onChange={(event) => setForm({ ...form, departmentId: event.target.value })}
+              >
+                <option value="">Select department</option>
+                {departments.map((department) => (
+                  <option key={department.id} value={department.id}>
+                    {department.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Reporting Manager
+              </label>
+              <select
+                className="input"
+                style={{ width: '100%' }}
+                value={form.reportingManagerId}
+                onChange={(event) => setForm({ ...form, reportingManagerId: event.target.value })}
+              >
+                <option value="">Select reporting manager</option>
+                {allEmployeesList.map((emp) => (
+                  <option key={emp.id} value={emp.id}>
+                    {emp.name} ({emp.role})
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Role
+              </label>
+              <select
+                className="input"
+                style={{ width: '100%' }}
+                value={form.role}
+                onChange={(event) => setForm({ ...form, role: event.target.value })}
+              >
+                <option value="EMPLOYEE">Employee</option>
+                <option value="MANAGER">Manager</option>
+                <option value="ADMIN">Admin</option>
+              </select>
+            </div>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Joining Date
+              </label>
+              <input
+                className="input"
+                style={{ width: '100%' }}
+                type="date"
+                value={form.joiningDate}
+                onChange={(event) => setForm({ ...form, joiningDate: event.target.value })}
+              />
+            </div>
+          </div>
+
+          {!editingEmployee && (
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Temporary Password
+              </label>
+              <input
+                className="input"
+                style={{ width: '100%' }}
+                placeholder="Default: Welcome@123"
+                type="password"
+                value={form.password}
+                onChange={(event) => setForm({ ...form, password: event.target.value })}
+              />
+            </div>
+          )}
         </div>
       </Modal>
-
-      <ConfirmDialog
-        open={!!confirmDeleteEmployee}
-        title="Deactivate employee"
-        description={`Are you sure you want to deactivate ${confirmDeleteEmployee?.name || 'this employee'}?`}
-        onCancel={() => setConfirmDeleteEmployee(null)}
-        onConfirm={handleDelete}
-      />
     </div>
   );
 }

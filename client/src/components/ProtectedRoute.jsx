@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { isAllowedRole } from '../utils/roleRoutes';
+import { isAllowedRole, getDefaultRouteByRole } from '../utils/roleRoutes';
 
 /**
  * Wraps routes that require authentication.
@@ -26,7 +26,7 @@ export default function ProtectedRoute({ children, allowedRoles = [] }) {
   }
 
   if (allowedRoles.length && !isAllowedRole(user?.role, allowedRoles)) {
-    return <Navigate to="/attendance" replace />;
+    return <Navigate to={getDefaultRouteByRole(user?.role)} replace />;
   }
 
   return children;

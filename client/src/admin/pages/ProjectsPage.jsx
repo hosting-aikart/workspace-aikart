@@ -478,36 +478,38 @@ export default function ProjectsPage() {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
+              gridTemplateColumns: '1fr 1fr',
               gap: '0.75rem',
             }}
           >
-            <input
-              className="input"
-              type="number"
-              min="0"
-              max="100"
-              value={form.progress}
-              onChange={(event) =>
-                setForm({ ...form, progress: Number(event.target.value) })
-              }
-            />
-            <input
-              className="input"
-              type="date"
-              value={form.startDate}
-              onChange={(event) =>
-                setForm({ ...form, startDate: event.target.value })
-              }
-            />
-            <input
-              className="input"
-              type="date"
-              value={form.deadline}
-              onChange={(event) =>
-                setForm({ ...form, deadline: event.target.value })
-              }
-            />
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Start Date
+              </label>
+              <input
+                className="input"
+                style={{ width: '100%' }}
+                type="date"
+                value={form.startDate}
+                onChange={(event) =>
+                  setForm({ ...form, startDate: event.target.value })
+                }
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+                Target Deadline
+              </label>
+              <input
+                className="input"
+                style={{ width: '100%' }}
+                type="date"
+                value={form.deadline}
+                onChange={(event) =>
+                  setForm({ ...form, deadline: event.target.value })
+                }
+              />
+            </div>
           </div>
           <div style={{ display: 'grid', gap: '0.45rem' }}>
             <label className="text-secondary" style={{ fontSize: '0.85rem' }}>

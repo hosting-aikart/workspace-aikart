@@ -5,10 +5,9 @@ export function getDefaultRouteByRole(role) {
     case 'ADMIN':
       return '/admin';
     case 'MANAGER':
-      return '/reports';
     case 'EMPLOYEE':
     default:
-      return '/';
+      return '/app';
   }
 }
 
