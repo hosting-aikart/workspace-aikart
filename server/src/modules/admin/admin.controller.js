@@ -16,6 +16,7 @@ const {
   listWorkspaceAttendance,
   getAttendanceStats,
   getAdminReport,
+  adjustAttendance,
 } = require('./admin.service');
 const {
   employeeCreateSchema,
@@ -232,10 +233,23 @@ const getWorkspaceAttendance = async (req, res) => {
       to: req.query.to,
       page: req.query.page,
       limit: req.query.limit,
+      employee: req.query.employee,
+      department: req.query.department,
+      status: req.query.status,
     });
     return sendSuccess(res, data);
   } catch (err) {
     return sendError(res, err.message || 'Failed to fetch attendance.', 500);
+  }
+};
+
+const adjustAttendanceHandler = async (req, res) => {
+  try {
+    const data = await adjustAttendance(req.user.workspaceId, req.params.id, req.body);
+    return sendSuccess(res, data);
+  } catch (err) {
+    const statusCode = err.statusCode || 400;
+    return sendError(res, err.message || 'Failed to adjust attendance.', statusCode);
   }
 };
 
@@ -284,4 +298,5 @@ module.exports = {
   getWorkspaceAttendance,
   getAttendanceDashboard,
   getReport,
+  adjustAttendanceHandler,
 };

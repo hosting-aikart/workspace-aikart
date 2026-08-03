@@ -37,7 +37,9 @@ export default function TasksPage() {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await api.get('/admin/employees'); // Adjust based on your available endpoints
+      const endpoint =
+        user?.role === 'ADMIN' ? '/admin/employees' : '/manager/team';
+      const { data } = await api.get(endpoint);
       setUsers(
         Array.isArray(data?.data) ? data.data : data?.data?.employees || [],
       );
@@ -99,22 +101,24 @@ export default function TasksPage() {
             Manage your assigned tasks and track progress
           </p>
         </div>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2"
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
+        {(user?.role === 'ADMIN' || user?.role === 'MANAGER') && (
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors flex items-center gap-2"
           >
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-          New Task
-        </button>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
+            New Task
+          </button>
+        )}
       </div>
 
       <div className="flex gap-2 mb-6 flex-shrink-0">

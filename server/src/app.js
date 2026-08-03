@@ -56,6 +56,7 @@ app.use('/api/tasks', taskRoutes);
 app.use('/api/attendance', require('./modules/attendance/attendance.routes'));
 app.use('/api/announcements', require('./modules/announcement/announcement.routes'));
 app.use('/api/notifications', require('./modules/notification/notification.routes'));
+app.use('/api/manager', require('./modules/manager/manager.routes'));
 
 // Fallback for task endpoints used by the client UI
 app.get('/api/tasks', (req, res, next) => {

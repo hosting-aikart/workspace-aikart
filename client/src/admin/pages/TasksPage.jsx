@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import PageHeader from '../components/PageHeader';
 import DataTable from '../components/DataTable';
 import Badge from '../components/Badge';
@@ -42,7 +42,7 @@ export default function TasksPage() {
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearch] = useState('');
-  const [statusFilter, setStatusFilter] = useState('');
+  const [statusTab, setStatusTab] = useState('ALL'); // ALL, TODO, IN_PROGRESS, DONE
   const [priorityFilter, setPriorityFilter] = useState('');
 
   const loadTasks = useCallback(async () => {
@@ -50,7 +50,6 @@ export default function TasksPage() {
     try {
       const { data } = await api.get('/tasks', {
         params: {
-          status: statusFilter,
           priority: priorityFilter,
         },
       });
@@ -60,7 +59,7 @@ export default function TasksPage() {
     } finally {
       setLoading(false);
     }
-  }, [priorityFilter, statusFilter]);
+  }, [priorityFilter]);
 
   const loadProjectsAndUsers = useCallback(async () => {
     try {
@@ -70,10 +69,22 @@ export default function TasksPage() {
       ]);
 
       const projectsData = projectsRes?.data;
-      setProjects(Array.isArray(projectsData?.projects) ? projectsData.projects : Array.isArray(projectsData) ? projectsData : []);
+      setProjects(
+        Array.isArray(projectsData?.projects)
+          ? projectsData.projects
+          : Array.isArray(projectsData)
+          ? projectsData
+          : [],
+      );
 
       const employeesData = usersRes?.data;
-      setUsers(Array.isArray(employeesData?.employees) ? employeesData.employees : Array.isArray(employeesData) ? employeesData : []);
+      setUsers(
+        Array.isArray(employeesData?.employees)
+          ? employeesData.employees
+          : Array.isArray(employeesData)
+          ? employeesData
+          : [],
+      );
     } catch (err) {
       console.error('Failed to load modal reference data', err);
     }
@@ -87,16 +98,50 @@ export default function TasksPage() {
     loadProjectsAndUsers();
   }, [loadProjectsAndUsers]);
 
+  const handleStatusChange = async (taskId, nextStatus) => {
+    try {
+      await api.patch(`/tasks/${taskId}`, { status: nextStatus });
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, status: nextStatus } : t)),
+      );
+    } catch (err) {
+      console.error('Failed to update task status', err);
+    }
+  };
+
+  const filteredTasks = useMemo(() => {
+    return tasks.filter((t) => {
+      if (statusTab !== 'ALL' && t.status !== statusTab) {
+        return false;
+      }
+      if (!search.trim()) return true;
+      const term = search.toLowerCase();
+      return (
+        t.title?.toLowerCase().includes(term) ||
+        t.description?.toLowerCase().includes(term) ||
+        t.project?.name?.toLowerCase().includes(term)
+      );
+    });
+  }, [tasks, statusTab, search]);
+
+  const taskStats = useMemo(() => {
+    const total = tasks.length;
+    const todo = tasks.filter((t) => t.status === 'TODO').length;
+    const inProgress = tasks.filter((t) => t.status === 'IN_PROGRESS').length;
+    const done = tasks.filter((t) => t.status === 'DONE' || t.status === 'COMPLETED').length;
+    return { total, todo, inProgress, done };
+  }, [tasks]);
+
   const columns = [
     {
       key: 'title',
-      label: 'Task',
+      label: 'Task Details',
       render: (row) => (
         <div>
           <strong style={{ fontSize: '0.95rem' }}>{row.title}</strong>
           {row.description && (
-            <div className="text-secondary" style={{ fontSize: '0.8rem', opacity: 0.85 }}>
-              {row.description.length > 60 ? row.description.slice(0, 60) + '…' : row.description}
+            <div className="text-secondary" style={{ fontSize: '0.8rem', opacity: 0.85, marginTop: '0.15rem' }}>
+              {row.description.length > 70 ? row.description.slice(0, 70) + '…' : row.description}
             </div>
           )}
         </div>
@@ -105,7 +150,11 @@ export default function TasksPage() {
     {
       key: 'project',
       label: 'Project',
-      render: (row) => row.project?.name || '—',
+      render: (row) => (
+        <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+          {row.project?.name || '—'}
+        </span>
+      ),
     },
     {
       key: 'priority',
@@ -115,7 +164,19 @@ export default function TasksPage() {
     {
       key: 'status',
       label: 'Status',
-      render: (row) => <Badge tone={getStatusTone(row.status)}>{row.status}</Badge>,
+      render: (row) => (
+        <select
+          className="input"
+          style={{ padding: '0.25rem 0.5rem', fontSize: '0.85rem' }}
+          value={row.status}
+          onChange={(e) => handleStatusChange(row.id, e.target.value)}
+        >
+          <option value="TODO">To Do</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="DONE">Done</option>
+          <option value="ITERATE">Iterate</option>
+        </select>
+      ),
     },
     {
       key: 'dueDate',
@@ -129,21 +190,11 @@ export default function TasksPage() {
     },
   ];
 
-  const filteredTasks = tasks.filter((t) => {
-    if (!search.trim()) return true;
-    const term = search.toLowerCase();
-    return (
-      t.title?.toLowerCase().includes(term) ||
-      t.description?.toLowerCase().includes(term) ||
-      t.project?.name?.toLowerCase().includes(term)
-    );
-  });
-
   return (
-    <div>
+    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
       <PageHeader
         title="Tasks Management"
-        subtitle="Manage, assign, and track work items across projects."
+        subtitle="Manage, assign, and track workspace task progress in real time."
         action={
           <button
             className="btn btn-primary"
@@ -154,21 +205,84 @@ export default function TasksPage() {
         }
       />
 
-      {/* Filters */}
+      {/* Stats row */}
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+          gap: '1rem',
+          marginBottom: '1.25rem',
+        }}
+      >
+        <div className="card" style={{ padding: '1rem 1.25rem' }}>
+          <span className="text-secondary" style={{ fontSize: '0.8rem', fontWeight: 600 }}>TOTAL TASKS</span>
+          <div style={{ fontSize: '1.5rem', fontWeight: 800, margin: '0.2rem 0 0 0' }}>{taskStats.total}</div>
+        </div>
+        <div className="card" style={{ padding: '1rem 1.25rem' }}>
+          <span className="text-secondary" style={{ fontSize: '0.8rem', fontWeight: 600 }}>TO DO</span>
+          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-warning)', margin: '0.2rem 0 0 0' }}>{taskStats.todo}</div>
+        </div>
+        <div className="card" style={{ padding: '1rem 1.25rem' }}>
+          <span className="text-secondary" style={{ fontSize: '0.8rem', fontWeight: 600 }}>IN PROGRESS</span>
+          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)', margin: '0.2rem 0 0 0' }}>{taskStats.inProgress}</div>
+        </div>
+        <div className="card" style={{ padding: '1rem 1.25rem' }}>
+          <span className="text-secondary" style={{ fontSize: '0.8rem', fontWeight: 600 }}>DONE</span>
+          <div style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-success)', margin: '0.2rem 0 0 0' }}>{taskStats.done}</div>
+        </div>
+      </div>
+
+      {/* Tabs */}
+      <div
+        style={{
+          display: 'flex',
+          gap: '0.4rem',
+          marginBottom: '1rem',
+          borderBottom: '1px solid var(--color-border)',
+          paddingBottom: '0.5rem',
+        }}
+      >
+        <button
+          className={`btn ${statusTab === 'ALL' ? 'btn-primary' : 'btn-ghost'}`}
+          onClick={() => setStatusTab('ALL')}
+        >
+          All Tasks ({taskStats.total})
+        </button>
+        <button
+          className={`btn ${statusTab === 'TODO' ? 'btn-primary' : 'btn-ghost'}`}
+          onClick={() => setStatusTab('TODO')}
+        >
+          To Do ({taskStats.todo})
+        </button>
+        <button
+          className={`btn ${statusTab === 'IN_PROGRESS' ? 'btn-primary' : 'btn-ghost'}`}
+          onClick={() => setStatusTab('IN_PROGRESS')}
+        >
+          In Progress ({taskStats.inProgress})
+        </button>
+        <button
+          className={`btn ${statusTab === 'DONE' ? 'btn-primary' : 'btn-ghost'}`}
+          onClick={() => setStatusTab('DONE')}
+        >
+          Done ({taskStats.done})
+        </button>
+      </div>
+
+      {/* Filter toolbar */}
       <div className="card" style={{ padding: '1rem 1.25rem', marginBottom: '1rem' }}>
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <input
             className="input"
-            placeholder="Search tasks..."
+            placeholder="Search task title or description..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ flex: 1, minWidth: '220px' }}
+            style={{ flex: 1, minWidth: '240px' }}
           />
           <select
             className="input"
             value={priorityFilter}
             onChange={(e) => setPriorityFilter(e.target.value)}
-            style={{ width: '150px' }}
+            style={{ width: '160px' }}
           >
             <option value="">All Priorities</option>
             <option value="LOW">Low</option>
@@ -176,34 +290,22 @@ export default function TasksPage() {
             <option value="HIGH">High</option>
             <option value="URGENT">Urgent</option>
           </select>
-          <select
-            className="input"
-            value={statusFilter}
-            onChange={(e) => setStatusFilter(e.target.value)}
-            style={{ width: '150px' }}
-          >
-            <option value="">All Statuses</option>
-            <option value="TODO">To Do</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="DONE">Done</option>
-            <option value="ITERATE">Iterate</option>
-          </select>
         </div>
       </div>
 
       {loading ? (
-        <div className="card" style={{ padding: '1.5rem', textAlign: 'center' }}>
-          <p className="text-secondary">Loading tasks…</p>
+        <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
+          <p className="text-secondary">Loading task board…</p>
         </div>
       ) : (
         <DataTable
           columns={columns}
           rows={filteredTasks}
-          emptyMessage="No tasks found."
+          emptyMessage="No tasks found matching current filters."
         />
       )}
 
-      {/* New Task Modal */}
+      {/* Redesigned Glassmorphic New Task Modal */}
       {isModalOpen && (
         <NewTaskModal
           projects={projects}

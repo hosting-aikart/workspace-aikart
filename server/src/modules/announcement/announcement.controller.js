@@ -28,6 +28,7 @@ const createAnnouncementHandler = async (req, res) => {
       req.user.workspaceId,
       req.user.id,
       payload,
+      req.user.role,
     );
     return res.status(201).json({ status: 'success', data: announcement });
   } catch (error) {

@@ -20,12 +20,16 @@ const normalizeStatus = (val) => {
   return ['DRAFT', 'PUBLISHED', 'ARCHIVED'].includes(upper) ? upper : 'PUBLISHED';
 };
 
-const createAnnouncement = async (workspaceId, createdById, payload) => {
+const createAnnouncement = async (workspaceId, createdById, payload, userRole = 'ADMIN') => {
   const prisma = getPrisma();
 
   const priority = normalizePriority(payload.priority);
-  const targetType = normalizeTargetType(payload.targetType);
+  let targetType = normalizeTargetType(payload.targetType);
   const status = normalizeStatus(payload.status);
+
+  if (userRole === 'MANAGER') {
+    targetType = 'SELECTED_USERS';
+  }
 
   const announcementData = {
     title: payload.title,

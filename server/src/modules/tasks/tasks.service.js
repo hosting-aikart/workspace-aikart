@@ -42,14 +42,37 @@ const ensureProjectAccess = async (
 const createTask = async (workspaceId, userId, userRole, payload) => {
   const prisma = getPrisma();
 
-  if (!payload?.projectId) {
-    throw new Error('Project ID is required');
+  let projectId = payload?.projectId;
+
+  if (!projectId) {
+    const defaultProject =
+      (await prisma.project.findFirst({
+        where: {
+          workspaceId,
+          isArchived: false,
+          OR: [
+            { managerId: userId },
+            { createdById: userId },
+            { members: { some: { userId } } },
+          ],
+        },
+        select: { id: true },
+      })) ||
+      (await prisma.project.findFirst({
+        where: { workspaceId, isArchived: false },
+        select: { id: true },
+      }));
+
+    if (!defaultProject) {
+      throw new Error('A project is required to create a task. Please create a project first.');
+    }
+    projectId = defaultProject.id;
   }
 
   await ensureProjectAccess(
     prisma,
     workspaceId,
-    payload.projectId,
+    projectId,
     userId,
     userRole,
   );
@@ -58,7 +81,7 @@ const createTask = async (workspaceId, userId, userRole, payload) => {
     data: {
       title: payload.title,
       description: payload.description || null,
-      projectId: payload.projectId,
+      projectId: projectId,
       createdById: userId,
       priority: normalizeTaskPriority(payload.priority) || 'MEDIUM',
       status: normalizeTaskStatus(payload.status) || 'TODO',

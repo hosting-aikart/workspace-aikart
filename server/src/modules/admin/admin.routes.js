@@ -20,6 +20,7 @@ const {
   getWorkspaceAttendance,
   getAttendanceDashboard,
   getReport,
+  adjustAttendanceHandler,
 } = require('./admin.controller');
 
 const router = Router();
@@ -41,6 +42,7 @@ router.patch('/departments/:id', updateDepartmentHandler);
 router.delete('/departments/:id', deleteDepartmentHandler);
 router.get('/attendance', getWorkspaceAttendance);
 router.get('/attendance/stats', getAttendanceDashboard);
+router.patch('/attendance/:id', adjustAttendanceHandler);
 router.get('/reports', getReport);
 router.get('/dashboard', getStats);
 

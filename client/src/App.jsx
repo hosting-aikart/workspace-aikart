@@ -30,13 +30,18 @@ import AttendancePage from './attendance/AttendancePage';
 import TasksPage from './modules/tasks/TasksPage';
 import ProjectsListPage from './modules/projects/ProjectsListPage';
 import ProjectDetailPage from './modules/projects/ProjectDetailPage';
+import TeamDashboardPage from './pages/TeamDashboardPage';
+import TeamAttendancePage from './pages/TeamAttendancePage';
+import TeamAnnouncementsPage from './pages/TeamAnnouncementsPage';
+import DirectoryPage from './pages/DirectoryPage';
+
+import SettingsPage from './pages/SettingsPage';
+
+import ReportsPage from './pages/ReportsPage';
 
 // ─── Placeholder Pages ────────────────────────────────────────────────────────
 import {
   MeetingsPage,
-  DirectoryPage,
-  ReportsPage,
-  SettingsPage,
 } from './pages/PlaceholderPages';
 
 /**
@@ -122,6 +127,12 @@ export default function App() {
             <Route path="directory" element={<DirectoryPage />} />
             <Route path="reports" element={<ReportsPage />} />
             <Route path="settings" element={<SettingsPage />} />
+
+            {/* Manager Workspace Routes */}
+            <Route path="team-dashboard" element={<TeamDashboardPage />} />
+            <Route path="team-attendance" element={<TeamAttendancePage />} />
+            <Route path="team-meetings" element={<MeetingsPage />} />
+            <Route path="team-announcements" element={<TeamAnnouncementsPage />} />
           </Route>
 
           {/* ── Catch-all ────────────────────────────────────────────────── */}

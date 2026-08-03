@@ -108,6 +108,19 @@
   --sidebar-collapsed-width: 72px;
 }
 
+/* ── Dark Mode Overrides ─────────────────────────────────────────────────── */
+html.dark {
+  --color-bg: #0b0f19;
+  --color-surface: #111827;
+  --color-surface-hover: #1f2937;
+  --color-border: #1f2937;
+  --color-border-strong: #374151;
+  --color-text: #f9fafb;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+  color-scheme: dark;
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    2. CSS RESET & BASE STYLES

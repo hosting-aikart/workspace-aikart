@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-const APP_NAV_SECTIONS = [
+const BASE_NAV_SECTIONS = [
   {
     title: 'Main',
     items: [
@@ -89,6 +89,58 @@ const APP_NAV_SECTIONS = [
       },
     ],
   },
+];
+
+const MANAGER_NAV_SECTION = {
+  title: 'Manager Tools',
+  items: [
+    {
+      id: 'team-dashboard',
+      label: 'Team Dashboard',
+      path: '/app/team-dashboard',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      ),
+    },
+    {
+      id: 'team-attendance',
+      label: 'Team Attendance',
+      path: '/app/team-attendance',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <rect x="3" y="4" width="18" height="18" rx="2" />
+          <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" />
+          <line x1="3" y1="10" x2="21" y2="10" /><polyline points="9 16 11 18 15 14" />
+        </svg>
+      ),
+    },
+    {
+      id: 'team-meetings',
+      label: 'Team Meetings',
+      path: '/app/team-meetings',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M23 7l-7 5 7 5V7z" /><rect x="1" y="5" width="15" height="14" rx="2" />
+        </svg>
+      ),
+    },
+    {
+      id: 'team-announcements',
+      label: 'Team Broadcasts',
+      path: '/app/team-announcements',
+      icon: (
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+          <path d="M11 5L6 9H2v6h4l5 4V5z" /><path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+        </svg>
+      ),
+    },
+  ],
+};
+
+const EXTRA_NAV_SECTIONS = [
   {
     title: 'Company & Insights',
     items: [
@@ -148,6 +200,15 @@ export default function AppLayout() {
     navigate('/login');
   };
 
+  const isManagerOrAdmin = user?.role === 'MANAGER' || user?.role === 'ADMIN';
+
+  const navSections = useMemo(() => {
+    if (isManagerOrAdmin) {
+      return [...BASE_NAV_SECTIONS, MANAGER_NAV_SECTION, ...EXTRA_NAV_SECTIONS];
+    }
+    return [...BASE_NAV_SECTIONS, ...EXTRA_NAV_SECTIONS];
+  }, [isManagerOrAdmin]);
+
   return (
     <div className="dashboard-root">
       {/* Mobile overlay */}
@@ -168,14 +229,27 @@ export default function AppLayout() {
               <path d="M8 22L14 10L20 18L23 14L26 22H8Z" fill="white" opacity="0.9" />
             </svg>
             <span className="sidebar-brand">
-              ai<span className="text-primary">kart</span>
+              ai<span className="text-primary">kart</span>{' '}
+              {isManagerOrAdmin && (
+                <span
+                  style={{
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    color: '#f59e0b',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.5px',
+                  }}
+                >
+                  {user?.role}
+                </span>
+              )}
             </span>
           </div>
         </div>
 
         {/* Navigation */}
         <nav className="sidebar-nav">
-          {APP_NAV_SECTIONS.map((section) => (
+          {navSections.map((section) => (
             <div key={section.title} className="sidebar-section">
               <p className="sidebar-section-title">{section.title}</p>
               {section.items.map((item) => (
@@ -214,7 +288,9 @@ export default function AppLayout() {
             </div>
             <div className="sidebar-user-info">
               <p className="sidebar-user-name">{user?.name}</p>
-              <p className="sidebar-user-role">{user?.role}</p>
+              <p className="sidebar-user-role" style={{ color: isManagerOrAdmin ? '#f59e0b' : 'inherit' }}>
+                {user?.role}
+              </p>
             </div>
             <button
               className="btn btn-ghost btn-icon sidebar-logout-btn"

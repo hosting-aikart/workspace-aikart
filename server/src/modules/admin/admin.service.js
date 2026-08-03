@@ -620,6 +620,18 @@ const listWorkspaceAttendance = async (workspaceId, options = {}) => {
     if (options.to) where.date.lte = new Date(options.to);
   }
 
+  if (options.status) {
+    where.status = options.status;
+  }
+
+  if (options.employee) {
+    where.user.name = { contains: options.employee, mode: 'insensitive' };
+  }
+
+  if (options.department) {
+    where.user.departmentId = options.department;
+  }
+
   const [attendance, total] = await Promise.all([
     prisma.attendance.findMany({
       where,
@@ -633,7 +645,7 @@ const listWorkspaceAttendance = async (workspaceId, options = {}) => {
         totalSeconds: true,
         checkIn: true,
         checkOut: true,
-        user: { select: { id: true, name: true, email: true } },
+        user: { select: { id: true, name: true, email: true, department: { select: { id: true, name: true } } } },
       },
     }),
     prisma.attendance.count({ where }),
@@ -648,6 +660,48 @@ const listWorkspaceAttendance = async (workspaceId, options = {}) => {
       totalPages: Math.max(1, Math.ceil(total / limit)),
     },
   };
+};
+
+const adjustAttendance = async (workspaceId, attendanceId, payload) => {
+  const prisma = getPrisma();
+
+  const record = await prisma.attendance.findFirst({
+    where: { id: attendanceId, user: { workspaceId } },
+  });
+
+  if (!record) {
+    const err = new Error('Attendance record not found in workspace.');
+    err.statusCode = 404;
+    throw err;
+  }
+
+  const updateData = {};
+  if (payload.status !== undefined) {
+    updateData.status = payload.status;
+  }
+
+  if (payload.checkIn !== undefined) {
+    updateData.checkIn = payload.checkIn ? new Date(payload.checkIn) : null;
+  }
+
+  if (payload.checkOut !== undefined) {
+    updateData.checkOut = payload.checkOut ? new Date(payload.checkOut) : null;
+  }
+
+  const resolvedCheckIn = payload.checkIn !== undefined ? (payload.checkIn ? new Date(payload.checkIn) : null) : record.checkIn;
+  const resolvedCheckOut = payload.checkOut !== undefined ? (payload.checkOut ? new Date(payload.checkOut) : null) : record.checkOut;
+
+  if (resolvedCheckIn && resolvedCheckOut) {
+    updateData.totalSeconds = Math.max(0, Math.round((resolvedCheckOut - resolvedCheckIn) / 1000));
+  }
+
+  return prisma.attendance.update({
+    where: { id: attendanceId },
+    data: updateData,
+    include: {
+      user: { select: { id: true, name: true, email: true } },
+    },
+  });
 };
 
 const getAttendanceStats = async (workspaceId, options = {}) => {
@@ -713,4 +767,5 @@ module.exports = {
   listWorkspaceAttendance,
   getAttendanceStats,
   getAdminReport,
+  adjustAttendance,
 };
