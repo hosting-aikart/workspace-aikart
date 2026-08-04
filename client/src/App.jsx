@@ -133,6 +133,7 @@ export default function App() {
             <Route path="files" element={<FilesPage />} />
             <Route path="directory" element={<DirectoryPage />} />
             <Route path="invoices" element={<InvoicesPage />} />
+            <Route path="settings" element={<SettingsPage />} />
           </Route>
 
           {/* ── Catch-all ────────────────────────────────────────────────── */}

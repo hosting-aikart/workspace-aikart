@@ -4,9 +4,12 @@ const { Router } = require('express');
 const { requireAuth } = require('../../middleware/auth.middleware');
 const { verifyToken } = require('../../utils/jwt');
 const { sendError } = require('../../utils/apiResponse');
-const { connect, callback, status, disconnect } = require('./google.controller');
+const { connect, getConnectUrl, callback, status, disconnect } = require('./google.controller');
 
 const router = Router();
+
+// Returns JSON containing the Google OAuth URL (clean SPA approach)
+router.get('/connect-url', requireAuth, getConnectUrl);
 
 /**
  * For the /connect endpoint the browser navigates directly (window.location.href),

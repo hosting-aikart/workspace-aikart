@@ -101,7 +101,7 @@ export default function HomePage() {
           api.get('/meetings?limit=5').catch(() => ({ data: { data: [] } })),
           api.get('/announcements?limit=5').catch(() => ({ data: { data: [] } })),
         ]);
-        
+
         setAttendance(attRes.data?.data);
         setTasks(tasksRes.data?.data?.tasks || tasksRes.data?.data || []);
         setProjects(projRes.data?.data?.projects || projRes.data?.data || []);
@@ -146,7 +146,7 @@ export default function HomePage() {
       </div>
 
       <div className="grid-cols-3" style={{ display: 'grid', gap: '1.5rem' }}>
-        
+
         {/* Working Hours & Attendance */}
         <DashboardCard icon={<ClockIcon />} title="Attendance" color="#3B82F6">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%', padding: '0.5rem 0' }}>
@@ -167,13 +167,13 @@ export default function HomePage() {
 
         {/* Assigned Tasks */}
         <DashboardCard icon={<TaskIcon />} title="Assigned Tasks" color="#10B981" badge={tasks.length}>
-          {loading ? <div className="dash-empty" style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}><div className="spinner" /></div> : tasks.length === 0 ? <EmptyState label="No assigned tasks" /> : (
+          {loading ? <div className="dash-empty"><div className="spinner" /></div> : tasks.length === 0 ? <EmptyState label="No assigned tasks" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {tasks.slice(0, 3).map(task => (
-                <li key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border)' }}>
+                <li key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
                   <div>
-                    <strong style={{ display: 'block', fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '0.15rem' }}>{task.title}</strong>
-                    <span className="text-secondary text-xs">Due: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}</span>
+                    <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{task.title}</strong>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Due: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}</span>
                   </div>
                   <span className={`badge ${task.status === 'COMPLETED' ? 'badge-success' : 'badge-primary'}`}>{task.status?.replace('_', ' ')}</span>
                 </li>
@@ -184,15 +184,15 @@ export default function HomePage() {
 
         {/* Current Projects */}
         <DashboardCard icon={<ProjectIcon />} title="Current Projects" color="#8B5CF6" badge={projects.length}>
-          {loading ? <div className="dash-empty" style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}><div className="spinner" /></div> : projects.length === 0 ? <EmptyState label="No active projects" /> : (
+          {loading ? <div className="dash-empty"><div className="spinner" /></div> : projects.length === 0 ? <EmptyState label="No active projects" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {projects.slice(0, 3).map(proj => (
-                <li key={proj.id} style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
-                    <strong style={{ fontSize: '0.95rem', color: 'var(--text-primary)' }}>{proj.name}</strong>
-                    <span className="text-secondary text-xs font-semibold">{proj.progress || 0}%</span>
+                <li key={proj.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                    <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{proj.name}</strong>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{proj.progress || 0}%</span>
                   </div>
-                  <div style={{ width: '100%', backgroundColor: 'var(--color-bg)', height: '6px', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', backgroundColor: 'var(--bg-body)', height: '8px', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{ width: `${proj.progress || 0}%`, backgroundColor: '#8B5CF6', height: '100%', borderRadius: '4px' }}></div>
                   </div>
                 </li>
@@ -203,12 +203,12 @@ export default function HomePage() {
 
         {/* Upcoming Meetings */}
         <DashboardCard icon={<MeetingIcon />} title="Upcoming Meetings" color="#F59E0B" badge={meetings.length}>
-          {loading ? <div className="dash-empty" style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}><div className="spinner" /></div> : meetings.length === 0 ? <EmptyState label="No upcoming meetings" /> : (
+          {loading ? <div className="dash-empty"><div className="spinner" /></div> : meetings.length === 0 ? <EmptyState label="No upcoming meetings" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {meetings.slice(0, 3).map(meet => (
-                <li key={meet.id} style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border)' }}>
-                  <strong style={{ display: 'block', fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '0.15rem' }}>{meet.title}</strong>
-                  <span className="text-secondary text-xs">{new Date(meet.startTime).toLocaleString()}</span>
+                <li key={meet.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{meet.title}</strong>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{new Date(meet.startTime).toLocaleString()}</span>
                 </li>
               ))}
             </ul>
@@ -217,12 +217,12 @@ export default function HomePage() {
 
         {/* Announcements */}
         <DashboardCard icon={<BellIcon />} title="Latest Announcements" color="#EF4444" badge={announcements.length}>
-          {loading ? <div className="dash-empty" style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}><div className="spinner" /></div> : announcements.length === 0 ? <EmptyState label="No recent announcements" /> : (
+          {loading ? <div className="dash-empty"><div className="spinner" /></div> : announcements.length === 0 ? <EmptyState label="No recent announcements" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {announcements.slice(0, 3).map(ann => (
-                <li key={ann.id} style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border)' }}>
-                  <strong style={{ display: 'block', fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '0.15rem' }}>{ann.title}</strong>
-                  <span className="text-secondary text-xs">{new Date(ann.createdAt).toLocaleDateString()}</span>
+                <li key={ann.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{ann.title}</strong>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{new Date(ann.createdAt).toLocaleDateString()}</span>
                 </li>
               ))}
             </ul>
