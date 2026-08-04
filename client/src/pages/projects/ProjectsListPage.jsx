@@ -245,8 +245,24 @@ export default function ProjectsListPage() {
       </div>
 
       {loading ? (
-        <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-          <p className="text-secondary">Loading projects…</p>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
+            gap: '1.25rem',
+          }}
+        >
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <div key={i} className="card" style={{ padding: '1.25rem', display: 'grid', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className="skeleton-box" style={{ width: '60%', height: '20px' }} />
+                <div className="skeleton-box" style={{ width: '25%', height: '20px', borderRadius: '12px' }} />
+              </div>
+              <div className="skeleton-box" style={{ width: '90%', height: '14px' }} />
+              <div className="skeleton-box" style={{ width: '70%', height: '14px' }} />
+              <div className="skeleton-box" style={{ width: '100%', height: '6px', marginTop: '0.5rem' }} />
+            </div>
+          ))}
         </div>
       ) : filteredProjects.length === 0 ? (
         <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>

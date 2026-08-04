@@ -109,6 +109,48 @@ const status = async (req, res) => {
   }
 };
 
+// ─── GET /api/google/connect-url ──────────────────────────────────────────────
+
+/**
+ * Returns JSON containing the Google OAuth consent URL for single-page applications.
+ */
+const getConnectUrl = (req, res) => {
+  try {
+    let clientUrl = process.env.CLIENT_ORIGIN?.replace(/\/+$/, '');
+    let returnTo = req.user.role === 'ADMIN' ? '/admin/email' : '/app/email';
+
+    if (req.headers.referer) {
+      try {
+        const refUrl = new URL(req.headers.referer);
+        if (!clientUrl) {
+          clientUrl = refUrl.origin;
+        }
+        if (refUrl.pathname && refUrl.pathname !== '/') {
+          returnTo = refUrl.pathname;
+        }
+      } catch (e) {
+        // Ignore URL parse errors
+      }
+    }
+
+    if (!clientUrl) {
+      clientUrl = 'http://localhost:5173';
+    }
+
+    const stateObj = JSON.stringify({
+      userId: req.user.id,
+      clientUrl,
+      returnTo,
+    });
+
+    const url = getAuthUrl(stateObj);
+    return sendSuccess(res, { url });
+  } catch (err) {
+    console.error('[google.controller] getConnectUrl:', err.message);
+    return sendError(res, err.message, err.statusCode || 500);
+  }
+};
+
 // ─── POST /api/google/disconnect ──────────────────────────────────────────────
 
 /**
@@ -124,4 +166,4 @@ const disconnect = async (req, res) => {
   }
 };
 
-module.exports = { connect, callback, status, disconnect };
+module.exports = { connect, getConnectUrl, callback, status, disconnect };

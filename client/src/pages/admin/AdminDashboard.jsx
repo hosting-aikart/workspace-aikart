@@ -150,7 +150,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div className="admin-dashboard-container">
       <PageHeader
         title="Admin Control Center"
         subtitle="Real-time workspace management, employee controls, and key system metrics."
@@ -178,33 +178,46 @@ export default function AdminDashboard() {
       )}
 
       {isLoading ? (
-        <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
-          <p className="text-secondary">Loading administrative dashboard…</p>
+        <div style={{ display: 'grid', gap: '1.75rem' }}>
+          {/* Skeleton Metric Cards */}
+          <div className="admin-dashboard-metrics">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="admin-metric-card" style={{ padding: '1.35rem' }}>
+                <div className="skeleton-box" style={{ width: '52px', height: '52px', borderRadius: '12px' }} />
+                <div style={{ flex: 1, display: 'grid', gap: '0.4rem' }}>
+                  <div className="skeleton-box" style={{ width: '60%', height: '12px' }} />
+                  <div className="skeleton-box" style={{ width: '40%', height: '24px' }} />
+                  <div className="skeleton-box" style={{ width: '80%', height: '10px' }} />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Skeleton Body Grid */}
+          <div className="admin-dashboard-grid">
+            <div className="card" style={{ padding: '1.5rem', display: 'grid', gap: '1rem' }}>
+              <div className="skeleton-box" style={{ width: '40%', height: '20px' }} />
+              <div className="skeleton-box" style={{ width: '70%', height: '14px', marginBottom: '0.5rem' }} />
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
+                {[1, 2, 3, 4, 5, 6].map((i) => (
+                  <div key={i} className="skeleton-box" style={{ height: '76px', borderRadius: '12px' }} />
+                ))}
+              </div>
+            </div>
+            <div className="card" style={{ padding: '1.5rem', display: 'grid', gap: '0.75rem' }}>
+              <div className="skeleton-box" style={{ width: '50%', height: '18px', marginBottom: '0.5rem' }} />
+              {[1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="skeleton-box" style={{ height: '48px', borderRadius: '8px' }} />
+              ))}
+            </div>
+          </div>
         </div>
       ) : (
         <>
           {/* Metrics summary cards */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-              gap: '1.25rem',
-              marginBottom: '1.75rem',
-            }}
-          >
+          <div className="admin-dashboard-metrics">
             {metricCards.map((card) => (
-              <div
-                key={card.title}
-                className="card animate-fade-in"
-                style={{
-                  padding: '1.35rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '1rem',
-                  position: 'relative',
-                  overflow: 'hidden',
-                }}
-              >
+              <div key={card.title} className="admin-metric-card animate-fade-in">
                 <div
                   style={{
                     width: '52px',
@@ -251,14 +264,7 @@ export default function AdminDashboard() {
             ))}
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 340px',
-              gap: '1.5rem',
-              alignItems: 'start',
-            }}
-          >
+          <div className="admin-dashboard-grid">
             {/* Quick Actions Grid */}
             <div className="card" style={{ padding: '1.5rem' }}>
               <div style={{ marginBottom: '1.25rem' }}>
@@ -273,26 +279,23 @@ export default function AdminDashboard() {
               <div
                 style={{
                   display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
+                  gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
                   gap: '1rem',
                 }}
               >
                 {quickActions.map((act) => (
-                  <div
+                  <button
                     key={act.title}
+                    type="button"
+                    className="admin-action-card"
                     onClick={() => navigate(act.path)}
-                    style={{
-                      padding: '1.1rem',
-                      borderRadius: '12px',
-                      border: '1px solid var(--color-border, rgba(255, 255, 255, 0.1))',
-                      background: 'var(--color-bg-subtle, rgba(255, 255, 255, 0.02))',
-                      cursor: 'pointer',
-                      transition: 'all 0.18s ease-in-out',
-                      display: 'flex',
-                      alignItems: 'flex-start',
-                      gap: '0.85rem',
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        navigate(act.path);
+                      }
                     }}
-                    className="hover:border-primary"
+                    aria-label={`Navigate to ${act.title}`}
                   >
                     <span style={{ fontSize: '1.5rem', lineHeight: 1 }}>{act.icon}</span>
                     <div style={{ flex: 1 }}>
@@ -303,7 +306,7 @@ export default function AdminDashboard() {
                         {act.desc}
                       </p>
                     </div>
-                  </div>
+                  </button>
                 ))}
               </div>
             </div>

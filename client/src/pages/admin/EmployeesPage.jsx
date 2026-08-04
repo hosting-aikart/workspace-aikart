@@ -427,8 +427,11 @@ export default function EmployeesPage() {
       </div>
 
       {isLoading ? (
-        <div className="card" style={{ padding: '1.5rem', textAlign: 'center' }}>
-          <p className="text-secondary">Loading employees…</p>
+        <div className="card" style={{ padding: '1.25rem', display: 'grid', gap: '0.75rem' }}>
+          <div className="skeleton-box" style={{ width: '100%', height: '40px', borderRadius: '8px' }} />
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="skeleton-box" style={{ width: '100%', height: '48px', borderRadius: '6px' }} />
+          ))}
         </div>
       ) : null}
 
@@ -495,7 +498,7 @@ export default function EmployeesPage() {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
             <div>
               <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
                 Email Address <span style={{ color: 'var(--color-danger)' }}>*</span>
@@ -522,7 +525,7 @@ export default function EmployeesPage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
             <div>
               <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
                 Phone Number
@@ -549,7 +552,7 @@ export default function EmployeesPage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
             <div>
               <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
                 Department
@@ -588,7 +591,7 @@ export default function EmployeesPage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
             <div>
               <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
                 Role

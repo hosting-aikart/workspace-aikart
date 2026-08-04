@@ -138,8 +138,11 @@ export default function TasksPage() {
       </div>
 
       {loading ? (
-        <div className="flex-1 flex justify-center items-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600"></div>
+        <div className="flex-1 overflow-auto bg-white rounded-xl border border-gray-200 shadow-sm p-4 space-y-3">
+          <div className="skeleton-box h-10 w-full rounded-lg" />
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="skeleton-box h-12 w-full rounded-md" />
+          ))}
         </div>
       ) : filteredTasks.length === 0 ? (
         <div className="flex-1 text-center py-12 bg-white rounded-xl border border-gray-200 flex flex-col items-center justify-center">

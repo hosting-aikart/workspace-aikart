@@ -21,17 +21,20 @@ export default function EmailPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const [status, setStatus] = useState(null); // null = loading, { connected, googleEmail }
   const [statusError, setStatusError] = useState(null);
+  const [oauthErrorMsg, setOauthErrorMsg] = useState(null);
 
   // Read OAuth callback result from URL params
   const justConnected = searchParams.get('google_connected') === '1';
-  const oauthError = searchParams.get('google_error');
 
   useEffect(() => {
-    // Clean up the URL params after reading them (avoid re-triggering on nav)
-    if (justConnected || oauthError) {
+    const err = searchParams.get('google_error');
+    if (err) {
+      setOauthErrorMsg(decodeURIComponent(err));
+    }
+    if (justConnected || err) {
       setSearchParams({}, { replace: true });
     }
-  }, [justConnected, oauthError, setSearchParams]);
+  }, [justConnected, searchParams, setSearchParams]);
 
   useEffect(() => {
     let cancelled = false;
@@ -66,11 +69,7 @@ export default function EmailPage() {
   if (!status?.connected) {
     return (
       <GoogleConnectPrompt
-        error={
-          oauthError
-            ? decodeURIComponent(oauthError)
-            : statusError || null
-        }
+        error={oauthErrorMsg || statusError || null}
       />
     );
   }
