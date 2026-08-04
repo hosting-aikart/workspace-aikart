@@ -51,16 +51,16 @@ function ClockIcon() {
 
 function DashboardCard({ icon, title, color, badge, children }) {
   return (
-    <div className="dash-card card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div className="card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <div className="dash-card-header">
-          <div className="dash-card-icon" style={{ background: color + '18', color }}>
+    <div className="dash-card card card-interactive" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div className="card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '1.5rem' }}>
+        <div className="dash-card-header" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1rem' }}>
+          <div className="dash-card-icon" style={{ background: color + '18', color, width: '40px', height: '40px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             {icon}
           </div>
-          <h4 className="dash-card-title">{title}</h4>
+          <h4 className="dash-card-title h4" style={{ margin: 0, flex: 1 }}>{title}</h4>
           {badge !== undefined && <span className="badge badge-neutral dash-card-badge">{badge}</span>}
         </div>
-        <div className="dash-card-body" style={{ flex: 1 }}>{children}</div>
+        <div className="dash-card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>{children}</div>
       </div>
     </div>
   );
@@ -70,8 +70,8 @@ function DashboardCard({ icon, title, color, badge, children }) {
 
 function EmptyState({ label }) {
   return (
-    <div className="dash-empty" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" opacity="0.3">
+    <div className="dash-empty" style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem 0' }}>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" style={{ color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
         <rect x="2" y="2" width="20" height="20" rx="4" />
         <line x1="8" y1="12" x2="16" y2="12" /><line x1="12" y1="8" x2="12" y2="16" />
       </svg>
@@ -128,37 +128,37 @@ export default function HomePage() {
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   return (
-    <div className="home-page animate-fade-in" style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
-      <header className="home-header" style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>
+    <div className="page-body animate-fade-in" style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+      <header className="page-header" style={{ marginBottom: '2rem' }}>
+        <h1 className="h1" style={{ marginBottom: '0.25rem' }}>
           {greeting}, {user?.name?.split(' ')[0]} 👋
         </h1>
-        <p className="text-secondary" style={{ fontSize: '1.1rem' }}>Here is what's happening in your workspace today.</p>
+        <p className="text-secondary text-lg">Here is what's happening in your workspace today.</p>
       </header>
 
       {/* Quick Actions */}
-      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
-        <Link to="/app/attendance" className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>⏱️ Start Attendance</Link>
-        <Link to="/app/tasks" className="btn btn-outline" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>📝 Open Tasks</Link>
-        <Link to="/app/projects" className="btn btn-outline" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>📁 View Projects</Link>
-        <Link to="/app/meetings" className="btn btn-outline" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>📅 Join Meeting</Link>
-        <Link to="/app/announcements" className="btn btn-outline" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>📣 Announcements</Link>
+      <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '2rem', flexWrap: 'wrap' }}>
+        <Link to="/app/attendance" className="btn btn-primary btn-sm">⏱️ Start Attendance</Link>
+        <Link to="/app/tasks" className="btn btn-secondary btn-sm">📝 Open Tasks</Link>
+        <Link to="/app/projects" className="btn btn-secondary btn-sm">📁 View Projects</Link>
+        <Link to="/app/meetings" className="btn btn-secondary btn-sm">📅 Join Meeting</Link>
+        <Link to="/app/announcements" className="btn btn-secondary btn-sm">📣 Announcements</Link>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', gridAutoRows: 'minmax(200px, auto)' }}>
+      <div className="grid-cols-3" style={{ display: 'grid', gap: '1.5rem' }}>
         
         {/* Working Hours & Attendance */}
         <DashboardCard icon={<ClockIcon />} title="Attendance" color="#3B82F6">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%', padding: '0.5rem 0' }}>
             <div>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Today's Working Hours</p>
-              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0.5rem 0', color: 'var(--text-primary)' }}>
+              <p className="text-secondary text-sm">Today's Working Hours</p>
+              <h2 className="h2" style={{ fontSize: '2.25rem', margin: '0.25rem 0', color: 'var(--text-primary)' }}>
                 {formatDuration(attendance?.totalSeconds || 0)}
               </h2>
             </div>
             <div style={{ textAlign: 'right' }}>
-              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Status</p>
-              <span className={`badge ${attendance?.status === 'WORKING' ? 'badge-success' : 'badge-neutral'}`} style={{ marginTop: '0.5rem', display: 'inline-block', fontSize: '0.85rem', padding: '0.5rem 0.75rem' }}>
+              <p className="text-secondary text-sm">Status</p>
+              <span className={`badge ${attendance?.status === 'WORKING' ? 'badge-success' : 'badge-neutral'}`} style={{ marginTop: '0.25rem' }}>
                 {attendance?.status?.replace('_', ' ') || 'Not Started'}
               </span>
             </div>
@@ -167,15 +167,15 @@ export default function HomePage() {
 
         {/* Assigned Tasks */}
         <DashboardCard icon={<TaskIcon />} title="Assigned Tasks" color="#10B981" badge={tasks.length}>
-          {loading ? <div className="dash-empty"><div className="spinner" /></div> : tasks.length === 0 ? <EmptyState label="No assigned tasks" /> : (
+          {loading ? <div className="dash-empty" style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}><div className="spinner" /></div> : tasks.length === 0 ? <EmptyState label="No assigned tasks" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {tasks.slice(0, 3).map(task => (
-                <li key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                <li key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border)' }}>
                   <div>
-                    <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{task.title}</strong>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Due: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}</span>
+                    <strong style={{ display: 'block', fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '0.15rem' }}>{task.title}</strong>
+                    <span className="text-secondary text-xs">Due: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}</span>
                   </div>
-                  <span className={`badge ${task.status === 'COMPLETED' ? 'badge-success' : 'badge-primary'}`} style={{ fontSize: '0.75rem' }}>{task.status?.replace('_', ' ')}</span>
+                  <span className={`badge ${task.status === 'COMPLETED' ? 'badge-success' : 'badge-primary'}`}>{task.status?.replace('_', ' ')}</span>
                 </li>
               ))}
             </ul>
@@ -184,15 +184,15 @@ export default function HomePage() {
 
         {/* Current Projects */}
         <DashboardCard icon={<ProjectIcon />} title="Current Projects" color="#8B5CF6" badge={projects.length}>
-          {loading ? <div className="dash-empty"><div className="spinner" /></div> : projects.length === 0 ? <EmptyState label="No active projects" /> : (
+          {loading ? <div className="dash-empty" style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}><div className="spinner" /></div> : projects.length === 0 ? <EmptyState label="No active projects" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {projects.slice(0, 3).map(proj => (
-                <li key={proj.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{proj.name}</strong>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{proj.progress || 0}%</span>
+                <li key={proj.id} style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem' }}>
+                    <strong style={{ fontSize: '0.95rem', color: 'var(--text-primary)' }}>{proj.name}</strong>
+                    <span className="text-secondary text-xs font-semibold">{proj.progress || 0}%</span>
                   </div>
-                  <div style={{ width: '100%', backgroundColor: 'var(--bg-body)', height: '8px', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', backgroundColor: 'var(--color-bg)', height: '6px', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{ width: `${proj.progress || 0}%`, backgroundColor: '#8B5CF6', height: '100%', borderRadius: '4px' }}></div>
                   </div>
                 </li>
@@ -203,12 +203,12 @@ export default function HomePage() {
 
         {/* Upcoming Meetings */}
         <DashboardCard icon={<MeetingIcon />} title="Upcoming Meetings" color="#F59E0B" badge={meetings.length}>
-          {loading ? <div className="dash-empty"><div className="spinner" /></div> : meetings.length === 0 ? <EmptyState label="No upcoming meetings" /> : (
+          {loading ? <div className="dash-empty" style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}><div className="spinner" /></div> : meetings.length === 0 ? <EmptyState label="No upcoming meetings" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {meetings.slice(0, 3).map(meet => (
-                <li key={meet.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
-                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{meet.title}</strong>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{new Date(meet.startTime).toLocaleString()}</span>
+                <li key={meet.id} style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border)' }}>
+                  <strong style={{ display: 'block', fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '0.15rem' }}>{meet.title}</strong>
+                  <span className="text-secondary text-xs">{new Date(meet.startTime).toLocaleString()}</span>
                 </li>
               ))}
             </ul>
@@ -217,12 +217,12 @@ export default function HomePage() {
 
         {/* Announcements */}
         <DashboardCard icon={<BellIcon />} title="Latest Announcements" color="#EF4444" badge={announcements.length}>
-          {loading ? <div className="dash-empty"><div className="spinner" /></div> : announcements.length === 0 ? <EmptyState label="No recent announcements" /> : (
+          {loading ? <div className="dash-empty" style={{flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center'}}><div className="spinner" /></div> : announcements.length === 0 ? <EmptyState label="No recent announcements" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {announcements.slice(0, 3).map(ann => (
-                <li key={ann.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
-                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{ann.title}</strong>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{new Date(ann.createdAt).toLocaleDateString()}</span>
+                <li key={ann.id} style={{ paddingBottom: '0.75rem', borderBottom: '1px solid var(--color-border)' }}>
+                  <strong style={{ display: 'block', fontSize: '0.95rem', color: 'var(--text-primary)', marginBottom: '0.15rem' }}>{ann.title}</strong>
+                  <span className="text-secondary text-xs">{new Date(ann.createdAt).toLocaleDateString()}</span>
                 </li>
               ))}
             </ul>

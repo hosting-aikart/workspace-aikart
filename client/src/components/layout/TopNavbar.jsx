@@ -38,7 +38,7 @@ export default function TopNavbar({ onToggleSidebar }) {
       {/* LEFT: Sidebar Toggle, Logo, Breadcrumb */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <button
-          className="btn btn-ghost btn-icon mobile-menu-btn"
+          className="btn btn-ghost btn-icon mobile-menu-btn hide-desktop"
           onClick={onToggleSidebar}
           aria-label="Toggle sidebar"
           style={{ padding: '0.5rem' }}
@@ -85,9 +85,11 @@ export default function TopNavbar({ onToggleSidebar }) {
         <div ref={dropdownRef} style={{ position: 'relative' }}>
           <button
             onClick={() => setDropdownOpen(!dropdownOpen)}
+            aria-expanded={dropdownOpen}
+            aria-haspopup="true"
             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
           >
-            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column' }}>
+            <div className="hide-mobile" style={{ textAlign: 'right', display: 'flex', flexDirection: 'column' }}>
               <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>{user?.name}</span>
               <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{user?.role?.toLowerCase()}</span>
             </div>

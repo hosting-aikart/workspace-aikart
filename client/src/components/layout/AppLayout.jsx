@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import TopNavbar from './TopNavbar';
+import { useAuth } from '../../context/AuthContext';
 
 const NAV_SECTIONS = [
   {
@@ -170,6 +171,13 @@ const NAV_SECTIONS = [
 
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { user } = useAuth();
+  
+  // Example filter if we had distinct roles array on items. For now, everything is available to both.
+  const filteredSections = NAV_SECTIONS.map((section) => ({
+    ...section,
+    items: section.items.filter(item => !item.roles || item.roles.includes(user?.role))
+  })).filter(section => section.items.length > 0);
 
   return (
     <div className="dashboard-root">
@@ -177,6 +185,7 @@ export default function AppLayout() {
       {sidebarOpen && (
         <div
           className="sidebar-mobile-overlay"
+          aria-hidden="true"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -186,7 +195,7 @@ export default function AppLayout() {
 
         {/* Navigation */}
         <nav className="sidebar-nav">
-          {NAV_SECTIONS.map((section) => (
+          {filteredSections.map((section) => (
             <div key={section.title} className="sidebar-section">
               <p className="sidebar-section-title">{section.title}</p>
               {section.items.map((item) => (
@@ -200,7 +209,7 @@ export default function AppLayout() {
                   onClick={() => setSidebarOpen(false)}
                 >
                   <span className="nav-icon">{item.icon}</span>
-                  {item.label}
+                  <span className="nav-label">{item.label}</span>
                 </NavLink>
               ))}
             </div>
@@ -210,14 +219,15 @@ export default function AppLayout() {
       </aside>
 
       {/* ── Main Content Area ────────────────────────────────────────────── */}
-      <main className="main-content" style={{ display: 'flex', flexDirection: 'column' }}>
+      <main className="main-content" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <TopNavbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
         {/* Page output */}
-        <div className="page-content">
+        <div className="page-content" style={{ flex: 1 }}>
           <Outlet />
         </div>
       </main>
     </div>
   );
 }
+
