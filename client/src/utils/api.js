@@ -16,7 +16,12 @@
 
 import axios from 'axios';
 
-    const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+let BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+// Fallback to ensure protocol is included (helps if Vercel env var is just "domain.com")
+if (BASE_URL && !BASE_URL.startsWith('http://') && !BASE_URL.startsWith('https://')) {
+  BASE_URL = `https://${BASE_URL}`;
+}
 
 const api = axios.create({
   baseURL: BASE_URL,
