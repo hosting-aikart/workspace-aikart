@@ -91,12 +91,9 @@ api.interceptors.response.use(
     isRefreshing = true;
 
     try {
-      // Use plain axios (not `api`) to bypass this interceptor for the refresh call
-      const { data } = await axios.post(
-        `${BASE_URL}/auth/refresh`,
-        {},
-        { withCredentials: true }
-      );
+      // Use api (not plain axios) to cleanly resolve the path against baseURL.
+      // The interceptor won't loop due to the isAuthEndpoint check above.
+      const { data } = await api.post('/auth/refresh');
       const newToken = data.data.accessToken;
       api.token = newToken;
 
