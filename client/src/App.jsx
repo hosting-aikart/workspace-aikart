@@ -38,7 +38,11 @@ import SettingsPage from './pages/settings/SettingsPage';
 import ReportsPage from './pages/reports/ReportsPage';
 
 // ─── Placeholder Pages ────────────────────────────────────────────────────────
-import { MeetingsPage } from './pages/PlaceholderPages';
+import {
+  MeetingsPage,
+} from './pages/PlaceholderPages';
+
+import EmailPage from './modules/email/EmailPage';
 
 /**
  * RoleBasedRoot
@@ -117,6 +121,7 @@ export default function App() {
             <Route path="projects" element={<ProjectsListPage />} />
             <Route path="projects/:id" element={<ProjectDetailPage />} />
             <Route path="tasks" element={<TasksPage />} />
+            <Route path="email" element={<EmailPage />} />
             <Route path="attendance" element={<AttendancePage />} />
             <Route path="meetings" element={<MeetingsPage />} />
             <Route path="notifications" element={<NotificationsPage />} />

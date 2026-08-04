@@ -58,6 +58,12 @@ app.use('/api/announcements', require('./modules/announcement/announcement.route
 app.use('/api/notifications', require('./modules/notification/notification.routes'));
 app.use('/api/manager', require('./modules/manager/manager.routes'));
 
+// Google OAuth (connect, callback, status, disconnect)
+app.use('/api/google', require('./modules/google/google.routes'));
+
+// Email module (Gmail API)
+app.use('/api/email', require('./modules/email/email.routes'));
+
 // Fallback for task endpoints used by the client UI
 app.get('/api/tasks', (req, res, next) => {
   if (req.method === 'GET') {
