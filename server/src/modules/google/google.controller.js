@@ -43,7 +43,8 @@ const callback = async (req, res) => {
     userId = state; // Fallback for old requests
   }
 
-  const clientUrl = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+  const rawClientUrl = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+  const clientUrl = rawClientUrl.replace(/\/+$/, '');
   const targetPath = role === 'ADMIN' ? '/admin/email' : '/app/email';
 
   if (error) {
