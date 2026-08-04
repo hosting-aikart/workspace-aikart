@@ -68,6 +68,11 @@ export type AnnouncementTargetUser = $Result.DefaultSelection<Prisma.$Announceme
  * 
  */
 export type AnnouncementRead = $Result.DefaultSelection<Prisma.$AnnouncementReadPayload>
+/**
+ * Model GoogleAccount
+ * 
+ */
+export type GoogleAccount = $Result.DefaultSelection<Prisma.$GoogleAccountPayload>
 
 /**
  * Enums
@@ -398,6 +403,16 @@ export class PrismaClient<
     * ```
     */
   get announcementRead(): Prisma.AnnouncementReadDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.googleAccount`: Exposes CRUD operations for the **GoogleAccount** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more GoogleAccounts
+    * const googleAccounts = await prisma.googleAccount.findMany()
+    * ```
+    */
+  get googleAccount(): Prisma.GoogleAccountDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -855,7 +870,8 @@ export namespace Prisma {
     Task: 'Task',
     Announcement: 'Announcement',
     AnnouncementTargetUser: 'AnnouncementTargetUser',
-    AnnouncementRead: 'AnnouncementRead'
+    AnnouncementRead: 'AnnouncementRead',
+    GoogleAccount: 'GoogleAccount'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -871,7 +887,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "workspace" | "department" | "user" | "attendance" | "timerSegment" | "project" | "projectMember" | "task" | "announcement" | "announcementTargetUser" | "announcementRead"
+      modelProps: "workspace" | "department" | "user" | "attendance" | "timerSegment" | "project" | "projectMember" | "task" | "announcement" | "announcementTargetUser" | "announcementRead" | "googleAccount"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1689,6 +1705,80 @@ export namespace Prisma {
           }
         }
       }
+      GoogleAccount: {
+        payload: Prisma.$GoogleAccountPayload<ExtArgs>
+        fields: Prisma.GoogleAccountFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.GoogleAccountFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.GoogleAccountFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>
+          }
+          findFirst: {
+            args: Prisma.GoogleAccountFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.GoogleAccountFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>
+          }
+          findMany: {
+            args: Prisma.GoogleAccountFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>[]
+          }
+          create: {
+            args: Prisma.GoogleAccountCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>
+          }
+          createMany: {
+            args: Prisma.GoogleAccountCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.GoogleAccountCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>[]
+          }
+          delete: {
+            args: Prisma.GoogleAccountDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>
+          }
+          update: {
+            args: Prisma.GoogleAccountUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>
+          }
+          deleteMany: {
+            args: Prisma.GoogleAccountDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.GoogleAccountUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.GoogleAccountUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>[]
+          }
+          upsert: {
+            args: Prisma.GoogleAccountUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$GoogleAccountPayload>
+          }
+          aggregate: {
+            args: Prisma.GoogleAccountAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateGoogleAccount>
+          }
+          groupBy: {
+            args: Prisma.GoogleAccountGroupByArgs<ExtArgs>
+            result: $Utils.Optional<GoogleAccountGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.GoogleAccountCountArgs<ExtArgs>
+            result: $Utils.Optional<GoogleAccountCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1823,6 +1913,7 @@ export namespace Prisma {
     announcement?: AnnouncementOmit
     announcementTargetUser?: AnnouncementTargetUserOmit
     announcementRead?: AnnouncementReadOmit
+    googleAccount?: GoogleAccountOmit
   }
 
   /* Types for Logging */
@@ -4756,6 +4847,7 @@ export namespace Prisma {
     createdAnnouncements?: boolean | User$createdAnnouncementsArgs<ExtArgs>
     announcementTargets?: boolean | User$announcementTargetsArgs<ExtArgs>
     announcementReads?: boolean | User$announcementReadsArgs<ExtArgs>
+    googleAccount?: boolean | User$googleAccountArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4849,6 +4941,7 @@ export namespace Prisma {
     createdAnnouncements?: boolean | User$createdAnnouncementsArgs<ExtArgs>
     announcementTargets?: boolean | User$announcementTargetsArgs<ExtArgs>
     announcementReads?: boolean | User$announcementReadsArgs<ExtArgs>
+    googleAccount?: boolean | User$googleAccountArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4881,6 +4974,7 @@ export namespace Prisma {
       createdAnnouncements: Prisma.$AnnouncementPayload<ExtArgs>[]
       announcementTargets: Prisma.$AnnouncementTargetUserPayload<ExtArgs>[]
       announcementReads: Prisma.$AnnouncementReadPayload<ExtArgs>[]
+      googleAccount: Prisma.$GoogleAccountPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5310,6 +5404,7 @@ export namespace Prisma {
     createdAnnouncements<T extends User$createdAnnouncementsArgs<ExtArgs> = {}>(args?: Subset<T, User$createdAnnouncementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     announcementTargets<T extends User$announcementTargetsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementTargetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     announcementReads<T extends User$announcementReadsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementReadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    googleAccount<T extends User$googleAccountArgs<ExtArgs> = {}>(args?: Subset<T, User$googleAccountArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6053,6 +6148,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AnnouncementReadScalarFieldEnum | AnnouncementReadScalarFieldEnum[]
+  }
+
+  /**
+   * User.googleAccount
+   */
+  export type User$googleAccountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    where?: GoogleAccountWhereInput
   }
 
   /**
@@ -15224,6 +15338,1121 @@ export namespace Prisma {
 
 
   /**
+   * Model GoogleAccount
+   */
+
+  export type AggregateGoogleAccount = {
+    _count: GoogleAccountCountAggregateOutputType | null
+    _min: GoogleAccountMinAggregateOutputType | null
+    _max: GoogleAccountMaxAggregateOutputType | null
+  }
+
+  export type GoogleAccountMinAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    googleEmail: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    expiryDate: Date | null
+    scope: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GoogleAccountMaxAggregateOutputType = {
+    id: string | null
+    userId: string | null
+    googleEmail: string | null
+    accessToken: string | null
+    refreshToken: string | null
+    expiryDate: Date | null
+    scope: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type GoogleAccountCountAggregateOutputType = {
+    id: number
+    userId: number
+    googleEmail: number
+    accessToken: number
+    refreshToken: number
+    expiryDate: number
+    scope: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type GoogleAccountMinAggregateInputType = {
+    id?: true
+    userId?: true
+    googleEmail?: true
+    accessToken?: true
+    refreshToken?: true
+    expiryDate?: true
+    scope?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GoogleAccountMaxAggregateInputType = {
+    id?: true
+    userId?: true
+    googleEmail?: true
+    accessToken?: true
+    refreshToken?: true
+    expiryDate?: true
+    scope?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type GoogleAccountCountAggregateInputType = {
+    id?: true
+    userId?: true
+    googleEmail?: true
+    accessToken?: true
+    refreshToken?: true
+    expiryDate?: true
+    scope?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type GoogleAccountAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GoogleAccount to aggregate.
+     */
+    where?: GoogleAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GoogleAccounts to fetch.
+     */
+    orderBy?: GoogleAccountOrderByWithRelationInput | GoogleAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: GoogleAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GoogleAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GoogleAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned GoogleAccounts
+    **/
+    _count?: true | GoogleAccountCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: GoogleAccountMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: GoogleAccountMaxAggregateInputType
+  }
+
+  export type GetGoogleAccountAggregateType<T extends GoogleAccountAggregateArgs> = {
+        [P in keyof T & keyof AggregateGoogleAccount]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateGoogleAccount[P]>
+      : GetScalarType<T[P], AggregateGoogleAccount[P]>
+  }
+
+
+
+
+  export type GoogleAccountGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: GoogleAccountWhereInput
+    orderBy?: GoogleAccountOrderByWithAggregationInput | GoogleAccountOrderByWithAggregationInput[]
+    by: GoogleAccountScalarFieldEnum[] | GoogleAccountScalarFieldEnum
+    having?: GoogleAccountScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: GoogleAccountCountAggregateInputType | true
+    _min?: GoogleAccountMinAggregateInputType
+    _max?: GoogleAccountMaxAggregateInputType
+  }
+
+  export type GoogleAccountGroupByOutputType = {
+    id: string
+    userId: string
+    googleEmail: string
+    accessToken: string
+    refreshToken: string | null
+    expiryDate: Date | null
+    scope: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: GoogleAccountCountAggregateOutputType | null
+    _min: GoogleAccountMinAggregateOutputType | null
+    _max: GoogleAccountMaxAggregateOutputType | null
+  }
+
+  type GetGoogleAccountGroupByPayload<T extends GoogleAccountGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<GoogleAccountGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof GoogleAccountGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], GoogleAccountGroupByOutputType[P]>
+            : GetScalarType<T[P], GoogleAccountGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type GoogleAccountSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    googleEmail?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    expiryDate?: boolean
+    scope?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["googleAccount"]>
+
+  export type GoogleAccountSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    googleEmail?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    expiryDate?: boolean
+    scope?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["googleAccount"]>
+
+  export type GoogleAccountSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    userId?: boolean
+    googleEmail?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    expiryDate?: boolean
+    scope?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["googleAccount"]>
+
+  export type GoogleAccountSelectScalar = {
+    id?: boolean
+    userId?: boolean
+    googleEmail?: boolean
+    accessToken?: boolean
+    refreshToken?: boolean
+    expiryDate?: boolean
+    scope?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type GoogleAccountOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "userId" | "googleEmail" | "accessToken" | "refreshToken" | "expiryDate" | "scope" | "createdAt" | "updatedAt", ExtArgs["result"]["googleAccount"]>
+  export type GoogleAccountInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type GoogleAccountIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type GoogleAccountIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $GoogleAccountPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "GoogleAccount"
+    objects: {
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      userId: string
+      googleEmail: string
+      accessToken: string
+      refreshToken: string | null
+      expiryDate: Date | null
+      scope: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["googleAccount"]>
+    composites: {}
+  }
+
+  type GoogleAccountGetPayload<S extends boolean | null | undefined | GoogleAccountDefaultArgs> = $Result.GetResult<Prisma.$GoogleAccountPayload, S>
+
+  type GoogleAccountCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<GoogleAccountFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: GoogleAccountCountAggregateInputType | true
+    }
+
+  export interface GoogleAccountDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['GoogleAccount'], meta: { name: 'GoogleAccount' } }
+    /**
+     * Find zero or one GoogleAccount that matches the filter.
+     * @param {GoogleAccountFindUniqueArgs} args - Arguments to find a GoogleAccount
+     * @example
+     * // Get one GoogleAccount
+     * const googleAccount = await prisma.googleAccount.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends GoogleAccountFindUniqueArgs>(args: SelectSubset<T, GoogleAccountFindUniqueArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one GoogleAccount that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {GoogleAccountFindUniqueOrThrowArgs} args - Arguments to find a GoogleAccount
+     * @example
+     * // Get one GoogleAccount
+     * const googleAccount = await prisma.googleAccount.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends GoogleAccountFindUniqueOrThrowArgs>(args: SelectSubset<T, GoogleAccountFindUniqueOrThrowArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GoogleAccount that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoogleAccountFindFirstArgs} args - Arguments to find a GoogleAccount
+     * @example
+     * // Get one GoogleAccount
+     * const googleAccount = await prisma.googleAccount.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends GoogleAccountFindFirstArgs>(args?: SelectSubset<T, GoogleAccountFindFirstArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first GoogleAccount that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoogleAccountFindFirstOrThrowArgs} args - Arguments to find a GoogleAccount
+     * @example
+     * // Get one GoogleAccount
+     * const googleAccount = await prisma.googleAccount.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends GoogleAccountFindFirstOrThrowArgs>(args?: SelectSubset<T, GoogleAccountFindFirstOrThrowArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more GoogleAccounts that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoogleAccountFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all GoogleAccounts
+     * const googleAccounts = await prisma.googleAccount.findMany()
+     * 
+     * // Get first 10 GoogleAccounts
+     * const googleAccounts = await prisma.googleAccount.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const googleAccountWithIdOnly = await prisma.googleAccount.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends GoogleAccountFindManyArgs>(args?: SelectSubset<T, GoogleAccountFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a GoogleAccount.
+     * @param {GoogleAccountCreateArgs} args - Arguments to create a GoogleAccount.
+     * @example
+     * // Create one GoogleAccount
+     * const GoogleAccount = await prisma.googleAccount.create({
+     *   data: {
+     *     // ... data to create a GoogleAccount
+     *   }
+     * })
+     * 
+     */
+    create<T extends GoogleAccountCreateArgs>(args: SelectSubset<T, GoogleAccountCreateArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many GoogleAccounts.
+     * @param {GoogleAccountCreateManyArgs} args - Arguments to create many GoogleAccounts.
+     * @example
+     * // Create many GoogleAccounts
+     * const googleAccount = await prisma.googleAccount.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends GoogleAccountCreateManyArgs>(args?: SelectSubset<T, GoogleAccountCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many GoogleAccounts and returns the data saved in the database.
+     * @param {GoogleAccountCreateManyAndReturnArgs} args - Arguments to create many GoogleAccounts.
+     * @example
+     * // Create many GoogleAccounts
+     * const googleAccount = await prisma.googleAccount.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many GoogleAccounts and only return the `id`
+     * const googleAccountWithIdOnly = await prisma.googleAccount.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends GoogleAccountCreateManyAndReturnArgs>(args?: SelectSubset<T, GoogleAccountCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a GoogleAccount.
+     * @param {GoogleAccountDeleteArgs} args - Arguments to delete one GoogleAccount.
+     * @example
+     * // Delete one GoogleAccount
+     * const GoogleAccount = await prisma.googleAccount.delete({
+     *   where: {
+     *     // ... filter to delete one GoogleAccount
+     *   }
+     * })
+     * 
+     */
+    delete<T extends GoogleAccountDeleteArgs>(args: SelectSubset<T, GoogleAccountDeleteArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one GoogleAccount.
+     * @param {GoogleAccountUpdateArgs} args - Arguments to update one GoogleAccount.
+     * @example
+     * // Update one GoogleAccount
+     * const googleAccount = await prisma.googleAccount.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends GoogleAccountUpdateArgs>(args: SelectSubset<T, GoogleAccountUpdateArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more GoogleAccounts.
+     * @param {GoogleAccountDeleteManyArgs} args - Arguments to filter GoogleAccounts to delete.
+     * @example
+     * // Delete a few GoogleAccounts
+     * const { count } = await prisma.googleAccount.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends GoogleAccountDeleteManyArgs>(args?: SelectSubset<T, GoogleAccountDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GoogleAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoogleAccountUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many GoogleAccounts
+     * const googleAccount = await prisma.googleAccount.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends GoogleAccountUpdateManyArgs>(args: SelectSubset<T, GoogleAccountUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more GoogleAccounts and returns the data updated in the database.
+     * @param {GoogleAccountUpdateManyAndReturnArgs} args - Arguments to update many GoogleAccounts.
+     * @example
+     * // Update many GoogleAccounts
+     * const googleAccount = await prisma.googleAccount.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more GoogleAccounts and only return the `id`
+     * const googleAccountWithIdOnly = await prisma.googleAccount.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends GoogleAccountUpdateManyAndReturnArgs>(args: SelectSubset<T, GoogleAccountUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one GoogleAccount.
+     * @param {GoogleAccountUpsertArgs} args - Arguments to update or create a GoogleAccount.
+     * @example
+     * // Update or create a GoogleAccount
+     * const googleAccount = await prisma.googleAccount.upsert({
+     *   create: {
+     *     // ... data to create a GoogleAccount
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the GoogleAccount we want to update
+     *   }
+     * })
+     */
+    upsert<T extends GoogleAccountUpsertArgs>(args: SelectSubset<T, GoogleAccountUpsertArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of GoogleAccounts.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoogleAccountCountArgs} args - Arguments to filter GoogleAccounts to count.
+     * @example
+     * // Count the number of GoogleAccounts
+     * const count = await prisma.googleAccount.count({
+     *   where: {
+     *     // ... the filter for the GoogleAccounts we want to count
+     *   }
+     * })
+    **/
+    count<T extends GoogleAccountCountArgs>(
+      args?: Subset<T, GoogleAccountCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], GoogleAccountCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a GoogleAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoogleAccountAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends GoogleAccountAggregateArgs>(args: Subset<T, GoogleAccountAggregateArgs>): Prisma.PrismaPromise<GetGoogleAccountAggregateType<T>>
+
+    /**
+     * Group by GoogleAccount.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {GoogleAccountGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends GoogleAccountGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: GoogleAccountGroupByArgs['orderBy'] }
+        : { orderBy?: GoogleAccountGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, GoogleAccountGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetGoogleAccountGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the GoogleAccount model
+   */
+  readonly fields: GoogleAccountFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for GoogleAccount.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__GoogleAccountClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the GoogleAccount model
+   */
+  interface GoogleAccountFieldRefs {
+    readonly id: FieldRef<"GoogleAccount", 'String'>
+    readonly userId: FieldRef<"GoogleAccount", 'String'>
+    readonly googleEmail: FieldRef<"GoogleAccount", 'String'>
+    readonly accessToken: FieldRef<"GoogleAccount", 'String'>
+    readonly refreshToken: FieldRef<"GoogleAccount", 'String'>
+    readonly expiryDate: FieldRef<"GoogleAccount", 'DateTime'>
+    readonly scope: FieldRef<"GoogleAccount", 'String'>
+    readonly createdAt: FieldRef<"GoogleAccount", 'DateTime'>
+    readonly updatedAt: FieldRef<"GoogleAccount", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * GoogleAccount findUnique
+   */
+  export type GoogleAccountFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which GoogleAccount to fetch.
+     */
+    where: GoogleAccountWhereUniqueInput
+  }
+
+  /**
+   * GoogleAccount findUniqueOrThrow
+   */
+  export type GoogleAccountFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which GoogleAccount to fetch.
+     */
+    where: GoogleAccountWhereUniqueInput
+  }
+
+  /**
+   * GoogleAccount findFirst
+   */
+  export type GoogleAccountFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which GoogleAccount to fetch.
+     */
+    where?: GoogleAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GoogleAccounts to fetch.
+     */
+    orderBy?: GoogleAccountOrderByWithRelationInput | GoogleAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GoogleAccounts.
+     */
+    cursor?: GoogleAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GoogleAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GoogleAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GoogleAccounts.
+     */
+    distinct?: GoogleAccountScalarFieldEnum | GoogleAccountScalarFieldEnum[]
+  }
+
+  /**
+   * GoogleAccount findFirstOrThrow
+   */
+  export type GoogleAccountFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which GoogleAccount to fetch.
+     */
+    where?: GoogleAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GoogleAccounts to fetch.
+     */
+    orderBy?: GoogleAccountOrderByWithRelationInput | GoogleAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for GoogleAccounts.
+     */
+    cursor?: GoogleAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GoogleAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GoogleAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GoogleAccounts.
+     */
+    distinct?: GoogleAccountScalarFieldEnum | GoogleAccountScalarFieldEnum[]
+  }
+
+  /**
+   * GoogleAccount findMany
+   */
+  export type GoogleAccountFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * Filter, which GoogleAccounts to fetch.
+     */
+    where?: GoogleAccountWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of GoogleAccounts to fetch.
+     */
+    orderBy?: GoogleAccountOrderByWithRelationInput | GoogleAccountOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing GoogleAccounts.
+     */
+    cursor?: GoogleAccountWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` GoogleAccounts from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` GoogleAccounts.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of GoogleAccounts.
+     */
+    distinct?: GoogleAccountScalarFieldEnum | GoogleAccountScalarFieldEnum[]
+  }
+
+  /**
+   * GoogleAccount create
+   */
+  export type GoogleAccountCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to create a GoogleAccount.
+     */
+    data: XOR<GoogleAccountCreateInput, GoogleAccountUncheckedCreateInput>
+  }
+
+  /**
+   * GoogleAccount createMany
+   */
+  export type GoogleAccountCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many GoogleAccounts.
+     */
+    data: GoogleAccountCreateManyInput | GoogleAccountCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * GoogleAccount createManyAndReturn
+   */
+  export type GoogleAccountCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * The data used to create many GoogleAccounts.
+     */
+    data: GoogleAccountCreateManyInput | GoogleAccountCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GoogleAccount update
+   */
+  export type GoogleAccountUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * The data needed to update a GoogleAccount.
+     */
+    data: XOR<GoogleAccountUpdateInput, GoogleAccountUncheckedUpdateInput>
+    /**
+     * Choose, which GoogleAccount to update.
+     */
+    where: GoogleAccountWhereUniqueInput
+  }
+
+  /**
+   * GoogleAccount updateMany
+   */
+  export type GoogleAccountUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update GoogleAccounts.
+     */
+    data: XOR<GoogleAccountUpdateManyMutationInput, GoogleAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which GoogleAccounts to update
+     */
+    where?: GoogleAccountWhereInput
+    /**
+     * Limit how many GoogleAccounts to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * GoogleAccount updateManyAndReturn
+   */
+  export type GoogleAccountUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * The data used to update GoogleAccounts.
+     */
+    data: XOR<GoogleAccountUpdateManyMutationInput, GoogleAccountUncheckedUpdateManyInput>
+    /**
+     * Filter which GoogleAccounts to update
+     */
+    where?: GoogleAccountWhereInput
+    /**
+     * Limit how many GoogleAccounts to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * GoogleAccount upsert
+   */
+  export type GoogleAccountUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * The filter to search for the GoogleAccount to update in case it exists.
+     */
+    where: GoogleAccountWhereUniqueInput
+    /**
+     * In case the GoogleAccount found by the `where` argument doesn't exist, create a new GoogleAccount with this data.
+     */
+    create: XOR<GoogleAccountCreateInput, GoogleAccountUncheckedCreateInput>
+    /**
+     * In case the GoogleAccount was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<GoogleAccountUpdateInput, GoogleAccountUncheckedUpdateInput>
+  }
+
+  /**
+   * GoogleAccount delete
+   */
+  export type GoogleAccountDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+    /**
+     * Filter which GoogleAccount to delete.
+     */
+    where: GoogleAccountWhereUniqueInput
+  }
+
+  /**
+   * GoogleAccount deleteMany
+   */
+  export type GoogleAccountDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which GoogleAccounts to delete
+     */
+    where?: GoogleAccountWhereInput
+    /**
+     * Limit how many GoogleAccounts to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * GoogleAccount without action
+   */
+  export type GoogleAccountDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the GoogleAccount
+     */
+    select?: GoogleAccountSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the GoogleAccount
+     */
+    omit?: GoogleAccountOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: GoogleAccountInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -15393,6 +16622,21 @@ export namespace Prisma {
   };
 
   export type AnnouncementReadScalarFieldEnum = (typeof AnnouncementReadScalarFieldEnum)[keyof typeof AnnouncementReadScalarFieldEnum]
+
+
+  export const GoogleAccountScalarFieldEnum: {
+    id: 'id',
+    userId: 'userId',
+    googleEmail: 'googleEmail',
+    accessToken: 'accessToken',
+    refreshToken: 'refreshToken',
+    expiryDate: 'expiryDate',
+    scope: 'scope',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type GoogleAccountScalarFieldEnum = (typeof GoogleAccountScalarFieldEnum)[keyof typeof GoogleAccountScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -15748,6 +16992,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementListRelationFilter
     announcementTargets?: AnnouncementTargetUserListRelationFilter
     announcementReads?: AnnouncementReadListRelationFilter
+    googleAccount?: XOR<GoogleAccountNullableScalarRelationFilter, GoogleAccountWhereInput> | null
   }
 
   export type UserOrderByWithRelationInput = {
@@ -15784,6 +17029,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementOrderByRelationAggregateInput
     announcementTargets?: AnnouncementTargetUserOrderByRelationAggregateInput
     announcementReads?: AnnouncementReadOrderByRelationAggregateInput
+    googleAccount?: GoogleAccountOrderByWithRelationInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -15824,6 +17070,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementListRelationFilter
     announcementTargets?: AnnouncementTargetUserListRelationFilter
     announcementReads?: AnnouncementReadListRelationFilter
+    googleAccount?: XOR<GoogleAccountNullableScalarRelationFilter, GoogleAccountWhereInput> | null
   }, "id" | "email" | "workspaceId_employeeId">
 
   export type UserOrderByWithAggregationInput = {
@@ -16476,6 +17723,81 @@ export namespace Prisma {
     readAt?: DateTimeWithAggregatesFilter<"AnnouncementRead"> | Date | string
   }
 
+  export type GoogleAccountWhereInput = {
+    AND?: GoogleAccountWhereInput | GoogleAccountWhereInput[]
+    OR?: GoogleAccountWhereInput[]
+    NOT?: GoogleAccountWhereInput | GoogleAccountWhereInput[]
+    id?: StringFilter<"GoogleAccount"> | string
+    userId?: StringFilter<"GoogleAccount"> | string
+    googleEmail?: StringFilter<"GoogleAccount"> | string
+    accessToken?: StringFilter<"GoogleAccount"> | string
+    refreshToken?: StringNullableFilter<"GoogleAccount"> | string | null
+    expiryDate?: DateTimeNullableFilter<"GoogleAccount"> | Date | string | null
+    scope?: StringNullableFilter<"GoogleAccount"> | string | null
+    createdAt?: DateTimeFilter<"GoogleAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"GoogleAccount"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type GoogleAccountOrderByWithRelationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    googleEmail?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type GoogleAccountWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    userId?: string
+    AND?: GoogleAccountWhereInput | GoogleAccountWhereInput[]
+    OR?: GoogleAccountWhereInput[]
+    NOT?: GoogleAccountWhereInput | GoogleAccountWhereInput[]
+    googleEmail?: StringFilter<"GoogleAccount"> | string
+    accessToken?: StringFilter<"GoogleAccount"> | string
+    refreshToken?: StringNullableFilter<"GoogleAccount"> | string | null
+    expiryDate?: DateTimeNullableFilter<"GoogleAccount"> | Date | string | null
+    scope?: StringNullableFilter<"GoogleAccount"> | string | null
+    createdAt?: DateTimeFilter<"GoogleAccount"> | Date | string
+    updatedAt?: DateTimeFilter<"GoogleAccount"> | Date | string
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "userId">
+
+  export type GoogleAccountOrderByWithAggregationInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    googleEmail?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrderInput | SortOrder
+    expiryDate?: SortOrderInput | SortOrder
+    scope?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: GoogleAccountCountOrderByAggregateInput
+    _max?: GoogleAccountMaxOrderByAggregateInput
+    _min?: GoogleAccountMinOrderByAggregateInput
+  }
+
+  export type GoogleAccountScalarWhereWithAggregatesInput = {
+    AND?: GoogleAccountScalarWhereWithAggregatesInput | GoogleAccountScalarWhereWithAggregatesInput[]
+    OR?: GoogleAccountScalarWhereWithAggregatesInput[]
+    NOT?: GoogleAccountScalarWhereWithAggregatesInput | GoogleAccountScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"GoogleAccount"> | string
+    userId?: StringWithAggregatesFilter<"GoogleAccount"> | string
+    googleEmail?: StringWithAggregatesFilter<"GoogleAccount"> | string
+    accessToken?: StringWithAggregatesFilter<"GoogleAccount"> | string
+    refreshToken?: StringNullableWithAggregatesFilter<"GoogleAccount"> | string | null
+    expiryDate?: DateTimeNullableWithAggregatesFilter<"GoogleAccount"> | Date | string | null
+    scope?: StringNullableWithAggregatesFilter<"GoogleAccount"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"GoogleAccount"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"GoogleAccount"> | Date | string
+  }
+
   export type WorkspaceCreateInput = {
     id?: string
     name: string
@@ -16637,6 +17959,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -16669,6 +17992,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -16701,6 +18025,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -16733,6 +18058,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -17411,6 +18737,89 @@ export namespace Prisma {
     readAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type GoogleAccountCreateInput = {
+    id?: string
+    googleEmail: string
+    accessToken: string
+    refreshToken?: string | null
+    expiryDate?: Date | string | null
+    scope?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutGoogleAccountInput
+  }
+
+  export type GoogleAccountUncheckedCreateInput = {
+    id?: string
+    userId: string
+    googleEmail: string
+    accessToken: string
+    refreshToken?: string | null
+    expiryDate?: Date | string | null
+    scope?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoogleAccountUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    googleEmail?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutGoogleAccountNestedInput
+  }
+
+  export type GoogleAccountUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    googleEmail?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoogleAccountCreateManyInput = {
+    id?: string
+    userId: string
+    googleEmail: string
+    accessToken: string
+    refreshToken?: string | null
+    expiryDate?: Date | string | null
+    scope?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoogleAccountUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    googleEmail?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoogleAccountUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    googleEmail?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -17666,6 +19075,11 @@ export namespace Prisma {
     every?: AnnouncementReadWhereInput
     some?: AnnouncementReadWhereInput
     none?: AnnouncementReadWhereInput
+  }
+
+  export type GoogleAccountNullableScalarRelationFilter = {
+    is?: GoogleAccountWhereInput | null
+    isNot?: GoogleAccountWhereInput | null
   }
 
   export type AttendanceOrderByRelationAggregateInput = {
@@ -18252,6 +19666,42 @@ export namespace Prisma {
     readAt?: SortOrder
   }
 
+  export type GoogleAccountCountOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    googleEmail?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    expiryDate?: SortOrder
+    scope?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GoogleAccountMaxOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    googleEmail?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    expiryDate?: SortOrder
+    scope?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type GoogleAccountMinOrderByAggregateInput = {
+    id?: SortOrder
+    userId?: SortOrder
+    googleEmail?: SortOrder
+    accessToken?: SortOrder
+    refreshToken?: SortOrder
+    expiryDate?: SortOrder
+    scope?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
   export type UserCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<UserCreateWithoutWorkspaceInput, UserUncheckedCreateWithoutWorkspaceInput> | UserCreateWithoutWorkspaceInput[] | UserUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspaceInput | UserCreateOrConnectWithoutWorkspaceInput[]
@@ -18582,6 +20032,12 @@ export namespace Prisma {
     connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
   }
 
+  export type GoogleAccountCreateNestedOneWithoutUserInput = {
+    create?: XOR<GoogleAccountCreateWithoutUserInput, GoogleAccountUncheckedCreateWithoutUserInput>
+    connectOrCreate?: GoogleAccountCreateOrConnectWithoutUserInput
+    connect?: GoogleAccountWhereUniqueInput
+  }
+
   export type UserUncheckedCreateNestedManyWithoutReportingManagerInput = {
     create?: XOR<UserCreateWithoutReportingManagerInput, UserUncheckedCreateWithoutReportingManagerInput> | UserCreateWithoutReportingManagerInput[] | UserUncheckedCreateWithoutReportingManagerInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportingManagerInput | UserCreateOrConnectWithoutReportingManagerInput[]
@@ -18650,6 +20106,12 @@ export namespace Prisma {
     connectOrCreate?: AnnouncementReadCreateOrConnectWithoutUserInput | AnnouncementReadCreateOrConnectWithoutUserInput[]
     createMany?: AnnouncementReadCreateManyUserInputEnvelope
     connect?: AnnouncementReadWhereUniqueInput | AnnouncementReadWhereUniqueInput[]
+  }
+
+  export type GoogleAccountUncheckedCreateNestedOneWithoutUserInput = {
+    create?: XOR<GoogleAccountCreateWithoutUserInput, GoogleAccountUncheckedCreateWithoutUserInput>
+    connectOrCreate?: GoogleAccountCreateOrConnectWithoutUserInput
+    connect?: GoogleAccountWhereUniqueInput
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -18842,6 +20304,16 @@ export namespace Prisma {
     deleteMany?: AnnouncementReadScalarWhereInput | AnnouncementReadScalarWhereInput[]
   }
 
+  export type GoogleAccountUpdateOneWithoutUserNestedInput = {
+    create?: XOR<GoogleAccountCreateWithoutUserInput, GoogleAccountUncheckedCreateWithoutUserInput>
+    connectOrCreate?: GoogleAccountCreateOrConnectWithoutUserInput
+    upsert?: GoogleAccountUpsertWithoutUserInput
+    disconnect?: GoogleAccountWhereInput | boolean
+    delete?: GoogleAccountWhereInput | boolean
+    connect?: GoogleAccountWhereUniqueInput
+    update?: XOR<XOR<GoogleAccountUpdateToOneWithWhereWithoutUserInput, GoogleAccountUpdateWithoutUserInput>, GoogleAccountUncheckedUpdateWithoutUserInput>
+  }
+
   export type UserUncheckedUpdateManyWithoutReportingManagerNestedInput = {
     create?: XOR<UserCreateWithoutReportingManagerInput, UserUncheckedCreateWithoutReportingManagerInput> | UserCreateWithoutReportingManagerInput[] | UserUncheckedCreateWithoutReportingManagerInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportingManagerInput | UserCreateOrConnectWithoutReportingManagerInput[]
@@ -18980,6 +20452,16 @@ export namespace Prisma {
     update?: AnnouncementReadUpdateWithWhereUniqueWithoutUserInput | AnnouncementReadUpdateWithWhereUniqueWithoutUserInput[]
     updateMany?: AnnouncementReadUpdateManyWithWhereWithoutUserInput | AnnouncementReadUpdateManyWithWhereWithoutUserInput[]
     deleteMany?: AnnouncementReadScalarWhereInput | AnnouncementReadScalarWhereInput[]
+  }
+
+  export type GoogleAccountUncheckedUpdateOneWithoutUserNestedInput = {
+    create?: XOR<GoogleAccountCreateWithoutUserInput, GoogleAccountUncheckedCreateWithoutUserInput>
+    connectOrCreate?: GoogleAccountCreateOrConnectWithoutUserInput
+    upsert?: GoogleAccountUpsertWithoutUserInput
+    disconnect?: GoogleAccountWhereInput | boolean
+    delete?: GoogleAccountWhereInput | boolean
+    connect?: GoogleAccountWhereUniqueInput
+    update?: XOR<XOR<GoogleAccountUpdateToOneWithWhereWithoutUserInput, GoogleAccountUpdateWithoutUserInput>, GoogleAccountUncheckedUpdateWithoutUserInput>
   }
 
   export type UserCreateNestedOneWithoutAttendancesInput = {
@@ -19442,6 +20924,20 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutAnnouncementReadsInput, UserUpdateWithoutAnnouncementReadsInput>, UserUncheckedUpdateWithoutAnnouncementReadsInput>
   }
 
+  export type UserCreateNestedOneWithoutGoogleAccountInput = {
+    create?: XOR<UserCreateWithoutGoogleAccountInput, UserUncheckedCreateWithoutGoogleAccountInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGoogleAccountInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type UserUpdateOneRequiredWithoutGoogleAccountNestedInput = {
+    create?: XOR<UserCreateWithoutGoogleAccountInput, UserUncheckedCreateWithoutGoogleAccountInput>
+    connectOrCreate?: UserCreateOrConnectWithoutGoogleAccountInput
+    upsert?: UserUpsertWithoutGoogleAccountInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGoogleAccountInput, UserUpdateWithoutGoogleAccountInput>, UserUncheckedUpdateWithoutGoogleAccountInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -19764,6 +21260,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkspaceInput = {
@@ -19795,6 +21292,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkspaceInput = {
@@ -20115,6 +21613,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDepartmentInput = {
@@ -20146,6 +21645,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDepartmentInput = {
@@ -20284,6 +21784,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDirectReportsInput = {
@@ -20315,6 +21816,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDirectReportsInput = {
@@ -20351,6 +21853,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportingManagerInput = {
@@ -20382,6 +21885,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportingManagerInput = {
@@ -20423,6 +21927,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedUsersInput = {
@@ -20454,6 +21959,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedUsersInput = {
@@ -20490,6 +21996,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedByInput = {
@@ -20521,6 +22028,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedByInput = {
@@ -20803,6 +22311,33 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type GoogleAccountCreateWithoutUserInput = {
+    id?: string
+    googleEmail: string
+    accessToken: string
+    refreshToken?: string | null
+    expiryDate?: Date | string | null
+    scope?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoogleAccountUncheckedCreateWithoutUserInput = {
+    id?: string
+    googleEmail: string
+    accessToken: string
+    refreshToken?: string | null
+    expiryDate?: Date | string | null
+    scope?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type GoogleAccountCreateOrConnectWithoutUserInput = {
+    where: GoogleAccountWhereUniqueInput
+    create: XOR<GoogleAccountCreateWithoutUserInput, GoogleAccountUncheckedCreateWithoutUserInput>
+  }
+
   export type WorkspaceUpsertWithoutUsersInput = {
     update: XOR<WorkspaceUpdateWithoutUsersInput, WorkspaceUncheckedUpdateWithoutUsersInput>
     create: XOR<WorkspaceCreateWithoutUsersInput, WorkspaceUncheckedCreateWithoutUsersInput>
@@ -20903,6 +22438,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDirectReportsInput = {
@@ -20934,6 +22470,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutReportingManagerInput = {
@@ -20992,6 +22529,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedUsersInput = {
@@ -21023,6 +22561,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -21231,6 +22770,39 @@ export namespace Prisma {
     readAt?: DateTimeFilter<"AnnouncementRead"> | Date | string
   }
 
+  export type GoogleAccountUpsertWithoutUserInput = {
+    update: XOR<GoogleAccountUpdateWithoutUserInput, GoogleAccountUncheckedUpdateWithoutUserInput>
+    create: XOR<GoogleAccountCreateWithoutUserInput, GoogleAccountUncheckedCreateWithoutUserInput>
+    where?: GoogleAccountWhereInput
+  }
+
+  export type GoogleAccountUpdateToOneWithWhereWithoutUserInput = {
+    where?: GoogleAccountWhereInput
+    data: XOR<GoogleAccountUpdateWithoutUserInput, GoogleAccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type GoogleAccountUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    googleEmail?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type GoogleAccountUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    googleEmail?: StringFieldUpdateOperationsInput | string
+    accessToken?: StringFieldUpdateOperationsInput | string
+    refreshToken?: NullableStringFieldUpdateOperationsInput | string | null
+    expiryDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    scope?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateWithoutAttendancesInput = {
     id?: string
     name?: string | null
@@ -21260,6 +22832,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAttendancesInput = {
@@ -21291,6 +22864,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAttendancesInput = {
@@ -21362,6 +22936,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAttendancesInput = {
@@ -21393,6 +22968,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type TimerSegmentUpsertWithWhereUniqueWithoutAttendanceInput = {
@@ -21542,6 +23118,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedProjectsInput = {
@@ -21573,6 +23150,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedProjectsInput = {
@@ -21609,6 +23187,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutManagedProjectsInput = {
@@ -21640,6 +23219,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutManagedProjectsInput = {
@@ -21776,6 +23356,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
@@ -21807,6 +23388,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutManagedProjectsInput = {
@@ -21849,6 +23431,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedProjectsInput = {
@@ -21880,6 +23463,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type ProjectMemberUpsertWithWhereUniqueWithoutProjectInput = {
@@ -21984,6 +23568,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProjectMembersInput = {
@@ -22015,6 +23600,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProjectMembersInput = {
@@ -22109,6 +23695,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectMembersInput = {
@@ -22140,6 +23727,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutTasksInput = {
@@ -22212,6 +23800,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -22243,6 +23832,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -22337,6 +23927,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -22368,6 +23959,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type WorkspaceCreateWithoutAnnouncementsInput = {
@@ -22426,6 +24018,7 @@ export namespace Prisma {
     createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedAnnouncementsInput = {
@@ -22457,6 +24050,7 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedAnnouncementsInput = {
@@ -22583,6 +24177,7 @@ export namespace Prisma {
     createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedAnnouncementsInput = {
@@ -22614,6 +24209,7 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type AnnouncementTargetUserUpsertWithWhereUniqueWithoutAnnouncementInput = {
@@ -22714,6 +24310,7 @@ export namespace Prisma {
     createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnouncementTargetsInput = {
@@ -22745,6 +24342,7 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnouncementTargetsInput = {
@@ -22835,6 +24433,7 @@ export namespace Prisma {
     createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnouncementTargetsInput = {
@@ -22866,6 +24465,7 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type AnnouncementCreateWithoutReadRecordsInput = {
@@ -22934,6 +24534,7 @@ export namespace Prisma {
     createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnouncementReadsInput = {
@@ -22965,6 +24566,7 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnouncementReadsInput = {
@@ -23055,6 +24657,7 @@ export namespace Prisma {
     createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnouncementReadsInput = {
@@ -23086,6 +24689,151 @@ export namespace Prisma {
     createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+  }
+
+  export type UserCreateWithoutGoogleAccountInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutUsersInput
+    department?: DepartmentCreateNestedOneWithoutUsersInput
+    reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
+    directReports?: UserCreateNestedManyWithoutReportingManagerInput
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutGoogleAccountInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    workspaceId: string
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    departmentId?: string | null
+    reportingManagerId?: string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutGoogleAccountInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutGoogleAccountInput, UserUncheckedCreateWithoutGoogleAccountInput>
+  }
+
+  export type UserUpsertWithoutGoogleAccountInput = {
+    update: XOR<UserUpdateWithoutGoogleAccountInput, UserUncheckedUpdateWithoutGoogleAccountInput>
+    create: XOR<UserCreateWithoutGoogleAccountInput, UserUncheckedCreateWithoutGoogleAccountInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutGoogleAccountInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutGoogleAccountInput, UserUncheckedUpdateWithoutGoogleAccountInput>
+  }
+
+  export type UserUpdateWithoutGoogleAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutUsersNestedInput
+    department?: DepartmentUpdateOneWithoutUsersNestedInput
+    reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
+    directReports?: UserUpdateManyWithoutReportingManagerNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutGoogleAccountInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyWorkspaceInput = {
@@ -23175,6 +24923,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkspaceInput = {
@@ -23206,6 +24955,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -23400,6 +25150,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDepartmentInput = {
@@ -23431,6 +25182,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutDepartmentInput = {
@@ -23613,6 +25365,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportingManagerInput = {
@@ -23644,6 +25397,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutReportingManagerInput = {
@@ -23696,6 +25450,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedByInput = {
@@ -23727,6 +25482,7 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCreatedByInput = {

@@ -245,6 +245,18 @@ exports.Prisma.AnnouncementReadScalarFieldEnum = {
   readAt: 'readAt'
 };
 
+exports.Prisma.GoogleAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  googleEmail: 'googleEmail',
+  accessToken: 'accessToken',
+  refreshToken: 'refreshToken',
+  expiryDate: 'expiryDate',
+  scope: 'scope',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -315,7 +327,8 @@ exports.Prisma.ModelName = {
   Task: 'Task',
   Announcement: 'Announcement',
   AnnouncementTargetUser: 'AnnouncementTargetUser',
-  AnnouncementRead: 'AnnouncementRead'
+  AnnouncementRead: 'AnnouncementRead',
+  GoogleAccount: 'GoogleAccount'
 };
 
 /**

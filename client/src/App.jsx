@@ -42,7 +42,7 @@ import {
   MeetingsPage,
 } from './pages/PlaceholderPages';
 
-import EmailPage from './modules/email/EmailPage';
+import EmailPage from './pages/email/EmailPage';
 
 /**
  * RoleBasedRoot

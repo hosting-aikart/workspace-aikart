@@ -89,6 +89,7 @@ model User {
   createdAnnouncements Announcement[]           @relation("AnnouncementCreatedBy")
   announcementTargets  AnnouncementTargetUser[]
   announcementReads    AnnouncementRead[]
+  googleAccount        GoogleAccount?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -283,4 +284,19 @@ model AnnouncementRead {
   readAt DateTime @default(now())
 
   @@unique([announcementId, userId])
+}
+
+// ─── Google OAuth ─────────────────────────────────────────────────────────────
+
+model GoogleAccount {
+  id           String    @id @default(cuid())
+  userId       String    @unique
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  googleEmail  String
+  accessToken  String
+  refreshToken String?
+  expiryDate   DateTime?
+  scope        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
 }
