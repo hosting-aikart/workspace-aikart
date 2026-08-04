@@ -10,16 +10,9 @@ import api from '../../../utils/api';
 export default function GoogleConnectPrompt({ error }) {
   const handleConnect = () => {
     // Navigate the full window — this is an OAuth redirect, not an API call
-    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-    // We need the Bearer token in the Authorization header for the /connect endpoint.
-    // Since OAuth redirects don't send headers we use a short-lived token approach:
-    // The server reads the user's auth via requireAuth, then redirects.
-    // We navigate via window.location with the token attached as a query param
-    // which the server reads if the Authorization header isn't available.
-    // Actually the cleanest approach is to just redirect — requireAuth checks the header,
-    // but for browser redirects we can't set headers. So the server should also accept
-    // the token via query param for the /connect endpoint. We pass it as ?token=...
-    const token = api.token;
+    const rawApiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    const apiBase = rawApiBase.replace(/\/+$/, '');
+    const token = api.token || localStorage.getItem('aikart-access-token');
     const connectUrl = token
       ? `${apiBase}/google/connect?token=${encodeURIComponent(token)}`
       : `${apiBase}/google/connect`;

@@ -15,7 +15,33 @@ const {
  */
 const connect = (req, res) => {
   try {
-    const stateObj = JSON.stringify({ userId: req.user.id, role: req.user.role });
+    let clientUrl = process.env.CLIENT_ORIGIN?.replace(/\/+$/, '');
+    let returnTo = req.user.role === 'ADMIN' ? '/admin/email' : '/app/email';
+
+    if (req.headers.referer) {
+      try {
+        const refUrl = new URL(req.headers.referer);
+        if (!clientUrl) {
+          clientUrl = refUrl.origin;
+        }
+        if (refUrl.pathname && refUrl.pathname !== '/') {
+          returnTo = refUrl.pathname;
+        }
+      } catch (e) {
+        // Ignore URL parse errors
+      }
+    }
+
+    if (!clientUrl) {
+      clientUrl = 'http://localhost:5173';
+    }
+
+    const stateObj = JSON.stringify({
+      userId: req.user.id,
+      clientUrl,
+      returnTo,
+    });
+
     const url = getAuthUrl(stateObj);
     return res.redirect(url);
   } catch (err) {
@@ -34,21 +60,25 @@ const callback = async (req, res) => {
   const { code, state, error } = req.query;
 
   let userId = null;
-  let role = 'EMPLOYEE';
+  let clientUrl = process.env.CLIENT_ORIGIN?.replace(/\/+$/, '') || 'http://localhost:5173';
+  let returnTo = '/app/email';
+
   try {
     const parsedState = JSON.parse(state);
     userId = parsedState.userId;
-    role = parsedState.role;
+    if (parsedState.clientUrl) {
+      clientUrl = parsedState.clientUrl.replace(/\/+$/, '');
+    }
+    if (parsedState.returnTo) {
+      returnTo = parsedState.returnTo;
+    }
   } catch (err) {
-    userId = state; // Fallback for old requests
+    userId = state; // Fallback for legacy state
   }
 
-  const clientUrl = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
-  const targetPath = role === 'ADMIN' ? '/admin/email' : '/app/email';
-
   if (error) {
-    // User denied access or another OAuth error
-    return res.redirect(`${clientUrl}${targetPath}?google_error=${encodeURIComponent(error)}`);
+    console.error('[google.controller] OAuth error:', error);
+    return res.redirect(`${clientUrl}${returnTo}?google_error=${encodeURIComponent(error)}`);
   }
 
   if (!code || !userId) {
@@ -57,10 +87,10 @@ const callback = async (req, res) => {
 
   try {
     await handleCallback(code, userId);
-    return res.redirect(`${clientUrl}${targetPath}?google_connected=1`);
+    return res.redirect(`${clientUrl}${returnTo}?google_connected=1`);
   } catch (err) {
-    console.error('[google.controller] callback:', err.message);
-    return res.redirect(`${clientUrl}${targetPath}?google_error=${encodeURIComponent(err.message)}`);
+    console.error('[google.controller] callback error:', err.message);
+    return res.redirect(`${clientUrl}${returnTo}?google_error=${encodeURIComponent(err.message)}`);
   }
 };
 

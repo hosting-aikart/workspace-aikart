@@ -50,7 +50,7 @@ export default function EmailPage() {
 
     checkStatus();
     return () => { cancelled = true; };
-  }, []);
+  }, [justConnected]);
 
   // ── Loading skeleton ────────────────────────────────────────────────────────
   if (status === null && !statusError) {
