@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 import PageHeader from '../../components/common/PageHeader';
 import StatsCard from '../../components/common/StatsCard';
@@ -35,15 +36,15 @@ const getResponseBadgeTone = (resStatus) => {
   }
 };
 
-export default function AdminMeetingsPage() {
+export default function EmployeeMeetingsPage() {
+  const { user } = useAuth();
   const [meetings, setMeetings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState('ALL'); // 'ALL' | 'UPCOMING' | 'COMPLETED' | 'CANCELLED'
+  const [activeTab, setActiveTab] = useState('TODAY'); // 'TODAY' | 'UPCOMING' | 'COMPLETED'
+  const [respondingId, setRespondingId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingMeeting, setEditingMeeting] = useState(null);
   const [actionLoadingId, setActionLoadingId] = useState(null);
-
-  const [notificationMsg, setNotificationMsg] = useState('');
 
   const fetchMeetings = useCallback(async () => {
     try {
@@ -51,7 +52,7 @@ export default function AdminMeetingsPage() {
       const res = await api.get('/meetings');
       setMeetings(res.data?.data?.meetings || []);
     } catch (err) {
-      console.warn('Failed to fetch meetings:', err.message);
+      console.warn('Failed to fetch employee meetings:', err.message);
     } finally {
       setLoading(false);
     }
@@ -61,35 +62,45 @@ export default function AdminMeetingsPage() {
     fetchMeetings();
   }, [fetchMeetings]);
 
+  const filteredMeetings = useMemo(() => {
+    const todayStr = new Date().toDateString();
+    if (activeTab === 'TODAY') {
+      return meetings.filter((m) => new Date(m.startTime).toDateString() === todayStr);
+    }
+    if (activeTab === 'UPCOMING') {
+      return meetings.filter((m) => m.status === 'UPCOMING' || m.status === 'ONGOING');
+    }
+    if (activeTab === 'COMPLETED') {
+      return meetings.filter((m) => m.status === 'COMPLETED' || m.status === 'CANCELLED');
+    }
+    return meetings;
+  }, [meetings, activeTab]);
+
+  const stats = useMemo(() => {
+    const todayStr = new Date().toDateString();
+    const todayCount = meetings.filter((m) => new Date(m.startTime).toDateString() === todayStr).length;
+    const upcomingCount = meetings.filter((m) => m.status === 'UPCOMING' || m.status === 'ONGOING').length;
+    const completedCount = meetings.filter((m) => m.status === 'COMPLETED').length;
+    return { todayCount, upcomingCount, completedCount };
+  }, [meetings]);
+
+  const [notificationMsg, setNotificationMsg] = useState('');
+
   const showNotification = (msg) => {
     setNotificationMsg(msg);
     setTimeout(() => setNotificationMsg(''), 4000);
   };
 
-  const filteredMeetings = useMemo(() => {
-    if (activeTab === 'ALL') return meetings;
-    return meetings.filter((m) => m.status === activeTab);
-  }, [meetings, activeTab]);
-
-  const stats = useMemo(() => {
-    const total = meetings.length;
-    const upcoming = meetings.filter((m) => m.status === 'UPCOMING' || m.status === 'ONGOING').length;
-    const completed = meetings.filter((m) => m.status === 'COMPLETED').length;
-    const cancelled = meetings.filter((m) => m.status === 'CANCELLED').length;
-    return { total, upcoming, completed, cancelled };
-  }, [meetings]);
-
-  const handleCancelMeeting = async (meetingId) => {
-    if (!window.confirm('Are you sure you want to cancel this meeting? Google Calendar event will be updated.')) return;
+  const handleRespond = async (meetingId, responseStatus) => {
     try {
-      setActionLoadingId(meetingId);
-      await api.post(`/meetings/${meetingId}/cancel`);
-      showNotification('Meeting cancelled successfully.');
+      setRespondingId(meetingId);
+      await api.post(`/meetings/${meetingId}/respond`, { responseStatus });
+      showNotification(`Invitation ${responseStatus.toLowerCase()} successfully.`);
       fetchMeetings();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to cancel meeting.');
+      alert(err.response?.data?.message || 'Failed to update invitation response.');
     } finally {
-      setActionLoadingId(null);
+      setRespondingId(null);
     }
   };
 
@@ -107,11 +118,25 @@ export default function AdminMeetingsPage() {
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
 
+  const handleCancelMeeting = async (meetingId) => {
+    if (!window.confirm('Are you sure you want to cancel this meeting?')) return;
+    try {
+      setActionLoadingId(meetingId);
+      await api.post(`/meetings/${meetingId}/cancel`);
+      showNotification('Meeting cancelled successfully.');
+      fetchMeetings();
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to cancel meeting.');
+    } finally {
+      setActionLoadingId(null);
+    }
+  };
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
       <PageHeader
-        title="Meetings & Conferences"
-        description="Schedule instant or upcoming Google Meet conferences, calendar events, and invitations."
+        title="My Meetings"
+        description="View, schedule, and join your upcoming team meetings."
         action={
           <div style={{ display: 'flex', gap: '0.75rem' }}>
             <button
@@ -144,23 +169,25 @@ export default function AdminMeetingsPage() {
 
       {/* Metrics Row */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1rem' }}>
-        <StatsCard label="Total Meetings" value={stats.total} hint="All time workspace meetings" />
-        <StatsCard label="Upcoming & Ongoing" value={stats.upcoming} hint="Scheduled & active" />
-        <StatsCard label="Completed" value={stats.completed} hint="Finished sessions" />
-        <StatsCard label="Cancelled" value={stats.cancelled} hint="Cancelled events" />
+        <StatsCard label="Today's Meetings" value={stats.todayCount} hint="Sessions for today" />
+        <StatsCard label="Upcoming & Active" value={stats.upcomingCount} hint="Scheduled invites" />
+        <StatsCard label="Completed" value={stats.completedCount} hint="Finished meetings" />
       </div>
 
       {/* Status Tabs */}
       <div className="card" style={{ padding: '0.75rem 1rem' }}>
         <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem' }}>
-          {['ALL', 'UPCOMING', 'COMPLETED', 'CANCELLED'].map((tab) => (
+          {[
+            { id: 'TODAY', label: "Today's Meetings" },
+            { id: 'UPCOMING', label: 'Upcoming Meetings' },
+            { id: 'COMPLETED', label: 'Completed Meetings' },
+          ].map((tab) => (
             <button
-              key={tab}
-              className={`btn btn-sm ${activeTab === tab ? 'btn-primary' : 'btn-ghost'}`}
-              onClick={() => setActiveTab(tab)}
-              style={{ textTransform: 'capitalize' }}
+              key={tab.id}
+              className={`btn btn-sm ${activeTab === tab.id ? 'btn-primary' : 'btn-ghost'}`}
+              onClick={() => setActiveTab(tab.id)}
             >
-              {tab === 'ALL' ? 'All Meetings' : tab.toLowerCase()}
+              {tab.label}
             </button>
           ))}
         </div>
@@ -170,23 +197,25 @@ export default function AdminMeetingsPage() {
       {loading ? (
         <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
           <div className="spinner spinner-lg" style={{ margin: '0 auto 1rem' }} />
-          <p className="text-secondary">Loading workspace meetings...</p>
+          <p className="text-secondary">Loading your meetings...</p>
         </div>
       ) : filteredMeetings.length === 0 ? (
         <EmptyState
           title="No meetings found"
           description={
-            activeTab === 'ALL'
-              ? 'No meetings have been scheduled yet. Click "Create Meeting" to schedule your first meeting.'
+            activeTab === 'TODAY'
+              ? 'No meetings scheduled for today.'
               : `No ${activeTab.toLowerCase()} meetings.`
           }
         />
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {filteredMeetings.map((meeting) => {
-            const isOrganizer = true; // Admin has full privileges
             const startDate = new Date(meeting.startTime);
             const endDate = new Date(meeting.endTime);
+            const myParticipant = meeting.participants?.find((p) => p.userId === user?.id);
+            const myResponse = myParticipant?.responseStatus || 'INVITED';
+            const isOrganizer = meeting.organizerId === user?.id;
 
             return (
               <div
@@ -213,10 +242,8 @@ export default function AdminMeetingsPage() {
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
                       <h3 style={{ margin: 0, fontSize: '1.15rem' }}>{meeting.title}</h3>
-                      <Badge tone={meeting.meetingType === 'INSTANT' ? 'warning' : 'info'}>
-                        {meeting.meetingType === 'INSTANT' ? '⚡ Instant' : '📅 Scheduled'}
-                      </Badge>
                       <Badge tone={getStatusBadgeTone(meeting.status)}>{meeting.status}</Badge>
+                      <Badge tone={getResponseBadgeTone(myResponse)}>Your Status: {myResponse}</Badge>
                     </div>
                     {meeting.description && (
                       <p className="text-secondary" style={{ margin: '0.25rem 0 0', fontSize: '0.9rem' }}>
@@ -225,8 +252,9 @@ export default function AdminMeetingsPage() {
                     )}
                   </div>
 
-                  {/* Actions */}
+                  {/* Join & Respond Actions */}
                   <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    {/* Join Meeting Button */}
                     {meeting.meetingUrl && meeting.status !== 'CANCELLED' && (
                       <button
                         className="btn btn-primary btn-sm"
@@ -240,7 +268,7 @@ export default function AdminMeetingsPage() {
                       </button>
                     )}
 
-                    {meeting.status !== 'CANCELLED' && (
+                    {isOrganizer && meeting.status !== 'CANCELLED' && (
                       <>
                         <button
                           className="btn btn-outline btn-sm"
@@ -303,7 +331,7 @@ export default function AdminMeetingsPage() {
                   )}
                 </div>
 
-                {/* Participants Row */}
+                {/* Participants List */}
                 <div>
                   <span className="text-secondary" style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>
                     Participants ({meeting.participants?.length || 0})
@@ -344,7 +372,7 @@ export default function AdminMeetingsPage() {
       {isModalOpen && (
         <CreateMeetingModal
           initialData={editingMeeting}
-          userRole="ADMIN"
+          userRole="EMPLOYEE"
           onClose={() => {
             setIsModalOpen(false);
             setEditingMeeting(null);

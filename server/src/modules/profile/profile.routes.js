@@ -36,7 +36,12 @@ const handleMulterError = (err, _req, res, next) => {
   next();
 };
 
+const { getUsers } = require('../admin/admin.controller');
+
 // ─── Profile Routes ───────────────────────────────────────────────────────────
+
+// GET /api/me/directory — fetch all users in the workspace (for all roles)
+router.get('/directory', requireAuth, getUsers);
 
 // GET  /api/me/profile  — fetch logged-in user's full profile
 router.get('/profile', requireAuth, getMyProfile);

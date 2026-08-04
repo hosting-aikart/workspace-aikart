@@ -257,6 +257,33 @@ exports.Prisma.GoogleAccountScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.MeetingScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  description: 'description',
+  agenda: 'agenda',
+  workspaceId: 'workspaceId',
+  organizerId: 'organizerId',
+  meetingType: 'meetingType',
+  status: 'status',
+  googleEventId: 'googleEventId',
+  googleMeetSpaceId: 'googleMeetSpaceId',
+  meetingUrl: 'meetingUrl',
+  startTime: 'startTime',
+  endTime: 'endTime',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MeetingParticipantScalarFieldEnum = {
+  id: 'id',
+  meetingId: 'meetingId',
+  userId: 'userId',
+  responseStatus: 'responseStatus',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -316,6 +343,25 @@ exports.AnnouncementStatus = exports.$Enums.AnnouncementStatus = {
   ARCHIVED: 'ARCHIVED'
 };
 
+exports.MeetingType = exports.$Enums.MeetingType = {
+  SCHEDULED: 'SCHEDULED',
+  INSTANT: 'INSTANT'
+};
+
+exports.MeetingStatus = exports.$Enums.MeetingStatus = {
+  UPCOMING: 'UPCOMING',
+  ONGOING: 'ONGOING',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+exports.ParticipantResponseStatus = exports.$Enums.ParticipantResponseStatus = {
+  INVITED: 'INVITED',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  JOINED: 'JOINED'
+};
+
 exports.Prisma.ModelName = {
   Workspace: 'Workspace',
   Department: 'Department',
@@ -328,7 +374,9 @@ exports.Prisma.ModelName = {
   Announcement: 'Announcement',
   AnnouncementTargetUser: 'AnnouncementTargetUser',
   AnnouncementRead: 'AnnouncementRead',
-  GoogleAccount: 'GoogleAccount'
+  GoogleAccount: 'GoogleAccount',
+  Meeting: 'Meeting',
+  MeetingParticipant: 'MeetingParticipant'
 };
 
 /**

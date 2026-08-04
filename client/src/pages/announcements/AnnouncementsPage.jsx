@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 import PageHeader from '../../components/common/PageHeader';
 import DataTable from '../../components/common/DataTable';
 import Modal from '../../components/common/Modal';
 import Badge from '../../components/common/Badge';
 
-export default function TeamAnnouncementsPage() {
+export default function AnnouncementsPage() {
+  const { user } = useAuth();
   const [announcements, setAnnouncements] = useState([]);
   const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -25,12 +27,18 @@ export default function TeamAnnouncementsPage() {
     setLoading(true);
     setError('');
     try {
-      const [{ data: announcementsRes }, { data: teamRes }] = await Promise.all([
-        api.get('/announcements'),
-        api.get('/manager/team'),
-      ]);
-      setAnnouncements(announcementsRes?.data || []);
-      setTeamMembers(teamRes?.data || []);
+      const p = [api.get('/announcements')];
+      if (user?.role === 'MANAGER') {
+        p.push(api.get('/me/directory?limit=200'));
+      }
+      
+      const responses = await Promise.all(p);
+      setAnnouncements(responses[0]?.data?.data || []);
+      
+      if (user?.role === 'MANAGER' && responses[1]) {
+        const list = responses[1].data?.data?.employees || responses[1].data?.employees || [];
+        setTeamMembers(list);
+      }
     } catch (err) {
       setError(err?.response?.data?.message || err.message || 'Failed to load announcements.');
     } finally {
@@ -39,8 +47,8 @@ export default function TeamAnnouncementsPage() {
   };
 
   useEffect(() => {
-    loadData();
-  }, []);
+    if (user) loadData();
+  }, [user]);
 
   const handleToggleSelectUser = (userId) => {
     setForm((prev) => {
@@ -130,15 +138,17 @@ export default function TeamAnnouncementsPage() {
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
       <PageHeader
-        title="Team Announcements"
-        subtitle="Broadcast targeted updates and alerts to your team members."
+        title="Announcements"
+        description="View latest workspace announcements and broadcasts."
         action={
-          <button
-            className="btn btn-primary"
-            onClick={() => setIsModalOpen(true)}
-          >
-            + New Team Announcement
-          </button>
+          user?.role === 'MANAGER' ? (
+            <button
+              className="btn btn-primary"
+              onClick={() => setIsModalOpen(true)}
+            >
+              New Broadcast
+            </button>
+          ) : null
         }
       />
 

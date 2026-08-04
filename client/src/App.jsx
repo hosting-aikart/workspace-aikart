@@ -23,6 +23,7 @@ import TasksPageAdmin from './pages/admin/TasksPage';
 import MeetingsPageAdmin from './pages/admin/MeetingsPage';
 import AnnouncementsPageAdmin from './pages/admin/AnnouncementsPage';
 import ReportsPageAdmin from './pages/admin/ReportsPage';
+import SettingsPage from './pages/settings/SettingsPage';
 
 // ─── Employee / Manager Pages ─────────────────────────────────────────────────
 import ProfilePage from './pages/profile/ProfilePage';
@@ -30,19 +31,15 @@ import AttendancePage from './pages/employee/AttendancePage';
 import TasksPage from './pages/tasks/TasksPage';
 import ProjectsListPage from './pages/projects/ProjectsListPage';
 import ProjectDetailPage from './pages/projects/ProjectDetailPage';
-import TeamDashboardPage from './pages/manager/TeamDashboardPage';
-import TeamAttendancePage from './pages/manager/TeamAttendancePage';
-import TeamAnnouncementsPage from './pages/manager/TeamAnnouncementsPage';
-import DirectoryPage from './pages/employee/DirectoryPage';
-import SettingsPage from './pages/settings/SettingsPage';
-import ReportsPage from './pages/reports/ReportsPage';
-
-// ─── Placeholder Pages ────────────────────────────────────────────────────────
-import {
-  MeetingsPage,
-} from './pages/PlaceholderPages';
-
+import MeetingsPage from './pages/meetings/MeetingsPage';
+import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
 import EmailPage from './pages/email/EmailPage';
+import {
+  ChatPage,
+  FilesPage,
+  DirectoryPage,
+  InvoicesPage,
+} from './pages/PlaceholderPages';
 
 /**
  * RoleBasedRoot
@@ -103,6 +100,12 @@ export default function App() {
             <Route path="attendance" element={<AttendanceManagementPage />} />
             <Route path="meetings" element={<MeetingsPageAdmin />} />
             <Route path="reports" element={<ReportsPageAdmin />} />
+            <Route path="email" element={<EmailPage />} />
+            <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="chat" element={<ChatPage />} />
+            <Route path="files" element={<FilesPage />} />
+            <Route path="directory" element={<DirectoryPage />} />
+            <Route path="invoices" element={<InvoicesPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
 
@@ -121,19 +124,15 @@ export default function App() {
             <Route path="projects" element={<ProjectsListPage />} />
             <Route path="projects/:id" element={<ProjectDetailPage />} />
             <Route path="tasks" element={<TasksPage />} />
-            <Route path="email" element={<EmailPage />} />
             <Route path="attendance" element={<AttendancePage />} />
             <Route path="meetings" element={<MeetingsPage />} />
+            <Route path="announcements" element={<AnnouncementsPage />} />
+            <Route path="email" element={<EmailPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
+            <Route path="chat" element={<ChatPage />} />
+            <Route path="files" element={<FilesPage />} />
             <Route path="directory" element={<DirectoryPage />} />
-            <Route path="reports" element={<ReportsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-
-            {/* Manager Workspace Routes */}
-            <Route path="team-dashboard" element={<TeamDashboardPage />} />
-            <Route path="team-attendance" element={<TeamAttendancePage />} />
-            <Route path="team-meetings" element={<MeetingsPage />} />
-            <Route path="team-announcements" element={<TeamAnnouncementsPage />} />
+            <Route path="invoices" element={<InvoicesPage />} />
           </Route>
 
           {/* ── Catch-all ────────────────────────────────────────────────── */}

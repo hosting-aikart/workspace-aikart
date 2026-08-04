@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import { NavLink, Outlet } from 'react-router-dom';
+import TopNavbar from './TopNavbar';
 
 const ADMIN_NAV_SECTIONS = [
   {
@@ -105,6 +105,73 @@ const ADMIN_NAV_SECTIONS = [
           </svg>
         ),
       },
+      {
+        id: 'email',
+        label: 'Email',
+        path: '/admin/email',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+            <polyline points="22,6 12,13 2,6" />
+          </svg>
+        ),
+      },
+      {
+        id: 'chat',
+        label: 'Chat',
+        path: '/admin/chat',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+          </svg>
+        ),
+      },
+      {
+        id: 'notifications',
+        label: 'Notifications',
+        path: '/admin/notifications',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" /><path d="M13.73 21a2 2 0 0 1-3.46 0" />
+          </svg>
+        ),
+      },
+    ],
+  },
+  {
+    title: 'COMPANY & RESOURCES',
+    items: [
+      {
+        id: 'directory',
+        label: 'Directory',
+        path: '/admin/directory',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+          </svg>
+        ),
+      },
+      {
+        id: 'files',
+        label: 'Files',
+        path: '/admin/files',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" />
+          </svg>
+        ),
+      },
+      {
+        id: 'invoices',
+        label: 'Invoices',
+        path: '/admin/invoices',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" /><line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" /><polyline points="10 9 9 9 8 9" />
+          </svg>
+        ),
+      },
     ],
   },
   {
@@ -136,24 +203,8 @@ const ADMIN_NAV_SECTIONS = [
   },
 ];
 
-function getInitials(name = '') {
-  return name
-    .split(' ')
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
-}
-
 export default function AdminLayout() {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const handleLogout = async () => {
-    await logout();
-    navigate('/login');
-  };
 
   return (
     <div className="dashboard-root">
@@ -166,23 +217,7 @@ export default function AdminLayout() {
       )}
 
       {/* ── Admin Sidebar ────────────────────────────────────────────────── */}
-      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
-        {/* Brand */}
-        <div className="sidebar-header">
-          <div className="sidebar-logo">
-            <svg width="28" height="28" viewBox="0 0 32 32" fill="none">
-              <rect width="32" height="32" rx="8" fill="#ef4444" />
-              <path d="M8 22L14 10L20 18L23 14L26 22H8Z" fill="white" opacity="0.9" />
-            </svg>
-            <span className="sidebar-brand">
-              ai<span className="text-primary">kart</span>{' '}
-              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#ef4444', textTransform: 'uppercase' }}>
-                Admin
-              </span>
-            </span>
-          </div>
-        </div>
-
+      <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`} style={{ borderTop: 'none', paddingTop: '1rem' }}>
         {/* Navigation */}
         <nav className="sidebar-nav">
           {ADMIN_NAV_SECTIONS.map((section) => (
@@ -205,82 +240,11 @@ export default function AdminLayout() {
             </div>
           ))}
         </nav>
-
-        {/* Admin User Footer */}
-        <div className="sidebar-footer">
-          <div className="sidebar-user">
-            <div className="sidebar-user-avatar">
-              {user?.profilePhotoUrl ? (
-                <img
-                  src={user.profilePhotoUrl}
-                  alt={user?.name}
-                  className="sidebar-user-photo"
-                />
-              ) : (
-                <div className="avatar avatar-sm">
-                  {getInitials(user?.name)}
-                </div>
-              )}
-            </div>
-            <div className="sidebar-user-info">
-              <p className="sidebar-user-name">{user?.name}</p>
-              <p className="sidebar-user-role" style={{ color: '#ef4444', fontWeight: 600 }}>
-                {user?.role}
-              </p>
-            </div>
-            <button
-              className="btn btn-ghost btn-icon sidebar-logout-btn"
-              onClick={handleLogout}
-              title="Sign out"
-              aria-label="Sign out"
-            >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
-              </svg>
-            </button>
-          </div>
-        </div>
       </aside>
 
       {/* ── Main Content Area ────────────────────────────────────────────── */}
-      <main className="main-content">
-        {/* Topbar */}
-        <header className="topbar">
-          <button
-            className="topbar-hamburger btn btn-ghost btn-icon"
-            onClick={() => setSidebarOpen(!sidebarOpen)}
-            aria-label="Toggle menu"
-          >
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <line x1="3" y1="6"  x2="21" y2="6"  />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
-          </button>
-
-          <div className="topbar-right">
-            <div className="topbar-user-info">
-              <span className="topbar-user-name">{user?.name}</span>
-              <span className="topbar-user-role" style={{ color: '#ef4444', fontWeight: 600 }}>
-                Admin Portal
-              </span>
-            </div>
-            <div className="topbar-avatar">
-              {user?.profilePhotoUrl ? (
-                <img
-                  src={user.profilePhotoUrl}
-                  alt={user?.name}
-                  className="topbar-avatar-img"
-                />
-              ) : (
-                <div className="avatar avatar-sm">
-                  {getInitials(user?.name)}
-                </div>
-              )}
-            </div>
-          </div>
-        </header>
+      <main className="main-content" style={{ display: 'flex', flexDirection: 'column' }}>
+        <TopNavbar onToggleSidebar={() => setSidebarOpen(!sidebarOpen)} />
 
         {/* Page output */}
         <div className="page-content">

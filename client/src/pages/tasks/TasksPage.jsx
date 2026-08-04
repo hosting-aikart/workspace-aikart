@@ -96,7 +96,7 @@ export default function TasksPage() {
     <div className="p-6 max-w-7xl mx-auto h-[calc(100vh-80px)] flex flex-col">
       <div className="flex justify-between items-center mb-8 flex-shrink-0">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">My Tasks</h1>
+          <h1 className="text-2xl font-bold text-gray-900">Tasks</h1>
           <p className="text-gray-500 mt-1">
             Manage your assigned tasks and track progress
           </p>

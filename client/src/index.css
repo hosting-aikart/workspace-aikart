@@ -3738,3 +3738,9 @@ code {
   background: var(--color-danger);
   color: white;
 }
+
+@media (min-width: 1024px) {
+  .mobile-menu-btn {
+    display: none !important;
+  }
+}

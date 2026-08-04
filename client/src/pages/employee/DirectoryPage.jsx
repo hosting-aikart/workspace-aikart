@@ -47,8 +47,7 @@ export default function DirectoryPage() {
     setLoading(true);
     setError('');
     try {
-      const endpoint = user?.role === 'ADMIN' ? '/admin/employees' : '/manager/team';
-      const { data } = await api.get(endpoint, {
+      const { data } = await api.get('/me/directory', {
         params: { limit: 100 },
       });
       const payload = data?.data;
@@ -58,7 +57,7 @@ export default function DirectoryPage() {
     } finally {
       setLoading(false);
     }
-  }, [user?.role]);
+  }, []);
 
   useEffect(() => {
     loadDepartments();

@@ -1,4 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
+import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
 
 function formatDuration(totalSeconds) {
@@ -14,12 +15,17 @@ function StatusBadge({ status }) {
         WORKING:     { label: 'Working',       cls: 'badge-success'  },
         PAUSED:      { label: 'Paused',        cls: 'badge-warning'  },
         CHECKED_OUT: { label: 'Checked Out',   cls: 'badge-primary'  },
+        ABSENT:      { label: 'Absent',        cls: 'badge-danger'   },
     };
     const { label, cls } = map[status] ?? { label: status, cls: 'badge-neutral' };
     return <span className={`badge ${cls}`}>{label}</span>;
 }
 
 export default function AttendancePage() {
+    const { user } = useAuth();
+    const isManager = user?.role === 'MANAGER';
+    
+    const [activeTab, setActiveTab] = useState('my-attendance');
     const [status,         setStatus]         = useState(null);
     const [liveSeconds,    setLiveSeconds]    = useState(0);
     const [weeklySeconds,  setWeeklySeconds]  = useState(0);
@@ -28,6 +34,8 @@ export default function AttendancePage() {
     const [actionLoading,  setActionLoading]  = useState(false);
     const [error,          setError]          = useState('');
     const [history,        setHistory]        = useState([]);
+    const [teamAttendance, setTeamAttendance] = useState([]);
+    const [teamLoading,    setTeamLoading]    = useState(false);
 
     const fetchToday = useCallback(async () => {
         try {
@@ -64,11 +72,25 @@ export default function AttendancePage() {
         }
     }, []);
 
+    const fetchTeamAttendance = useCallback(async () => {
+        if (!isManager) return;
+        setTeamLoading(true);
+        try {
+            const { data } = await api.get('/manager/attendance');
+            setTeamAttendance(data?.data || []);
+        } catch (err) {
+            console.error('Failed to load team attendance', err);
+        } finally {
+            setTeamLoading(false);
+        }
+    }, [isManager]);
+
     useEffect(() => {
         fetchToday();
         fetchHistory();
         fetchSummaries();
-    }, [fetchToday, fetchHistory, fetchSummaries]);
+        if (isManager) fetchTeamAttendance();
+    }, [fetchToday, fetchHistory, fetchSummaries, fetchTeamAttendance, isManager]);
 
     // Client-side ticking clock while WORKING
     useEffect(() => {
@@ -110,177 +132,260 @@ export default function AttendancePage() {
     const isCheckedOut  = status?.status === 'CHECKED_OUT';
 
     return (
-        <div className="attendance-page animate-fade-in">
+        <div className="attendance-page animate-fade-in" style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
 
-            {/* Page header */}
-            <div className="page-header">
+            <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <h1 className="page-title">Attendance &amp; Work Timer</h1>
+                    <h1 className="page-title" style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)' }}>Attendance &amp; Work Timer</h1>
                     <p className="text-secondary">Track your daily working hours</p>
                 </div>
             </div>
 
-            {/* Timer card */}
-            <div className="card attendance-timer-card">
-                <div className="card-body attendance-timer-body">
+            {isManager && (
+                <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border-color)', marginBottom: '2rem' }}>
+                    <button
+                        onClick={() => setActiveTab('my-attendance')}
+                        style={{
+                            padding: '0.75rem 1.5rem',
+                            background: 'none',
+                            border: 'none',
+                            borderBottom: activeTab === 'my-attendance' ? '2px solid var(--color-primary)' : '2px solid transparent',
+                            color: activeTab === 'my-attendance' ? 'var(--color-primary)' : 'var(--text-secondary)',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        My Attendance
+                    </button>
+                    <button
+                        onClick={() => setActiveTab('team-attendance')}
+                        style={{
+                            padding: '0.75rem 1.5rem',
+                            background: 'none',
+                            border: 'none',
+                            borderBottom: activeTab === 'team-attendance' ? '2px solid var(--color-primary)' : '2px solid transparent',
+                            color: activeTab === 'team-attendance' ? 'var(--color-primary)' : 'var(--text-secondary)',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                        }}
+                    >
+                        Team Attendance
+                    </button>
+                </div>
+            )}
 
-                    <div className="attendance-clock">
-                        {formatDuration(liveSeconds)}
-                    </div>
+            {activeTab === 'my-attendance' ? (
+                <>
+                    {/* Timer card */}
+                    <div className="card attendance-timer-card" style={{ marginBottom: '2rem' }}>
+                        <div className="card-body attendance-timer-body" style={{ textAlign: 'center', padding: '3rem 1rem' }}>
 
-                    <StatusBadge status={status?.status ?? 'NOT_STARTED'} />
+                            <div className="attendance-clock" style={{ fontSize: '4rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '1rem', fontVariantNumeric: 'tabular-nums' }}>
+                                {formatDuration(liveSeconds)}
+                            </div>
 
-                    {error && (
-                        <div className="alert alert-error">{error}</div>
-                    )}
+                            <div style={{ marginBottom: '1.5rem' }}>
+                                <StatusBadge status={status?.status ?? 'NOT_STARTED'} />
+                            </div>
 
-                    <div className="attendance-actions">
-                        {isNotStarted && (
-                            <button
-                                id="btn-check-in"
-                                className="btn btn-success btn-lg"
-                                onClick={() => runAction('check-in')}
-                                disabled={actionLoading}
-                            >
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
-                                </svg>
-                                Check In
-                            </button>
-                        )}
-
-                        {isWorking && (
-                            <>
-                                <button
-                                    id="btn-pause"
-                                    className="btn btn-warning btn-lg"
-                                    onClick={() => runAction('pause')}
-                                    disabled={actionLoading}
-                                >
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-                                    </svg>
-                                    Pause
-                                </button>
-                                <button
-                                    id="btn-check-out"
-                                    className="btn btn-danger btn-lg"
-                                    onClick={() => runAction('check-out')}
-                                    disabled={actionLoading}
-                                >
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                                    </svg>
-                                    Check Out
-                                </button>
-                            </>
-                        )}
-
-                        {isPaused && (
-                            <>
-                                <button
-                                    id="btn-resume"
-                                    className="btn btn-primary btn-lg"
-                                    onClick={() => runAction('resume')}
-                                    disabled={actionLoading}
-                                >
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <polygon points="5 3 19 12 5 21 5 3"/>
-                                    </svg>
-                                    Resume
-                                </button>
-                                <button
-                                    id="btn-check-out-paused"
-                                    className="btn btn-danger btn-lg"
-                                    onClick={() => runAction('check-out')}
-                                    disabled={actionLoading}
-                                >
-                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                                    </svg>
-                                    Check Out
-                                </button>
-                            </>
-                        )}
-
-                        {isCheckedOut && (
-                            <p className="text-secondary">
-                                You have checked out for today. See you tomorrow!
-                            </p>
-                        )}
-                    </div>
-
-                    {status?.checkIn && (
-                        <p className="attendance-times">
-                            Checked in at <strong>{new Date(status.checkIn).toLocaleTimeString()}</strong>
-                            {status.checkOut && (
-                                <> &middot; Checked out at <strong>{new Date(status.checkOut).toLocaleTimeString()}</strong></>
+                            {error && (
+                                <div className="alert alert-error" style={{ marginBottom: '1.5rem', maxWidth: '400px', margin: '0 auto 1.5rem' }}>{error}</div>
                             )}
-                        </p>
+
+                            <div className="attendance-actions" style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                                {isNotStarted && (
+                                    <button
+                                        id="btn-check-in"
+                                        className="btn btn-success btn-lg"
+                                        onClick={() => runAction('check-in')}
+                                        disabled={actionLoading}
+                                    >
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
+                                        </svg>
+                                        Check In
+                                    </button>
+                                )}
+
+                                {isWorking && (
+                                    <>
+                                        <button
+                                            id="btn-pause"
+                                            className="btn btn-warning btn-lg"
+                                            onClick={() => runAction('pause')}
+                                            disabled={actionLoading}
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+                                            </svg>
+                                            Pause
+                                        </button>
+                                        <button
+                                            id="btn-check-out"
+                                            className="btn btn-danger btn-lg"
+                                            onClick={() => runAction('check-out')}
+                                            disabled={actionLoading}
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                            </svg>
+                                            Check Out
+                                        </button>
+                                    </>
+                                )}
+
+                                {isPaused && (
+                                    <>
+                                        <button
+                                            id="btn-resume"
+                                            className="btn btn-primary btn-lg"
+                                            onClick={() => runAction('resume')}
+                                            disabled={actionLoading}
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <polygon points="5 3 19 12 5 21 5 3"/>
+                                            </svg>
+                                            Resume
+                                        </button>
+                                        <button
+                                            id="btn-check-out-paused"
+                                            className="btn btn-danger btn-lg"
+                                            onClick={() => runAction('check-out')}
+                                            disabled={actionLoading}
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                            </svg>
+                                            Check Out
+                                        </button>
+                                    </>
+                                )}
+
+                                {isCheckedOut && (
+                                    <p className="text-secondary" style={{ fontSize: '1.1rem' }}>
+                                        You have checked out for today. See you tomorrow!
+                                    </p>
+                                )}
+                            </div>
+
+                            {status?.checkIn && (
+                                <p className="attendance-times" style={{ marginTop: '1.5rem', color: 'var(--text-secondary)' }}>
+                                    Checked in at <strong style={{ color: 'var(--text-primary)' }}>{new Date(status.checkIn).toLocaleTimeString()}</strong>
+                                    {status.checkOut && (
+                                        <> &middot; Checked out at <strong style={{ color: 'var(--text-primary)' }}>{new Date(status.checkOut).toLocaleTimeString()}</strong></>
+                                    )}
+                                </p>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Summary cards */}
+                    <div className="attendance-summary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+                        <div className="card attendance-summary-card">
+                            <div className="card-body" style={{ textAlign: 'center' }}>
+                                <p className="attendance-summary-label" style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Today</p>
+                                <p className="attendance-summary-value" style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatDuration(liveSeconds)}</p>
+                            </div>
+                        </div>
+                        <div className="card attendance-summary-card">
+                            <div className="card-body" style={{ textAlign: 'center' }}>
+                                <p className="attendance-summary-label" style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>This Week</p>
+                                <p className="attendance-summary-value" style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatDuration(weeklySeconds)}</p>
+                            </div>
+                        </div>
+                        <div className="card attendance-summary-card">
+                            <div className="card-body" style={{ textAlign: 'center' }}>
+                                <p className="attendance-summary-label" style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>This Month</p>
+                                <p className="attendance-summary-value" style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatDuration(monthlySeconds)}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* History table */}
+                    <div className="card">
+                        <div className="card-header" style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
+                            <h2 className="card-title" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Attendance History</h2>
+                        </div>
+                        <div className="table-wrapper">
+                            <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                <thead>
+                                    <tr>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Date</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Check In</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Check Out</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Total Hours</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {history.map((h) => (
+                                        <tr key={h.id} style={{ borderTop: '1px solid var(--border-color)' }}>
+                                            <td style={{ padding: '1rem' }}>{new Date(h.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
+                                            <td style={{ padding: '1rem' }}>{h.checkIn  ? new Date(h.checkIn).toLocaleTimeString()  : '—'}</td>
+                                            <td style={{ padding: '1rem' }}>{h.checkOut ? new Date(h.checkOut).toLocaleTimeString() : '—'}</td>
+                                            <td className="font-mono" style={{ padding: '1rem' }}>{formatDuration(h.totalSeconds)}</td>
+                                            <td style={{ padding: '1rem' }}><StatusBadge status={h.status} /></td>
+                                        </tr>
+                                    ))}
+                                    {history.length === 0 && (
+                                        <tr>
+                                            <td colSpan={5} className="table-empty" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
+                                                No attendance history yet.
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </>
+            ) : (
+                <div className="card">
+                    <div className="card-header" style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
+                        <h2 className="card-title" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Team Attendance (Today)</h2>
+                    </div>
+                    {teamLoading ? (
+                        <div style={{ padding: '2rem', textAlign: 'center' }}>
+                            <div className="spinner" />
+                        </div>
+                    ) : (
+                        <div className="table-wrapper">
+                            <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
+                                <thead>
+                                    <tr>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Team Member</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Check In</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Check Out</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Total Hours</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {teamAttendance.map((log) => (
+                                        <tr key={log.id} style={{ borderTop: '1px solid var(--border-color)' }}>
+                                            <td style={{ padding: '1rem' }}>
+                                                <strong style={{ display: 'block' }}>{log.user?.name || '—'}</strong>
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{log.user?.position}</span>
+                                            </td>
+                                            <td style={{ padding: '1rem' }}>{log.checkIn ? new Date(log.checkIn).toLocaleTimeString() : '—'}</td>
+                                            <td style={{ padding: '1rem' }}>{log.checkOut ? new Date(log.checkOut).toLocaleTimeString() : '—'}</td>
+                                            <td className="font-mono" style={{ padding: '1rem' }}>{formatDuration(log.totalSeconds)}</td>
+                                            <td style={{ padding: '1rem' }}><StatusBadge status={log.status} /></td>
+                                        </tr>
+                                    ))}
+                                    {teamAttendance.length === 0 && (
+                                        <tr>
+                                            <td colSpan={5} className="table-empty" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
+                                                No team attendance data available for today.
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
                     )}
                 </div>
-            </div>
-
-            {/* Summary cards */}
-            <div className="attendance-summary-grid">
-                <div className="card attendance-summary-card">
-                    <div className="card-body">
-                        <p className="attendance-summary-label">Today</p>
-                        <p className="attendance-summary-value">{formatDuration(liveSeconds)}</p>
-                    </div>
-                </div>
-                <div className="card attendance-summary-card">
-                    <div className="card-body">
-                        <p className="attendance-summary-label">This Week</p>
-                        <p className="attendance-summary-value">{formatDuration(weeklySeconds)}</p>
-                    </div>
-                </div>
-                <div className="card attendance-summary-card">
-                    <div className="card-body">
-                        <p className="attendance-summary-label">This Month</p>
-                        <p className="attendance-summary-value">{formatDuration(monthlySeconds)}</p>
-                    </div>
-                </div>
-            </div>
-
-            {/* History table */}
-            <div className="card mt-6">
-                <div className="card-header">
-                    <h2 className="card-title">Attendance History</h2>
-                </div>
-                <div className="table-wrapper">
-                    <table className="table">
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Check In</th>
-                                <th>Check Out</th>
-                                <th>Total Hours</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {history.map((h) => (
-                                <tr key={h.id}>
-                                    <td>{new Date(h.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
-                                    <td>{h.checkIn  ? new Date(h.checkIn).toLocaleTimeString()  : '—'}</td>
-                                    <td>{h.checkOut ? new Date(h.checkOut).toLocaleTimeString() : '—'}</td>
-                                    <td className="font-mono">{formatDuration(h.totalSeconds)}</td>
-                                    <td><StatusBadge status={h.status} /></td>
-                                </tr>
-                            ))}
-                            {history.length === 0 && (
-                                <tr>
-                                    <td colSpan={5} className="table-empty">
-                                        No attendance history yet.
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+            )}
         </div>
     );
 }

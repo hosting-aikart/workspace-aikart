@@ -73,6 +73,16 @@ export type AnnouncementRead = $Result.DefaultSelection<Prisma.$AnnouncementRead
  * 
  */
 export type GoogleAccount = $Result.DefaultSelection<Prisma.$GoogleAccountPayload>
+/**
+ * Model Meeting
+ * 
+ */
+export type Meeting = $Result.DefaultSelection<Prisma.$MeetingPayload>
+/**
+ * Model MeetingParticipant
+ * 
+ */
+export type MeetingParticipant = $Result.DefaultSelection<Prisma.$MeetingParticipantPayload>
 
 /**
  * Enums
@@ -143,6 +153,34 @@ export const AnnouncementStatus: {
 
 export type AnnouncementStatus = (typeof AnnouncementStatus)[keyof typeof AnnouncementStatus]
 
+
+export const MeetingStatus: {
+  UPCOMING: 'UPCOMING',
+  ONGOING: 'ONGOING',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+export type MeetingStatus = (typeof MeetingStatus)[keyof typeof MeetingStatus]
+
+
+export const MeetingType: {
+  SCHEDULED: 'SCHEDULED',
+  INSTANT: 'INSTANT'
+};
+
+export type MeetingType = (typeof MeetingType)[keyof typeof MeetingType]
+
+
+export const ParticipantResponseStatus: {
+  INVITED: 'INVITED',
+  ACCEPTED: 'ACCEPTED',
+  DECLINED: 'DECLINED',
+  JOINED: 'JOINED'
+};
+
+export type ParticipantResponseStatus = (typeof ParticipantResponseStatus)[keyof typeof ParticipantResponseStatus]
+
 }
 
 export type Role = $Enums.Role
@@ -172,6 +210,18 @@ export const AnnouncementTargetType: typeof $Enums.AnnouncementTargetType
 export type AnnouncementStatus = $Enums.AnnouncementStatus
 
 export const AnnouncementStatus: typeof $Enums.AnnouncementStatus
+
+export type MeetingStatus = $Enums.MeetingStatus
+
+export const MeetingStatus: typeof $Enums.MeetingStatus
+
+export type MeetingType = $Enums.MeetingType
+
+export const MeetingType: typeof $Enums.MeetingType
+
+export type ParticipantResponseStatus = $Enums.ParticipantResponseStatus
+
+export const ParticipantResponseStatus: typeof $Enums.ParticipantResponseStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -413,6 +463,26 @@ export class PrismaClient<
     * ```
     */
   get googleAccount(): Prisma.GoogleAccountDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.meeting`: Exposes CRUD operations for the **Meeting** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Meetings
+    * const meetings = await prisma.meeting.findMany()
+    * ```
+    */
+  get meeting(): Prisma.MeetingDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.meetingParticipant`: Exposes CRUD operations for the **MeetingParticipant** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MeetingParticipants
+    * const meetingParticipants = await prisma.meetingParticipant.findMany()
+    * ```
+    */
+  get meetingParticipant(): Prisma.MeetingParticipantDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -871,7 +941,9 @@ export namespace Prisma {
     Announcement: 'Announcement',
     AnnouncementTargetUser: 'AnnouncementTargetUser',
     AnnouncementRead: 'AnnouncementRead',
-    GoogleAccount: 'GoogleAccount'
+    GoogleAccount: 'GoogleAccount',
+    Meeting: 'Meeting',
+    MeetingParticipant: 'MeetingParticipant'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -887,7 +959,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "workspace" | "department" | "user" | "attendance" | "timerSegment" | "project" | "projectMember" | "task" | "announcement" | "announcementTargetUser" | "announcementRead" | "googleAccount"
+      modelProps: "workspace" | "department" | "user" | "attendance" | "timerSegment" | "project" | "projectMember" | "task" | "announcement" | "announcementTargetUser" | "announcementRead" | "googleAccount" | "meeting" | "meetingParticipant"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1779,6 +1851,154 @@ export namespace Prisma {
           }
         }
       }
+      Meeting: {
+        payload: Prisma.$MeetingPayload<ExtArgs>
+        fields: Prisma.MeetingFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MeetingFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MeetingFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>
+          }
+          findFirst: {
+            args: Prisma.MeetingFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MeetingFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>
+          }
+          findMany: {
+            args: Prisma.MeetingFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>[]
+          }
+          create: {
+            args: Prisma.MeetingCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>
+          }
+          createMany: {
+            args: Prisma.MeetingCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MeetingCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>[]
+          }
+          delete: {
+            args: Prisma.MeetingDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>
+          }
+          update: {
+            args: Prisma.MeetingUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>
+          }
+          deleteMany: {
+            args: Prisma.MeetingDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MeetingUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MeetingUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>[]
+          }
+          upsert: {
+            args: Prisma.MeetingUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingPayload>
+          }
+          aggregate: {
+            args: Prisma.MeetingAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMeeting>
+          }
+          groupBy: {
+            args: Prisma.MeetingGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MeetingGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MeetingCountArgs<ExtArgs>
+            result: $Utils.Optional<MeetingCountAggregateOutputType> | number
+          }
+        }
+      }
+      MeetingParticipant: {
+        payload: Prisma.$MeetingParticipantPayload<ExtArgs>
+        fields: Prisma.MeetingParticipantFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MeetingParticipantFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MeetingParticipantFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>
+          }
+          findFirst: {
+            args: Prisma.MeetingParticipantFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MeetingParticipantFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>
+          }
+          findMany: {
+            args: Prisma.MeetingParticipantFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>[]
+          }
+          create: {
+            args: Prisma.MeetingParticipantCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>
+          }
+          createMany: {
+            args: Prisma.MeetingParticipantCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MeetingParticipantCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>[]
+          }
+          delete: {
+            args: Prisma.MeetingParticipantDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>
+          }
+          update: {
+            args: Prisma.MeetingParticipantUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>
+          }
+          deleteMany: {
+            args: Prisma.MeetingParticipantDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MeetingParticipantUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MeetingParticipantUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>[]
+          }
+          upsert: {
+            args: Prisma.MeetingParticipantUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MeetingParticipantPayload>
+          }
+          aggregate: {
+            args: Prisma.MeetingParticipantAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMeetingParticipant>
+          }
+          groupBy: {
+            args: Prisma.MeetingParticipantGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MeetingParticipantGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MeetingParticipantCountArgs<ExtArgs>
+            result: $Utils.Optional<MeetingParticipantCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1914,6 +2134,8 @@ export namespace Prisma {
     announcementTargetUser?: AnnouncementTargetUserOmit
     announcementRead?: AnnouncementReadOmit
     googleAccount?: GoogleAccountOmit
+    meeting?: MeetingOmit
+    meetingParticipant?: MeetingParticipantOmit
   }
 
   /* Types for Logging */
@@ -1998,6 +2220,7 @@ export namespace Prisma {
     departments: number
     projects: number
     announcements: number
+    meetings: number
   }
 
   export type WorkspaceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2005,6 +2228,7 @@ export namespace Prisma {
     departments?: boolean | WorkspaceCountOutputTypeCountDepartmentsArgs
     projects?: boolean | WorkspaceCountOutputTypeCountProjectsArgs
     announcements?: boolean | WorkspaceCountOutputTypeCountAnnouncementsArgs
+    meetings?: boolean | WorkspaceCountOutputTypeCountMeetingsArgs
   }
 
   // Custom InputTypes
@@ -2044,6 +2268,13 @@ export namespace Prisma {
    */
   export type WorkspaceCountOutputTypeCountAnnouncementsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AnnouncementWhereInput
+  }
+
+  /**
+   * WorkspaceCountOutputType without action
+   */
+  export type WorkspaceCountOutputTypeCountMeetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingWhereInput
   }
 
 
@@ -2093,6 +2324,8 @@ export namespace Prisma {
     createdAnnouncements: number
     announcementTargets: number
     announcementReads: number
+    organizedMeetings: number
+    meetingParticipations: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2106,6 +2339,8 @@ export namespace Prisma {
     createdAnnouncements?: boolean | UserCountOutputTypeCountCreatedAnnouncementsArgs
     announcementTargets?: boolean | UserCountOutputTypeCountAnnouncementTargetsArgs
     announcementReads?: boolean | UserCountOutputTypeCountAnnouncementReadsArgs
+    organizedMeetings?: boolean | UserCountOutputTypeCountOrganizedMeetingsArgs
+    meetingParticipations?: boolean | UserCountOutputTypeCountMeetingParticipationsArgs
   }
 
   // Custom InputTypes
@@ -2187,6 +2422,20 @@ export namespace Prisma {
    */
   export type UserCountOutputTypeCountAnnouncementReadsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AnnouncementReadWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountOrganizedMeetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountMeetingParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingParticipantWhereInput
   }
 
 
@@ -2298,6 +2547,37 @@ export namespace Prisma {
    */
   export type AnnouncementCountOutputTypeCountReadRecordsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: AnnouncementReadWhereInput
+  }
+
+
+  /**
+   * Count Type MeetingCountOutputType
+   */
+
+  export type MeetingCountOutputType = {
+    participants: number
+  }
+
+  export type MeetingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    participants?: boolean | MeetingCountOutputTypeCountParticipantsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MeetingCountOutputType without action
+   */
+  export type MeetingCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingCountOutputType
+     */
+    select?: MeetingCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MeetingCountOutputType without action
+   */
+  export type MeetingCountOutputTypeCountParticipantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingParticipantWhereInput
   }
 
 
@@ -2473,6 +2753,7 @@ export namespace Prisma {
     departments?: boolean | Workspace$departmentsArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
     announcements?: boolean | Workspace$announcementsArgs<ExtArgs>
+    meetings?: boolean | Workspace$meetingsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["workspace"]>
 
@@ -2506,6 +2787,7 @@ export namespace Prisma {
     departments?: boolean | Workspace$departmentsArgs<ExtArgs>
     projects?: boolean | Workspace$projectsArgs<ExtArgs>
     announcements?: boolean | Workspace$announcementsArgs<ExtArgs>
+    meetings?: boolean | Workspace$meetingsArgs<ExtArgs>
     _count?: boolean | WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {}
@@ -2518,6 +2800,7 @@ export namespace Prisma {
       departments: Prisma.$DepartmentPayload<ExtArgs>[]
       projects: Prisma.$ProjectPayload<ExtArgs>[]
       announcements: Prisma.$AnnouncementPayload<ExtArgs>[]
+      meetings: Prisma.$MeetingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -2923,6 +3206,7 @@ export namespace Prisma {
     departments<T extends Workspace$departmentsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$departmentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DepartmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     projects<T extends Workspace$projectsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$projectsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     announcements<T extends Workspace$announcementsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$announcementsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    meetings<T extends Workspace$meetingsArgs<ExtArgs> = {}>(args?: Subset<T, Workspace$meetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3443,6 +3727,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: AnnouncementScalarFieldEnum | AnnouncementScalarFieldEnum[]
+  }
+
+  /**
+   * Workspace.meetings
+   */
+  export type Workspace$meetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    where?: MeetingWhereInput
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    cursor?: MeetingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
   }
 
   /**
@@ -4848,6 +5156,8 @@ export namespace Prisma {
     announcementTargets?: boolean | User$announcementTargetsArgs<ExtArgs>
     announcementReads?: boolean | User$announcementReadsArgs<ExtArgs>
     googleAccount?: boolean | User$googleAccountArgs<ExtArgs>
+    organizedMeetings?: boolean | User$organizedMeetingsArgs<ExtArgs>
+    meetingParticipations?: boolean | User$meetingParticipationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -4942,6 +5252,8 @@ export namespace Prisma {
     announcementTargets?: boolean | User$announcementTargetsArgs<ExtArgs>
     announcementReads?: boolean | User$announcementReadsArgs<ExtArgs>
     googleAccount?: boolean | User$googleAccountArgs<ExtArgs>
+    organizedMeetings?: boolean | User$organizedMeetingsArgs<ExtArgs>
+    meetingParticipations?: boolean | User$meetingParticipationsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type UserIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -4975,6 +5287,8 @@ export namespace Prisma {
       announcementTargets: Prisma.$AnnouncementTargetUserPayload<ExtArgs>[]
       announcementReads: Prisma.$AnnouncementReadPayload<ExtArgs>[]
       googleAccount: Prisma.$GoogleAccountPayload<ExtArgs> | null
+      organizedMeetings: Prisma.$MeetingPayload<ExtArgs>[]
+      meetingParticipations: Prisma.$MeetingParticipantPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -5405,6 +5719,8 @@ export namespace Prisma {
     announcementTargets<T extends User$announcementTargetsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementTargetsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementTargetUserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     announcementReads<T extends User$announcementReadsArgs<ExtArgs> = {}>(args?: Subset<T, User$announcementReadsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$AnnouncementReadPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     googleAccount<T extends User$googleAccountArgs<ExtArgs> = {}>(args?: Subset<T, User$googleAccountArgs<ExtArgs>>): Prisma__GoogleAccountClient<$Result.GetResult<Prisma.$GoogleAccountPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    organizedMeetings<T extends User$organizedMeetingsArgs<ExtArgs> = {}>(args?: Subset<T, User$organizedMeetingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    meetingParticipations<T extends User$meetingParticipationsArgs<ExtArgs> = {}>(args?: Subset<T, User$meetingParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6167,6 +6483,54 @@ export namespace Prisma {
      */
     include?: GoogleAccountInclude<ExtArgs> | null
     where?: GoogleAccountWhereInput
+  }
+
+  /**
+   * User.organizedMeetings
+   */
+  export type User$organizedMeetingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    where?: MeetingWhereInput
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    cursor?: MeetingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
+  }
+
+  /**
+   * User.meetingParticipations
+   */
+  export type User$meetingParticipationsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    where?: MeetingParticipantWhereInput
+    orderBy?: MeetingParticipantOrderByWithRelationInput | MeetingParticipantOrderByWithRelationInput[]
+    cursor?: MeetingParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingParticipantScalarFieldEnum | MeetingParticipantScalarFieldEnum[]
   }
 
   /**
@@ -16453,6 +16817,2321 @@ export namespace Prisma {
 
 
   /**
+   * Model Meeting
+   */
+
+  export type AggregateMeeting = {
+    _count: MeetingCountAggregateOutputType | null
+    _min: MeetingMinAggregateOutputType | null
+    _max: MeetingMaxAggregateOutputType | null
+  }
+
+  export type MeetingMinAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    agenda: string | null
+    workspaceId: string | null
+    organizerId: string | null
+    meetingType: $Enums.MeetingType | null
+    status: $Enums.MeetingStatus | null
+    googleEventId: string | null
+    googleMeetSpaceId: string | null
+    meetingUrl: string | null
+    startTime: Date | null
+    endTime: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MeetingMaxAggregateOutputType = {
+    id: string | null
+    title: string | null
+    description: string | null
+    agenda: string | null
+    workspaceId: string | null
+    organizerId: string | null
+    meetingType: $Enums.MeetingType | null
+    status: $Enums.MeetingStatus | null
+    googleEventId: string | null
+    googleMeetSpaceId: string | null
+    meetingUrl: string | null
+    startTime: Date | null
+    endTime: Date | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MeetingCountAggregateOutputType = {
+    id: number
+    title: number
+    description: number
+    agenda: number
+    workspaceId: number
+    organizerId: number
+    meetingType: number
+    status: number
+    googleEventId: number
+    googleMeetSpaceId: number
+    meetingUrl: number
+    startTime: number
+    endTime: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MeetingMinAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    agenda?: true
+    workspaceId?: true
+    organizerId?: true
+    meetingType?: true
+    status?: true
+    googleEventId?: true
+    googleMeetSpaceId?: true
+    meetingUrl?: true
+    startTime?: true
+    endTime?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MeetingMaxAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    agenda?: true
+    workspaceId?: true
+    organizerId?: true
+    meetingType?: true
+    status?: true
+    googleEventId?: true
+    googleMeetSpaceId?: true
+    meetingUrl?: true
+    startTime?: true
+    endTime?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MeetingCountAggregateInputType = {
+    id?: true
+    title?: true
+    description?: true
+    agenda?: true
+    workspaceId?: true
+    organizerId?: true
+    meetingType?: true
+    status?: true
+    googleEventId?: true
+    googleMeetSpaceId?: true
+    meetingUrl?: true
+    startTime?: true
+    endTime?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MeetingAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Meeting to aggregate.
+     */
+    where?: MeetingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Meetings to fetch.
+     */
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MeetingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Meetings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Meetings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Meetings
+    **/
+    _count?: true | MeetingCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MeetingMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MeetingMaxAggregateInputType
+  }
+
+  export type GetMeetingAggregateType<T extends MeetingAggregateArgs> = {
+        [P in keyof T & keyof AggregateMeeting]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMeeting[P]>
+      : GetScalarType<T[P], AggregateMeeting[P]>
+  }
+
+
+
+
+  export type MeetingGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingWhereInput
+    orderBy?: MeetingOrderByWithAggregationInput | MeetingOrderByWithAggregationInput[]
+    by: MeetingScalarFieldEnum[] | MeetingScalarFieldEnum
+    having?: MeetingScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MeetingCountAggregateInputType | true
+    _min?: MeetingMinAggregateInputType
+    _max?: MeetingMaxAggregateInputType
+  }
+
+  export type MeetingGroupByOutputType = {
+    id: string
+    title: string
+    description: string | null
+    agenda: string | null
+    workspaceId: string
+    organizerId: string
+    meetingType: $Enums.MeetingType
+    status: $Enums.MeetingStatus
+    googleEventId: string | null
+    googleMeetSpaceId: string | null
+    meetingUrl: string | null
+    startTime: Date
+    endTime: Date
+    createdAt: Date
+    updatedAt: Date
+    _count: MeetingCountAggregateOutputType | null
+    _min: MeetingMinAggregateOutputType | null
+    _max: MeetingMaxAggregateOutputType | null
+  }
+
+  type GetMeetingGroupByPayload<T extends MeetingGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MeetingGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MeetingGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MeetingGroupByOutputType[P]>
+            : GetScalarType<T[P], MeetingGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MeetingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    agenda?: boolean
+    workspaceId?: boolean
+    organizerId?: boolean
+    meetingType?: boolean
+    status?: boolean
+    googleEventId?: boolean
+    googleMeetSpaceId?: boolean
+    meetingUrl?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
+    participants?: boolean | Meeting$participantsArgs<ExtArgs>
+    _count?: boolean | MeetingCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meeting"]>
+
+  export type MeetingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    agenda?: boolean
+    workspaceId?: boolean
+    organizerId?: boolean
+    meetingType?: boolean
+    status?: boolean
+    googleEventId?: boolean
+    googleMeetSpaceId?: boolean
+    meetingUrl?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meeting"]>
+
+  export type MeetingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    agenda?: boolean
+    workspaceId?: boolean
+    organizerId?: boolean
+    meetingType?: boolean
+    status?: boolean
+    googleEventId?: boolean
+    googleMeetSpaceId?: boolean
+    meetingUrl?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meeting"]>
+
+  export type MeetingSelectScalar = {
+    id?: boolean
+    title?: boolean
+    description?: boolean
+    agenda?: boolean
+    workspaceId?: boolean
+    organizerId?: boolean
+    meetingType?: boolean
+    status?: boolean
+    googleEventId?: boolean
+    googleMeetSpaceId?: boolean
+    meetingUrl?: boolean
+    startTime?: boolean
+    endTime?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MeetingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "description" | "agenda" | "workspaceId" | "organizerId" | "meetingType" | "status" | "googleEventId" | "googleMeetSpaceId" | "meetingUrl" | "startTime" | "endTime" | "createdAt" | "updatedAt", ExtArgs["result"]["meeting"]>
+  export type MeetingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
+    participants?: boolean | Meeting$participantsArgs<ExtArgs>
+    _count?: boolean | MeetingCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type MeetingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MeetingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
+    organizer?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $MeetingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Meeting"
+    objects: {
+      workspace: Prisma.$WorkspacePayload<ExtArgs>
+      organizer: Prisma.$UserPayload<ExtArgs>
+      participants: Prisma.$MeetingParticipantPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      title: string
+      description: string | null
+      agenda: string | null
+      workspaceId: string
+      organizerId: string
+      meetingType: $Enums.MeetingType
+      status: $Enums.MeetingStatus
+      googleEventId: string | null
+      googleMeetSpaceId: string | null
+      meetingUrl: string | null
+      startTime: Date
+      endTime: Date
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["meeting"]>
+    composites: {}
+  }
+
+  type MeetingGetPayload<S extends boolean | null | undefined | MeetingDefaultArgs> = $Result.GetResult<Prisma.$MeetingPayload, S>
+
+  type MeetingCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MeetingFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MeetingCountAggregateInputType | true
+    }
+
+  export interface MeetingDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Meeting'], meta: { name: 'Meeting' } }
+    /**
+     * Find zero or one Meeting that matches the filter.
+     * @param {MeetingFindUniqueArgs} args - Arguments to find a Meeting
+     * @example
+     * // Get one Meeting
+     * const meeting = await prisma.meeting.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MeetingFindUniqueArgs>(args: SelectSubset<T, MeetingFindUniqueArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Meeting that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MeetingFindUniqueOrThrowArgs} args - Arguments to find a Meeting
+     * @example
+     * // Get one Meeting
+     * const meeting = await prisma.meeting.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MeetingFindUniqueOrThrowArgs>(args: SelectSubset<T, MeetingFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Meeting that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFindFirstArgs} args - Arguments to find a Meeting
+     * @example
+     * // Get one Meeting
+     * const meeting = await prisma.meeting.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MeetingFindFirstArgs>(args?: SelectSubset<T, MeetingFindFirstArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Meeting that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFindFirstOrThrowArgs} args - Arguments to find a Meeting
+     * @example
+     * // Get one Meeting
+     * const meeting = await prisma.meeting.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MeetingFindFirstOrThrowArgs>(args?: SelectSubset<T, MeetingFindFirstOrThrowArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Meetings that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Meetings
+     * const meetings = await prisma.meeting.findMany()
+     * 
+     * // Get first 10 Meetings
+     * const meetings = await prisma.meeting.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const meetingWithIdOnly = await prisma.meeting.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MeetingFindManyArgs>(args?: SelectSubset<T, MeetingFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Meeting.
+     * @param {MeetingCreateArgs} args - Arguments to create a Meeting.
+     * @example
+     * // Create one Meeting
+     * const Meeting = await prisma.meeting.create({
+     *   data: {
+     *     // ... data to create a Meeting
+     *   }
+     * })
+     * 
+     */
+    create<T extends MeetingCreateArgs>(args: SelectSubset<T, MeetingCreateArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Meetings.
+     * @param {MeetingCreateManyArgs} args - Arguments to create many Meetings.
+     * @example
+     * // Create many Meetings
+     * const meeting = await prisma.meeting.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MeetingCreateManyArgs>(args?: SelectSubset<T, MeetingCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Meetings and returns the data saved in the database.
+     * @param {MeetingCreateManyAndReturnArgs} args - Arguments to create many Meetings.
+     * @example
+     * // Create many Meetings
+     * const meeting = await prisma.meeting.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Meetings and only return the `id`
+     * const meetingWithIdOnly = await prisma.meeting.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MeetingCreateManyAndReturnArgs>(args?: SelectSubset<T, MeetingCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Meeting.
+     * @param {MeetingDeleteArgs} args - Arguments to delete one Meeting.
+     * @example
+     * // Delete one Meeting
+     * const Meeting = await prisma.meeting.delete({
+     *   where: {
+     *     // ... filter to delete one Meeting
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MeetingDeleteArgs>(args: SelectSubset<T, MeetingDeleteArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Meeting.
+     * @param {MeetingUpdateArgs} args - Arguments to update one Meeting.
+     * @example
+     * // Update one Meeting
+     * const meeting = await prisma.meeting.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MeetingUpdateArgs>(args: SelectSubset<T, MeetingUpdateArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Meetings.
+     * @param {MeetingDeleteManyArgs} args - Arguments to filter Meetings to delete.
+     * @example
+     * // Delete a few Meetings
+     * const { count } = await prisma.meeting.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MeetingDeleteManyArgs>(args?: SelectSubset<T, MeetingDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Meetings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Meetings
+     * const meeting = await prisma.meeting.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MeetingUpdateManyArgs>(args: SelectSubset<T, MeetingUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Meetings and returns the data updated in the database.
+     * @param {MeetingUpdateManyAndReturnArgs} args - Arguments to update many Meetings.
+     * @example
+     * // Update many Meetings
+     * const meeting = await prisma.meeting.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Meetings and only return the `id`
+     * const meetingWithIdOnly = await prisma.meeting.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MeetingUpdateManyAndReturnArgs>(args: SelectSubset<T, MeetingUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Meeting.
+     * @param {MeetingUpsertArgs} args - Arguments to update or create a Meeting.
+     * @example
+     * // Update or create a Meeting
+     * const meeting = await prisma.meeting.upsert({
+     *   create: {
+     *     // ... data to create a Meeting
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Meeting we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MeetingUpsertArgs>(args: SelectSubset<T, MeetingUpsertArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Meetings.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingCountArgs} args - Arguments to filter Meetings to count.
+     * @example
+     * // Count the number of Meetings
+     * const count = await prisma.meeting.count({
+     *   where: {
+     *     // ... the filter for the Meetings we want to count
+     *   }
+     * })
+    **/
+    count<T extends MeetingCountArgs>(
+      args?: Subset<T, MeetingCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MeetingCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Meeting.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MeetingAggregateArgs>(args: Subset<T, MeetingAggregateArgs>): Prisma.PrismaPromise<GetMeetingAggregateType<T>>
+
+    /**
+     * Group by Meeting.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MeetingGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MeetingGroupByArgs['orderBy'] }
+        : { orderBy?: MeetingGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MeetingGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMeetingGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Meeting model
+   */
+  readonly fields: MeetingFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Meeting.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MeetingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    workspace<T extends WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Subset<T, WorkspaceDefaultArgs<ExtArgs>>): Prisma__WorkspaceClient<$Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    organizer<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    participants<T extends Meeting$participantsArgs<ExtArgs> = {}>(args?: Subset<T, Meeting$participantsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Meeting model
+   */
+  interface MeetingFieldRefs {
+    readonly id: FieldRef<"Meeting", 'String'>
+    readonly title: FieldRef<"Meeting", 'String'>
+    readonly description: FieldRef<"Meeting", 'String'>
+    readonly agenda: FieldRef<"Meeting", 'String'>
+    readonly workspaceId: FieldRef<"Meeting", 'String'>
+    readonly organizerId: FieldRef<"Meeting", 'String'>
+    readonly meetingType: FieldRef<"Meeting", 'MeetingType'>
+    readonly status: FieldRef<"Meeting", 'MeetingStatus'>
+    readonly googleEventId: FieldRef<"Meeting", 'String'>
+    readonly googleMeetSpaceId: FieldRef<"Meeting", 'String'>
+    readonly meetingUrl: FieldRef<"Meeting", 'String'>
+    readonly startTime: FieldRef<"Meeting", 'DateTime'>
+    readonly endTime: FieldRef<"Meeting", 'DateTime'>
+    readonly createdAt: FieldRef<"Meeting", 'DateTime'>
+    readonly updatedAt: FieldRef<"Meeting", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Meeting findUnique
+   */
+  export type MeetingFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * Filter, which Meeting to fetch.
+     */
+    where: MeetingWhereUniqueInput
+  }
+
+  /**
+   * Meeting findUniqueOrThrow
+   */
+  export type MeetingFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * Filter, which Meeting to fetch.
+     */
+    where: MeetingWhereUniqueInput
+  }
+
+  /**
+   * Meeting findFirst
+   */
+  export type MeetingFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * Filter, which Meeting to fetch.
+     */
+    where?: MeetingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Meetings to fetch.
+     */
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Meetings.
+     */
+    cursor?: MeetingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Meetings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Meetings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Meetings.
+     */
+    distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
+  }
+
+  /**
+   * Meeting findFirstOrThrow
+   */
+  export type MeetingFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * Filter, which Meeting to fetch.
+     */
+    where?: MeetingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Meetings to fetch.
+     */
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Meetings.
+     */
+    cursor?: MeetingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Meetings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Meetings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Meetings.
+     */
+    distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
+  }
+
+  /**
+   * Meeting findMany
+   */
+  export type MeetingFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * Filter, which Meetings to fetch.
+     */
+    where?: MeetingWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Meetings to fetch.
+     */
+    orderBy?: MeetingOrderByWithRelationInput | MeetingOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Meetings.
+     */
+    cursor?: MeetingWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Meetings from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Meetings.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Meetings.
+     */
+    distinct?: MeetingScalarFieldEnum | MeetingScalarFieldEnum[]
+  }
+
+  /**
+   * Meeting create
+   */
+  export type MeetingCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Meeting.
+     */
+    data: XOR<MeetingCreateInput, MeetingUncheckedCreateInput>
+  }
+
+  /**
+   * Meeting createMany
+   */
+  export type MeetingCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Meetings.
+     */
+    data: MeetingCreateManyInput | MeetingCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Meeting createManyAndReturn
+   */
+  export type MeetingCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * The data used to create many Meetings.
+     */
+    data: MeetingCreateManyInput | MeetingCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Meeting update
+   */
+  export type MeetingUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Meeting.
+     */
+    data: XOR<MeetingUpdateInput, MeetingUncheckedUpdateInput>
+    /**
+     * Choose, which Meeting to update.
+     */
+    where: MeetingWhereUniqueInput
+  }
+
+  /**
+   * Meeting updateMany
+   */
+  export type MeetingUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Meetings.
+     */
+    data: XOR<MeetingUpdateManyMutationInput, MeetingUncheckedUpdateManyInput>
+    /**
+     * Filter which Meetings to update
+     */
+    where?: MeetingWhereInput
+    /**
+     * Limit how many Meetings to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Meeting updateManyAndReturn
+   */
+  export type MeetingUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * The data used to update Meetings.
+     */
+    data: XOR<MeetingUpdateManyMutationInput, MeetingUncheckedUpdateManyInput>
+    /**
+     * Filter which Meetings to update
+     */
+    where?: MeetingWhereInput
+    /**
+     * Limit how many Meetings to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Meeting upsert
+   */
+  export type MeetingUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Meeting to update in case it exists.
+     */
+    where: MeetingWhereUniqueInput
+    /**
+     * In case the Meeting found by the `where` argument doesn't exist, create a new Meeting with this data.
+     */
+    create: XOR<MeetingCreateInput, MeetingUncheckedCreateInput>
+    /**
+     * In case the Meeting was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MeetingUpdateInput, MeetingUncheckedUpdateInput>
+  }
+
+  /**
+   * Meeting delete
+   */
+  export type MeetingDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+    /**
+     * Filter which Meeting to delete.
+     */
+    where: MeetingWhereUniqueInput
+  }
+
+  /**
+   * Meeting deleteMany
+   */
+  export type MeetingDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Meetings to delete
+     */
+    where?: MeetingWhereInput
+    /**
+     * Limit how many Meetings to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Meeting.participants
+   */
+  export type Meeting$participantsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    where?: MeetingParticipantWhereInput
+    orderBy?: MeetingParticipantOrderByWithRelationInput | MeetingParticipantOrderByWithRelationInput[]
+    cursor?: MeetingParticipantWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MeetingParticipantScalarFieldEnum | MeetingParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * Meeting without action
+   */
+  export type MeetingDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Meeting
+     */
+    select?: MeetingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Meeting
+     */
+    omit?: MeetingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MeetingParticipant
+   */
+
+  export type AggregateMeetingParticipant = {
+    _count: MeetingParticipantCountAggregateOutputType | null
+    _min: MeetingParticipantMinAggregateOutputType | null
+    _max: MeetingParticipantMaxAggregateOutputType | null
+  }
+
+  export type MeetingParticipantMinAggregateOutputType = {
+    id: string | null
+    meetingId: string | null
+    userId: string | null
+    responseStatus: $Enums.ParticipantResponseStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MeetingParticipantMaxAggregateOutputType = {
+    id: string | null
+    meetingId: string | null
+    userId: string | null
+    responseStatus: $Enums.ParticipantResponseStatus | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MeetingParticipantCountAggregateOutputType = {
+    id: number
+    meetingId: number
+    userId: number
+    responseStatus: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MeetingParticipantMinAggregateInputType = {
+    id?: true
+    meetingId?: true
+    userId?: true
+    responseStatus?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MeetingParticipantMaxAggregateInputType = {
+    id?: true
+    meetingId?: true
+    userId?: true
+    responseStatus?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MeetingParticipantCountAggregateInputType = {
+    id?: true
+    meetingId?: true
+    userId?: true
+    responseStatus?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MeetingParticipantAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MeetingParticipant to aggregate.
+     */
+    where?: MeetingParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingParticipants to fetch.
+     */
+    orderBy?: MeetingParticipantOrderByWithRelationInput | MeetingParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MeetingParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MeetingParticipants
+    **/
+    _count?: true | MeetingParticipantCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MeetingParticipantMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MeetingParticipantMaxAggregateInputType
+  }
+
+  export type GetMeetingParticipantAggregateType<T extends MeetingParticipantAggregateArgs> = {
+        [P in keyof T & keyof AggregateMeetingParticipant]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMeetingParticipant[P]>
+      : GetScalarType<T[P], AggregateMeetingParticipant[P]>
+  }
+
+
+
+
+  export type MeetingParticipantGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MeetingParticipantWhereInput
+    orderBy?: MeetingParticipantOrderByWithAggregationInput | MeetingParticipantOrderByWithAggregationInput[]
+    by: MeetingParticipantScalarFieldEnum[] | MeetingParticipantScalarFieldEnum
+    having?: MeetingParticipantScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MeetingParticipantCountAggregateInputType | true
+    _min?: MeetingParticipantMinAggregateInputType
+    _max?: MeetingParticipantMaxAggregateInputType
+  }
+
+  export type MeetingParticipantGroupByOutputType = {
+    id: string
+    meetingId: string
+    userId: string
+    responseStatus: $Enums.ParticipantResponseStatus
+    createdAt: Date
+    updatedAt: Date
+    _count: MeetingParticipantCountAggregateOutputType | null
+    _min: MeetingParticipantMinAggregateOutputType | null
+    _max: MeetingParticipantMaxAggregateOutputType | null
+  }
+
+  type GetMeetingParticipantGroupByPayload<T extends MeetingParticipantGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MeetingParticipantGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MeetingParticipantGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MeetingParticipantGroupByOutputType[P]>
+            : GetScalarType<T[P], MeetingParticipantGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MeetingParticipantSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    meetingId?: boolean
+    userId?: boolean
+    responseStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingParticipant"]>
+
+  export type MeetingParticipantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    meetingId?: boolean
+    userId?: boolean
+    responseStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingParticipant"]>
+
+  export type MeetingParticipantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    meetingId?: boolean
+    userId?: boolean
+    responseStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["meetingParticipant"]>
+
+  export type MeetingParticipantSelectScalar = {
+    id?: boolean
+    meetingId?: boolean
+    userId?: boolean
+    responseStatus?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MeetingParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "meetingId" | "userId" | "responseStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["meetingParticipant"]>
+  export type MeetingParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MeetingParticipantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+  export type MeetingParticipantIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    meeting?: boolean | MeetingDefaultArgs<ExtArgs>
+    user?: boolean | UserDefaultArgs<ExtArgs>
+  }
+
+  export type $MeetingParticipantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MeetingParticipant"
+    objects: {
+      meeting: Prisma.$MeetingPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs>
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      meetingId: string
+      userId: string
+      responseStatus: $Enums.ParticipantResponseStatus
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["meetingParticipant"]>
+    composites: {}
+  }
+
+  type MeetingParticipantGetPayload<S extends boolean | null | undefined | MeetingParticipantDefaultArgs> = $Result.GetResult<Prisma.$MeetingParticipantPayload, S>
+
+  type MeetingParticipantCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MeetingParticipantFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MeetingParticipantCountAggregateInputType | true
+    }
+
+  export interface MeetingParticipantDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MeetingParticipant'], meta: { name: 'MeetingParticipant' } }
+    /**
+     * Find zero or one MeetingParticipant that matches the filter.
+     * @param {MeetingParticipantFindUniqueArgs} args - Arguments to find a MeetingParticipant
+     * @example
+     * // Get one MeetingParticipant
+     * const meetingParticipant = await prisma.meetingParticipant.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MeetingParticipantFindUniqueArgs>(args: SelectSubset<T, MeetingParticipantFindUniqueArgs<ExtArgs>>): Prisma__MeetingParticipantClient<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one MeetingParticipant that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MeetingParticipantFindUniqueOrThrowArgs} args - Arguments to find a MeetingParticipant
+     * @example
+     * // Get one MeetingParticipant
+     * const meetingParticipant = await prisma.meetingParticipant.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MeetingParticipantFindUniqueOrThrowArgs>(args: SelectSubset<T, MeetingParticipantFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MeetingParticipantClient<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MeetingParticipant that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingParticipantFindFirstArgs} args - Arguments to find a MeetingParticipant
+     * @example
+     * // Get one MeetingParticipant
+     * const meetingParticipant = await prisma.meetingParticipant.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MeetingParticipantFindFirstArgs>(args?: SelectSubset<T, MeetingParticipantFindFirstArgs<ExtArgs>>): Prisma__MeetingParticipantClient<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first MeetingParticipant that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingParticipantFindFirstOrThrowArgs} args - Arguments to find a MeetingParticipant
+     * @example
+     * // Get one MeetingParticipant
+     * const meetingParticipant = await prisma.meetingParticipant.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MeetingParticipantFindFirstOrThrowArgs>(args?: SelectSubset<T, MeetingParticipantFindFirstOrThrowArgs<ExtArgs>>): Prisma__MeetingParticipantClient<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more MeetingParticipants that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingParticipantFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MeetingParticipants
+     * const meetingParticipants = await prisma.meetingParticipant.findMany()
+     * 
+     * // Get first 10 MeetingParticipants
+     * const meetingParticipants = await prisma.meetingParticipant.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const meetingParticipantWithIdOnly = await prisma.meetingParticipant.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MeetingParticipantFindManyArgs>(args?: SelectSubset<T, MeetingParticipantFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a MeetingParticipant.
+     * @param {MeetingParticipantCreateArgs} args - Arguments to create a MeetingParticipant.
+     * @example
+     * // Create one MeetingParticipant
+     * const MeetingParticipant = await prisma.meetingParticipant.create({
+     *   data: {
+     *     // ... data to create a MeetingParticipant
+     *   }
+     * })
+     * 
+     */
+    create<T extends MeetingParticipantCreateArgs>(args: SelectSubset<T, MeetingParticipantCreateArgs<ExtArgs>>): Prisma__MeetingParticipantClient<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many MeetingParticipants.
+     * @param {MeetingParticipantCreateManyArgs} args - Arguments to create many MeetingParticipants.
+     * @example
+     * // Create many MeetingParticipants
+     * const meetingParticipant = await prisma.meetingParticipant.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MeetingParticipantCreateManyArgs>(args?: SelectSubset<T, MeetingParticipantCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MeetingParticipants and returns the data saved in the database.
+     * @param {MeetingParticipantCreateManyAndReturnArgs} args - Arguments to create many MeetingParticipants.
+     * @example
+     * // Create many MeetingParticipants
+     * const meetingParticipant = await prisma.meetingParticipant.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MeetingParticipants and only return the `id`
+     * const meetingParticipantWithIdOnly = await prisma.meetingParticipant.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MeetingParticipantCreateManyAndReturnArgs>(args?: SelectSubset<T, MeetingParticipantCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a MeetingParticipant.
+     * @param {MeetingParticipantDeleteArgs} args - Arguments to delete one MeetingParticipant.
+     * @example
+     * // Delete one MeetingParticipant
+     * const MeetingParticipant = await prisma.meetingParticipant.delete({
+     *   where: {
+     *     // ... filter to delete one MeetingParticipant
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MeetingParticipantDeleteArgs>(args: SelectSubset<T, MeetingParticipantDeleteArgs<ExtArgs>>): Prisma__MeetingParticipantClient<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one MeetingParticipant.
+     * @param {MeetingParticipantUpdateArgs} args - Arguments to update one MeetingParticipant.
+     * @example
+     * // Update one MeetingParticipant
+     * const meetingParticipant = await prisma.meetingParticipant.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MeetingParticipantUpdateArgs>(args: SelectSubset<T, MeetingParticipantUpdateArgs<ExtArgs>>): Prisma__MeetingParticipantClient<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more MeetingParticipants.
+     * @param {MeetingParticipantDeleteManyArgs} args - Arguments to filter MeetingParticipants to delete.
+     * @example
+     * // Delete a few MeetingParticipants
+     * const { count } = await prisma.meetingParticipant.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MeetingParticipantDeleteManyArgs>(args?: SelectSubset<T, MeetingParticipantDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MeetingParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingParticipantUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MeetingParticipants
+     * const meetingParticipant = await prisma.meetingParticipant.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MeetingParticipantUpdateManyArgs>(args: SelectSubset<T, MeetingParticipantUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MeetingParticipants and returns the data updated in the database.
+     * @param {MeetingParticipantUpdateManyAndReturnArgs} args - Arguments to update many MeetingParticipants.
+     * @example
+     * // Update many MeetingParticipants
+     * const meetingParticipant = await prisma.meetingParticipant.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MeetingParticipants and only return the `id`
+     * const meetingParticipantWithIdOnly = await prisma.meetingParticipant.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MeetingParticipantUpdateManyAndReturnArgs>(args: SelectSubset<T, MeetingParticipantUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one MeetingParticipant.
+     * @param {MeetingParticipantUpsertArgs} args - Arguments to update or create a MeetingParticipant.
+     * @example
+     * // Update or create a MeetingParticipant
+     * const meetingParticipant = await prisma.meetingParticipant.upsert({
+     *   create: {
+     *     // ... data to create a MeetingParticipant
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MeetingParticipant we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MeetingParticipantUpsertArgs>(args: SelectSubset<T, MeetingParticipantUpsertArgs<ExtArgs>>): Prisma__MeetingParticipantClient<$Result.GetResult<Prisma.$MeetingParticipantPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of MeetingParticipants.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingParticipantCountArgs} args - Arguments to filter MeetingParticipants to count.
+     * @example
+     * // Count the number of MeetingParticipants
+     * const count = await prisma.meetingParticipant.count({
+     *   where: {
+     *     // ... the filter for the MeetingParticipants we want to count
+     *   }
+     * })
+    **/
+    count<T extends MeetingParticipantCountArgs>(
+      args?: Subset<T, MeetingParticipantCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MeetingParticipantCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MeetingParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingParticipantAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MeetingParticipantAggregateArgs>(args: Subset<T, MeetingParticipantAggregateArgs>): Prisma.PrismaPromise<GetMeetingParticipantAggregateType<T>>
+
+    /**
+     * Group by MeetingParticipant.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MeetingParticipantGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MeetingParticipantGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MeetingParticipantGroupByArgs['orderBy'] }
+        : { orderBy?: MeetingParticipantGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MeetingParticipantGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMeetingParticipantGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MeetingParticipant model
+   */
+  readonly fields: MeetingParticipantFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MeetingParticipant.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MeetingParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    meeting<T extends MeetingDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MeetingDefaultArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MeetingParticipant model
+   */
+  interface MeetingParticipantFieldRefs {
+    readonly id: FieldRef<"MeetingParticipant", 'String'>
+    readonly meetingId: FieldRef<"MeetingParticipant", 'String'>
+    readonly userId: FieldRef<"MeetingParticipant", 'String'>
+    readonly responseStatus: FieldRef<"MeetingParticipant", 'ParticipantResponseStatus'>
+    readonly createdAt: FieldRef<"MeetingParticipant", 'DateTime'>
+    readonly updatedAt: FieldRef<"MeetingParticipant", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MeetingParticipant findUnique
+   */
+  export type MeetingParticipantFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingParticipant to fetch.
+     */
+    where: MeetingParticipantWhereUniqueInput
+  }
+
+  /**
+   * MeetingParticipant findUniqueOrThrow
+   */
+  export type MeetingParticipantFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingParticipant to fetch.
+     */
+    where: MeetingParticipantWhereUniqueInput
+  }
+
+  /**
+   * MeetingParticipant findFirst
+   */
+  export type MeetingParticipantFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingParticipant to fetch.
+     */
+    where?: MeetingParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingParticipants to fetch.
+     */
+    orderBy?: MeetingParticipantOrderByWithRelationInput | MeetingParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MeetingParticipants.
+     */
+    cursor?: MeetingParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MeetingParticipants.
+     */
+    distinct?: MeetingParticipantScalarFieldEnum | MeetingParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingParticipant findFirstOrThrow
+   */
+  export type MeetingParticipantFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingParticipant to fetch.
+     */
+    where?: MeetingParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingParticipants to fetch.
+     */
+    orderBy?: MeetingParticipantOrderByWithRelationInput | MeetingParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MeetingParticipants.
+     */
+    cursor?: MeetingParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MeetingParticipants.
+     */
+    distinct?: MeetingParticipantScalarFieldEnum | MeetingParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingParticipant findMany
+   */
+  export type MeetingParticipantFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * Filter, which MeetingParticipants to fetch.
+     */
+    where?: MeetingParticipantWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MeetingParticipants to fetch.
+     */
+    orderBy?: MeetingParticipantOrderByWithRelationInput | MeetingParticipantOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MeetingParticipants.
+     */
+    cursor?: MeetingParticipantWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MeetingParticipants from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MeetingParticipants.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MeetingParticipants.
+     */
+    distinct?: MeetingParticipantScalarFieldEnum | MeetingParticipantScalarFieldEnum[]
+  }
+
+  /**
+   * MeetingParticipant create
+   */
+  export type MeetingParticipantCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MeetingParticipant.
+     */
+    data: XOR<MeetingParticipantCreateInput, MeetingParticipantUncheckedCreateInput>
+  }
+
+  /**
+   * MeetingParticipant createMany
+   */
+  export type MeetingParticipantCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MeetingParticipants.
+     */
+    data: MeetingParticipantCreateManyInput | MeetingParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MeetingParticipant createManyAndReturn
+   */
+  export type MeetingParticipantCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to create many MeetingParticipants.
+     */
+    data: MeetingParticipantCreateManyInput | MeetingParticipantCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MeetingParticipant update
+   */
+  export type MeetingParticipantUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MeetingParticipant.
+     */
+    data: XOR<MeetingParticipantUpdateInput, MeetingParticipantUncheckedUpdateInput>
+    /**
+     * Choose, which MeetingParticipant to update.
+     */
+    where: MeetingParticipantWhereUniqueInput
+  }
+
+  /**
+   * MeetingParticipant updateMany
+   */
+  export type MeetingParticipantUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MeetingParticipants.
+     */
+    data: XOR<MeetingParticipantUpdateManyMutationInput, MeetingParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which MeetingParticipants to update
+     */
+    where?: MeetingParticipantWhereInput
+    /**
+     * Limit how many MeetingParticipants to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MeetingParticipant updateManyAndReturn
+   */
+  export type MeetingParticipantUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * The data used to update MeetingParticipants.
+     */
+    data: XOR<MeetingParticipantUpdateManyMutationInput, MeetingParticipantUncheckedUpdateManyInput>
+    /**
+     * Filter which MeetingParticipants to update
+     */
+    where?: MeetingParticipantWhereInput
+    /**
+     * Limit how many MeetingParticipants to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MeetingParticipant upsert
+   */
+  export type MeetingParticipantUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MeetingParticipant to update in case it exists.
+     */
+    where: MeetingParticipantWhereUniqueInput
+    /**
+     * In case the MeetingParticipant found by the `where` argument doesn't exist, create a new MeetingParticipant with this data.
+     */
+    create: XOR<MeetingParticipantCreateInput, MeetingParticipantUncheckedCreateInput>
+    /**
+     * In case the MeetingParticipant was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MeetingParticipantUpdateInput, MeetingParticipantUncheckedUpdateInput>
+  }
+
+  /**
+   * MeetingParticipant delete
+   */
+  export type MeetingParticipantDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+    /**
+     * Filter which MeetingParticipant to delete.
+     */
+    where: MeetingParticipantWhereUniqueInput
+  }
+
+  /**
+   * MeetingParticipant deleteMany
+   */
+  export type MeetingParticipantDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MeetingParticipants to delete
+     */
+    where?: MeetingParticipantWhereInput
+    /**
+     * Limit how many MeetingParticipants to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MeetingParticipant without action
+   */
+  export type MeetingParticipantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MeetingParticipant
+     */
+    select?: MeetingParticipantSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MeetingParticipant
+     */
+    omit?: MeetingParticipantOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MeetingParticipantInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -16639,6 +19318,39 @@ export namespace Prisma {
   export type GoogleAccountScalarFieldEnum = (typeof GoogleAccountScalarFieldEnum)[keyof typeof GoogleAccountScalarFieldEnum]
 
 
+  export const MeetingScalarFieldEnum: {
+    id: 'id',
+    title: 'title',
+    description: 'description',
+    agenda: 'agenda',
+    workspaceId: 'workspaceId',
+    organizerId: 'organizerId',
+    meetingType: 'meetingType',
+    status: 'status',
+    googleEventId: 'googleEventId',
+    googleMeetSpaceId: 'googleMeetSpaceId',
+    meetingUrl: 'meetingUrl',
+    startTime: 'startTime',
+    endTime: 'endTime',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MeetingScalarFieldEnum = (typeof MeetingScalarFieldEnum)[keyof typeof MeetingScalarFieldEnum]
+
+
+  export const MeetingParticipantScalarFieldEnum: {
+    id: 'id',
+    meetingId: 'meetingId',
+    userId: 'userId',
+    responseStatus: 'responseStatus',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MeetingParticipantScalarFieldEnum = (typeof MeetingParticipantScalarFieldEnum)[keyof typeof MeetingParticipantScalarFieldEnum]
+
+
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -16816,6 +19528,48 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'MeetingType'
+   */
+  export type EnumMeetingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MeetingType'>
+    
+
+
+  /**
+   * Reference to a field of type 'MeetingType[]'
+   */
+  export type ListEnumMeetingTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MeetingType[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'MeetingStatus'
+   */
+  export type EnumMeetingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MeetingStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'MeetingStatus[]'
+   */
+  export type ListEnumMeetingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MeetingStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParticipantResponseStatus'
+   */
+  export type EnumParticipantResponseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParticipantResponseStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParticipantResponseStatus[]'
+   */
+  export type ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParticipantResponseStatus[]'>
+    
+
+
+  /**
    * Reference to a field of type 'Float'
    */
   export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -16845,6 +19599,7 @@ export namespace Prisma {
     departments?: DepartmentListRelationFilter
     projects?: ProjectListRelationFilter
     announcements?: AnnouncementListRelationFilter
+    meetings?: MeetingListRelationFilter
   }
 
   export type WorkspaceOrderByWithRelationInput = {
@@ -16857,6 +19612,7 @@ export namespace Prisma {
     departments?: DepartmentOrderByRelationAggregateInput
     projects?: ProjectOrderByRelationAggregateInput
     announcements?: AnnouncementOrderByRelationAggregateInput
+    meetings?: MeetingOrderByRelationAggregateInput
   }
 
   export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -16872,6 +19628,7 @@ export namespace Prisma {
     departments?: DepartmentListRelationFilter
     projects?: ProjectListRelationFilter
     announcements?: AnnouncementListRelationFilter
+    meetings?: MeetingListRelationFilter
   }, "id">
 
   export type WorkspaceOrderByWithAggregationInput = {
@@ -16993,6 +19750,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserListRelationFilter
     announcementReads?: AnnouncementReadListRelationFilter
     googleAccount?: XOR<GoogleAccountNullableScalarRelationFilter, GoogleAccountWhereInput> | null
+    organizedMeetings?: MeetingListRelationFilter
+    meetingParticipations?: MeetingParticipantListRelationFilter
   }
 
   export type UserOrderByWithRelationInput = {
@@ -17030,6 +19789,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserOrderByRelationAggregateInput
     announcementReads?: AnnouncementReadOrderByRelationAggregateInput
     googleAccount?: GoogleAccountOrderByWithRelationInput
+    organizedMeetings?: MeetingOrderByRelationAggregateInput
+    meetingParticipations?: MeetingParticipantOrderByRelationAggregateInput
   }
 
   export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -17071,6 +19832,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserListRelationFilter
     announcementReads?: AnnouncementReadListRelationFilter
     googleAccount?: XOR<GoogleAccountNullableScalarRelationFilter, GoogleAccountWhereInput> | null
+    organizedMeetings?: MeetingListRelationFilter
+    meetingParticipations?: MeetingParticipantListRelationFilter
   }, "id" | "email" | "workspaceId_employeeId">
 
   export type UserOrderByWithAggregationInput = {
@@ -17798,6 +20561,181 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"GoogleAccount"> | Date | string
   }
 
+  export type MeetingWhereInput = {
+    AND?: MeetingWhereInput | MeetingWhereInput[]
+    OR?: MeetingWhereInput[]
+    NOT?: MeetingWhereInput | MeetingWhereInput[]
+    id?: StringFilter<"Meeting"> | string
+    title?: StringFilter<"Meeting"> | string
+    description?: StringNullableFilter<"Meeting"> | string | null
+    agenda?: StringNullableFilter<"Meeting"> | string | null
+    workspaceId?: StringFilter<"Meeting"> | string
+    organizerId?: StringFilter<"Meeting"> | string
+    meetingType?: EnumMeetingTypeFilter<"Meeting"> | $Enums.MeetingType
+    status?: EnumMeetingStatusFilter<"Meeting"> | $Enums.MeetingStatus
+    googleEventId?: StringNullableFilter<"Meeting"> | string | null
+    googleMeetSpaceId?: StringNullableFilter<"Meeting"> | string | null
+    meetingUrl?: StringNullableFilter<"Meeting"> | string | null
+    startTime?: DateTimeFilter<"Meeting"> | Date | string
+    endTime?: DateTimeFilter<"Meeting"> | Date | string
+    createdAt?: DateTimeFilter<"Meeting"> | Date | string
+    updatedAt?: DateTimeFilter<"Meeting"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
+    participants?: MeetingParticipantListRelationFilter
+  }
+
+  export type MeetingOrderByWithRelationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    agenda?: SortOrderInput | SortOrder
+    workspaceId?: SortOrder
+    organizerId?: SortOrder
+    meetingType?: SortOrder
+    status?: SortOrder
+    googleEventId?: SortOrderInput | SortOrder
+    googleMeetSpaceId?: SortOrderInput | SortOrder
+    meetingUrl?: SortOrderInput | SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    workspace?: WorkspaceOrderByWithRelationInput
+    organizer?: UserOrderByWithRelationInput
+    participants?: MeetingParticipantOrderByRelationAggregateInput
+  }
+
+  export type MeetingWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MeetingWhereInput | MeetingWhereInput[]
+    OR?: MeetingWhereInput[]
+    NOT?: MeetingWhereInput | MeetingWhereInput[]
+    title?: StringFilter<"Meeting"> | string
+    description?: StringNullableFilter<"Meeting"> | string | null
+    agenda?: StringNullableFilter<"Meeting"> | string | null
+    workspaceId?: StringFilter<"Meeting"> | string
+    organizerId?: StringFilter<"Meeting"> | string
+    meetingType?: EnumMeetingTypeFilter<"Meeting"> | $Enums.MeetingType
+    status?: EnumMeetingStatusFilter<"Meeting"> | $Enums.MeetingStatus
+    googleEventId?: StringNullableFilter<"Meeting"> | string | null
+    googleMeetSpaceId?: StringNullableFilter<"Meeting"> | string | null
+    meetingUrl?: StringNullableFilter<"Meeting"> | string | null
+    startTime?: DateTimeFilter<"Meeting"> | Date | string
+    endTime?: DateTimeFilter<"Meeting"> | Date | string
+    createdAt?: DateTimeFilter<"Meeting"> | Date | string
+    updatedAt?: DateTimeFilter<"Meeting"> | Date | string
+    workspace?: XOR<WorkspaceScalarRelationFilter, WorkspaceWhereInput>
+    organizer?: XOR<UserScalarRelationFilter, UserWhereInput>
+    participants?: MeetingParticipantListRelationFilter
+  }, "id">
+
+  export type MeetingOrderByWithAggregationInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    agenda?: SortOrderInput | SortOrder
+    workspaceId?: SortOrder
+    organizerId?: SortOrder
+    meetingType?: SortOrder
+    status?: SortOrder
+    googleEventId?: SortOrderInput | SortOrder
+    googleMeetSpaceId?: SortOrderInput | SortOrder
+    meetingUrl?: SortOrderInput | SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MeetingCountOrderByAggregateInput
+    _max?: MeetingMaxOrderByAggregateInput
+    _min?: MeetingMinOrderByAggregateInput
+  }
+
+  export type MeetingScalarWhereWithAggregatesInput = {
+    AND?: MeetingScalarWhereWithAggregatesInput | MeetingScalarWhereWithAggregatesInput[]
+    OR?: MeetingScalarWhereWithAggregatesInput[]
+    NOT?: MeetingScalarWhereWithAggregatesInput | MeetingScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Meeting"> | string
+    title?: StringWithAggregatesFilter<"Meeting"> | string
+    description?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    agenda?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    workspaceId?: StringWithAggregatesFilter<"Meeting"> | string
+    organizerId?: StringWithAggregatesFilter<"Meeting"> | string
+    meetingType?: EnumMeetingTypeWithAggregatesFilter<"Meeting"> | $Enums.MeetingType
+    status?: EnumMeetingStatusWithAggregatesFilter<"Meeting"> | $Enums.MeetingStatus
+    googleEventId?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    googleMeetSpaceId?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    meetingUrl?: StringNullableWithAggregatesFilter<"Meeting"> | string | null
+    startTime?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
+    endTime?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
+    createdAt?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Meeting"> | Date | string
+  }
+
+  export type MeetingParticipantWhereInput = {
+    AND?: MeetingParticipantWhereInput | MeetingParticipantWhereInput[]
+    OR?: MeetingParticipantWhereInput[]
+    NOT?: MeetingParticipantWhereInput | MeetingParticipantWhereInput[]
+    id?: StringFilter<"MeetingParticipant"> | string
+    meetingId?: StringFilter<"MeetingParticipant"> | string
+    userId?: StringFilter<"MeetingParticipant"> | string
+    responseStatus?: EnumParticipantResponseStatusFilter<"MeetingParticipant"> | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
+    updatedAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
+    meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }
+
+  export type MeetingParticipantOrderByWithRelationInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    userId?: SortOrder
+    responseStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    meeting?: MeetingOrderByWithRelationInput
+    user?: UserOrderByWithRelationInput
+  }
+
+  export type MeetingParticipantWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    meetingId_userId?: MeetingParticipantMeetingIdUserIdCompoundUniqueInput
+    AND?: MeetingParticipantWhereInput | MeetingParticipantWhereInput[]
+    OR?: MeetingParticipantWhereInput[]
+    NOT?: MeetingParticipantWhereInput | MeetingParticipantWhereInput[]
+    meetingId?: StringFilter<"MeetingParticipant"> | string
+    userId?: StringFilter<"MeetingParticipant"> | string
+    responseStatus?: EnumParticipantResponseStatusFilter<"MeetingParticipant"> | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
+    updatedAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
+    meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
+    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+  }, "id" | "meetingId_userId">
+
+  export type MeetingParticipantOrderByWithAggregationInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    userId?: SortOrder
+    responseStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MeetingParticipantCountOrderByAggregateInput
+    _max?: MeetingParticipantMaxOrderByAggregateInput
+    _min?: MeetingParticipantMinOrderByAggregateInput
+  }
+
+  export type MeetingParticipantScalarWhereWithAggregatesInput = {
+    AND?: MeetingParticipantScalarWhereWithAggregatesInput | MeetingParticipantScalarWhereWithAggregatesInput[]
+    OR?: MeetingParticipantScalarWhereWithAggregatesInput[]
+    NOT?: MeetingParticipantScalarWhereWithAggregatesInput | MeetingParticipantScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MeetingParticipant"> | string
+    meetingId?: StringWithAggregatesFilter<"MeetingParticipant"> | string
+    userId?: StringWithAggregatesFilter<"MeetingParticipant"> | string
+    responseStatus?: EnumParticipantResponseStatusWithAggregatesFilter<"MeetingParticipant"> | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeWithAggregatesFilter<"MeetingParticipant"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MeetingParticipant"> | Date | string
+  }
+
   export type WorkspaceCreateInput = {
     id?: string
     name: string
@@ -17808,6 +20746,7 @@ export namespace Prisma {
     departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
     announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateInput = {
@@ -17820,6 +20759,7 @@ export namespace Prisma {
     departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUpdateInput = {
@@ -17832,6 +20772,7 @@ export namespace Prisma {
     departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
     announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateInput = {
@@ -17844,6 +20785,7 @@ export namespace Prisma {
     departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceCreateManyInput = {
@@ -17960,6 +20902,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateInput = {
@@ -17993,6 +20937,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserUpdateInput = {
@@ -18026,6 +20972,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateInput = {
@@ -18059,6 +21007,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateManyInput = {
@@ -18820,6 +21770,195 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MeetingCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutMeetingsInput
+    organizer: UserCreateNestedOneWithoutOrganizedMeetingsInput
+    participants?: MeetingParticipantCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingUncheckedCreateInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    workspaceId: string
+    organizerId: string
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: MeetingParticipantUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutMeetingsNestedInput
+    organizer?: UserUpdateOneRequiredWithoutOrganizedMeetingsNestedInput
+    participants?: MeetingParticipantUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    organizerId?: StringFieldUpdateOperationsInput | string
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: MeetingParticipantUncheckedUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingCreateManyInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    workspaceId: string
+    organizerId: string
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    organizerId?: StringFieldUpdateOperationsInput | string
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingParticipantCreateInput = {
+    id?: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    meeting: MeetingCreateNestedOneWithoutParticipantsInput
+    user: UserCreateNestedOneWithoutMeetingParticipationsInput
+  }
+
+  export type MeetingParticipantUncheckedCreateInput = {
+    id?: string
+    meetingId: string
+    userId: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingParticipantUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meeting?: MeetingUpdateOneRequiredWithoutParticipantsNestedInput
+    user?: UserUpdateOneRequiredWithoutMeetingParticipationsNestedInput
+  }
+
+  export type MeetingParticipantUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    meetingId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingParticipantCreateManyInput = {
+    id?: string
+    meetingId: string
+    userId: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingParticipantUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingParticipantUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    meetingId?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -18885,6 +22024,12 @@ export namespace Prisma {
     none?: AnnouncementWhereInput
   }
 
+  export type MeetingListRelationFilter = {
+    every?: MeetingWhereInput
+    some?: MeetingWhereInput
+    none?: MeetingWhereInput
+  }
+
   export type SortOrderInput = {
     sort: SortOrder
     nulls?: NullsOrder
@@ -18903,6 +22048,10 @@ export namespace Prisma {
   }
 
   export type AnnouncementOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MeetingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19082,6 +22231,12 @@ export namespace Prisma {
     isNot?: GoogleAccountWhereInput | null
   }
 
+  export type MeetingParticipantListRelationFilter = {
+    every?: MeetingParticipantWhereInput
+    some?: MeetingParticipantWhereInput
+    none?: MeetingParticipantWhereInput
+  }
+
   export type AttendanceOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -19099,6 +22254,10 @@ export namespace Prisma {
   }
 
   export type AnnouncementReadOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MeetingParticipantOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -19702,6 +22861,148 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type EnumMeetingTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MeetingType | EnumMeetingTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MeetingType[] | ListEnumMeetingTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MeetingType[] | ListEnumMeetingTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMeetingTypeFilter<$PrismaModel> | $Enums.MeetingType
+  }
+
+  export type EnumMeetingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MeetingStatus | EnumMeetingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MeetingStatus[] | ListEnumMeetingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MeetingStatus[] | ListEnumMeetingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMeetingStatusFilter<$PrismaModel> | $Enums.MeetingStatus
+  }
+
+  export type MeetingCountOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    agenda?: SortOrder
+    workspaceId?: SortOrder
+    organizerId?: SortOrder
+    meetingType?: SortOrder
+    status?: SortOrder
+    googleEventId?: SortOrder
+    googleMeetSpaceId?: SortOrder
+    meetingUrl?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MeetingMaxOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    agenda?: SortOrder
+    workspaceId?: SortOrder
+    organizerId?: SortOrder
+    meetingType?: SortOrder
+    status?: SortOrder
+    googleEventId?: SortOrder
+    googleMeetSpaceId?: SortOrder
+    meetingUrl?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MeetingMinOrderByAggregateInput = {
+    id?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    agenda?: SortOrder
+    workspaceId?: SortOrder
+    organizerId?: SortOrder
+    meetingType?: SortOrder
+    status?: SortOrder
+    googleEventId?: SortOrder
+    googleMeetSpaceId?: SortOrder
+    meetingUrl?: SortOrder
+    startTime?: SortOrder
+    endTime?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumMeetingTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MeetingType | EnumMeetingTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MeetingType[] | ListEnumMeetingTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MeetingType[] | ListEnumMeetingTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMeetingTypeWithAggregatesFilter<$PrismaModel> | $Enums.MeetingType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMeetingTypeFilter<$PrismaModel>
+    _max?: NestedEnumMeetingTypeFilter<$PrismaModel>
+  }
+
+  export type EnumMeetingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MeetingStatus | EnumMeetingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MeetingStatus[] | ListEnumMeetingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MeetingStatus[] | ListEnumMeetingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMeetingStatusWithAggregatesFilter<$PrismaModel> | $Enums.MeetingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMeetingStatusFilter<$PrismaModel>
+    _max?: NestedEnumMeetingStatusFilter<$PrismaModel>
+  }
+
+  export type EnumParticipantResponseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParticipantResponseStatus | EnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParticipantResponseStatusFilter<$PrismaModel> | $Enums.ParticipantResponseStatus
+  }
+
+  export type MeetingScalarRelationFilter = {
+    is?: MeetingWhereInput
+    isNot?: MeetingWhereInput
+  }
+
+  export type MeetingParticipantMeetingIdUserIdCompoundUniqueInput = {
+    meetingId: string
+    userId: string
+  }
+
+  export type MeetingParticipantCountOrderByAggregateInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    userId?: SortOrder
+    responseStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MeetingParticipantMaxOrderByAggregateInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    userId?: SortOrder
+    responseStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MeetingParticipantMinOrderByAggregateInput = {
+    id?: SortOrder
+    meetingId?: SortOrder
+    userId?: SortOrder
+    responseStatus?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EnumParticipantResponseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParticipantResponseStatus | EnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParticipantResponseStatusWithAggregatesFilter<$PrismaModel> | $Enums.ParticipantResponseStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParticipantResponseStatusFilter<$PrismaModel>
+    _max?: NestedEnumParticipantResponseStatusFilter<$PrismaModel>
+  }
+
   export type UserCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<UserCreateWithoutWorkspaceInput, UserUncheckedCreateWithoutWorkspaceInput> | UserCreateWithoutWorkspaceInput[] | UserUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspaceInput | UserCreateOrConnectWithoutWorkspaceInput[]
@@ -19730,6 +23031,13 @@ export namespace Prisma {
     connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
   }
 
+  export type MeetingCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<MeetingCreateWithoutWorkspaceInput, MeetingUncheckedCreateWithoutWorkspaceInput> | MeetingCreateWithoutWorkspaceInput[] | MeetingUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutWorkspaceInput | MeetingCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: MeetingCreateManyWorkspaceInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutWorkspaceInput = {
     create?: XOR<UserCreateWithoutWorkspaceInput, UserUncheckedCreateWithoutWorkspaceInput> | UserCreateWithoutWorkspaceInput[] | UserUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspaceInput | UserCreateOrConnectWithoutWorkspaceInput[]
@@ -19756,6 +23064,13 @@ export namespace Prisma {
     connectOrCreate?: AnnouncementCreateOrConnectWithoutWorkspaceInput | AnnouncementCreateOrConnectWithoutWorkspaceInput[]
     createMany?: AnnouncementCreateManyWorkspaceInputEnvelope
     connect?: AnnouncementWhereUniqueInput | AnnouncementWhereUniqueInput[]
+  }
+
+  export type MeetingUncheckedCreateNestedManyWithoutWorkspaceInput = {
+    create?: XOR<MeetingCreateWithoutWorkspaceInput, MeetingUncheckedCreateWithoutWorkspaceInput> | MeetingCreateWithoutWorkspaceInput[] | MeetingUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutWorkspaceInput | MeetingCreateOrConnectWithoutWorkspaceInput[]
+    createMany?: MeetingCreateManyWorkspaceInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -19826,6 +23141,20 @@ export namespace Prisma {
     deleteMany?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
   }
 
+  export type MeetingUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<MeetingCreateWithoutWorkspaceInput, MeetingUncheckedCreateWithoutWorkspaceInput> | MeetingCreateWithoutWorkspaceInput[] | MeetingUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutWorkspaceInput | MeetingCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutWorkspaceInput | MeetingUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: MeetingCreateManyWorkspaceInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutWorkspaceInput | MeetingUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutWorkspaceInput | MeetingUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutWorkspaceNestedInput = {
     create?: XOR<UserCreateWithoutWorkspaceInput, UserUncheckedCreateWithoutWorkspaceInput> | UserCreateWithoutWorkspaceInput[] | UserUncheckedCreateWithoutWorkspaceInput[]
     connectOrCreate?: UserCreateOrConnectWithoutWorkspaceInput | UserCreateOrConnectWithoutWorkspaceInput[]
@@ -19880,6 +23209,20 @@ export namespace Prisma {
     update?: AnnouncementUpdateWithWhereUniqueWithoutWorkspaceInput | AnnouncementUpdateWithWhereUniqueWithoutWorkspaceInput[]
     updateMany?: AnnouncementUpdateManyWithWhereWithoutWorkspaceInput | AnnouncementUpdateManyWithWhereWithoutWorkspaceInput[]
     deleteMany?: AnnouncementScalarWhereInput | AnnouncementScalarWhereInput[]
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutWorkspaceNestedInput = {
+    create?: XOR<MeetingCreateWithoutWorkspaceInput, MeetingUncheckedCreateWithoutWorkspaceInput> | MeetingCreateWithoutWorkspaceInput[] | MeetingUncheckedCreateWithoutWorkspaceInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutWorkspaceInput | MeetingCreateOrConnectWithoutWorkspaceInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutWorkspaceInput | MeetingUpsertWithWhereUniqueWithoutWorkspaceInput[]
+    createMany?: MeetingCreateManyWorkspaceInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutWorkspaceInput | MeetingUpdateWithWhereUniqueWithoutWorkspaceInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutWorkspaceInput | MeetingUpdateManyWithWhereWithoutWorkspaceInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
   }
 
   export type WorkspaceCreateNestedOneWithoutDepartmentsInput = {
@@ -20038,6 +23381,20 @@ export namespace Prisma {
     connect?: GoogleAccountWhereUniqueInput
   }
 
+  export type MeetingCreateNestedManyWithoutOrganizerInput = {
+    create?: XOR<MeetingCreateWithoutOrganizerInput, MeetingUncheckedCreateWithoutOrganizerInput> | MeetingCreateWithoutOrganizerInput[] | MeetingUncheckedCreateWithoutOrganizerInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutOrganizerInput | MeetingCreateOrConnectWithoutOrganizerInput[]
+    createMany?: MeetingCreateManyOrganizerInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
+  export type MeetingParticipantCreateNestedManyWithoutUserInput = {
+    create?: XOR<MeetingParticipantCreateWithoutUserInput, MeetingParticipantUncheckedCreateWithoutUserInput> | MeetingParticipantCreateWithoutUserInput[] | MeetingParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MeetingParticipantCreateOrConnectWithoutUserInput | MeetingParticipantCreateOrConnectWithoutUserInput[]
+    createMany?: MeetingParticipantCreateManyUserInputEnvelope
+    connect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+  }
+
   export type UserUncheckedCreateNestedManyWithoutReportingManagerInput = {
     create?: XOR<UserCreateWithoutReportingManagerInput, UserUncheckedCreateWithoutReportingManagerInput> | UserCreateWithoutReportingManagerInput[] | UserUncheckedCreateWithoutReportingManagerInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportingManagerInput | UserCreateOrConnectWithoutReportingManagerInput[]
@@ -20112,6 +23469,20 @@ export namespace Prisma {
     create?: XOR<GoogleAccountCreateWithoutUserInput, GoogleAccountUncheckedCreateWithoutUserInput>
     connectOrCreate?: GoogleAccountCreateOrConnectWithoutUserInput
     connect?: GoogleAccountWhereUniqueInput
+  }
+
+  export type MeetingUncheckedCreateNestedManyWithoutOrganizerInput = {
+    create?: XOR<MeetingCreateWithoutOrganizerInput, MeetingUncheckedCreateWithoutOrganizerInput> | MeetingCreateWithoutOrganizerInput[] | MeetingUncheckedCreateWithoutOrganizerInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutOrganizerInput | MeetingCreateOrConnectWithoutOrganizerInput[]
+    createMany?: MeetingCreateManyOrganizerInputEnvelope
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+  }
+
+  export type MeetingParticipantUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<MeetingParticipantCreateWithoutUserInput, MeetingParticipantUncheckedCreateWithoutUserInput> | MeetingParticipantCreateWithoutUserInput[] | MeetingParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MeetingParticipantCreateOrConnectWithoutUserInput | MeetingParticipantCreateOrConnectWithoutUserInput[]
+    createMany?: MeetingParticipantCreateManyUserInputEnvelope
+    connect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
   }
 
   export type EnumRoleFieldUpdateOperationsInput = {
@@ -20314,6 +23685,34 @@ export namespace Prisma {
     update?: XOR<XOR<GoogleAccountUpdateToOneWithWhereWithoutUserInput, GoogleAccountUpdateWithoutUserInput>, GoogleAccountUncheckedUpdateWithoutUserInput>
   }
 
+  export type MeetingUpdateManyWithoutOrganizerNestedInput = {
+    create?: XOR<MeetingCreateWithoutOrganizerInput, MeetingUncheckedCreateWithoutOrganizerInput> | MeetingCreateWithoutOrganizerInput[] | MeetingUncheckedCreateWithoutOrganizerInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutOrganizerInput | MeetingCreateOrConnectWithoutOrganizerInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutOrganizerInput | MeetingUpsertWithWhereUniqueWithoutOrganizerInput[]
+    createMany?: MeetingCreateManyOrganizerInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutOrganizerInput | MeetingUpdateWithWhereUniqueWithoutOrganizerInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutOrganizerInput | MeetingUpdateManyWithWhereWithoutOrganizerInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
+  export type MeetingParticipantUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MeetingParticipantCreateWithoutUserInput, MeetingParticipantUncheckedCreateWithoutUserInput> | MeetingParticipantCreateWithoutUserInput[] | MeetingParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MeetingParticipantCreateOrConnectWithoutUserInput | MeetingParticipantCreateOrConnectWithoutUserInput[]
+    upsert?: MeetingParticipantUpsertWithWhereUniqueWithoutUserInput | MeetingParticipantUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MeetingParticipantCreateManyUserInputEnvelope
+    set?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    disconnect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    delete?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    connect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    update?: MeetingParticipantUpdateWithWhereUniqueWithoutUserInput | MeetingParticipantUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MeetingParticipantUpdateManyWithWhereWithoutUserInput | MeetingParticipantUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MeetingParticipantScalarWhereInput | MeetingParticipantScalarWhereInput[]
+  }
+
   export type UserUncheckedUpdateManyWithoutReportingManagerNestedInput = {
     create?: XOR<UserCreateWithoutReportingManagerInput, UserUncheckedCreateWithoutReportingManagerInput> | UserCreateWithoutReportingManagerInput[] | UserUncheckedCreateWithoutReportingManagerInput[]
     connectOrCreate?: UserCreateOrConnectWithoutReportingManagerInput | UserCreateOrConnectWithoutReportingManagerInput[]
@@ -20462,6 +23861,34 @@ export namespace Prisma {
     delete?: GoogleAccountWhereInput | boolean
     connect?: GoogleAccountWhereUniqueInput
     update?: XOR<XOR<GoogleAccountUpdateToOneWithWhereWithoutUserInput, GoogleAccountUpdateWithoutUserInput>, GoogleAccountUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutOrganizerNestedInput = {
+    create?: XOR<MeetingCreateWithoutOrganizerInput, MeetingUncheckedCreateWithoutOrganizerInput> | MeetingCreateWithoutOrganizerInput[] | MeetingUncheckedCreateWithoutOrganizerInput[]
+    connectOrCreate?: MeetingCreateOrConnectWithoutOrganizerInput | MeetingCreateOrConnectWithoutOrganizerInput[]
+    upsert?: MeetingUpsertWithWhereUniqueWithoutOrganizerInput | MeetingUpsertWithWhereUniqueWithoutOrganizerInput[]
+    createMany?: MeetingCreateManyOrganizerInputEnvelope
+    set?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    disconnect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    delete?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    connect?: MeetingWhereUniqueInput | MeetingWhereUniqueInput[]
+    update?: MeetingUpdateWithWhereUniqueWithoutOrganizerInput | MeetingUpdateWithWhereUniqueWithoutOrganizerInput[]
+    updateMany?: MeetingUpdateManyWithWhereWithoutOrganizerInput | MeetingUpdateManyWithWhereWithoutOrganizerInput[]
+    deleteMany?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+  }
+
+  export type MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<MeetingParticipantCreateWithoutUserInput, MeetingParticipantUncheckedCreateWithoutUserInput> | MeetingParticipantCreateWithoutUserInput[] | MeetingParticipantUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: MeetingParticipantCreateOrConnectWithoutUserInput | MeetingParticipantCreateOrConnectWithoutUserInput[]
+    upsert?: MeetingParticipantUpsertWithWhereUniqueWithoutUserInput | MeetingParticipantUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: MeetingParticipantCreateManyUserInputEnvelope
+    set?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    disconnect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    delete?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    connect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    update?: MeetingParticipantUpdateWithWhereUniqueWithoutUserInput | MeetingParticipantUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: MeetingParticipantUpdateManyWithWhereWithoutUserInput | MeetingParticipantUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: MeetingParticipantScalarWhereInput | MeetingParticipantScalarWhereInput[]
   }
 
   export type UserCreateNestedOneWithoutAttendancesInput = {
@@ -20938,6 +24365,116 @@ export namespace Prisma {
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutGoogleAccountInput, UserUpdateWithoutGoogleAccountInput>, UserUncheckedUpdateWithoutGoogleAccountInput>
   }
 
+  export type WorkspaceCreateNestedOneWithoutMeetingsInput = {
+    create?: XOR<WorkspaceCreateWithoutMeetingsInput, WorkspaceUncheckedCreateWithoutMeetingsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutMeetingsInput
+    connect?: WorkspaceWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutOrganizedMeetingsInput = {
+    create?: XOR<UserCreateWithoutOrganizedMeetingsInput, UserUncheckedCreateWithoutOrganizedMeetingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizedMeetingsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type MeetingParticipantCreateNestedManyWithoutMeetingInput = {
+    create?: XOR<MeetingParticipantCreateWithoutMeetingInput, MeetingParticipantUncheckedCreateWithoutMeetingInput> | MeetingParticipantCreateWithoutMeetingInput[] | MeetingParticipantUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: MeetingParticipantCreateOrConnectWithoutMeetingInput | MeetingParticipantCreateOrConnectWithoutMeetingInput[]
+    createMany?: MeetingParticipantCreateManyMeetingInputEnvelope
+    connect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+  }
+
+  export type MeetingParticipantUncheckedCreateNestedManyWithoutMeetingInput = {
+    create?: XOR<MeetingParticipantCreateWithoutMeetingInput, MeetingParticipantUncheckedCreateWithoutMeetingInput> | MeetingParticipantCreateWithoutMeetingInput[] | MeetingParticipantUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: MeetingParticipantCreateOrConnectWithoutMeetingInput | MeetingParticipantCreateOrConnectWithoutMeetingInput[]
+    createMany?: MeetingParticipantCreateManyMeetingInputEnvelope
+    connect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+  }
+
+  export type EnumMeetingTypeFieldUpdateOperationsInput = {
+    set?: $Enums.MeetingType
+  }
+
+  export type EnumMeetingStatusFieldUpdateOperationsInput = {
+    set?: $Enums.MeetingStatus
+  }
+
+  export type WorkspaceUpdateOneRequiredWithoutMeetingsNestedInput = {
+    create?: XOR<WorkspaceCreateWithoutMeetingsInput, WorkspaceUncheckedCreateWithoutMeetingsInput>
+    connectOrCreate?: WorkspaceCreateOrConnectWithoutMeetingsInput
+    upsert?: WorkspaceUpsertWithoutMeetingsInput
+    connect?: WorkspaceWhereUniqueInput
+    update?: XOR<XOR<WorkspaceUpdateToOneWithWhereWithoutMeetingsInput, WorkspaceUpdateWithoutMeetingsInput>, WorkspaceUncheckedUpdateWithoutMeetingsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutOrganizedMeetingsNestedInput = {
+    create?: XOR<UserCreateWithoutOrganizedMeetingsInput, UserUncheckedCreateWithoutOrganizedMeetingsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutOrganizedMeetingsInput
+    upsert?: UserUpsertWithoutOrganizedMeetingsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutOrganizedMeetingsInput, UserUpdateWithoutOrganizedMeetingsInput>, UserUncheckedUpdateWithoutOrganizedMeetingsInput>
+  }
+
+  export type MeetingParticipantUpdateManyWithoutMeetingNestedInput = {
+    create?: XOR<MeetingParticipantCreateWithoutMeetingInput, MeetingParticipantUncheckedCreateWithoutMeetingInput> | MeetingParticipantCreateWithoutMeetingInput[] | MeetingParticipantUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: MeetingParticipantCreateOrConnectWithoutMeetingInput | MeetingParticipantCreateOrConnectWithoutMeetingInput[]
+    upsert?: MeetingParticipantUpsertWithWhereUniqueWithoutMeetingInput | MeetingParticipantUpsertWithWhereUniqueWithoutMeetingInput[]
+    createMany?: MeetingParticipantCreateManyMeetingInputEnvelope
+    set?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    disconnect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    delete?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    connect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    update?: MeetingParticipantUpdateWithWhereUniqueWithoutMeetingInput | MeetingParticipantUpdateWithWhereUniqueWithoutMeetingInput[]
+    updateMany?: MeetingParticipantUpdateManyWithWhereWithoutMeetingInput | MeetingParticipantUpdateManyWithWhereWithoutMeetingInput[]
+    deleteMany?: MeetingParticipantScalarWhereInput | MeetingParticipantScalarWhereInput[]
+  }
+
+  export type MeetingParticipantUncheckedUpdateManyWithoutMeetingNestedInput = {
+    create?: XOR<MeetingParticipantCreateWithoutMeetingInput, MeetingParticipantUncheckedCreateWithoutMeetingInput> | MeetingParticipantCreateWithoutMeetingInput[] | MeetingParticipantUncheckedCreateWithoutMeetingInput[]
+    connectOrCreate?: MeetingParticipantCreateOrConnectWithoutMeetingInput | MeetingParticipantCreateOrConnectWithoutMeetingInput[]
+    upsert?: MeetingParticipantUpsertWithWhereUniqueWithoutMeetingInput | MeetingParticipantUpsertWithWhereUniqueWithoutMeetingInput[]
+    createMany?: MeetingParticipantCreateManyMeetingInputEnvelope
+    set?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    disconnect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    delete?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    connect?: MeetingParticipantWhereUniqueInput | MeetingParticipantWhereUniqueInput[]
+    update?: MeetingParticipantUpdateWithWhereUniqueWithoutMeetingInput | MeetingParticipantUpdateWithWhereUniqueWithoutMeetingInput[]
+    updateMany?: MeetingParticipantUpdateManyWithWhereWithoutMeetingInput | MeetingParticipantUpdateManyWithWhereWithoutMeetingInput[]
+    deleteMany?: MeetingParticipantScalarWhereInput | MeetingParticipantScalarWhereInput[]
+  }
+
+  export type MeetingCreateNestedOneWithoutParticipantsInput = {
+    create?: XOR<MeetingCreateWithoutParticipantsInput, MeetingUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: MeetingCreateOrConnectWithoutParticipantsInput
+    connect?: MeetingWhereUniqueInput
+  }
+
+  export type UserCreateNestedOneWithoutMeetingParticipationsInput = {
+    create?: XOR<UserCreateWithoutMeetingParticipationsInput, UserUncheckedCreateWithoutMeetingParticipationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMeetingParticipationsInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type EnumParticipantResponseStatusFieldUpdateOperationsInput = {
+    set?: $Enums.ParticipantResponseStatus
+  }
+
+  export type MeetingUpdateOneRequiredWithoutParticipantsNestedInput = {
+    create?: XOR<MeetingCreateWithoutParticipantsInput, MeetingUncheckedCreateWithoutParticipantsInput>
+    connectOrCreate?: MeetingCreateOrConnectWithoutParticipantsInput
+    upsert?: MeetingUpsertWithoutParticipantsInput
+    connect?: MeetingWhereUniqueInput
+    update?: XOR<XOR<MeetingUpdateToOneWithWhereWithoutParticipantsInput, MeetingUpdateWithoutParticipantsInput>, MeetingUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type UserUpdateOneRequiredWithoutMeetingParticipationsNestedInput = {
+    create?: XOR<UserCreateWithoutMeetingParticipationsInput, UserUncheckedCreateWithoutMeetingParticipationsInput>
+    connectOrCreate?: UserCreateOrConnectWithoutMeetingParticipationsInput
+    upsert?: UserUpsertWithoutMeetingParticipationsInput
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMeetingParticipationsInput, UserUpdateWithoutMeetingParticipationsInput>, UserUncheckedUpdateWithoutMeetingParticipationsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -21231,6 +24768,57 @@ export namespace Prisma {
     _max?: NestedEnumAnnouncementStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumMeetingTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.MeetingType | EnumMeetingTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MeetingType[] | ListEnumMeetingTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MeetingType[] | ListEnumMeetingTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMeetingTypeFilter<$PrismaModel> | $Enums.MeetingType
+  }
+
+  export type NestedEnumMeetingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.MeetingStatus | EnumMeetingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MeetingStatus[] | ListEnumMeetingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MeetingStatus[] | ListEnumMeetingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMeetingStatusFilter<$PrismaModel> | $Enums.MeetingStatus
+  }
+
+  export type NestedEnumMeetingTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MeetingType | EnumMeetingTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.MeetingType[] | ListEnumMeetingTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MeetingType[] | ListEnumMeetingTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumMeetingTypeWithAggregatesFilter<$PrismaModel> | $Enums.MeetingType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMeetingTypeFilter<$PrismaModel>
+    _max?: NestedEnumMeetingTypeFilter<$PrismaModel>
+  }
+
+  export type NestedEnumMeetingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.MeetingStatus | EnumMeetingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.MeetingStatus[] | ListEnumMeetingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.MeetingStatus[] | ListEnumMeetingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumMeetingStatusWithAggregatesFilter<$PrismaModel> | $Enums.MeetingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumMeetingStatusFilter<$PrismaModel>
+    _max?: NestedEnumMeetingStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumParticipantResponseStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParticipantResponseStatus | EnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParticipantResponseStatusFilter<$PrismaModel> | $Enums.ParticipantResponseStatus
+  }
+
+  export type NestedEnumParticipantResponseStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParticipantResponseStatus | EnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumParticipantResponseStatusWithAggregatesFilter<$PrismaModel> | $Enums.ParticipantResponseStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParticipantResponseStatusFilter<$PrismaModel>
+    _max?: NestedEnumParticipantResponseStatusFilter<$PrismaModel>
+  }
+
   export type UserCreateWithoutWorkspaceInput = {
     id?: string
     name?: string | null
@@ -21261,6 +24849,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutWorkspaceInput = {
@@ -21293,6 +24883,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutWorkspaceInput = {
@@ -21416,6 +25008,52 @@ export namespace Prisma {
 
   export type AnnouncementCreateManyWorkspaceInputEnvelope = {
     data: AnnouncementCreateManyWorkspaceInput | AnnouncementCreateManyWorkspaceInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MeetingCreateWithoutWorkspaceInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    organizer: UserCreateNestedOneWithoutOrganizedMeetingsInput
+    participants?: MeetingParticipantCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingUncheckedCreateWithoutWorkspaceInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    organizerId: string
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: MeetingParticipantUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingCreateOrConnectWithoutWorkspaceInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutWorkspaceInput, MeetingUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type MeetingCreateManyWorkspaceInputEnvelope = {
+    data: MeetingCreateManyWorkspaceInput | MeetingCreateManyWorkspaceInput[]
     skipDuplicates?: boolean
   }
 
@@ -21557,6 +25195,43 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Announcement"> | Date | string
   }
 
+  export type MeetingUpsertWithWhereUniqueWithoutWorkspaceInput = {
+    where: MeetingWhereUniqueInput
+    update: XOR<MeetingUpdateWithoutWorkspaceInput, MeetingUncheckedUpdateWithoutWorkspaceInput>
+    create: XOR<MeetingCreateWithoutWorkspaceInput, MeetingUncheckedCreateWithoutWorkspaceInput>
+  }
+
+  export type MeetingUpdateWithWhereUniqueWithoutWorkspaceInput = {
+    where: MeetingWhereUniqueInput
+    data: XOR<MeetingUpdateWithoutWorkspaceInput, MeetingUncheckedUpdateWithoutWorkspaceInput>
+  }
+
+  export type MeetingUpdateManyWithWhereWithoutWorkspaceInput = {
+    where: MeetingScalarWhereInput
+    data: XOR<MeetingUpdateManyMutationInput, MeetingUncheckedUpdateManyWithoutWorkspaceInput>
+  }
+
+  export type MeetingScalarWhereInput = {
+    AND?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+    OR?: MeetingScalarWhereInput[]
+    NOT?: MeetingScalarWhereInput | MeetingScalarWhereInput[]
+    id?: StringFilter<"Meeting"> | string
+    title?: StringFilter<"Meeting"> | string
+    description?: StringNullableFilter<"Meeting"> | string | null
+    agenda?: StringNullableFilter<"Meeting"> | string | null
+    workspaceId?: StringFilter<"Meeting"> | string
+    organizerId?: StringFilter<"Meeting"> | string
+    meetingType?: EnumMeetingTypeFilter<"Meeting"> | $Enums.MeetingType
+    status?: EnumMeetingStatusFilter<"Meeting"> | $Enums.MeetingStatus
+    googleEventId?: StringNullableFilter<"Meeting"> | string | null
+    googleMeetSpaceId?: StringNullableFilter<"Meeting"> | string | null
+    meetingUrl?: StringNullableFilter<"Meeting"> | string | null
+    startTime?: DateTimeFilter<"Meeting"> | Date | string
+    endTime?: DateTimeFilter<"Meeting"> | Date | string
+    createdAt?: DateTimeFilter<"Meeting"> | Date | string
+    updatedAt?: DateTimeFilter<"Meeting"> | Date | string
+  }
+
   export type WorkspaceCreateWithoutDepartmentsInput = {
     id?: string
     name: string
@@ -21566,6 +25241,7 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
     announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutDepartmentsInput = {
@@ -21577,6 +25253,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutDepartmentsInput = {
@@ -21614,6 +25291,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDepartmentInput = {
@@ -21646,6 +25325,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDepartmentInput = {
@@ -21678,6 +25359,7 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
     announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutDepartmentsInput = {
@@ -21689,6 +25371,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutDepartmentInput = {
@@ -21716,6 +25399,7 @@ export namespace Prisma {
     departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
     announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutUsersInput = {
@@ -21727,6 +25411,7 @@ export namespace Prisma {
     departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutUsersInput = {
@@ -21785,6 +25470,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutDirectReportsInput = {
@@ -21817,6 +25504,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutDirectReportsInput = {
@@ -21854,6 +25543,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutReportingManagerInput = {
@@ -21886,6 +25577,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutReportingManagerInput = {
@@ -21928,6 +25621,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedUsersInput = {
@@ -21960,6 +25655,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedUsersInput = {
@@ -21997,6 +25694,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedByInput = {
@@ -22029,6 +25728,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedByInput = {
@@ -22338,6 +26039,78 @@ export namespace Prisma {
     create: XOR<GoogleAccountCreateWithoutUserInput, GoogleAccountUncheckedCreateWithoutUserInput>
   }
 
+  export type MeetingCreateWithoutOrganizerInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutMeetingsInput
+    participants?: MeetingParticipantCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingUncheckedCreateWithoutOrganizerInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    workspaceId: string
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    participants?: MeetingParticipantUncheckedCreateNestedManyWithoutMeetingInput
+  }
+
+  export type MeetingCreateOrConnectWithoutOrganizerInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutOrganizerInput, MeetingUncheckedCreateWithoutOrganizerInput>
+  }
+
+  export type MeetingCreateManyOrganizerInputEnvelope = {
+    data: MeetingCreateManyOrganizerInput | MeetingCreateManyOrganizerInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MeetingParticipantCreateWithoutUserInput = {
+    id?: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    meeting: MeetingCreateNestedOneWithoutParticipantsInput
+  }
+
+  export type MeetingParticipantUncheckedCreateWithoutUserInput = {
+    id?: string
+    meetingId: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingParticipantCreateOrConnectWithoutUserInput = {
+    where: MeetingParticipantWhereUniqueInput
+    create: XOR<MeetingParticipantCreateWithoutUserInput, MeetingParticipantUncheckedCreateWithoutUserInput>
+  }
+
+  export type MeetingParticipantCreateManyUserInputEnvelope = {
+    data: MeetingParticipantCreateManyUserInput | MeetingParticipantCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
   export type WorkspaceUpsertWithoutUsersInput = {
     update: XOR<WorkspaceUpdateWithoutUsersInput, WorkspaceUncheckedUpdateWithoutUsersInput>
     create: XOR<WorkspaceCreateWithoutUsersInput, WorkspaceUncheckedCreateWithoutUsersInput>
@@ -22358,6 +26131,7 @@ export namespace Prisma {
     departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
     announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutUsersInput = {
@@ -22369,6 +26143,7 @@ export namespace Prisma {
     departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type DepartmentUpsertWithoutUsersInput = {
@@ -22439,6 +26214,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDirectReportsInput = {
@@ -22471,6 +26248,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutReportingManagerInput = {
@@ -22530,6 +26309,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedUsersInput = {
@@ -22562,6 +26343,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithWhereUniqueWithoutCreatedByInput = {
@@ -22803,6 +26586,50 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MeetingUpsertWithWhereUniqueWithoutOrganizerInput = {
+    where: MeetingWhereUniqueInput
+    update: XOR<MeetingUpdateWithoutOrganizerInput, MeetingUncheckedUpdateWithoutOrganizerInput>
+    create: XOR<MeetingCreateWithoutOrganizerInput, MeetingUncheckedCreateWithoutOrganizerInput>
+  }
+
+  export type MeetingUpdateWithWhereUniqueWithoutOrganizerInput = {
+    where: MeetingWhereUniqueInput
+    data: XOR<MeetingUpdateWithoutOrganizerInput, MeetingUncheckedUpdateWithoutOrganizerInput>
+  }
+
+  export type MeetingUpdateManyWithWhereWithoutOrganizerInput = {
+    where: MeetingScalarWhereInput
+    data: XOR<MeetingUpdateManyMutationInput, MeetingUncheckedUpdateManyWithoutOrganizerInput>
+  }
+
+  export type MeetingParticipantUpsertWithWhereUniqueWithoutUserInput = {
+    where: MeetingParticipantWhereUniqueInput
+    update: XOR<MeetingParticipantUpdateWithoutUserInput, MeetingParticipantUncheckedUpdateWithoutUserInput>
+    create: XOR<MeetingParticipantCreateWithoutUserInput, MeetingParticipantUncheckedCreateWithoutUserInput>
+  }
+
+  export type MeetingParticipantUpdateWithWhereUniqueWithoutUserInput = {
+    where: MeetingParticipantWhereUniqueInput
+    data: XOR<MeetingParticipantUpdateWithoutUserInput, MeetingParticipantUncheckedUpdateWithoutUserInput>
+  }
+
+  export type MeetingParticipantUpdateManyWithWhereWithoutUserInput = {
+    where: MeetingParticipantScalarWhereInput
+    data: XOR<MeetingParticipantUpdateManyMutationInput, MeetingParticipantUncheckedUpdateManyWithoutUserInput>
+  }
+
+  export type MeetingParticipantScalarWhereInput = {
+    AND?: MeetingParticipantScalarWhereInput | MeetingParticipantScalarWhereInput[]
+    OR?: MeetingParticipantScalarWhereInput[]
+    NOT?: MeetingParticipantScalarWhereInput | MeetingParticipantScalarWhereInput[]
+    id?: StringFilter<"MeetingParticipant"> | string
+    meetingId?: StringFilter<"MeetingParticipant"> | string
+    userId?: StringFilter<"MeetingParticipant"> | string
+    responseStatus?: EnumParticipantResponseStatusFilter<"MeetingParticipant"> | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
+    updatedAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
+  }
+
   export type UserCreateWithoutAttendancesInput = {
     id?: string
     name?: string | null
@@ -22833,6 +26660,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAttendancesInput = {
@@ -22865,6 +26694,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAttendancesInput = {
@@ -22937,6 +26768,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAttendancesInput = {
@@ -22969,6 +26802,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type TimerSegmentUpsertWithWhereUniqueWithoutAttendanceInput = {
@@ -23071,6 +26906,7 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutWorkspaceInput
     departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
     announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutProjectsInput = {
@@ -23082,6 +26918,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutWorkspaceInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
     announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutProjectsInput = {
@@ -23119,6 +26956,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedProjectsInput = {
@@ -23151,6 +26990,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedProjectsInput = {
@@ -23188,6 +27029,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutManagedProjectsInput = {
@@ -23220,6 +27063,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutManagedProjectsInput = {
@@ -23303,6 +27148,7 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutWorkspaceNestedInput
     departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
     announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
@@ -23314,6 +27160,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutWorkspaceNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
     announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutCreatedProjectsInput = {
@@ -23357,6 +27204,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
@@ -23389,6 +27238,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUpsertWithoutManagedProjectsInput = {
@@ -23432,6 +27283,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutManagedProjectsInput = {
@@ -23464,6 +27317,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectMemberUpsertWithWhereUniqueWithoutProjectInput = {
@@ -23569,6 +27424,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutProjectMembersInput = {
@@ -23601,6 +27458,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutProjectMembersInput = {
@@ -23696,6 +27555,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutProjectMembersInput = {
@@ -23728,6 +27589,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type ProjectCreateWithoutTasksInput = {
@@ -23801,6 +27664,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -23833,6 +27698,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -23928,6 +27795,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -23960,6 +27829,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type WorkspaceCreateWithoutAnnouncementsInput = {
@@ -23971,6 +27842,7 @@ export namespace Prisma {
     users?: UserCreateNestedManyWithoutWorkspaceInput
     departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceUncheckedCreateWithoutAnnouncementsInput = {
@@ -23982,6 +27854,7 @@ export namespace Prisma {
     users?: UserUncheckedCreateNestedManyWithoutWorkspaceInput
     departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
     projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    meetings?: MeetingUncheckedCreateNestedManyWithoutWorkspaceInput
   }
 
   export type WorkspaceCreateOrConnectWithoutAnnouncementsInput = {
@@ -24019,6 +27892,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutCreatedAnnouncementsInput = {
@@ -24051,6 +27926,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutCreatedAnnouncementsInput = {
@@ -24124,6 +28001,7 @@ export namespace Prisma {
     users?: UserUpdateManyWithoutWorkspaceNestedInput
     departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type WorkspaceUncheckedUpdateWithoutAnnouncementsInput = {
@@ -24135,6 +28013,7 @@ export namespace Prisma {
     users?: UserUncheckedUpdateManyWithoutWorkspaceNestedInput
     departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
     projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    meetings?: MeetingUncheckedUpdateManyWithoutWorkspaceNestedInput
   }
 
   export type UserUpsertWithoutCreatedAnnouncementsInput = {
@@ -24178,6 +28057,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedAnnouncementsInput = {
@@ -24210,6 +28091,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnnouncementTargetUserUpsertWithWhereUniqueWithoutAnnouncementInput = {
@@ -24311,6 +28194,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnouncementTargetsInput = {
@@ -24343,6 +28228,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnouncementTargetsInput = {
@@ -24434,6 +28321,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnouncementTargetsInput = {
@@ -24466,6 +28355,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type AnnouncementCreateWithoutReadRecordsInput = {
@@ -24535,6 +28426,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutAnnouncementReadsInput = {
@@ -24567,6 +28460,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutAnnouncementReadsInput = {
@@ -24658,6 +28553,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutAnnouncementReadsInput = {
@@ -24690,6 +28587,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserCreateWithoutGoogleAccountInput = {
@@ -24722,6 +28621,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
   }
 
   export type UserUncheckedCreateWithoutGoogleAccountInput = {
@@ -24754,6 +28655,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
     announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
     announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
   }
 
   export type UserCreateOrConnectWithoutGoogleAccountInput = {
@@ -24802,6 +28705,8 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutGoogleAccountInput = {
@@ -24834,6 +28739,506 @@ export namespace Prisma {
     createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type WorkspaceCreateWithoutMeetingsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserCreateNestedManyWithoutWorkspaceInput
+    departments?: DepartmentCreateNestedManyWithoutWorkspaceInput
+    projects?: ProjectCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceUncheckedCreateWithoutMeetingsInput = {
+    id?: string
+    name: string
+    description?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    users?: UserUncheckedCreateNestedManyWithoutWorkspaceInput
+    departments?: DepartmentUncheckedCreateNestedManyWithoutWorkspaceInput
+    projects?: ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+    announcements?: AnnouncementUncheckedCreateNestedManyWithoutWorkspaceInput
+  }
+
+  export type WorkspaceCreateOrConnectWithoutMeetingsInput = {
+    where: WorkspaceWhereUniqueInput
+    create: XOR<WorkspaceCreateWithoutMeetingsInput, WorkspaceUncheckedCreateWithoutMeetingsInput>
+  }
+
+  export type UserCreateWithoutOrganizedMeetingsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutUsersInput
+    department?: DepartmentCreateNestedOneWithoutUsersInput
+    reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
+    directReports?: UserCreateNestedManyWithoutReportingManagerInput
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    meetingParticipations?: MeetingParticipantCreateNestedManyWithoutUserInput
+  }
+
+  export type UserUncheckedCreateWithoutOrganizedMeetingsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    workspaceId: string
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    departmentId?: string | null
+    reportingManagerId?: string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    meetingParticipations?: MeetingParticipantUncheckedCreateNestedManyWithoutUserInput
+  }
+
+  export type UserCreateOrConnectWithoutOrganizedMeetingsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutOrganizedMeetingsInput, UserUncheckedCreateWithoutOrganizedMeetingsInput>
+  }
+
+  export type MeetingParticipantCreateWithoutMeetingInput = {
+    id?: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user: UserCreateNestedOneWithoutMeetingParticipationsInput
+  }
+
+  export type MeetingParticipantUncheckedCreateWithoutMeetingInput = {
+    id?: string
+    userId: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingParticipantCreateOrConnectWithoutMeetingInput = {
+    where: MeetingParticipantWhereUniqueInput
+    create: XOR<MeetingParticipantCreateWithoutMeetingInput, MeetingParticipantUncheckedCreateWithoutMeetingInput>
+  }
+
+  export type MeetingParticipantCreateManyMeetingInputEnvelope = {
+    data: MeetingParticipantCreateManyMeetingInput | MeetingParticipantCreateManyMeetingInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type WorkspaceUpsertWithoutMeetingsInput = {
+    update: XOR<WorkspaceUpdateWithoutMeetingsInput, WorkspaceUncheckedUpdateWithoutMeetingsInput>
+    create: XOR<WorkspaceCreateWithoutMeetingsInput, WorkspaceUncheckedCreateWithoutMeetingsInput>
+    where?: WorkspaceWhereInput
+  }
+
+  export type WorkspaceUpdateToOneWithWhereWithoutMeetingsInput = {
+    where?: WorkspaceWhereInput
+    data: XOR<WorkspaceUpdateWithoutMeetingsInput, WorkspaceUncheckedUpdateWithoutMeetingsInput>
+  }
+
+  export type WorkspaceUpdateWithoutMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUpdateManyWithoutWorkspaceNestedInput
+    departments?: DepartmentUpdateManyWithoutWorkspaceNestedInput
+    projects?: ProjectUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type WorkspaceUncheckedUpdateWithoutMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    users?: UserUncheckedUpdateManyWithoutWorkspaceNestedInput
+    departments?: DepartmentUncheckedUpdateManyWithoutWorkspaceNestedInput
+    projects?: ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+    announcements?: AnnouncementUncheckedUpdateManyWithoutWorkspaceNestedInput
+  }
+
+  export type UserUpsertWithoutOrganizedMeetingsInput = {
+    update: XOR<UserUpdateWithoutOrganizedMeetingsInput, UserUncheckedUpdateWithoutOrganizedMeetingsInput>
+    create: XOR<UserCreateWithoutOrganizedMeetingsInput, UserUncheckedCreateWithoutOrganizedMeetingsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutOrganizedMeetingsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutOrganizedMeetingsInput, UserUncheckedUpdateWithoutOrganizedMeetingsInput>
+  }
+
+  export type UserUpdateWithoutOrganizedMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutUsersNestedInput
+    department?: DepartmentUpdateOneWithoutUsersNestedInput
+    reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
+    directReports?: UserUpdateManyWithoutReportingManagerNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutOrganizedMeetingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
+  }
+
+  export type MeetingParticipantUpsertWithWhereUniqueWithoutMeetingInput = {
+    where: MeetingParticipantWhereUniqueInput
+    update: XOR<MeetingParticipantUpdateWithoutMeetingInput, MeetingParticipantUncheckedUpdateWithoutMeetingInput>
+    create: XOR<MeetingParticipantCreateWithoutMeetingInput, MeetingParticipantUncheckedCreateWithoutMeetingInput>
+  }
+
+  export type MeetingParticipantUpdateWithWhereUniqueWithoutMeetingInput = {
+    where: MeetingParticipantWhereUniqueInput
+    data: XOR<MeetingParticipantUpdateWithoutMeetingInput, MeetingParticipantUncheckedUpdateWithoutMeetingInput>
+  }
+
+  export type MeetingParticipantUpdateManyWithWhereWithoutMeetingInput = {
+    where: MeetingParticipantScalarWhereInput
+    data: XOR<MeetingParticipantUpdateManyMutationInput, MeetingParticipantUncheckedUpdateManyWithoutMeetingInput>
+  }
+
+  export type MeetingCreateWithoutParticipantsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutMeetingsInput
+    organizer: UserCreateNestedOneWithoutOrganizedMeetingsInput
+  }
+
+  export type MeetingUncheckedCreateWithoutParticipantsInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    workspaceId: string
+    organizerId: string
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingCreateOrConnectWithoutParticipantsInput = {
+    where: MeetingWhereUniqueInput
+    create: XOR<MeetingCreateWithoutParticipantsInput, MeetingUncheckedCreateWithoutParticipantsInput>
+  }
+
+  export type UserCreateWithoutMeetingParticipationsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    workspace: WorkspaceCreateNestedOneWithoutUsersInput
+    department?: DepartmentCreateNestedOneWithoutUsersInput
+    reportingManager?: UserCreateNestedOneWithoutDirectReportsInput
+    directReports?: UserCreateNestedManyWithoutReportingManagerInput
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberCreateNestedManyWithoutUserInput
+    createdTasks?: TaskCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingCreateNestedManyWithoutOrganizerInput
+  }
+
+  export type UserUncheckedCreateWithoutMeetingParticipationsInput = {
+    id?: string
+    name?: string | null
+    email: string
+    passwordHash: string
+    role: $Enums.Role
+    workspaceId: string
+    employeeId?: string | null
+    phone?: string | null
+    position?: string | null
+    joiningDate?: Date | string | null
+    departmentId?: string | null
+    reportingManagerId?: string | null
+    isActive?: boolean
+    mustChangePassword?: boolean
+    lastLogin?: Date | string | null
+    profilePhoto?: string | null
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    directReports?: UserUncheckedCreateNestedManyWithoutReportingManagerInput
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    attendances?: AttendanceUncheckedCreateNestedManyWithoutUserInput
+    createdProjects?: ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+    managedProjects?: ProjectUncheckedCreateNestedManyWithoutManagerInput
+    projectMembers?: ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+    createdTasks?: TaskUncheckedCreateNestedManyWithoutCreatedByInput
+    createdAnnouncements?: AnnouncementUncheckedCreateNestedManyWithoutCreatedByInput
+    announcementTargets?: AnnouncementTargetUserUncheckedCreateNestedManyWithoutUserInput
+    announcementReads?: AnnouncementReadUncheckedCreateNestedManyWithoutUserInput
+    googleAccount?: GoogleAccountUncheckedCreateNestedOneWithoutUserInput
+    organizedMeetings?: MeetingUncheckedCreateNestedManyWithoutOrganizerInput
+  }
+
+  export type UserCreateOrConnectWithoutMeetingParticipationsInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutMeetingParticipationsInput, UserUncheckedCreateWithoutMeetingParticipationsInput>
+  }
+
+  export type MeetingUpsertWithoutParticipantsInput = {
+    update: XOR<MeetingUpdateWithoutParticipantsInput, MeetingUncheckedUpdateWithoutParticipantsInput>
+    create: XOR<MeetingCreateWithoutParticipantsInput, MeetingUncheckedCreateWithoutParticipantsInput>
+    where?: MeetingWhereInput
+  }
+
+  export type MeetingUpdateToOneWithWhereWithoutParticipantsInput = {
+    where?: MeetingWhereInput
+    data: XOR<MeetingUpdateWithoutParticipantsInput, MeetingUncheckedUpdateWithoutParticipantsInput>
+  }
+
+  export type MeetingUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutMeetingsNestedInput
+    organizer?: UserUpdateOneRequiredWithoutOrganizedMeetingsNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutParticipantsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    organizerId?: StringFieldUpdateOperationsInput | string
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type UserUpsertWithoutMeetingParticipationsInput = {
+    update: XOR<UserUpdateWithoutMeetingParticipationsInput, UserUncheckedUpdateWithoutMeetingParticipationsInput>
+    create: XOR<UserCreateWithoutMeetingParticipationsInput, UserUncheckedCreateWithoutMeetingParticipationsInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutMeetingParticipationsInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutMeetingParticipationsInput, UserUncheckedUpdateWithoutMeetingParticipationsInput>
+  }
+
+  export type UserUpdateWithoutMeetingParticipationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutUsersNestedInput
+    department?: DepartmentUpdateOneWithoutUsersNestedInput
+    reportingManager?: UserUpdateOneWithoutDirectReportsNestedInput
+    directReports?: UserUpdateManyWithoutReportingManagerNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutMeetingParticipationsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: StringFieldUpdateOperationsInput | string
+    passwordHash?: StringFieldUpdateOperationsInput | string
+    role?: EnumRoleFieldUpdateOperationsInput | $Enums.Role
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    employeeId?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    position?: NullableStringFieldUpdateOperationsInput | string | null
+    joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    profilePhoto?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    directReports?: UserUncheckedUpdateManyWithoutReportingManagerNestedInput
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    attendances?: AttendanceUncheckedUpdateManyWithoutUserNestedInput
+    createdProjects?: ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+    managedProjects?: ProjectUncheckedUpdateManyWithoutManagerNestedInput
+    projectMembers?: ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+    createdTasks?: TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+    createdAnnouncements?: AnnouncementUncheckedUpdateManyWithoutCreatedByNestedInput
+    announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
+    announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
+    googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
   }
 
   export type UserCreateManyWorkspaceInput = {
@@ -24894,6 +29299,23 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type MeetingCreateManyWorkspaceInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    organizerId: string
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutWorkspaceInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -24924,6 +29346,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutWorkspaceInput = {
@@ -24956,6 +29380,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -25100,6 +29526,59 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MeetingUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    organizer?: UserUpdateOneRequiredWithoutOrganizedMeetingsNestedInput
+    participants?: MeetingParticipantUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    organizerId?: StringFieldUpdateOperationsInput | string
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: MeetingParticipantUncheckedUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutWorkspaceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    organizerId?: StringFieldUpdateOperationsInput | string
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyDepartmentInput = {
     id?: string
     name?: string | null
@@ -25151,6 +29630,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutDepartmentInput = {
@@ -25183,6 +29664,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutDepartmentInput = {
@@ -25336,6 +29819,31 @@ export namespace Prisma {
     readAt?: Date | string
   }
 
+  export type MeetingCreateManyOrganizerInput = {
+    id?: string
+    title: string
+    description?: string | null
+    agenda?: string | null
+    workspaceId: string
+    meetingType?: $Enums.MeetingType
+    status?: $Enums.MeetingStatus
+    googleEventId?: string | null
+    googleMeetSpaceId?: string | null
+    meetingUrl?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingParticipantCreateManyUserInput = {
+    id?: string
+    meetingId: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type UserUpdateWithoutReportingManagerInput = {
     id?: StringFieldUpdateOperationsInput | string
     name?: NullableStringFieldUpdateOperationsInput | string | null
@@ -25366,6 +29874,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutReportingManagerInput = {
@@ -25398,6 +29908,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutReportingManagerInput = {
@@ -25451,6 +29963,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateWithoutCreatedByInput = {
@@ -25483,6 +29997,8 @@ export namespace Prisma {
     announcementTargets?: AnnouncementTargetUserUncheckedUpdateManyWithoutUserNestedInput
     announcementReads?: AnnouncementReadUncheckedUpdateManyWithoutUserNestedInput
     googleAccount?: GoogleAccountUncheckedUpdateOneWithoutUserNestedInput
+    organizedMeetings?: MeetingUncheckedUpdateManyWithoutOrganizerNestedInput
+    meetingParticipations?: MeetingParticipantUncheckedUpdateManyWithoutUserNestedInput
   }
 
   export type UserUncheckedUpdateManyWithoutCreatedByInput = {
@@ -25784,6 +30300,83 @@ export namespace Prisma {
     readAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type MeetingUpdateWithoutOrganizerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    workspace?: WorkspaceUpdateOneRequiredWithoutMeetingsNestedInput
+    participants?: MeetingParticipantUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateWithoutOrganizerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    participants?: MeetingParticipantUncheckedUpdateManyWithoutMeetingNestedInput
+  }
+
+  export type MeetingUncheckedUpdateManyWithoutOrganizerInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    agenda?: NullableStringFieldUpdateOperationsInput | string | null
+    workspaceId?: StringFieldUpdateOperationsInput | string
+    meetingType?: EnumMeetingTypeFieldUpdateOperationsInput | $Enums.MeetingType
+    status?: EnumMeetingStatusFieldUpdateOperationsInput | $Enums.MeetingStatus
+    googleEventId?: NullableStringFieldUpdateOperationsInput | string | null
+    googleMeetSpaceId?: NullableStringFieldUpdateOperationsInput | string | null
+    meetingUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingParticipantUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    meeting?: MeetingUpdateOneRequiredWithoutParticipantsNestedInput
+  }
+
+  export type MeetingParticipantUncheckedUpdateWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    meetingId?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingParticipantUncheckedUpdateManyWithoutUserInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    meetingId?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type TimerSegmentCreateManyAttendanceInput = {
     id?: string
     startedAt: Date | string
@@ -25934,6 +30527,38 @@ export namespace Prisma {
     userId?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     readAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingParticipantCreateManyMeetingInput = {
+    id?: string
+    userId: string
+    responseStatus?: $Enums.ParticipantResponseStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MeetingParticipantUpdateWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutMeetingParticipationsNestedInput
+  }
+
+  export type MeetingParticipantUncheckedUpdateWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MeetingParticipantUncheckedUpdateManyWithoutMeetingInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    userId?: StringFieldUpdateOperationsInput | string
+    responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

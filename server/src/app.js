@@ -80,6 +80,9 @@ app.use('/api/google', require('./modules/google/google.routes'));
 // Email module (Gmail API)
 app.use('/api/email', require('./modules/email/email.routes'));
 
+// Meetings module (Google Calendar & Meet API)
+app.use('/api/meetings', require('./modules/meetings/meeting.routes'));
+
 // Fallback for task endpoints used by the client UI
 app.get('/api/tasks', (req, res, next) => {
   if (req.method === 'GET') {

@@ -1,4 +1,7 @@
 import { useAuth } from '../../context/AuthContext';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import api from '../../utils/api';
 
 // ─── Empty-state icons ────────────────────────────────────────────────────────
 
@@ -43,30 +46,21 @@ function ClockIcon() {
     </svg>
   );
 }
-function CalCheckIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-      <rect x="3" y="4" width="18" height="18" rx="2" />
-      <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" />
-      <line x1="3" y1="10" x2="21" y2="10" /><polyline points="9 16 11 18 15 14" />
-    </svg>
-  );
-}
 
 // ─── DashboardCard ────────────────────────────────────────────────────────────
 
 function DashboardCard({ icon, title, color, badge, children }) {
   return (
-    <div className="dash-card card">
-      <div className="card-body">
+    <div className="dash-card card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <div className="card-body" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
         <div className="dash-card-header">
           <div className="dash-card-icon" style={{ background: color + '18', color }}>
             {icon}
           </div>
           <h4 className="dash-card-title">{title}</h4>
-          {badge && <span className="badge badge-neutral dash-card-badge">{badge}</span>}
+          {badge !== undefined && <span className="badge badge-neutral dash-card-badge">{badge}</span>}
         </div>
-        <div className="dash-card-body">{children}</div>
+        <div className="dash-card-body" style={{ flex: 1 }}>{children}</div>
       </div>
     </div>
   );
@@ -76,7 +70,7 @@ function DashboardCard({ icon, title, color, badge, children }) {
 
 function EmptyState({ label }) {
   return (
-    <div className="dash-empty">
+    <div className="dash-empty" style={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2" opacity="0.3">
         <rect x="2" y="2" width="20" height="20" rx="4" />
         <line x1="8" y1="12" x2="16" y2="12" /><line x1="12" y1="8" x2="12" y2="16" />
@@ -90,97 +84,151 @@ function EmptyState({ label }) {
 
 export default function HomePage() {
   const { user } = useAuth();
+  const [attendance, setAttendance] = useState(null);
+  const [tasks, setTasks] = useState([]);
+  const [projects, setProjects] = useState([]);
+  const [meetings, setMeetings] = useState([]);
+  const [announcements, setAnnouncements] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const now      = new Date();
-  const hour     = now.getHours();
-  const greeting =
-    hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const [attRes, tasksRes, projRes, meetRes, annRes] = await Promise.all([
+          api.get('/attendance/today').catch(() => ({ data: { data: null } })),
+          api.get('/tasks?limit=5').catch(() => ({ data: { data: { tasks: [] } } })),
+          api.get('/projects?limit=5').catch(() => ({ data: { data: [] } })),
+          api.get('/meetings?limit=5').catch(() => ({ data: { data: [] } })),
+          api.get('/announcements?limit=5').catch(() => ({ data: { data: [] } })),
+        ]);
+        
+        setAttendance(attRes.data?.data);
+        setTasks(tasksRes.data?.data?.tasks || tasksRes.data?.data || []);
+        setProjects(projRes.data?.data?.projects || projRes.data?.data || []);
+        setMeetings(meetRes.data?.data?.meetings || (Array.isArray(meetRes.data?.data) ? meetRes.data?.data : []));
+        setAnnouncements(annRes.data?.data || []);
+      } catch (error) {
+        console.error('Error fetching dashboard data', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const formatDuration = (seconds) => {
+    if (!seconds) return '00:00';
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    return `${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m`;
+  };
+
+  const now = new Date();
+  const hour = now.getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
   return (
-    <div className="home-page animate-fade-in">
+    <div className="home-page animate-fade-in" style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto' }}>
+      <header className="home-header" style={{ marginBottom: '2.5rem' }}>
+        <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>
+          {greeting}, {user?.name?.split(' ')[0]} 👋
+        </h1>
+        <p className="text-secondary" style={{ fontSize: '1.1rem' }}>Here is what's happening in your workspace today.</p>
+      </header>
 
-      {/* ── Welcome Hero ───────────────────────────────────────────────── */}
-      <div className="home-hero">
-        <div>
-          <h1 className="home-greeting">
-            {greeting}, <span className="text-primary">{user?.name?.split(' ')[0]}</span> 👋
-          </h1>
-          <p className="text-secondary mt-1">
-            Here's your workspace overview for today.
-          </p>
-        </div>
-        <div className="home-date">
-          <p className="home-date-day">
-            {now.toLocaleDateString('en-IN', { weekday: 'long' })}
-          </p>
-          <p className="home-date-full">
-            {now.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' })}
-          </p>
-        </div>
+      {/* Quick Actions */}
+      <div style={{ display: 'flex', gap: '1rem', marginBottom: '2.5rem', flexWrap: 'wrap' }}>
+        <Link to="/app/attendance" className="btn btn-primary" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>⏱️ Start Attendance</Link>
+        <Link to="/app/tasks" className="btn btn-outline" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>📝 Open Tasks</Link>
+        <Link to="/app/projects" className="btn btn-outline" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>📁 View Projects</Link>
+        <Link to="/app/meetings" className="btn btn-outline" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>📅 Join Meeting</Link>
+        <Link to="/app/announcements" className="btn btn-outline" style={{ padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: 600 }}>📣 Announcements</Link>
       </div>
 
-      {/* ── 6 Dashboard Cards ─────────────────────────────────────────── */}
-      <div className="dash-cards-grid">
-
-        <DashboardCard
-          icon={<TaskIcon />}
-          title="Today's Tasks"
-          color="#4461F2"
-          badge="0 open"
-        >
-          <EmptyState label="No tasks assigned for today. Tasks module coming soon." />
-        </DashboardCard>
-
-        <DashboardCard
-          icon={<ProjectIcon />}
-          title="Active Projects"
-          color="#8B5CF6"
-          badge="0 active"
-        >
-          <EmptyState label="You haven't been added to any projects yet." />
-        </DashboardCard>
-
-        <DashboardCard
-          icon={<MeetingIcon />}
-          title="Upcoming Meetings"
-          color="#10B981"
-          badge="0 today"
-        >
-          <EmptyState label="No meetings scheduled. Meetings module coming soon." />
-        </DashboardCard>
-
-        <DashboardCard
-          icon={<BellIcon />}
-          title="Notifications"
-          color="#F59E0B"
-        >
-          <EmptyState label="You're all caught up! No new notifications." />
-        </DashboardCard>
-
-        <DashboardCard
-          icon={<ClockIcon />}
-          title="Working Hours Today"
-          color="#06B6D4"
-        >
-          <div className="dash-stat-display">
-            <span className="dash-stat-big">0h 0m</span>
-            <span className="text-secondary text-xs">Time Tracker module coming soon</span>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '1.5rem', gridAutoRows: 'minmax(200px, auto)' }}>
+        
+        {/* Working Hours & Attendance */}
+        <DashboardCard icon={<ClockIcon />} title="Attendance" color="#3B82F6">
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%' }}>
+            <div>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Today's Working Hours</p>
+              <h2 style={{ fontSize: '2.5rem', fontWeight: 800, margin: '0.5rem 0', color: 'var(--text-primary)' }}>
+                {formatDuration(attendance?.totalSeconds || 0)}
+              </h2>
+            </div>
+            <div style={{ textAlign: 'right' }}>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)' }}>Status</p>
+              <span className={`badge ${attendance?.status === 'WORKING' ? 'badge-success' : 'badge-neutral'}`} style={{ marginTop: '0.5rem', display: 'inline-block', fontSize: '0.85rem', padding: '0.5rem 0.75rem' }}>
+                {attendance?.status?.replace('_', ' ') || 'Not Started'}
+              </span>
+            </div>
           </div>
         </DashboardCard>
 
-        <DashboardCard
-          icon={<CalCheckIcon />}
-          title="Attendance Status"
-          color="#EF4444"
-        >
-          <div className="dash-stat-display">
-            <span className="dash-status-chip dash-status-absent">Not Checked In</span>
-            <span className="text-secondary text-xs">Attendance module coming soon</span>
-          </div>
+        {/* Assigned Tasks */}
+        <DashboardCard icon={<TaskIcon />} title="Assigned Tasks" color="#10B981" badge={tasks.length}>
+          {loading ? <div className="dash-empty"><div className="spinner" /></div> : tasks.length === 0 ? <EmptyState label="No assigned tasks" /> : (
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {tasks.slice(0, 3).map(task => (
+                <li key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                  <div>
+                    <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{task.title}</strong>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Due: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}</span>
+                  </div>
+                  <span className={`badge ${task.status === 'COMPLETED' ? 'badge-success' : 'badge-primary'}`} style={{ fontSize: '0.75rem' }}>{task.status?.replace('_', ' ')}</span>
+                </li>
+              ))}
+            </ul>
+          )}
         </DashboardCard>
 
-      </div>
+        {/* Current Projects */}
+        <DashboardCard icon={<ProjectIcon />} title="Current Projects" color="#8B5CF6" badge={projects.length}>
+          {loading ? <div className="dash-empty"><div className="spinner" /></div> : projects.length === 0 ? <EmptyState label="No active projects" /> : (
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {projects.slice(0, 3).map(proj => (
+                <li key={proj.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                    <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{proj.name}</strong>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{proj.progress || 0}%</span>
+                  </div>
+                  <div style={{ width: '100%', backgroundColor: 'var(--bg-body)', height: '8px', borderRadius: '4px', overflow: 'hidden' }}>
+                    <div style={{ width: `${proj.progress || 0}%`, backgroundColor: '#8B5CF6', height: '100%', borderRadius: '4px' }}></div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          )}
+        </DashboardCard>
 
+        {/* Upcoming Meetings */}
+        <DashboardCard icon={<MeetingIcon />} title="Upcoming Meetings" color="#F59E0B" badge={meetings.length}>
+          {loading ? <div className="dash-empty"><div className="spinner" /></div> : meetings.length === 0 ? <EmptyState label="No upcoming meetings" /> : (
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {meetings.slice(0, 3).map(meet => (
+                <li key={meet.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{meet.title}</strong>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{new Date(meet.startTime).toLocaleString()}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </DashboardCard>
+
+        {/* Announcements */}
+        <DashboardCard icon={<BellIcon />} title="Latest Announcements" color="#EF4444" badge={announcements.length}>
+          {loading ? <div className="dash-empty"><div className="spinner" /></div> : announcements.length === 0 ? <EmptyState label="No recent announcements" /> : (
+            <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {announcements.slice(0, 3).map(ann => (
+                <li key={ann.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{ann.title}</strong>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{new Date(ann.createdAt).toLocaleDateString()}</span>
+                </li>
+              ))}
+            </ul>
+          )}
+        </DashboardCard>
+      </div>
     </div>
   );
 }

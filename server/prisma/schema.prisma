@@ -22,6 +22,7 @@ model Workspace {
   departments Department[]
   projects    Project[]
   announcements Announcement[]
+  meetings    Meeting[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -90,6 +91,8 @@ model User {
   announcementTargets AnnouncementTargetUser[]
   announcementReads AnnouncementRead[]
   googleAccount GoogleAccount?
+  organizedMeetings Meeting[] @relation("MeetingOrganizer")
+  meetingParticipations MeetingParticipant[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -299,4 +302,72 @@ model GoogleAccount {
   scope        String?
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+}
+
+// ─── Meeting Module ────────────────────────────────────────────────────────────
+
+enum MeetingStatus {
+  UPCOMING
+  ONGOING
+  COMPLETED
+  CANCELLED
+}
+
+enum MeetingType {
+  SCHEDULED
+  INSTANT
+}
+
+enum ParticipantResponseStatus {
+  INVITED
+  ACCEPTED
+  DECLINED
+  JOINED
+}
+
+model Meeting {
+  id                String       @id @default(cuid())
+  title             String
+  description       String?
+  agenda            String?
+  
+  workspaceId       String
+  workspace         Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  organizerId       String
+  organizer         User         @relation("MeetingOrganizer", fields: [organizerId], references: [id], onDelete: Cascade)
+
+  meetingType       MeetingType  @default(SCHEDULED)
+  status            MeetingStatus @default(UPCOMING)
+
+  googleEventId     String?
+  googleMeetSpaceId String?
+  meetingUrl        String?
+
+  startTime         DateTime
+  endTime           DateTime
+
+  participants      MeetingParticipant[]
+
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  @@index([workspaceId])
+  @@index([organizerId])
+}
+
+model MeetingParticipant {
+  id             String                   @id @default(cuid())
+  meetingId      String
+  meeting        Meeting                  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  userId         String
+  user           User                     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  responseStatus ParticipantResponseStatus @default(INVITED)
+
+  createdAt      DateTime                 @default(now())
+  updatedAt      DateTime                 @updatedAt
+
+  @@unique([meetingId, userId])
 }

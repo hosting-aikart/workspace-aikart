@@ -15,7 +15,8 @@ const {
  */
 const connect = (req, res) => {
   try {
-    const url = getAuthUrl(req.user.id);
+    const stateObj = JSON.stringify({ userId: req.user.id, role: req.user.role });
+    const url = getAuthUrl(stateObj);
     return res.redirect(url);
   } catch (err) {
     console.error('[google.controller] connect:', err.message);
@@ -30,12 +31,24 @@ const connect = (req, res) => {
  * browser back to the client email page.
  */
 const callback = async (req, res) => {
-  const { code, state: userId, error } = req.query;
+  const { code, state, error } = req.query;
+
+  let userId = null;
+  let role = 'EMPLOYEE';
+  try {
+    const parsedState = JSON.parse(state);
+    userId = parsedState.userId;
+    role = parsedState.role;
+  } catch (err) {
+    userId = state; // Fallback for old requests
+  }
+
+  const clientUrl = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
+  const targetPath = role === 'ADMIN' ? '/admin/email' : '/app/email';
 
   if (error) {
     // User denied access or another OAuth error
-    const clientUrl = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
-    return res.redirect(`${clientUrl}/app/email?google_error=${encodeURIComponent(error)}`);
+    return res.redirect(`${clientUrl}${targetPath}?google_error=${encodeURIComponent(error)}`);
   }
 
   if (!code || !userId) {
@@ -44,12 +57,10 @@ const callback = async (req, res) => {
 
   try {
     await handleCallback(code, userId);
-    const clientUrl = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
-    return res.redirect(`${clientUrl}/app/email?google_connected=1`);
+    return res.redirect(`${clientUrl}${targetPath}?google_connected=1`);
   } catch (err) {
     console.error('[google.controller] callback:', err.message);
-    const clientUrl = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
-    return res.redirect(`${clientUrl}/app/email?google_error=${encodeURIComponent(err.message)}`);
+    return res.redirect(`${clientUrl}${targetPath}?google_error=${encodeURIComponent(err.message)}`);
   }
 };
 
