@@ -11,6 +11,7 @@ const projectRoutes = require('./modules/project/project.routes');
 const taskRoutes = require('./modules/tasks/tasks.routes');
 
 const app = express();
+app.set('trust proxy', 1);
 
 // Security
 app.use(
@@ -20,7 +21,7 @@ app.use(
 );
 
 const allowedOrigins = [
-  process.env.CLIENT_ORIGIN,
+  process.env.CLIENT_ORIGIN?.replace(/\/+$/, ''),
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:3000',
@@ -34,13 +35,14 @@ app.use(
     origin: (origin, callback) => {
       // Allow requests with no origin (like mobile apps, curl, or server-to-server)
       if (!origin) return callback(null, true);
+      const cleanOrigin = origin.replace(/\/+$/, '');
       if (
-        /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(origin) ||
-        allowedOrigins.includes(origin)
+        /^http:\/\/(localhost|127\.0\.0\.1):\d+$/.test(cleanOrigin) ||
+        allowedOrigins.includes(cleanOrigin)
       ) {
         return callback(null, true);
       }
-      return callback(new Error(`CORS: origin ${origin} not allowed`));
+      return callback(null, false);
     },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -90,4 +92,14 @@ app.get('/api/tasks', (req, res, next) => {
   }
   return next();
 });
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  console.error('Express Error:', err);
+  res.status(err.status || 500).json({
+    success: false,
+    message: err.message || 'Internal Server Error',
+  });
+});
+
 module.exports = app;
