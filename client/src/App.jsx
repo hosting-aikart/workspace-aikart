@@ -34,12 +34,7 @@ import ProjectDetailPage from './pages/projects/ProjectDetailPage';
 import MeetingsPage from './pages/meetings/MeetingsPage';
 import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
 import EmailPage from './pages/email/EmailPage';
-import {
-  ChatPage,
-  FilesPage,
-  DirectoryPage,
-  InvoicesPage,
-} from './pages/PlaceholderPages';
+import DirectoryPage from './pages/directory/DirectoryPage';
 
 /**
  * RoleBasedRoot
@@ -93,6 +88,7 @@ export default function App() {
             <Route path="dashboard" element={<AdminDashboardPage />} />
             <Route path="employees" element={<EmployeesPage />} />
             <Route path="departments" element={<DepartmentsPage />} />
+            <Route path="directory" element={<DirectoryPage />} />
             <Route path="roles" element={<RolesPage />} />
             <Route path="projects" element={<ProjectsPageAdmin />} />
             <Route path="tasks" element={<TasksPageAdmin />} />
@@ -102,10 +98,6 @@ export default function App() {
             <Route path="reports" element={<ReportsPageAdmin />} />
             <Route path="email" element={<EmailPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
-            <Route path="chat" element={<ChatPage />} />
-            <Route path="files" element={<FilesPage />} />
-            <Route path="directory" element={<DirectoryPage />} />
-            <Route path="invoices" element={<InvoicesPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
 
@@ -120,6 +112,7 @@ export default function App() {
           >
             <Route index element={<HomePage />} />
             <Route path="dashboard" element={<HomePage />} />
+            <Route path="directory" element={<DirectoryPage />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="projects" element={<ProjectsListPage />} />
             <Route path="projects/:id" element={<ProjectDetailPage />} />
@@ -129,10 +122,6 @@ export default function App() {
             <Route path="announcements" element={<AnnouncementsPage />} />
             <Route path="email" element={<EmailPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
-            <Route path="chat" element={<ChatPage />} />
-            <Route path="files" element={<FilesPage />} />
-            <Route path="directory" element={<DirectoryPage />} />
-            <Route path="invoices" element={<InvoicesPage />} />
             <Route path="settings" element={<SettingsPage />} />
           </Route>
 

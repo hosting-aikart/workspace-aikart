@@ -114,8 +114,11 @@ export default function RolesPage() {
       ) : null}
 
       {isLoading ? (
-        <div className="card" style={{ padding: '1rem' }}>
-          <p className="text-secondary">Loading roles…</p>
+        <div className="card" style={{ padding: '1.25rem', display: 'grid', gap: '0.75rem' }}>
+          <div className="skeleton-box" style={{ width: '100%', height: '40px', borderRadius: '8px' }} />
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="skeleton-box" style={{ width: '100%', height: '48px', borderRadius: '6px' }} />
+          ))}
         </div>
       ) : null}
 

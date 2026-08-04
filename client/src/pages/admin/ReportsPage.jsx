@@ -107,8 +107,19 @@ export default function ReportsPage() {
       )}
 
       {isLoading ? (
-        <div className="card" style={{ padding: '2rem', textAlign: 'center' }}>
-          <p className="text-secondary">Generating system reports analytics…</p>
+        <div style={{ display: 'grid', gap: '1.5rem' }}>
+          <div className="grid grid-4" style={{ gap: '1rem' }}>
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="card" style={{ padding: '1.25rem', display: 'grid', gap: '0.5rem' }}>
+                <div className="skeleton-box" style={{ width: '60%', height: '14px' }} />
+                <div className="skeleton-box" style={{ width: '40%', height: '24px' }} />
+              </div>
+            ))}
+          </div>
+          <div className="card" style={{ padding: '1.5rem', display: 'grid', gap: '1rem' }}>
+            <div className="skeleton-box" style={{ width: '50%', height: '20px' }} />
+            <div className="skeleton-box" style={{ width: '100%', height: '180px', borderRadius: '8px' }} />
+          </div>
         </div>
       ) : (
         <>
