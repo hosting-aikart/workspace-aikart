@@ -5,29 +5,29 @@ const prismaConfig = require('../src/config/prisma');
 const { createTask } = require('../src/modules/tasks/tasks.service');
 const { createTaskHandler } = require('../src/modules/tasks/tasks.controller');
 
-test('createTask rejects when the current user is not a project member', async () => {
+test('createTask allows EMPLOYEE to create tasks even if they are not a project member', async () => {
   const mockPrisma = {
     project: {
       findFirst: async () => ({ id: 'project-1', workspaceId: 'ws1' }),
     },
-    projectMember: {
-      findFirst: async () => null,
-    },
     task: {
-      create: async () => ({ id: 'task-1' }),
+      create: async ({ data }) => ({
+        id: 'task-1',
+        title: data.title,
+        projectId: data.projectId,
+      }),
     },
   };
 
   prismaConfig.getPrisma = () => mockPrisma;
 
-  await assert.rejects(
-    () =>
-      createTask('ws1', 'user-1', 'EMPLOYEE', {
-        projectId: 'project-1',
-        title: 'Write project brief',
-      }),
-    /member/i,
-  );
+  const task = await createTask('ws1', 'user-1', 'EMPLOYEE', {
+    projectId: 'project-1',
+    title: 'Write project brief',
+  });
+
+  assert.equal(task.id, 'task-1');
+  assert.equal(task.title, 'Write project brief');
 });
 
 test('createTaskHandler returns the created task with a success payload', async () => {

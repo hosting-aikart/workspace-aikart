@@ -24,18 +24,6 @@ const ensureProjectAccess = async (
     throw new Error('Project not found in this workspace');
   }
 
-  if (userRole === 'ADMIN' || userRole === 'MANAGER') {
-    return project;
-  }
-
-  const membership = await prisma.projectMember.findFirst({
-    where: { projectId, userId },
-  });
-
-  if (!membership) {
-    throw new Error('You must be a member of the project to manage tasks');
-  }
-
   return project;
 };
 
@@ -94,6 +82,8 @@ const createTask = async (workspaceId, userId, userRole, payload) => {
     },
   });
 
+  console.log(`[TASK OPERATION] User ID: ${userId} (${userRole}) created task ID: ${task.id} (Title: "${task.title}") under project ID: ${projectId}.`);
+
   return task;
 };
 
@@ -103,18 +93,8 @@ const getTasks = async (workspaceId, filters = {}, userId, userRole) => {
   const where = {
     project: {
       workspaceId,
-      OR: [
-        { createdById: userId },
-        { managerId: userId },
-        { members: { some: { userId } } },
-      ],
     },
   };
-
-  if (userRole === 'ADMIN') {
-    delete where.project.OR;
-    where.project.workspaceId = workspaceId;
-  }
 
   if (filters.projectId) {
     where.projectId = filters.projectId;
@@ -147,14 +127,6 @@ const getTaskById = async (workspaceId, taskId, userId, userRole) => {
       id: taskId,
       project: {
         workspaceId,
-        OR:
-          userRole === 'ADMIN'
-            ? undefined
-            : [
-                { createdById: userId },
-                { managerId: userId },
-                { members: { some: { userId } } },
-              ],
       },
     },
     include: {
@@ -175,14 +147,6 @@ const updateTask = async (workspaceId, taskId, userId, userRole, payload) => {
       id: taskId,
       project: {
         workspaceId,
-        OR:
-          userRole === 'ADMIN'
-            ? undefined
-            : [
-                { createdById: userId },
-                { managerId: userId },
-                { members: { some: { userId } } },
-              ],
       },
     },
     select: { id: true, projectId: true },
@@ -221,6 +185,8 @@ const updateTask = async (workspaceId, taskId, userId, userRole, payload) => {
     },
   });
 
+  console.log(`[TASK OPERATION] User ID: ${userId} (${userRole}) updated task ID: ${taskId}. Payload: ${JSON.stringify(payload)}`);
+
   return updatedTask;
 };
 
@@ -242,14 +208,6 @@ const deleteTask = async (workspaceId, taskId, userId, userRole) => {
       id: taskId,
       project: {
         workspaceId,
-        OR:
-          userRole === 'ADMIN'
-            ? undefined
-            : [
-                { createdById: userId },
-                { managerId: userId },
-                { members: { some: { userId } } },
-              ],
       },
     },
     select: { id: true, projectId: true },
@@ -270,6 +228,8 @@ const deleteTask = async (workspaceId, taskId, userId, userRole) => {
   await prisma.task.delete({
     where: { id: taskId },
   });
+
+  console.log(`[TASK OPERATION] User ID: ${userId} (${userRole}) deleted task ID: ${taskId}.`);
 
   return true;
 };
