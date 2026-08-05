@@ -109,6 +109,7 @@ export default function App() {
             <Route index element={<HomePage />} />
             <Route path="dashboard" element={<HomePage />} />
             <Route path="directory" element={<DirectoryPage />} />
+            <Route path="employees" element={<EmployeesPage />} />
             <Route path="profile" element={<ProfilePage />} />
             <Route path="projects" element={<ProjectsListPage />} />
             <Route path="projects/:id" element={<ProjectDetailPage />} />

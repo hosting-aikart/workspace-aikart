@@ -27,7 +27,7 @@ const createAnnouncement = async (workspaceId, createdById, payload, userRole = 
   let targetType = normalizeTargetType(payload.targetType);
   const status = normalizeStatus(payload.status);
 
-  if (userRole === 'MANAGER') {
+  if (userRole === 'MANAGER' || userRole === 'EMPLOYEE') {
     targetType = 'SELECTED_USERS';
   }
 

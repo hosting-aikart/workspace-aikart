@@ -11,7 +11,6 @@ const {
 const router = Router();
 
 router.use(requireAuth);
-router.use(requireRole('ADMIN', 'MANAGER'));
 
 router.post('/', createAnnouncementHandler);
 router.get('/', getAnnouncementsHandler);

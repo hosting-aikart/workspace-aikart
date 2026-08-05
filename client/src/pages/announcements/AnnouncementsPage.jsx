@@ -141,7 +141,7 @@ export default function AnnouncementsPage() {
         title="Announcements"
         description="View latest workspace announcements and broadcasts."
         action={
-          user?.role === 'MANAGER' ? (
+          (user?.role === 'MANAGER' || user?.role === 'EMPLOYEE') ? (
             <button
               className="btn btn-primary"
               onClick={() => setIsModalOpen(true)}

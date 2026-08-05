@@ -26,16 +26,21 @@ const {
 const router = Router();
 
 router.use(requireAuth);
-router.use(requireRole('ADMIN'));
+// Allow ADMIN and MANAGER to manage employees
+router.get('/employees', requireRole('ADMIN', 'MANAGER'), getUsers);
+router.get('/employees/:id', requireRole('ADMIN', 'MANAGER'), getEmployee);
+router.post('/employees', requireRole('ADMIN', 'MANAGER'), createEmployeeHandler);
+router.patch('/employees/:id', requireRole('ADMIN', 'MANAGER'), updateEmployeeHandler);
+router.patch('/employees/:id/role', requireRole('ADMIN', 'MANAGER'), updateEmployeeRoleHandler);
+router.patch('/employees/:id/status', requireRole('ADMIN', 'MANAGER'), updateEmployeeStatusHandler);
+router.delete('/employees/:id', requireRole('ADMIN', 'MANAGER'), deleteEmployeeHandler);
 
-router.get('/employees', getUsers);
-router.get('/employees/:id', getEmployee);
-router.post('/employees', createEmployeeHandler);
-router.patch('/employees/:id', updateEmployeeHandler);
-router.patch('/employees/:id/role', updateEmployeeRoleHandler);
-router.patch('/employees/:id/status', updateEmployeeStatusHandler);
-router.delete('/employees/:id', deleteEmployeeHandler);
-router.get('/departments', getDepartments);
+// Allow ADMIN and MANAGER to read departments and dashboard for EmployeesPage
+router.get('/departments', requireRole('ADMIN', 'MANAGER'), getDepartments);
+router.get('/dashboard', requireRole('ADMIN', 'MANAGER'), getStats);
+
+// Keep ADMIN only for the rest
+router.use(requireRole('ADMIN'));
 router.get('/departments/:id', getDepartment);
 router.post('/departments', createDepartmentHandler);
 router.patch('/departments/:id', updateDepartmentHandler);
