@@ -246,120 +246,126 @@ export default function ProfilePage() {
         />
       )}
 
-      {/* Page header */}
-      <div className="profile-page-header">
-        <h1 className="profile-page-title">My Profile</h1>
-        <p className="text-secondary text-sm">View your details and update your contact info or password.</p>
+      {/* Hero Banner Section */}
+      <div className="profile-hero-section">
+        <div className="profile-hero-banner"></div>
+        
+        <div className="profile-hero-content">
+          <div className="profile-avatar-container">
+            {displayPhoto ? (
+              <img
+                src={displayPhoto}
+                alt={profile.name}
+                className="profile-hero-avatar"
+              />
+            ) : (
+              <div className="profile-hero-avatar-initials">
+                {getInitials(profile?.name)}
+              </div>
+            )}
+            <button
+              type="button"
+              className="profile-hero-avatar-edit"
+              onClick={() => fileInputRef.current?.click()}
+              title="Change photo"
+              aria-label="Change profile photo"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                <circle cx="12" cy="13" r="4" />
+              </svg>
+            </button>
+            <input
+              ref={fileInputRef}
+              id="photo-upload-input"
+              type="file"
+              accept="image/*"
+              style={{ display: 'none' }}
+              onChange={handlePhotoChange}
+            />
+          </div>
+
+          <div className="profile-hero-info">
+            <h1 className="profile-hero-name">{profile?.name}</h1>
+            <span className="profile-hero-role badge badge-primary">{profile?.role}</span>
+          </div>
+        </div>
+
+        {photoFile && (
+          <div className="profile-photo-actions glass-panel">
+            <p className="text-secondary text-sm mb-3">Preview ready — click Upload to save</p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={handlePhotoUpload}
+                disabled={photoUploading}
+              >
+                {photoUploading ? (
+                  <>
+                    <span className="spinner spinner-sm" style={{ borderTopColor: '#fff', borderColor: 'rgba(255,255,255,0.3)' }} />
+                    Uploading…
+                  </>
+                ) : 'Upload Photo'}
+              </button>
+              <button
+                type="button"
+                className="btn btn-ghost"
+                onClick={() => { setPhotoFile(null); setPhotoPreview(null); }}
+                disabled={photoUploading}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      <div className="profile-grid">
+      <div className="profile-main-grid">
 
-        {/* ── Left: Photo + Identity ─────────────────────────────────────────── */}
-        <div className="profile-card card">
+        {/* ── Left: Identity & Work ─────────────────────────────────────────── */}
+        <div className="profile-glass-card card">
           <div className="card-body">
-
-            {/* Avatar */}
-            <div className="profile-avatar-section">
-              <div className="profile-avatar-wrapper">
-                {displayPhoto ? (
-                  <img
-                    src={displayPhoto}
-                    alt={profile.name}
-                    className="profile-avatar-img"
-                  />
-                ) : (
-                  <div className="profile-avatar-initials">
-                    {getInitials(profile?.name)}
-                  </div>
-                )}
-
-                {/* Camera overlay */}
-                <button
-                  type="button"
-                  className="profile-avatar-edit-btn"
-                  onClick={() => fileInputRef.current?.click()}
-                  title="Change photo"
-                  aria-label="Change profile photo"
-                >
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
-                    <circle cx="12" cy="13" r="4" />
-                  </svg>
-                </button>
-              </div>
-
-              <input
-                ref={fileInputRef}
-                id="photo-upload-input"
-                type="file"
-                accept="image/*"
-                style={{ display: 'none' }}
-                onChange={handlePhotoChange}
-              />
-
-              <div className="profile-avatar-name">
-                <h2>{profile?.name}</h2>
-                <span className="badge badge-primary">{profile?.role}</span>
-              </div>
-
-              {/* Photo actions */}
-              {photoFile && (
-                <div className="profile-photo-actions">
-                  <p className="text-secondary text-xs mb-2">Preview ready — click Upload to save</p>
-                  <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-                    <button
-                      type="button"
-                      className="btn btn-primary btn-sm"
-                      onClick={handlePhotoUpload}
-                      disabled={photoUploading}
-                    >
-                      {photoUploading ? (
-                        <>
-                          <span className="spinner spinner-sm" style={{ borderTopColor: '#fff', borderColor: 'rgba(255,255,255,0.3)' }} />
-                          Uploading…
-                        </>
-                      ) : 'Upload Photo'}
-                    </button>
-                    <button
-                      type="button"
-                      className="btn btn-ghost btn-sm"
-                      onClick={() => { setPhotoFile(null); setPhotoPreview(null); }}
-                      disabled={photoUploading}
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Identity Fields (read-only) */}
-            <div className="profile-identity-fields">
+            <h3 className="profile-section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+              </svg>
+              Identity & Work
+            </h3>
+            
+            <div className="profile-info-list">
               <InfoField label="Email Address" value={profile?.email} />
               <InfoField label="Employee ID"   value={profile?.employeeId} />
               <InfoField label="Position"      value={profile?.position} />
               <InfoField label="Department"    value={profile?.department?.name} />
-              <InfoField label="Role"          value={profile?.role} />
               <InfoField label="Joining Date"  value={formatDate(profile?.joiningDate)} />
               <InfoField label="Reports To"    value={profile?.reportingManager ? `${profile.reportingManager.name} (${profile.reportingManager.email})` : null} />
             </div>
 
-            {/* System Information (read-only) */}
-            <h4 className="profile-section-title mt-6 text-sm">System Information</h4>
-            <div className="profile-identity-fields">
+            <h4 className="profile-section-title mt-8 text-sm">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+              </svg>
+              System Information
+            </h4>
+            <div className="profile-info-list mt-4">
               <InfoField label="Workspace"     value={profile?.workspace?.name} />
               <InfoField label="Account Status" value={profile?.isActive ? 'Active' : 'Inactive'} />
               <InfoField label="Last Login"    value={profile?.lastLogin ? new Date(profile.lastLogin).toLocaleString() : 'Never'} />
               <InfoField label="Must Change Password" value={profile?.mustChangePassword ? 'Yes' : 'No'} />
             </div>
-
           </div>
         </div>
 
-        {/* ── Right: Editable Fields ─────────────────────────────────────────── */}
-        <div className="profile-card card">
+        {/* ── Right: Account Settings ─────────────────────────────────────────── */}
+        <div className="profile-glass-card card">
           <div className="card-body">
-            <h3 className="profile-section-title">Account Settings</h3>
+            <h3 className="profile-section-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="mr-2">
+                <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/>
+              </svg>
+              Account Settings
+            </h3>
             <p className="text-secondary text-sm mb-6">
               These fields can be edited. All other information is managed by your administrator.
             </p>
@@ -374,11 +380,7 @@ export default function ProfilePage() {
             )}
 
             <form onSubmit={handleSave} className="profile-form" noValidate>
-
-              {/* Read-only: Email (Moved to Identity Fields but kept hidden here to avoid layout break, or removed) */}
-              {/* Removed Email from editable form since it is read-only and now displayed on the left */}
-
-              {/* Editable: Phone */}
+              
               <div className="form-group">
                 <label htmlFor="profile-phone" className="form-label">Phone Number</label>
                 <div className="input-group">
@@ -397,7 +399,6 @@ export default function ProfilePage() {
                 </div>
               </div>
 
-              {/* Editable: New Password */}
               <div className="form-group">
                 <label htmlFor="profile-password" className="form-label">New Password</label>
                 <div className="input-group">
@@ -439,7 +440,6 @@ export default function ProfilePage() {
                 )}
               </div>
 
-              {/* Confirm Password (shown only when setting a new password) */}
               {password && (
                 <div className="form-group animate-slide-down">
                   <label htmlFor="profile-confirm-password" className="form-label">Confirm New Password</label>
@@ -464,13 +464,13 @@ export default function ProfilePage() {
                 </div>
               )}
 
-              {/* Save button */}
-              <div className="profile-form-footer">
+              <div className="profile-form-footer mt-6">
                 <button
                   id="profile-save-btn"
                   type="submit"
-                  className="btn btn-primary"
+                  className="btn btn-primary btn-lg"
                   disabled={saving}
+                  style={{ width: '100%' }}
                 >
                   {saving ? (
                     <>
