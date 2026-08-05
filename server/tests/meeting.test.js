@@ -8,12 +8,43 @@ const {
   respondToInvitation,
 } = require('../src/modules/meetings/meeting.service');
 
-test('createMeeting rejects when user role is EMPLOYEE', async () => {
-  const mockUser = { id: 'u1', role: 'EMPLOYEE' };
-  await assert.rejects(
-    () => createMeeting('ws1', mockUser, { title: 'Employee Sync' }),
-    /not authorized to create meetings/i
-  );
+test('createMeeting allows EMPLOYEE to create a meeting', async () => {
+  const mockUser = { id: 'emp1', role: 'EMPLOYEE', name: 'Employee User' };
+
+  const mockPrisma = {
+    user: {
+      findMany: async () => [
+        { id: 'emp1', email: 'emp1@workspace.com', name: 'Employee User' },
+        { id: 'emp2', email: 'emp2@workspace.com', name: 'Employee 2' },
+      ],
+    },
+    meeting: {
+      create: async ({ data }) => ({
+        id: 'm1',
+        title: data.title,
+        status: data.status,
+        meetingType: data.meetingType,
+        organizer: { id: mockUser.id, name: mockUser.name, email: 'emp1@workspace.com' },
+        participants: [],
+      }),
+    },
+    announcement: {
+      create: async () => ({ id: 'ann1' }),
+    },
+  };
+
+  prismaConfig.getPrisma = () => mockPrisma;
+
+  const meeting = await createMeeting('ws1', mockUser, {
+    title: 'Employee Sync',
+    meetingType: 'SCHEDULED',
+    startTime: '2026-08-05T10:00:00.000Z',
+    endTime: '2026-08-05T11:00:00.000Z',
+    participantIds: ['emp2'],
+  });
+
+  assert.equal(meeting.title, 'Employee Sync');
+  assert.equal(meeting.meetingType, 'SCHEDULED');
 });
 
 test('createMeeting creates a scheduled meeting with participants for ADMIN', async () => {

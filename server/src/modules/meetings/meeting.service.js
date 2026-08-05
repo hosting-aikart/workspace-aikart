@@ -133,7 +133,7 @@ async function createMeeting(workspaceId, user, data) {
   }
 
 
-  if (user.role === 'MANAGER') {
+  if (user.role === 'MANAGER' && meetingType !== 'INSTANT') {
     await validateManagerInvitees(prisma, workspaceId, user.id, participantIds);
   }
 
@@ -441,7 +441,7 @@ async function updateMeeting(workspaceId, user, meetingId, data) {
 
   // If participant list updated
   if (Array.isArray(participantIds)) {
-    if (user.role === 'MANAGER') {
+    if (user.role === 'MANAGER' && meeting.meetingType !== 'INSTANT') {
       await validateManagerInvitees(prisma, workspaceId, user.id, participantIds);
     }
     const uniqueIds = Array.from(new Set([...participantIds, meeting.organizerId]));
