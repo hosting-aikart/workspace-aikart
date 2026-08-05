@@ -150,8 +150,6 @@ export default function SettingsPage() {
 
       return updated;
     });
-    setNotice('Preferences updated successfully.');
-    setTimeout(() => setNotice(''), 2000);
   };
 
   return (
@@ -395,38 +393,193 @@ export default function SettingsPage() {
 
           {/* Preferences Tab */}
           {activeTab === 'preferences' && (
-            <div style={{ display: 'grid', gap: '1.25rem' }}>
+            <div style={{ display: 'grid', gap: '1.5rem' }}>
               <div>
-                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: 600 }}>System Notifications</h4>
-                <div style={{ display: 'grid', gap: '0.55rem' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={preferences.emailNotifications}
-                      onChange={(e) => handlePreferenceChange('emailNotifications', e.target.checked)}
-                    />
-                    <span style={{ fontSize: '0.9rem' }}>Receive email digests and broadcasts</span>
-                  </label>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                    <input
-                      type="checkbox"
-                      checked={preferences.pushNotifications}
-                      onChange={(e) => handlePreferenceChange('pushNotifications', e.target.checked)}
-                    />
-                    <span style={{ fontSize: '0.9rem' }}>Show desktop push alerts for checked items</span>
-                  </label>
+                <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text)' }}>System Notifications</h4>
+                <div style={{ display: 'grid', gap: '1rem' }}>
+                  {/* Toggle Row: Email Notifications */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.85rem 1rem',
+                    borderRadius: 'var(--radius-md)',
+                    background: 'var(--color-primary-light)',
+                    border: '1px solid var(--color-border)',
+                    transition: 'border-color var(--transition-fast)',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <span style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        width: '32px', height: '32px', borderRadius: 'var(--radius-sm)',
+                        background: preferences.emailNotifications ? 'var(--color-primary)' : 'var(--color-border)',
+                        transition: 'background var(--transition-fast)',
+                        flexShrink: 0,
+                      }}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                        </svg>
+                      </span>
+                      <div>
+                        <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 600, color: 'var(--color-text)' }}>Email Digests & Broadcasts</p>
+                        <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>Receive email digests and broadcasts</p>
+                      </div>
+                    </div>
+                    <button
+                      role="switch"
+                      aria-checked={preferences.emailNotifications}
+                      onClick={() => handlePreferenceChange('emailNotifications', !preferences.emailNotifications)}
+                      style={{
+                        position: 'relative',
+                        width: '46px',
+                        height: '26px',
+                        borderRadius: 'var(--radius-full)',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: 0,
+                        background: preferences.emailNotifications ? 'var(--color-primary)' : 'var(--color-border-strong)',
+                        transition: 'background var(--transition-normal)',
+                        flexShrink: 0,
+                        boxShadow: preferences.emailNotifications ? '0 0 0 3px var(--color-primary-border)' : 'none',
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        top: '3px',
+                        left: preferences.emailNotifications ? '23px' : '3px',
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        background: '#FFFFFF',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                        transition: 'left var(--transition-normal)',
+                      }} />
+                    </button>
+                  </div>
+
+                  {/* Toggle Row: Push Notifications */}
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '0.85rem 1rem',
+                    borderRadius: 'var(--radius-md)',
+                    background: 'var(--color-primary-light)',
+                    border: '1px solid var(--color-border)',
+                    transition: 'border-color var(--transition-fast)',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                      <span style={{
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        width: '32px', height: '32px', borderRadius: 'var(--radius-sm)',
+                        background: preferences.pushNotifications ? 'var(--color-primary)' : 'var(--color-border)',
+                        transition: 'background var(--transition-fast)',
+                        flexShrink: 0,
+                      }}>
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
+                        </svg>
+                      </span>
+                      <div>
+                        <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 600, color: 'var(--color-text)' }}>Desktop Push Alerts</p>
+                        <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>Show desktop push alerts for checked items</p>
+                      </div>
+                    </div>
+                    <button
+                      role="switch"
+                      aria-checked={preferences.pushNotifications}
+                      onClick={() => handlePreferenceChange('pushNotifications', !preferences.pushNotifications)}
+                      style={{
+                        position: 'relative',
+                        width: '46px',
+                        height: '26px',
+                        borderRadius: 'var(--radius-full)',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: 0,
+                        background: preferences.pushNotifications ? 'var(--color-primary)' : 'var(--color-border-strong)',
+                        transition: 'background var(--transition-normal)',
+                        flexShrink: 0,
+                        boxShadow: preferences.pushNotifications ? '0 0 0 3px var(--color-primary-border)' : 'none',
+                      }}
+                    >
+                      <span style={{
+                        position: 'absolute',
+                        top: '3px',
+                        left: preferences.pushNotifications ? '23px' : '3px',
+                        width: '20px',
+                        height: '20px',
+                        borderRadius: '50%',
+                        background: '#FFFFFF',
+                        boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                        transition: 'left var(--transition-normal)',
+                      }} />
+                    </button>
+                  </div>
                 </div>
               </div>
 
-              <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
-                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '0.95rem', fontWeight: 600 }}>Theme Preferences</h4>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
-                  <input
-                    type="checkbox"
-                    checked={preferences.darkMode}
-                    onChange={(e) => handlePreferenceChange('darkMode', e.target.checked)}
-                  />
-                  <span style={{ fontSize: '0.9rem' }}>Enable Dark Mode Theme</span>
+              <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1.25rem' }}>
+                <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text)' }}>Theme Preferences</h4>
+
+                {/* Toggle Row: Dark Mode */}
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0.85rem 1rem',
+                  borderRadius: 'var(--radius-md)',
+                  background: 'var(--color-primary-light)',
+                  border: '1px solid var(--color-border)',
+                  transition: 'border-color var(--transition-fast)',
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                    <span style={{
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      width: '32px', height: '32px', borderRadius: 'var(--radius-sm)',
+                      background: preferences.darkMode ? 'var(--color-primary)' : 'var(--color-border)',
+                      transition: 'background var(--transition-fast)',
+                      flexShrink: 0,
+                    }}>
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+                      </svg>
+                    </span>
+                    <div>
+                      <p style={{ margin: 0, fontSize: '0.88rem', fontWeight: 600, color: 'var(--color-text)' }}>Dark Mode Theme</p>
+                      <p style={{ margin: 0, fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>Enable dark mode for reduced eye strain</p>
+                    </div>
+                  </div>
+                  <button
+                    role="switch"
+                    aria-checked={preferences.darkMode}
+                    onClick={() => handlePreferenceChange('darkMode', !preferences.darkMode)}
+                    style={{
+                      position: 'relative',
+                      width: '46px',
+                      height: '26px',
+                      borderRadius: 'var(--radius-full)',
+                      border: 'none',
+                      cursor: 'pointer',
+                      padding: 0,
+                      background: preferences.darkMode ? 'var(--color-primary)' : 'var(--color-border-strong)',
+                      transition: 'background var(--transition-normal)',
+                      flexShrink: 0,
+                      boxShadow: preferences.darkMode ? '0 0 0 3px var(--color-primary-border)' : 'none',
+                    }}
+                  >
+                    <span style={{
+                      position: 'absolute',
+                      top: '3px',
+                      left: preferences.darkMode ? '23px' : '3px',
+                      width: '20px',
+                      height: '20px',
+                      borderRadius: '50%',
+                      background: '#FFFFFF',
+                      boxShadow: '0 1px 3px rgba(0,0,0,0.2)',
+                      transition: 'left var(--transition-normal)',
+                    }} />
+                  </button>
                 </div>
               </div>
             </div>
