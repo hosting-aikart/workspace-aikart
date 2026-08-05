@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import api from '../../utils/api';
 import EmailLayout from './components/EmailLayout';
 import GoogleConnectPrompt from './components/GoogleConnectPrompt';
+import { SkeletonList } from '../../components/common/Skeleton';
 
 /**
  * EmailPage
@@ -55,12 +56,10 @@ export default function EmailPage() {
     return () => { cancelled = true; };
   }, [justConnected]);
 
-  // ── Loading skeleton ────────────────────────────────────────────────────────
   if (status === null && !statusError) {
     return (
-      <div className="email-loading-screen">
-        <div className="spinner" />
-        <p>Connecting to your mailbox…</p>
+      <div className="card" style={{ padding: '2rem' }}>
+        <SkeletonList count={4} />
       </div>
     );
   }

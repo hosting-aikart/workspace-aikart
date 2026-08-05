@@ -36,6 +36,8 @@ import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
 import EmailPage from './pages/email/EmailPage';
 import DirectoryPage from './pages/directory/DirectoryPage';
 
+import { AppSkeleton } from './components/common/Skeleton';
+
 /**
  * RoleBasedRoot
  * Directs authenticated users to their primary portal based on role:
@@ -46,14 +48,7 @@ function RoleBasedRoot() {
   const { isAuthenticated, loading, user } = useAuth();
 
   if (loading) {
-    return (
-      <div className="loader-overlay">
-        <div className="flex flex-col items-center gap-4">
-          <div className="spinner spinner-lg" />
-          <p className="text-secondary text-sm">Loading workspace…</p>
-        </div>
-      </div>
-    );
+    return <AppSkeleton />;
   }
 
   if (!isAuthenticated) {
@@ -99,6 +94,7 @@ export default function App() {
             <Route path="email" element={<EmailPage />} />
             <Route path="notifications" element={<NotificationsPage />} />
             <Route path="settings" element={<SettingsPage />} />
+            <Route path="profile" element={<ProfilePage />} />
           </Route>
 
           {/* ── Employee / Manager Workspace (/app/*) ────────────────────── */}

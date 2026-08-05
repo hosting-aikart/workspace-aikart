@@ -5,6 +5,7 @@ import PageHeader from '../../components/common/PageHeader';
 import StatsCard from '../../components/common/StatsCard';
 import Badge from '../../components/common/Badge';
 import EmptyState from '../../components/common/EmptyState';
+import { SkeletonList } from '../../components/common/Skeleton';
 import CreateMeetingModal from '../meetings/components/CreateMeetingModal';
 
 function getInitials(name = '') {
@@ -105,7 +106,7 @@ export default function EmployeeMeetingsPage() {
   };
 
   const handleJoinMeeting = async (meeting) => {
-    let targetUrl = meeting.meetingUrl || 'https://meet.google.com/new';
+    let targetUrl = meeting.meetingUrl || `https://meet.jit.si/aikart-room-${meeting.id}`;
     try {
       const res = await api.post(`/meetings/${meeting.id}/join`);
       if (res.data?.data?.meetingUrl) {
@@ -118,15 +119,15 @@ export default function EmployeeMeetingsPage() {
     window.open(targetUrl, '_blank', 'noopener,noreferrer');
   };
 
-  const handleCancelMeeting = async (meetingId) => {
-    if (!window.confirm('Are you sure you want to cancel this meeting?')) return;
+  const handleDeleteMeeting = async (meetingId) => {
+    if (!window.confirm('Are you sure you want to delete this meeting?')) return;
     try {
       setActionLoadingId(meetingId);
-      await api.post(`/meetings/${meetingId}/cancel`);
-      showNotification('Meeting cancelled successfully.');
+      await api.delete(`/meetings/${meetingId}`);
+      showNotification('Meeting deleted successfully.');
       fetchMeetings();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to cancel meeting.');
+      alert(err.response?.data?.message || 'Failed to delete meeting.');
     } finally {
       setActionLoadingId(null);
     }
@@ -195,10 +196,7 @@ export default function EmployeeMeetingsPage() {
 
       {/* Meetings List */}
       {loading ? (
-        <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-          <div className="spinner spinner-lg" style={{ margin: '0 auto 1rem' }} />
-          <p className="text-secondary">Loading your meetings...</p>
-        </div>
+        <SkeletonList count={4} />
       ) : filteredMeetings.length === 0 ? (
         <EmptyState
           title="No meetings found"
@@ -254,18 +252,33 @@ export default function EmployeeMeetingsPage() {
 
                   {/* Join & Respond Actions */}
                   <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    {/* Join Meeting Button */}
+                    {/* Join & Copy Link Buttons */}
                     {meeting.meetingUrl && meeting.status !== 'CANCELLED' && (
-                      <button
-                        className="btn btn-primary btn-sm"
-                        onClick={() => handleJoinMeeting(meeting)}
-                        style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
-                      >
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                          <polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" />
-                        </svg>
-                        Join Google Meet
-                      </button>
+                      <>
+                        <button
+                          className="btn btn-outline btn-sm"
+                          onClick={() => {
+                            navigator.clipboard.writeText(meeting.meetingUrl);
+                            showNotification('Meeting link copied successfully');
+                          }}
+                          style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                        >
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                          </svg>
+                          Copy Link
+                        </button>
+                        <button
+                          className="btn btn-primary btn-sm"
+                          onClick={() => handleJoinMeeting(meeting)}
+                          style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}
+                        >
+                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                            <polygon points="23 7 16 12 23 17 23 7" /><rect x="1" y="5" width="15" height="14" rx="2" />
+                          </svg>
+                          Join Google Meet
+                        </button>
+                      </>
                     )}
 
                     {isOrganizer && meeting.status !== 'CANCELLED' && (
@@ -281,10 +294,10 @@ export default function EmployeeMeetingsPage() {
                         </button>
                         <button
                           className="btn btn-danger btn-sm"
+                          onClick={() => handleDeleteMeeting(meeting.id)}
                           disabled={actionLoadingId === meeting.id}
-                          onClick={() => handleCancelMeeting(meeting.id)}
                         >
-                          Cancel
+                          {actionLoadingId === meeting.id ? 'Deleting...' : 'Delete'}
                         </button>
                       </>
                     )}
@@ -334,10 +347,10 @@ export default function EmployeeMeetingsPage() {
                 {/* Participants List */}
                 <div>
                   <span className="text-secondary" style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>
-                    Participants ({meeting.participants?.length || 0})
+                    Workspace Members ({meeting.participants?.filter(p => p.participantType === 'INTERNAL' || !p.participantType).length || 0})
                   </span>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                    {meeting.participants?.map((p) => (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                    {meeting.participants?.filter(p => p.participantType === 'INTERNAL' || !p.participantType).map((p) => (
                       <div
                         key={p.id}
                         style={{
@@ -361,6 +374,36 @@ export default function EmployeeMeetingsPage() {
                       </div>
                     ))}
                   </div>
+
+                  {meeting.participants?.some(p => p.participantType === 'EXTERNAL') && (
+                    <>
+                      <span className="text-secondary" style={{ fontSize: '0.8rem', fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>
+                        External Guests ({meeting.participants?.filter(p => p.participantType === 'EXTERNAL').length || 0})
+                      </span>
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                        {meeting.participants?.filter(p => p.participantType === 'EXTERNAL').map((p) => (
+                          <div
+                            key={p.id}
+                            style={{
+                              display: 'flex',
+                              alignItems: 'center',
+                              gap: '0.4rem',
+                              background: '#f8fafc',
+                              border: '1px dashed #cbd5e1',
+                              padding: '0.25rem 0.6rem',
+                              borderRadius: '20px',
+                              fontSize: '0.8rem',
+                            }}
+                          >
+                            <span style={{ fontWeight: 500 }}>{p.email}</span>
+                            <Badge tone={getResponseBadgeTone(p.responseStatus)}>
+                              {p.responseStatus}
+                            </Badge>
+                          </div>
+                        ))}
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             );

@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
+import { SkeletonPageHeader, SkeletonCard, SkeletonTable } from '../../components/common/Skeleton';
 
 function formatDuration(totalSeconds) {
     const h = Math.floor(totalSeconds / 3600);
@@ -119,9 +120,13 @@ export default function AttendancePage() {
 
     if (loading) {
         return (
-            <div className="page-loading">
-                <div className="spinner" />
-                <span className="text-secondary">Loading attendance...</span>
+            <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+                <SkeletonPageHeader />
+                <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '1fr 1fr', marginBottom: '2rem' }}>
+                    <SkeletonCard />
+                    <SkeletonCard />
+                </div>
+                <SkeletonTable rows={4} columns={4} />
             </div>
         );
     }
@@ -345,8 +350,8 @@ export default function AttendancePage() {
                         <h2 className="card-title" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Team Attendance (Today)</h2>
                     </div>
                     {teamLoading ? (
-                        <div style={{ padding: '2rem', textAlign: 'center' }}>
-                            <div className="spinner" />
+                        <div style={{ padding: '1rem' }}>
+                            <SkeletonTable rows={3} columns={5} />
                         </div>
                     ) : (
                         <div className="table-wrapper">

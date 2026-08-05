@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { SkeletonPageHeader, SkeletonList } from '../../../components/common/Skeleton';
 
 /**
  * EmailDetail
@@ -12,9 +13,10 @@ export default function EmailDetail({ message, loading, error, onReply, onForwar
 
   if (loading) {
     return (
-      <div className="email-detail-state">
-        <div className="spinner" />
-        <p>Loading message…</p>
+      <div style={{ padding: '2rem' }}>
+        <SkeletonPageHeader />
+        <SkeletonList count={1} style={{ marginBottom: '2rem' }} />
+        <SkeletonList count={3} />
       </div>
     );
   }

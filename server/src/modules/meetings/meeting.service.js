@@ -46,6 +46,7 @@ async function safeSendEmailInvite(organizerId, recipientEmail, meetingData) {
       to: recipientEmail,
       subject,
       body,
+      isHtml: true,
     });
   } catch (err) {
     console.warn(`[meeting.service] Optional email notification to ${recipientEmail} skipped:`, err.message);
@@ -124,6 +125,7 @@ async function createMeeting(workspaceId, user, data) {
     startTime,
     endTime,
     participantIds = [],
+    externalEmails = [],
   } = data;
 
   if (!title || !title.trim()) {
@@ -163,7 +165,8 @@ async function createMeeting(workspaceId, user, data) {
 
   const attendeeEmails = participantsList
     .filter((p) => p.id !== user.id)
-    .map((p) => p.email);
+    .map((p) => p.email)
+    .concat(externalEmails);
 
   // 4. Integrate with Google Calendar & Google Meet REST APIs
   let googleEventId = null;
@@ -196,7 +199,7 @@ async function createMeeting(workspaceId, user, data) {
 
   // Fallback meeting URL if Google Meet link is not generated
   if (!meetingUrl) {
-    meetingUrl = `https://meet.google.com/new`;
+    meetingUrl = `https://meet.jit.si/aikart-room-${Date.now()}-${Math.random().toString(36).substring(2, 7)}`;
   }
 
   const initialStatus = meetingType === 'INSTANT' ? 'ONGOING' : 'UPCOMING';
@@ -217,10 +220,19 @@ async function createMeeting(workspaceId, user, data) {
       startTime: start,
       endTime: end,
       participants: {
-        create: participantsList.map((p) => ({
-          userId: p.id,
-          responseStatus: p.id === user.id ? 'ACCEPTED' : 'INVITED',
-        })),
+        create: [
+          ...participantsList.map((p) => ({
+            userId: p.id,
+            email: p.email,
+            participantType: 'INTERNAL',
+            responseStatus: p.id === user.id ? 'ACCEPTED' : 'INVITED',
+          })),
+          ...externalEmails.map((email) => ({
+            email,
+            participantType: 'EXTERNAL',
+            responseStatus: 'INVITED',
+          })),
+        ],
       },
     },
     include: {
@@ -241,10 +253,17 @@ async function createMeeting(workspaceId, user, data) {
   const invitedUserIds = participantsList.filter((p) => p.id !== user.id).map((p) => p.id);
   if (invitedUserIds.length > 0) {
     await safeCreateCRMNotification(prisma, workspaceId, user.id, invitedUserIds, title);
+  }
 
-    // 7. Send Email Invitations using Email Module
-    for (const invitee of participantsList.filter((p) => p.id !== user.id)) {
-      safeSendEmailInvite(user.id, invitee.email, {
+  // 7. Send Email Invitations using Email Module
+  const allInviteeEmails = [
+    ...participantsList.filter((p) => p.id !== user.id).map((p) => p.email),
+    ...externalEmails,
+  ];
+
+  if (allInviteeEmails.length > 0) {
+    for (const email of allInviteeEmails) {
+      safeSendEmailInvite(user.id, email, {
         title,
         organizerName: user.name || 'AIKart User',
         startTime: start,
@@ -430,7 +449,7 @@ async function updateMeeting(workspaceId, user, meetingId, data) {
     throw err;
   }
 
-  const { title, description, agenda, startTime, endTime, participantIds } = data;
+  const { title, description, agenda, startTime, endTime, participantIds, externalEmails } = data;
 
   const updateData = {};
   if (title) updateData.title = title.trim();
@@ -440,27 +459,46 @@ async function updateMeeting(workspaceId, user, meetingId, data) {
   if (endTime) updateData.endTime = new Date(endTime);
 
   // If participant list updated
-  if (Array.isArray(participantIds)) {
+  if (Array.isArray(participantIds) || Array.isArray(externalEmails)) {
+    const internalIds = Array.isArray(participantIds) ? participantIds : meeting.participants.filter(p => p.participantType === 'INTERNAL').map(p => p.userId);
+    const extEmails = Array.isArray(externalEmails) ? externalEmails : meeting.participants.filter(p => p.participantType === 'EXTERNAL').map(p => p.email);
+
     if (user.role === 'MANAGER') {
-      await validateManagerInvitees(prisma, workspaceId, user.id, participantIds);
+      await validateManagerInvitees(prisma, workspaceId, user.id, internalIds);
     }
-    const uniqueIds = Array.from(new Set([...participantIds, meeting.organizerId]));
+    const uniqueIds = Array.from(new Set([...internalIds, meeting.organizerId]));
     
     // Delete old participants not in list
     await prisma.meetingParticipant.deleteMany({
       where: {
         meetingId,
-        userId: { notIn: uniqueIds },
+        OR: [
+          { userId: { notIn: uniqueIds }, participantType: 'INTERNAL' },
+          { email: { notIn: extEmails }, participantType: 'EXTERNAL' },
+        ],
       },
     });
 
-    // Upsert new participants
+    // Upsert internal participants
     for (const uId of uniqueIds) {
+      const u = await prisma.user.findUnique({ where: { id: uId }, select: { email: true } });
       await prisma.meetingParticipant.upsert({
         where: { meetingId_userId: { meetingId, userId: uId } },
-        create: { meetingId, userId: uId, responseStatus: uId === meeting.organizerId ? 'ACCEPTED' : 'INVITED' },
+        create: { meetingId, userId: uId, email: u?.email, participantType: 'INTERNAL', responseStatus: uId === meeting.organizerId ? 'ACCEPTED' : 'INVITED' },
         update: {},
       });
+    }
+
+    // Create external participants
+    for (const email of extEmails) {
+      const existing = await prisma.meetingParticipant.findFirst({
+        where: { meetingId, email, participantType: 'EXTERNAL' },
+      });
+      if (!existing) {
+        await prisma.meetingParticipant.create({
+          data: { meetingId, email, participantType: 'EXTERNAL', responseStatus: 'INVITED' },
+        });
+      }
     }
   }
 
@@ -485,7 +523,8 @@ async function updateMeeting(workspaceId, user, meetingId, data) {
   if (meeting.googleEventId) {
     const attendeeEmails = updatedMeeting.participants
       .filter((p) => p.userId !== meeting.organizerId)
-      .map((p) => p.user.email);
+      .map((p) => p.participantType === 'INTERNAL' ? p.user?.email : p.email)
+      .filter(Boolean);
 
     updateCalendarEvent(user.id, meeting.googleEventId, {
       title: updatedMeeting.title,
@@ -501,9 +540,9 @@ async function updateMeeting(workspaceId, user, meetingId, data) {
 }
 
 /**
- * Cancel Meeting (Admin or Organizer Manager)
+ * Delete Meeting (Admin, Manager, or Organizer)
  */
-async function cancelMeeting(workspaceId, user, meetingId) {
+async function deleteMeeting(workspaceId, user, meetingId) {
   const prisma = getPrisma();
 
   const meeting = await prisma.meeting.findFirst({
@@ -516,23 +555,23 @@ async function cancelMeeting(workspaceId, user, meetingId) {
     throw err;
   }
 
-  if (user.role === 'EMPLOYEE' || (user.role === 'MANAGER' && meeting.organizerId !== user.id)) {
-    const err = new Error('You are not authorized to cancel this meeting.');
+  // Only Admin, Manager, or the original Organizer can delete the meeting
+  if (user.role !== 'ADMIN' && user.role !== 'MANAGER' && meeting.organizerId !== user.id) {
+    const err = new Error('You are not authorized to delete this meeting.');
     err.statusCode = 403;
     throw err;
   }
-
-  const cancelledMeeting = await prisma.meeting.update({
-    where: { id: meetingId },
-    data: { status: 'CANCELLED' },
-  });
 
   // Delete from Google Calendar if event exists
   if (meeting.googleEventId) {
     deleteCalendarEvent(user.id, meeting.googleEventId);
   }
 
-  return cancelledMeeting;
+  const deletedMeeting = await prisma.meeting.delete({
+    where: { id: meetingId },
+  });
+
+  return deletedMeeting;
 }
 
 /**
@@ -623,7 +662,7 @@ async function joinMeeting(workspaceId, user, meetingId) {
     });
   }
 
-  const fallbackUrl = meeting.meetingUrl || 'https://meet.google.com/new';
+  const fallbackUrl = meeting.meetingUrl || `https://meet.jit.si/aikart-room-${meeting.id}`;
 
   return { meetingUrl: fallbackUrl };
 }
@@ -633,7 +672,7 @@ module.exports = {
   listMeetings,
   getMeetingById,
   updateMeeting,
-  cancelMeeting,
+  deleteMeeting,
   respondToInvitation,
   joinMeeting,
 };

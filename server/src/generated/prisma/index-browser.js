@@ -279,6 +279,8 @@ exports.Prisma.MeetingParticipantScalarFieldEnum = {
   id: 'id',
   meetingId: 'meetingId',
   userId: 'userId',
+  email: 'email',
+  participantType: 'participantType',
   responseStatus: 'responseStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -353,6 +355,11 @@ exports.MeetingStatus = exports.$Enums.MeetingStatus = {
   ONGOING: 'ONGOING',
   COMPLETED: 'COMPLETED',
   CANCELLED: 'CANCELLED'
+};
+
+exports.ParticipantType = exports.$Enums.ParticipantType = {
+  INTERNAL: 'INTERNAL',
+  EXTERNAL: 'EXTERNAL'
 };
 
 exports.ParticipantResponseStatus = exports.$Enums.ParticipantResponseStatus = {

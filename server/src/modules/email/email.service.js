@@ -155,16 +155,17 @@ function buildRawMime(opts) {
   lines.push('MIME-Version: 1.0');
 
   const hasFiles = opts.files && opts.files.length > 0;
+  const contentType = opts.isHtml ? 'text/html; charset=UTF-8' : 'text/plain; charset=UTF-8';
 
   if (!hasFiles) {
-    lines.push('Content-Type: text/plain; charset=UTF-8');
+    lines.push(`Content-Type: ${contentType}`);
     lines.push('');
     lines.push(opts.body || '');
   } else {
     lines.push(`Content-Type: multipart/mixed; boundary="${boundary}"`);
     lines.push('');
     lines.push(`--${boundary}`);
-    lines.push('Content-Type: text/plain; charset=UTF-8');
+    lines.push(`Content-Type: ${contentType}`);
     lines.push('');
     lines.push(opts.body || '');
 
@@ -357,7 +358,7 @@ async function getAttachment(userId, messageId, attachmentId) {
 /**
  * Send a new email.
  */
-async function sendEmail(userId, { to, cc, bcc, subject, body, files }) {
+async function sendEmail(userId, { to, cc, bcc, subject, body, files, isHtml }) {
   const auth = await getAuthorizedClientForUser(userId);
   const gmail = google.gmail({ version: 'v1', auth });
 
@@ -365,7 +366,7 @@ async function sendEmail(userId, { to, cc, bcc, subject, body, files }) {
   const profileRes = await gmail.users.getProfile({ userId: 'me' });
   const from = profileRes.data.emailAddress;
 
-  const raw = buildRawMime({ from, to, cc, bcc, subject, body, files });
+  const raw = buildRawMime({ from, to, cc, bcc, subject, body, files, isHtml });
 
   const res = await gmail.users.messages.send({
     userId: 'me',

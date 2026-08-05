@@ -4,6 +4,7 @@ import PageHeader from '../../components/common/PageHeader';
 import StatsCard from '../../components/common/StatsCard';
 import Badge from '../../components/common/Badge';
 import EmptyState from '../../components/common/EmptyState';
+import { SkeletonList } from '../../components/common/Skeleton';
 import CreateMeetingModal from '../meetings/components/CreateMeetingModal';
 
 function getInitials(name = '') {
@@ -79,22 +80,22 @@ export default function AdminMeetingsPage() {
     return { total, upcoming, completed, cancelled };
   }, [meetings]);
 
-  const handleCancelMeeting = async (meetingId) => {
-    if (!window.confirm('Are you sure you want to cancel this meeting? Google Calendar event will be updated.')) return;
+  const handleDeleteMeeting = async (meetingId) => {
+    if (!window.confirm('Are you sure you want to delete this meeting?')) return;
     try {
       setActionLoadingId(meetingId);
-      await api.post(`/meetings/${meetingId}/cancel`);
-      showNotification('Meeting cancelled successfully.');
+      await api.delete(`/meetings/${meetingId}`);
+      showNotification('Meeting deleted successfully.');
       fetchMeetings();
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to cancel meeting.');
+      alert(err.response?.data?.message || 'Failed to delete meeting.');
     } finally {
       setActionLoadingId(null);
     }
   };
 
   const handleJoinMeeting = async (meeting) => {
-    let targetUrl = meeting.meetingUrl || 'https://meet.google.com/new';
+    let targetUrl = meeting.meetingUrl || `https://meet.jit.si/aikart-room-${meeting.id}`;
     try {
       const res = await api.post(`/meetings/${meeting.id}/join`);
       if (res.data?.data?.meetingUrl) {
@@ -168,10 +169,7 @@ export default function AdminMeetingsPage() {
 
       {/* Meetings List */}
       {loading ? (
-        <div className="card" style={{ padding: '3rem', textAlign: 'center' }}>
-          <div className="spinner spinner-lg" style={{ margin: '0 auto 1rem' }} />
-          <p className="text-secondary">Loading workspace meetings...</p>
-        </div>
+        <SkeletonList count={4} />
       ) : filteredMeetings.length === 0 ? (
         <EmptyState
           title="No meetings found"
@@ -254,9 +252,9 @@ export default function AdminMeetingsPage() {
                         <button
                           className="btn btn-danger btn-sm"
                           disabled={actionLoadingId === meeting.id}
-                          onClick={() => handleCancelMeeting(meeting.id)}
+                          onClick={() => handleDeleteMeeting(meeting.id)}
                         >
-                          Cancel
+                          {actionLoadingId === meeting.id ? 'Deleting...' : 'Delete'}
                         </button>
                       </>
                     )}

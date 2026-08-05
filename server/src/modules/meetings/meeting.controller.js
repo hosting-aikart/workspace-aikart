@@ -18,6 +18,7 @@ const createMeetingSchema = z.object({
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   participantIds: z.array(z.string()).optional(),
+  externalEmails: z.array(z.string().email()).optional(),
 });
 
 const updateMeetingSchema = z.object({
@@ -27,6 +28,7 @@ const updateMeetingSchema = z.object({
   startTime: z.string().optional(),
   endTime: z.string().optional(),
   participantIds: z.array(z.string()).optional(),
+  externalEmails: z.array(z.string().email()).optional(),
 });
 
 const respondSchema = z.object({
@@ -105,18 +107,18 @@ async function updateMeetingHandler(req, res) {
   }
 }
 
-async function cancelMeetingHandler(req, res) {
+async function deleteMeetingHandler(req, res) {
   try {
-    const { id } = req.params;
-    const meeting = await meetingService.cancelMeeting(
+    const meetingId = req.params.id;
+    const meeting = await meetingService.deleteMeeting(
       req.user.workspaceId,
       req.user,
-      id
+      meetingId
     );
-    return res.json({ status: 'success', data: meeting, message: 'Meeting cancelled successfully' });
-  } catch (error) {
-    const statusCode = error.statusCode || 400;
-    return res.status(statusCode).json({ status: 'error', message: error.message });
+    return res.json({ status: 'success', data: meeting, message: 'Meeting deleted successfully' });
+  } catch (err) {
+    const statusCode = err.statusCode || 400;
+    return res.status(statusCode).json({ status: 'error', message: err.message });
   }
 }
 
@@ -160,7 +162,7 @@ module.exports = {
   listMeetingsHandler,
   getMeetingHandler,
   updateMeetingHandler,
-  cancelMeetingHandler,
+  deleteMeetingHandler,
   respondToInvitationHandler,
   joinMeetingHandler,
 };

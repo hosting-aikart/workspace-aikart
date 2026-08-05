@@ -2,6 +2,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../../utils/api';
+import { SkeletonList } from '../../components/common/Skeleton';
 
 // ─── Empty-state icons ────────────────────────────────────────────────────────
 
@@ -167,7 +168,7 @@ export default function HomePage() {
 
         {/* Assigned Tasks */}
         <DashboardCard icon={<TaskIcon />} title="Assigned Tasks" color="#10B981" badge={tasks.length}>
-          {loading ? <div className="dash-empty"><div className="spinner" /></div> : tasks.length === 0 ? <EmptyState label="No assigned tasks" /> : (
+          {loading ? <SkeletonList count={3} style={{ marginTop: '1rem' }} /> : tasks.length === 0 ? <EmptyState label="No assigned tasks" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {tasks.slice(0, 3).map(task => (
                 <li key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
@@ -184,7 +185,7 @@ export default function HomePage() {
 
         {/* Current Projects */}
         <DashboardCard icon={<ProjectIcon />} title="Current Projects" color="#8B5CF6" badge={projects.length}>
-          {loading ? <div className="dash-empty"><div className="spinner" /></div> : projects.length === 0 ? <EmptyState label="No active projects" /> : (
+          {loading ? <SkeletonList count={3} style={{ marginTop: '1rem' }} /> : projects.length === 0 ? <EmptyState label="No active projects" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {projects.slice(0, 3).map(proj => (
                 <li key={proj.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
@@ -203,7 +204,7 @@ export default function HomePage() {
 
         {/* Upcoming Meetings */}
         <DashboardCard icon={<MeetingIcon />} title="Upcoming Meetings" color="#F59E0B" badge={meetings.length}>
-          {loading ? <div className="dash-empty"><div className="spinner" /></div> : meetings.length === 0 ? <EmptyState label="No upcoming meetings" /> : (
+          {loading ? <SkeletonList count={3} style={{ marginTop: '1rem' }} /> : meetings.length === 0 ? <EmptyState label="No upcoming meetings" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {meetings.slice(0, 3).map(meet => (
                 <li key={meet.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
@@ -217,7 +218,7 @@ export default function HomePage() {
 
         {/* Announcements */}
         <DashboardCard icon={<BellIcon />} title="Latest Announcements" color="#EF4444" badge={announcements.length}>
-          {loading ? <div className="dash-empty"><div className="spinner" /></div> : announcements.length === 0 ? <EmptyState label="No recent announcements" /> : (
+          {loading ? <SkeletonList count={3} style={{ marginTop: '1rem' }} /> : announcements.length === 0 ? <EmptyState label="No recent announcements" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {announcements.slice(0, 3).map(ann => (
                 <li key={ann.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>

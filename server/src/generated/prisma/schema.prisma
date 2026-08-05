@@ -356,13 +356,21 @@ model Meeting {
   @@index([organizerId])
 }
 
+enum ParticipantType {
+  INTERNAL
+  EXTERNAL
+}
+
 model MeetingParticipant {
   id        String  @id @default(cuid())
   meetingId String
   meeting   Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
 
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  email           String?
+  participantType ParticipantType @default(INTERNAL)
 
   responseStatus ParticipantResponseStatus @default(INVITED)
 

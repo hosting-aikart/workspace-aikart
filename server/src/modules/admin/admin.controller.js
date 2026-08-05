@@ -64,11 +64,8 @@ const createEmployeeHandler = async (req, res) => {
     return sendSuccess(res, data, 201);
   } catch (err) {
     const statusCode = err.statusCode || 400;
-    return sendError(
-      res,
-      err.message || 'Failed to create employee.',
-      statusCode,
-    );
+    const message = err.errors && err.errors.length > 0 ? err.errors[0].message : (err.message || 'Failed to create employee.');
+    return sendError(res, message, statusCode);
   }
 };
 
@@ -83,11 +80,8 @@ const updateEmployeeHandler = async (req, res) => {
     return sendSuccess(res, data);
   } catch (err) {
     const statusCode = err.statusCode || 400;
-    return sendError(
-      res,
-      err.message || 'Failed to update employee.',
-      statusCode,
-    );
+    const message = err.errors && err.errors.length > 0 ? err.errors[0].message : (err.message || 'Failed to update employee.');
+    return sendError(res, message, statusCode);
   }
 };
 

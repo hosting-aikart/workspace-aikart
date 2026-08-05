@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import api from '../../utils/api';
+import { SkeletonAvatar, SkeletonText, SkeletonCard } from '../../components/common/Skeleton';
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -201,9 +202,21 @@ export default function ProfilePage() {
 
   if (fetching) {
     return (
-      <div className="profile-loading">
-        <div className="spinner spinner-lg" />
-        <p className="text-secondary text-sm mt-4">Loading your profile…</p>
+      <div className="profile-page animate-fade-in">
+        <div className="profile-hero-section">
+          <div className="profile-hero-bg" />
+          <div className="profile-hero-content">
+            <SkeletonAvatar size="100px" style={{ border: '4px solid var(--color-surface)' }} />
+            <div className="profile-hero-info">
+              <SkeletonText width="200px" height="2rem" style={{ marginBottom: '0.5rem' }} />
+              <SkeletonText width="150px" height="1rem" />
+            </div>
+          </div>
+        </div>
+        <div className="profile-grid">
+          <SkeletonCard />
+          <SkeletonCard />
+        </div>
       </div>
     );
   }

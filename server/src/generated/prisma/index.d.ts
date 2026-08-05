@@ -181,6 +181,14 @@ export const ParticipantResponseStatus: {
 
 export type ParticipantResponseStatus = (typeof ParticipantResponseStatus)[keyof typeof ParticipantResponseStatus]
 
+
+export const ParticipantType: {
+  INTERNAL: 'INTERNAL',
+  EXTERNAL: 'EXTERNAL'
+};
+
+export type ParticipantType = (typeof ParticipantType)[keyof typeof ParticipantType]
+
 }
 
 export type Role = $Enums.Role
@@ -222,6 +230,10 @@ export const MeetingType: typeof $Enums.MeetingType
 export type ParticipantResponseStatus = $Enums.ParticipantResponseStatus
 
 export const ParticipantResponseStatus: typeof $Enums.ParticipantResponseStatus
+
+export type ParticipantType = $Enums.ParticipantType
+
+export const ParticipantType: typeof $Enums.ParticipantType
 
 /**
  * ##  Prisma Client ʲˢ
@@ -18061,6 +18073,8 @@ export namespace Prisma {
     id: string | null
     meetingId: string | null
     userId: string | null
+    email: string | null
+    participantType: $Enums.ParticipantType | null
     responseStatus: $Enums.ParticipantResponseStatus | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -18070,6 +18084,8 @@ export namespace Prisma {
     id: string | null
     meetingId: string | null
     userId: string | null
+    email: string | null
+    participantType: $Enums.ParticipantType | null
     responseStatus: $Enums.ParticipantResponseStatus | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -18079,6 +18095,8 @@ export namespace Prisma {
     id: number
     meetingId: number
     userId: number
+    email: number
+    participantType: number
     responseStatus: number
     createdAt: number
     updatedAt: number
@@ -18090,6 +18108,8 @@ export namespace Prisma {
     id?: true
     meetingId?: true
     userId?: true
+    email?: true
+    participantType?: true
     responseStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -18099,6 +18119,8 @@ export namespace Prisma {
     id?: true
     meetingId?: true
     userId?: true
+    email?: true
+    participantType?: true
     responseStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -18108,6 +18130,8 @@ export namespace Prisma {
     id?: true
     meetingId?: true
     userId?: true
+    email?: true
+    participantType?: true
     responseStatus?: true
     createdAt?: true
     updatedAt?: true
@@ -18189,7 +18213,9 @@ export namespace Prisma {
   export type MeetingParticipantGroupByOutputType = {
     id: string
     meetingId: string
-    userId: string
+    userId: string | null
+    email: string | null
+    participantType: $Enums.ParticipantType
     responseStatus: $Enums.ParticipantResponseStatus
     createdAt: Date
     updatedAt: Date
@@ -18216,68 +18242,78 @@ export namespace Prisma {
     id?: boolean
     meetingId?: boolean
     userId?: boolean
+    email?: boolean
+    participantType?: boolean
     responseStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     meeting?: boolean | MeetingDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | MeetingParticipant$userArgs<ExtArgs>
   }, ExtArgs["result"]["meetingParticipant"]>
 
   export type MeetingParticipantSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     meetingId?: boolean
     userId?: boolean
+    email?: boolean
+    participantType?: boolean
     responseStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     meeting?: boolean | MeetingDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | MeetingParticipant$userArgs<ExtArgs>
   }, ExtArgs["result"]["meetingParticipant"]>
 
   export type MeetingParticipantSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     meetingId?: boolean
     userId?: boolean
+    email?: boolean
+    participantType?: boolean
     responseStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     meeting?: boolean | MeetingDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | MeetingParticipant$userArgs<ExtArgs>
   }, ExtArgs["result"]["meetingParticipant"]>
 
   export type MeetingParticipantSelectScalar = {
     id?: boolean
     meetingId?: boolean
     userId?: boolean
+    email?: boolean
+    participantType?: boolean
     responseStatus?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MeetingParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "meetingId" | "userId" | "responseStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["meetingParticipant"]>
+  export type MeetingParticipantOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "meetingId" | "userId" | "email" | "participantType" | "responseStatus" | "createdAt" | "updatedAt", ExtArgs["result"]["meetingParticipant"]>
   export type MeetingParticipantInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meeting?: boolean | MeetingDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | MeetingParticipant$userArgs<ExtArgs>
   }
   export type MeetingParticipantIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meeting?: boolean | MeetingDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | MeetingParticipant$userArgs<ExtArgs>
   }
   export type MeetingParticipantIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     meeting?: boolean | MeetingDefaultArgs<ExtArgs>
-    user?: boolean | UserDefaultArgs<ExtArgs>
+    user?: boolean | MeetingParticipant$userArgs<ExtArgs>
   }
 
   export type $MeetingParticipantPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "MeetingParticipant"
     objects: {
       meeting: Prisma.$MeetingPayload<ExtArgs>
-      user: Prisma.$UserPayload<ExtArgs>
+      user: Prisma.$UserPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
       meetingId: string
-      userId: string
+      userId: string | null
+      email: string | null
+      participantType: $Enums.ParticipantType
       responseStatus: $Enums.ParticipantResponseStatus
       createdAt: Date
       updatedAt: Date
@@ -18676,7 +18712,7 @@ export namespace Prisma {
   export interface Prisma__MeetingParticipantClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     meeting<T extends MeetingDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MeetingDefaultArgs<ExtArgs>>): Prisma__MeetingClient<$Result.GetResult<Prisma.$MeetingPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    user<T extends MeetingParticipant$userArgs<ExtArgs> = {}>(args?: Subset<T, MeetingParticipant$userArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18709,6 +18745,8 @@ export namespace Prisma {
     readonly id: FieldRef<"MeetingParticipant", 'String'>
     readonly meetingId: FieldRef<"MeetingParticipant", 'String'>
     readonly userId: FieldRef<"MeetingParticipant", 'String'>
+    readonly email: FieldRef<"MeetingParticipant", 'String'>
+    readonly participantType: FieldRef<"MeetingParticipant", 'ParticipantType'>
     readonly responseStatus: FieldRef<"MeetingParticipant", 'ParticipantResponseStatus'>
     readonly createdAt: FieldRef<"MeetingParticipant", 'DateTime'>
     readonly updatedAt: FieldRef<"MeetingParticipant", 'DateTime'>
@@ -19113,6 +19151,25 @@ export namespace Prisma {
   }
 
   /**
+   * MeetingParticipant.user
+   */
+  export type MeetingParticipant$userArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
    * MeetingParticipant without action
    */
   export type MeetingParticipantDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -19343,6 +19400,8 @@ export namespace Prisma {
     id: 'id',
     meetingId: 'meetingId',
     userId: 'userId',
+    email: 'email',
+    participantType: 'participantType',
     responseStatus: 'responseStatus',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -19552,6 +19611,20 @@ export namespace Prisma {
    * Reference to a field of type 'MeetingStatus[]'
    */
   export type ListEnumMeetingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'MeetingStatus[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParticipantType'
+   */
+  export type EnumParticipantTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParticipantType'>
+    
+
+
+  /**
+   * Reference to a field of type 'ParticipantType[]'
+   */
+  export type ListEnumParticipantTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ParticipantType[]'>
     
 
 
@@ -20678,18 +20751,22 @@ export namespace Prisma {
     NOT?: MeetingParticipantWhereInput | MeetingParticipantWhereInput[]
     id?: StringFilter<"MeetingParticipant"> | string
     meetingId?: StringFilter<"MeetingParticipant"> | string
-    userId?: StringFilter<"MeetingParticipant"> | string
+    userId?: StringNullableFilter<"MeetingParticipant"> | string | null
+    email?: StringNullableFilter<"MeetingParticipant"> | string | null
+    participantType?: EnumParticipantTypeFilter<"MeetingParticipant"> | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFilter<"MeetingParticipant"> | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
     updatedAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
     meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }
 
   export type MeetingParticipantOrderByWithRelationInput = {
     id?: SortOrder
     meetingId?: SortOrder
-    userId?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    participantType?: SortOrder
     responseStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -20704,18 +20781,22 @@ export namespace Prisma {
     OR?: MeetingParticipantWhereInput[]
     NOT?: MeetingParticipantWhereInput | MeetingParticipantWhereInput[]
     meetingId?: StringFilter<"MeetingParticipant"> | string
-    userId?: StringFilter<"MeetingParticipant"> | string
+    userId?: StringNullableFilter<"MeetingParticipant"> | string | null
+    email?: StringNullableFilter<"MeetingParticipant"> | string | null
+    participantType?: EnumParticipantTypeFilter<"MeetingParticipant"> | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFilter<"MeetingParticipant"> | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
     updatedAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
     meeting?: XOR<MeetingScalarRelationFilter, MeetingWhereInput>
-    user?: XOR<UserScalarRelationFilter, UserWhereInput>
+    user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
   }, "id" | "meetingId_userId">
 
   export type MeetingParticipantOrderByWithAggregationInput = {
     id?: SortOrder
     meetingId?: SortOrder
-    userId?: SortOrder
+    userId?: SortOrderInput | SortOrder
+    email?: SortOrderInput | SortOrder
+    participantType?: SortOrder
     responseStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -20730,7 +20811,9 @@ export namespace Prisma {
     NOT?: MeetingParticipantScalarWhereWithAggregatesInput | MeetingParticipantScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"MeetingParticipant"> | string
     meetingId?: StringWithAggregatesFilter<"MeetingParticipant"> | string
-    userId?: StringWithAggregatesFilter<"MeetingParticipant"> | string
+    userId?: StringNullableWithAggregatesFilter<"MeetingParticipant"> | string | null
+    email?: StringNullableWithAggregatesFilter<"MeetingParticipant"> | string | null
+    participantType?: EnumParticipantTypeWithAggregatesFilter<"MeetingParticipant"> | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusWithAggregatesFilter<"MeetingParticipant"> | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeWithAggregatesFilter<"MeetingParticipant"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"MeetingParticipant"> | Date | string
@@ -21900,17 +21983,21 @@ export namespace Prisma {
 
   export type MeetingParticipantCreateInput = {
     id?: string
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
     meeting: MeetingCreateNestedOneWithoutParticipantsInput
-    user: UserCreateNestedOneWithoutMeetingParticipationsInput
+    user?: UserCreateNestedOneWithoutMeetingParticipationsInput
   }
 
   export type MeetingParticipantUncheckedCreateInput = {
     id?: string
     meetingId: string
-    userId: string
+    userId?: string | null
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21918,17 +22005,21 @@ export namespace Prisma {
 
   export type MeetingParticipantUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     meeting?: MeetingUpdateOneRequiredWithoutParticipantsNestedInput
-    user?: UserUpdateOneRequiredWithoutMeetingParticipationsNestedInput
+    user?: UserUpdateOneWithoutMeetingParticipationsNestedInput
   }
 
   export type MeetingParticipantUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     meetingId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21937,7 +22028,9 @@ export namespace Prisma {
   export type MeetingParticipantCreateManyInput = {
     id?: string
     meetingId: string
-    userId: string
+    userId?: string | null
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -21945,6 +22038,8 @@ export namespace Prisma {
 
   export type MeetingParticipantUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -21953,7 +22048,9 @@ export namespace Prisma {
   export type MeetingParticipantUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     meetingId?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -22949,6 +23046,13 @@ export namespace Prisma {
     _max?: NestedEnumMeetingStatusFilter<$PrismaModel>
   }
 
+  export type EnumParticipantTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParticipantType | EnumParticipantTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ParticipantType[] | ListEnumParticipantTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParticipantType[] | ListEnumParticipantTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumParticipantTypeFilter<$PrismaModel> | $Enums.ParticipantType
+  }
+
   export type EnumParticipantResponseStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ParticipantResponseStatus | EnumParticipantResponseStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
@@ -22970,6 +23074,8 @@ export namespace Prisma {
     id?: SortOrder
     meetingId?: SortOrder
     userId?: SortOrder
+    email?: SortOrder
+    participantType?: SortOrder
     responseStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22979,6 +23085,8 @@ export namespace Prisma {
     id?: SortOrder
     meetingId?: SortOrder
     userId?: SortOrder
+    email?: SortOrder
+    participantType?: SortOrder
     responseStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22988,9 +23096,21 @@ export namespace Prisma {
     id?: SortOrder
     meetingId?: SortOrder
     userId?: SortOrder
+    email?: SortOrder
+    participantType?: SortOrder
     responseStatus?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type EnumParticipantTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParticipantType | EnumParticipantTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ParticipantType[] | ListEnumParticipantTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParticipantType[] | ListEnumParticipantTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumParticipantTypeWithAggregatesFilter<$PrismaModel> | $Enums.ParticipantType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParticipantTypeFilter<$PrismaModel>
+    _max?: NestedEnumParticipantTypeFilter<$PrismaModel>
   }
 
   export type EnumParticipantResponseStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -24455,6 +24575,10 @@ export namespace Prisma {
     connect?: UserWhereUniqueInput
   }
 
+  export type EnumParticipantTypeFieldUpdateOperationsInput = {
+    set?: $Enums.ParticipantType
+  }
+
   export type EnumParticipantResponseStatusFieldUpdateOperationsInput = {
     set?: $Enums.ParticipantResponseStatus
   }
@@ -24467,10 +24591,12 @@ export namespace Prisma {
     update?: XOR<XOR<MeetingUpdateToOneWithWhereWithoutParticipantsInput, MeetingUpdateWithoutParticipantsInput>, MeetingUncheckedUpdateWithoutParticipantsInput>
   }
 
-  export type UserUpdateOneRequiredWithoutMeetingParticipationsNestedInput = {
+  export type UserUpdateOneWithoutMeetingParticipationsNestedInput = {
     create?: XOR<UserCreateWithoutMeetingParticipationsInput, UserUncheckedCreateWithoutMeetingParticipationsInput>
     connectOrCreate?: UserCreateOrConnectWithoutMeetingParticipationsInput
     upsert?: UserUpsertWithoutMeetingParticipationsInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
     connect?: UserWhereUniqueInput
     update?: XOR<XOR<UserUpdateToOneWithWhereWithoutMeetingParticipationsInput, UserUpdateWithoutMeetingParticipationsInput>, UserUncheckedUpdateWithoutMeetingParticipationsInput>
   }
@@ -24802,11 +24928,28 @@ export namespace Prisma {
     _max?: NestedEnumMeetingStatusFilter<$PrismaModel>
   }
 
+  export type NestedEnumParticipantTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParticipantType | EnumParticipantTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ParticipantType[] | ListEnumParticipantTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParticipantType[] | ListEnumParticipantTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumParticipantTypeFilter<$PrismaModel> | $Enums.ParticipantType
+  }
+
   export type NestedEnumParticipantResponseStatusFilter<$PrismaModel = never> = {
     equals?: $Enums.ParticipantResponseStatus | EnumParticipantResponseStatusFieldRefInput<$PrismaModel>
     in?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.ParticipantResponseStatus[] | ListEnumParticipantResponseStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumParticipantResponseStatusFilter<$PrismaModel> | $Enums.ParticipantResponseStatus
+  }
+
+  export type NestedEnumParticipantTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ParticipantType | EnumParticipantTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.ParticipantType[] | ListEnumParticipantTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ParticipantType[] | ListEnumParticipantTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumParticipantTypeWithAggregatesFilter<$PrismaModel> | $Enums.ParticipantType
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumParticipantTypeFilter<$PrismaModel>
+    _max?: NestedEnumParticipantTypeFilter<$PrismaModel>
   }
 
   export type NestedEnumParticipantResponseStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -26087,6 +26230,8 @@ export namespace Prisma {
 
   export type MeetingParticipantCreateWithoutUserInput = {
     id?: string
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26096,6 +26241,8 @@ export namespace Prisma {
   export type MeetingParticipantUncheckedCreateWithoutUserInput = {
     id?: string
     meetingId: string
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -26624,7 +26771,9 @@ export namespace Prisma {
     NOT?: MeetingParticipantScalarWhereInput | MeetingParticipantScalarWhereInput[]
     id?: StringFilter<"MeetingParticipant"> | string
     meetingId?: StringFilter<"MeetingParticipant"> | string
-    userId?: StringFilter<"MeetingParticipant"> | string
+    userId?: StringNullableFilter<"MeetingParticipant"> | string | null
+    email?: StringNullableFilter<"MeetingParticipant"> | string | null
+    participantType?: EnumParticipantTypeFilter<"MeetingParticipant"> | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFilter<"MeetingParticipant"> | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
     updatedAt?: DateTimeFilter<"MeetingParticipant"> | Date | string
@@ -28847,15 +28996,19 @@ export namespace Prisma {
 
   export type MeetingParticipantCreateWithoutMeetingInput = {
     id?: string
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
-    user: UserCreateNestedOneWithoutMeetingParticipationsInput
+    user?: UserCreateNestedOneWithoutMeetingParticipationsInput
   }
 
   export type MeetingParticipantUncheckedCreateWithoutMeetingInput = {
     id?: string
-    userId: string
+    userId?: string | null
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29839,6 +29992,8 @@ export namespace Prisma {
   export type MeetingParticipantCreateManyUserInput = {
     id?: string
     meetingId: string
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30355,6 +30510,8 @@ export namespace Prisma {
 
   export type MeetingParticipantUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30364,6 +30521,8 @@ export namespace Prisma {
   export type MeetingParticipantUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     meetingId?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30372,6 +30531,8 @@ export namespace Prisma {
   export type MeetingParticipantUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     meetingId?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30531,7 +30692,9 @@ export namespace Prisma {
 
   export type MeetingParticipantCreateManyMeetingInput = {
     id?: string
-    userId: string
+    userId?: string | null
+    email?: string | null
+    participantType?: $Enums.ParticipantType
     responseStatus?: $Enums.ParticipantResponseStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30539,15 +30702,19 @@ export namespace Prisma {
 
   export type MeetingParticipantUpdateWithoutMeetingInput = {
     id?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    user?: UserUpdateOneRequiredWithoutMeetingParticipationsNestedInput
+    user?: UserUpdateOneWithoutMeetingParticipationsNestedInput
   }
 
   export type MeetingParticipantUncheckedUpdateWithoutMeetingInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30555,7 +30722,9 @@ export namespace Prisma {
 
   export type MeetingParticipantUncheckedUpdateManyWithoutMeetingInput = {
     id?: StringFieldUpdateOperationsInput | string
-    userId?: StringFieldUpdateOperationsInput | string
+    userId?: NullableStringFieldUpdateOperationsInput | string | null
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    participantType?: EnumParticipantTypeFieldUpdateOperationsInput | $Enums.ParticipantType
     responseStatus?: EnumParticipantResponseStatusFieldUpdateOperationsInput | $Enums.ParticipantResponseStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

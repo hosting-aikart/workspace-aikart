@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import api from '../../../utils/api';
 import Modal from '../../../components/common/Modal';
 import Badge from '../../../components/common/Badge';
+import { useNavigate } from 'react-router-dom';
 
 function getInitials(name = '') {
   return name
@@ -15,7 +16,7 @@ function getInitials(name = '') {
 export default function CreateMeetingModal({ initialData = null, userRole = 'ADMIN', onClose, onSuccess }) {
   const isEditing = !!(initialData && initialData.id);
   const [meetingType, setMeetingType] = useState(initialData?.meetingType || 'SCHEDULED');
-  
+  const navigate = useNavigate();
   // Format initial dates
   const defaultDate = initialData?.startTime
     ? new Date(initialData.startTime).toISOString().split('T')[0]
@@ -38,12 +39,24 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
 
   const [availableEmployees, setAvailableEmployees] = useState([]);
   const [selectedUserIds, setSelectedUserIds] = useState(
-    initialData?.participants ? initialData.participants.map((p) => p.userId) : []
+    initialData?.participants ? initialData.participants.filter(p => p.participantType === 'INTERNAL' || !p.participantType).map((p) => p.userId).filter(Boolean) : []
   );
+  const [externalEmails, setExternalEmails] = useState(
+    initialData?.participants ? initialData.participants.filter(p => p.participantType === 'EXTERNAL').map((p) => p.email) : []
+  );
+  const [newEmail, setNewEmail] = useState('');
+  const [googleConnected, setGoogleConnected] = useState(true);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(false);
   const [fetchingEmployees, setFetchingEmployees] = useState(true);
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    api.get('/google/status')
+      .then(res => setGoogleConnected(res.data?.data?.connected ?? true))
+      .catch(() => setGoogleConnected(false));
+  }, []);
 
   // Fetch employee options
   useEffect(() => {
@@ -85,6 +98,23 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
     setSelectedUserIds((prev) =>
       prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
     );
+  };
+
+  const handleAddEmail = () => {
+    const email = newEmail.trim();
+    if (!email) return;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setError('Invalid email address format.');
+      return;
+    }
+    if (externalEmails.includes(email)) {
+      setError('Email is already added.');
+      return;
+    }
+    setError('');
+    setExternalEmails(prev => [...prev, email]);
+    setNewEmail('');
   };
 
   const handleSubmit = async (e) => {
@@ -139,6 +169,7 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
         startTime: startIso,
         endTime: endIso,
         participantIds: selectedUserIds,
+        externalEmails,
       };
 
       if (isEditing) {
@@ -161,8 +192,28 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
       open={true}
       title={isEditing ? 'Edit Meeting' : 'Create Meeting'}
       onClose={onClose}
+      footer={
+        <>
+          <button type="button" className="btn btn-outline" onClick={onClose} disabled={loading}>
+            Cancel
+          </button>
+          <button type="submit" form="create-meeting-form" className="btn btn-primary" disabled={loading}>
+            {loading ? (
+              <span className="flex items-center gap-2">
+                <span className="spinner spinner-sm" /> Saving...
+              </span>
+            ) : isEditing ? (
+              'Update Meeting'
+            ) : meetingType === 'INSTANT' ? (
+              '⚡ Start Instant Meeting'
+            ) : (
+              '📅 Schedule Meeting'
+            )}
+          </button>
+        </>
+      }
     >
-      <form noValidate onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+      <form id="create-meeting-form" noValidate onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         {error && (
           <div className="card" style={{ background: '#fef2f2', border: '1px solid #fca5a5', color: '#991b1b', padding: '0.75rem 1rem' }}>
             {error}
@@ -356,24 +407,61 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
           </div>
         </div>
 
-        {/* Form Actions */}
-        <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', marginTop: '0.5rem' }}>
-          <button type="button" className="btn btn-outline" onClick={onClose} disabled={loading}>
-            Cancel
-          </button>
-          <button type="submit" className="btn btn-primary" disabled={loading}>
-            {loading ? (
-              <span className="flex items-center gap-2">
-                <span className="spinner spinner-sm" /> Saving...
-              </span>
-            ) : isEditing ? (
-              'Update Meeting'
-            ) : meetingType === 'INSTANT' ? (
-              '⚡ Start Instant Meeting'
-            ) : (
-              '📅 Schedule Meeting'
-            )}
-          </button>
+        {/* External Emails */}
+        <div>
+          <label className="form-label" style={{ fontWeight: 600, display: 'block', marginBottom: '0.35rem' }}>
+            Invite by Email (External Guests)
+          </label>
+          {!googleConnected && (
+            <div className="card" style={{ background: '#fffbeb', border: '1px solid #fde68a', color: '#b45309', padding: '0.75rem', marginBottom: '0.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.9rem' }}>Email is not connected. To send meeting invitations, please connect your email account first.</span>
+              <button
+                type="button"
+                className="btn btn-sm btn-primary"
+                onClick={() => {
+                  const basePath = userRole === 'ADMIN' ? '/admin' : '/app';
+                  navigate(`${basePath}/email`);
+                  onClose();
+                }}
+              >
+                Connect Email
+              </button>
+            </div>
+          )}
+          <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+            <input
+              type="email"
+              className="input"
+              placeholder="e.g. client@company.com"
+              value={newEmail}
+              onChange={(e) => setNewEmail(e.target.value)}
+              disabled={!googleConnected}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                  handleAddEmail();
+                }
+              }}
+            />
+            <button
+              type="button"
+              className="btn btn-outline"
+              disabled={!googleConnected || !newEmail.trim()}
+              onClick={handleAddEmail}
+            >
+              + Add
+            </button>
+          </div>
+          {externalEmails.length > 0 && (
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+              {externalEmails.map(email => (
+                <div key={email} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', background: '#f1f5f9', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.85rem' }}>
+                  <span>{email}</span>
+                  <button type="button" onClick={() => setExternalEmails(prev => prev.filter(e => e !== email))} style={{ border: 'none', background: 'transparent', cursor: 'pointer', color: '#ef4444', fontWeight: 'bold' }}>&times;</button>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </form>
     </Modal>

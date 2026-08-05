@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="AIKart Workspace — Internal employee portal for team management, collaboration, and productivity." />
     <title>AIKart Workspace</title>
+    <script>
+      if (localStorage.getItem('aikart_dark_mode') === 'true') {
+        document.documentElement.classList.add('dark');
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

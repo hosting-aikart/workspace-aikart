@@ -5,6 +5,8 @@
  * Each row shows sender, subject + snippet, date, unread indicator, and
  * attachment icon when applicable.
  */
+import { SkeletonList } from '../../../components/common/Skeleton';
+
 export default function EmailList({
   messages,
   loading,
@@ -17,9 +19,8 @@ export default function EmailList({
 }) {
   if (loading && messages.length === 0) {
     return (
-      <div className="email-list-state">
-        <div className="spinner" />
-        <p>Loading emails…</p>
+      <div style={{ padding: '1rem' }}>
+        <SkeletonList count={8} />
       </div>
     );
   }
