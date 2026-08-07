@@ -70,6 +70,7 @@ export default function ProfilePage() {
 
   // ── Editable fields state ──────────────────────────────────────────────────
   const [phone,           setPhone]           = useState('');
+  const [location,        setLocation]        = useState('');
   const [password,        setPassword]        = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPass,        setShowPass]        = useState(false);
@@ -94,6 +95,7 @@ export default function ProfilePage() {
         console.log('[ProfilePage] Profile loaded:', data.data);
         setProfile(data.data);
         setPhone(data.data.phone || '');
+        setLocation(data.data.location || '');
       } catch (err) {
         console.error('[ProfilePage] Fetch error:', err.response?.status, err.response?.data, err.message);
         setFetchErr(
@@ -165,6 +167,15 @@ export default function ProfilePage() {
       payload.phone = trimmedPhone;
     }
 
+    const trimmedLocation = location.trim();
+    if (!trimmedLocation) {
+      setFormErr('Location is required (Remote or City name).');
+      return;
+    }
+    if (trimmedLocation !== (profile?.location || '')) {
+      payload.location = trimmedLocation;
+    }
+
     if (password) {
       if (password.length < 8) {
         setFormErr('Password must be at least 8 characters.');
@@ -188,6 +199,7 @@ export default function ProfilePage() {
       const { data } = await api.patch('/me/profile', payload);
       setProfile(data.data);
       if (payload.phone) updateUser({ phone: payload.phone });
+      if (payload.location) updateUser({ location: payload.location });
       setPassword('');
       setConfirmPassword('');
       setToast({ message: 'Profile saved successfully!', type: 'success' });
@@ -348,6 +360,7 @@ export default function ProfilePage() {
             
             <div className="profile-info-list">
               <InfoField label="Email Address" value={profile?.email} />
+              <InfoField label="Location"      value={profile?.location} />
               <InfoField label="Employee ID"   value={profile?.employeeId} />
               <InfoField label="Position"      value={profile?.position} />
               <InfoField label="Department"    value={profile?.department?.name} />
@@ -394,6 +407,25 @@ export default function ProfilePage() {
 
             <form onSubmit={handleSave} className="profile-form" noValidate>
               
+              <div className="form-group">
+                <label htmlFor="profile-location" className="form-label">Location <span style={{ color: 'var(--color-danger)' }}>*</span></label>
+                <div className="input-group">
+                  <svg className="input-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                    <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/>
+                  </svg>
+                  <input
+                    id="profile-location"
+                    type="text"
+                    className="input"
+                    placeholder="e.g. Remote, Mumbai, New York"
+                    value={location}
+                    onChange={(e) => setLocation(e.target.value)}
+                    disabled={saving}
+                    required
+                  />
+                </div>
+              </div>
+
               <div className="form-group">
                 <label htmlFor="profile-phone" className="form-label">Phone Number</label>
                 <div className="input-group">

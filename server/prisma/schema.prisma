@@ -62,6 +62,7 @@ model User {
   phone      String?
   position   String?
   joiningDate DateTime?
+  location   String?
 
   departmentId String?
   department   Department? @relation(fields: [departmentId], references: [id])

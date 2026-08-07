@@ -147,6 +147,7 @@ exports.Prisma.UserScalarFieldEnum = {
   phone: 'phone',
   position: 'position',
   joiningDate: 'joiningDate',
+  location: 'location',
   departmentId: 'departmentId',
   reportingManagerId: 'reportingManagerId',
   isActive: 'isActive',

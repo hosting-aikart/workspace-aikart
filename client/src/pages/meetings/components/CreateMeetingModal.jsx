@@ -48,6 +48,7 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
   const [googleConnected, setGoogleConnected] = useState(true);
 
   const [searchQuery, setSearchQuery] = useState('');
+  const [selectedRoleFilter, setSelectedRoleFilter] = useState('ALL');
   const [loading, setLoading] = useState(false);
   const [fetchingEmployees, setFetchingEmployees] = useState(true);
   const [error, setError] = useState('');
@@ -84,20 +85,35 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
   }, []);
 
   const filteredEmployees = useMemo(() => {
-    if (!searchQuery.trim()) return availableEmployees;
+    let list = availableEmployees;
+    if (selectedRoleFilter !== 'ALL') {
+      list = list.filter((emp) => emp.role === selectedRoleFilter);
+    }
+    if (!searchQuery.trim()) return list;
     const q = searchQuery.toLowerCase();
-    return availableEmployees.filter(
+    return list.filter(
       (emp) =>
         emp.name?.toLowerCase().includes(q) ||
         emp.email?.toLowerCase().includes(q) ||
         emp.position?.toLowerCase().includes(q)
     );
-  }, [availableEmployees, searchQuery]);
+  }, [availableEmployees, searchQuery, selectedRoleFilter]);
 
   const toggleParticipant = (userId) => {
     setSelectedUserIds((prev) =>
       prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
     );
+  };
+
+  const handleToggleSelectAll = () => {
+    const filteredIds = filteredEmployees.map((emp) => emp.id);
+    const allFilteredSelected = filteredIds.every((id) => selectedUserIds.includes(id));
+
+    if (allFilteredSelected) {
+      setSelectedUserIds((prev) => prev.filter((id) => !filteredIds.includes(id)));
+    } else {
+      setSelectedUserIds((prev) => Array.from(new Set([...prev, ...filteredIds])));
+    }
   };
 
   const handleAddEmail = () => {
@@ -332,7 +348,22 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
             <label className="form-label" style={{ fontWeight: 600, margin: 0 }}>
               Select Participants ({selectedUserIds.length} selected)
             </label>
-            <span className="text-sm text-secondary">Google Meet & Email invites will be sent</span>
+            {filteredEmployees.length > 0 && (
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                onClick={handleToggleSelectAll}
+                style={{ padding: '0.25rem 0.5rem', height: 'auto', fontSize: '0.8rem', textTransform: 'none' }}
+              >
+                {filteredEmployees.every((emp) => selectedUserIds.includes(emp.id))
+                  ? '✕ Deselect Listed'
+                  : '✓ Select Listed'}
+              </button>
+            )}
+          </div>
+
+          <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '0.5rem' }}>
+            ✉ Google Meet & Email invites will be sent to participants
           </div>
 
           <input
@@ -340,8 +371,23 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
             placeholder="Search by name, email, or role..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{ marginBottom: '0.75rem' }}
+            style={{ marginBottom: '0.5rem' }}
           />
+
+          {/* Role Filters */}
+          <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+            {['ALL', 'ADMIN', 'MANAGER', 'EMPLOYEE'].map((r) => (
+              <button
+                key={r}
+                type="button"
+                className={`btn btn-xs ${selectedRoleFilter === r ? 'btn-primary' : 'btn-ghost'}`}
+                style={{ fontSize: '0.75rem', padding: '0.15rem 0.5rem', height: 'auto', borderRadius: '4px', textTransform: 'capitalize' }}
+                onClick={() => setSelectedRoleFilter(r)}
+              >
+                {r.toLowerCase()}
+              </button>
+            ))}
+          </div>
 
           <div
             style={{

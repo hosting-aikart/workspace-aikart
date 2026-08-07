@@ -14,6 +14,7 @@ const EMPLOYEE_SELECT = {
   phone: true,
   position: true,
   joiningDate: true,
+  location: true,
   isActive: true,
   mustChangePassword: true,
   profilePhoto: true,
@@ -171,6 +172,7 @@ const createEmployee = async (workspaceId, payload) => {
       employeeId: payload.employeeId,
       phone: payload.phone || null,
       position: payload.position || null,
+      location: payload.location || null,
       departmentId: payload.departmentId || null,
       reportingManagerId: payload.reportingManagerId || null,
       joiningDate: payload.joiningDate ? new Date(payload.joiningDate) : null,
@@ -234,6 +236,8 @@ const updateEmployee = async (workspaceId, employeeId, payload) => {
   if (payload.phone !== undefined) updateData.phone = payload.phone || null;
   if (payload.position !== undefined)
     updateData.position = payload.position || null;
+  if (payload.location !== undefined)
+    updateData.location = payload.location || null;
   if (payload.employeeId !== undefined)
     updateData.employeeId = payload.employeeId;
   if (payload.departmentId !== undefined)

@@ -540,6 +540,41 @@ async function updateMeeting(workspaceId, user, meetingId, data) {
 }
 
 /**
+ * Cancel Meeting (Admin or Organizer Manager)
+ */
+async function cancelMeeting(workspaceId, user, meetingId) {
+  const prisma = getPrisma();
+
+  const meeting = await prisma.meeting.findFirst({
+    where: { id: meetingId, workspaceId },
+  });
+
+  if (!meeting) {
+    const err = new Error('Meeting not found.');
+    err.statusCode = 404;
+    throw err;
+  }
+
+  if (user.role === 'EMPLOYEE' || (user.role === 'MANAGER' && meeting.organizerId !== user.id)) {
+    const err = new Error('You are not authorized to cancel this meeting.');
+    err.statusCode = 403;
+    throw err;
+  }
+
+  const cancelledMeeting = await prisma.meeting.update({
+    where: { id: meetingId },
+    data: { status: 'CANCELLED' },
+  });
+
+  // Delete from Google Calendar if event exists
+  if (meeting.googleEventId) {
+    deleteCalendarEvent(user.id, meeting.googleEventId);
+  }
+
+  return cancelledMeeting;
+}
+
+/**
  * Delete Meeting (Admin, Manager, or Organizer)
  */
 async function deleteMeeting(workspaceId, user, meetingId) {
@@ -672,6 +707,7 @@ module.exports = {
   listMeetings,
   getMeetingById,
   updateMeeting,
+  cancelMeeting,
   deleteMeeting,
   respondToInvitation,
   joinMeeting,

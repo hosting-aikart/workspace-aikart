@@ -4898,6 +4898,7 @@ export namespace Prisma {
     phone: string | null
     position: string | null
     joiningDate: Date | null
+    location: string | null
     departmentId: string | null
     reportingManagerId: string | null
     isActive: boolean | null
@@ -4920,6 +4921,7 @@ export namespace Prisma {
     phone: string | null
     position: string | null
     joiningDate: Date | null
+    location: string | null
     departmentId: string | null
     reportingManagerId: string | null
     isActive: boolean | null
@@ -4942,6 +4944,7 @@ export namespace Prisma {
     phone: number
     position: number
     joiningDate: number
+    location: number
     departmentId: number
     reportingManagerId: number
     isActive: number
@@ -4966,6 +4969,7 @@ export namespace Prisma {
     phone?: true
     position?: true
     joiningDate?: true
+    location?: true
     departmentId?: true
     reportingManagerId?: true
     isActive?: true
@@ -4988,6 +4992,7 @@ export namespace Prisma {
     phone?: true
     position?: true
     joiningDate?: true
+    location?: true
     departmentId?: true
     reportingManagerId?: true
     isActive?: true
@@ -5010,6 +5015,7 @@ export namespace Prisma {
     phone?: true
     position?: true
     joiningDate?: true
+    location?: true
     departmentId?: true
     reportingManagerId?: true
     isActive?: true
@@ -5105,6 +5111,7 @@ export namespace Prisma {
     phone: string | null
     position: string | null
     joiningDate: Date | null
+    location: string | null
     departmentId: string | null
     reportingManagerId: string | null
     isActive: boolean
@@ -5144,6 +5151,7 @@ export namespace Prisma {
     phone?: boolean
     position?: boolean
     joiningDate?: boolean
+    location?: boolean
     departmentId?: boolean
     reportingManagerId?: boolean
     isActive?: boolean
@@ -5184,6 +5192,7 @@ export namespace Prisma {
     phone?: boolean
     position?: boolean
     joiningDate?: boolean
+    location?: boolean
     departmentId?: boolean
     reportingManagerId?: boolean
     isActive?: boolean
@@ -5210,6 +5219,7 @@ export namespace Prisma {
     phone?: boolean
     position?: boolean
     joiningDate?: boolean
+    location?: boolean
     departmentId?: boolean
     reportingManagerId?: boolean
     isActive?: boolean
@@ -5236,6 +5246,7 @@ export namespace Prisma {
     phone?: boolean
     position?: boolean
     joiningDate?: boolean
+    location?: boolean
     departmentId?: boolean
     reportingManagerId?: boolean
     isActive?: boolean
@@ -5247,7 +5258,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "workspaceId" | "employeeId" | "phone" | "position" | "joiningDate" | "departmentId" | "reportingManagerId" | "isActive" | "mustChangePassword" | "lastLogin" | "profilePhoto" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "email" | "passwordHash" | "role" | "workspaceId" | "employeeId" | "phone" | "position" | "joiningDate" | "location" | "departmentId" | "reportingManagerId" | "isActive" | "mustChangePassword" | "lastLogin" | "profilePhoto" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     workspace?: boolean | WorkspaceDefaultArgs<ExtArgs>
     department?: boolean | User$departmentArgs<ExtArgs>
@@ -5313,6 +5324,7 @@ export namespace Prisma {
       phone: string | null
       position: string | null
       joiningDate: Date | null
+      location: string | null
       departmentId: string | null
       reportingManagerId: string | null
       isActive: boolean
@@ -5772,6 +5784,7 @@ export namespace Prisma {
     readonly phone: FieldRef<"User", 'String'>
     readonly position: FieldRef<"User", 'String'>
     readonly joiningDate: FieldRef<"User", 'DateTime'>
+    readonly location: FieldRef<"User", 'String'>
     readonly departmentId: FieldRef<"User", 'String'>
     readonly reportingManagerId: FieldRef<"User", 'String'>
     readonly isActive: FieldRef<"User", 'Boolean'>
@@ -19235,6 +19248,7 @@ export namespace Prisma {
     phone: 'phone',
     position: 'position',
     joiningDate: 'joiningDate',
+    location: 'location',
     departmentId: 'departmentId',
     reportingManagerId: 'reportingManagerId',
     isActive: 'isActive',
@@ -19799,6 +19813,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     position?: StringNullableFilter<"User"> | string | null
     joiningDate?: DateTimeNullableFilter<"User"> | Date | string | null
+    location?: StringNullableFilter<"User"> | string | null
     departmentId?: StringNullableFilter<"User"> | string | null
     reportingManagerId?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
@@ -19838,6 +19853,7 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     position?: SortOrderInput | SortOrder
     joiningDate?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
     departmentId?: SortOrderInput | SortOrder
     reportingManagerId?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -19881,6 +19897,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     position?: StringNullableFilter<"User"> | string | null
     joiningDate?: DateTimeNullableFilter<"User"> | Date | string | null
+    location?: StringNullableFilter<"User"> | string | null
     departmentId?: StringNullableFilter<"User"> | string | null
     reportingManagerId?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
@@ -19920,6 +19937,7 @@ export namespace Prisma {
     phone?: SortOrderInput | SortOrder
     position?: SortOrderInput | SortOrder
     joiningDate?: SortOrderInput | SortOrder
+    location?: SortOrderInput | SortOrder
     departmentId?: SortOrderInput | SortOrder
     reportingManagerId?: SortOrderInput | SortOrder
     isActive?: SortOrder
@@ -19948,6 +19966,7 @@ export namespace Prisma {
     phone?: StringNullableWithAggregatesFilter<"User"> | string | null
     position?: StringNullableWithAggregatesFilter<"User"> | string | null
     joiningDate?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    location?: StringNullableWithAggregatesFilter<"User"> | string | null
     departmentId?: StringNullableWithAggregatesFilter<"User"> | string | null
     reportingManagerId?: StringNullableWithAggregatesFilter<"User"> | string | null
     isActive?: BoolWithAggregatesFilter<"User"> | boolean
@@ -20964,6 +20983,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -21000,6 +21020,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -21034,6 +21055,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21070,6 +21092,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -21105,6 +21128,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -21126,6 +21150,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -21145,6 +21170,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -22374,6 +22400,7 @@ export namespace Prisma {
     phone?: SortOrder
     position?: SortOrder
     joiningDate?: SortOrder
+    location?: SortOrder
     departmentId?: SortOrder
     reportingManagerId?: SortOrder
     isActive?: SortOrder
@@ -22396,6 +22423,7 @@ export namespace Prisma {
     phone?: SortOrder
     position?: SortOrder
     joiningDate?: SortOrder
+    location?: SortOrder
     departmentId?: SortOrder
     reportingManagerId?: SortOrder
     isActive?: SortOrder
@@ -22418,6 +22446,7 @@ export namespace Prisma {
     phone?: SortOrder
     position?: SortOrder
     joiningDate?: SortOrder
+    location?: SortOrder
     departmentId?: SortOrder
     reportingManagerId?: SortOrder
     isActive?: SortOrder
@@ -24972,6 +25001,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -25006,6 +25036,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -25230,6 +25261,7 @@ export namespace Prisma {
     phone?: StringNullableFilter<"User"> | string | null
     position?: StringNullableFilter<"User"> | string | null
     joiningDate?: DateTimeNullableFilter<"User"> | Date | string | null
+    location?: StringNullableFilter<"User"> | string | null
     departmentId?: StringNullableFilter<"User"> | string | null
     reportingManagerId?: StringNullableFilter<"User"> | string | null
     isActive?: BoolFilter<"User"> | boolean
@@ -25414,6 +25446,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -25449,6 +25482,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
@@ -25593,6 +25627,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -25628,6 +25663,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -25666,6 +25702,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -25701,6 +25738,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
@@ -25744,6 +25782,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -25779,6 +25818,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -25817,6 +25857,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -25852,6 +25893,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -26341,6 +26383,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -26376,6 +26419,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -26436,6 +26480,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -26471,6 +26516,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -26789,6 +26835,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -26824,6 +26871,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -26897,6 +26945,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -26932,6 +26981,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -27085,6 +27135,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -27120,6 +27171,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -27158,6 +27210,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -27193,6 +27246,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -27333,6 +27387,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -27368,6 +27423,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -27412,6 +27468,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -27447,6 +27504,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -27553,6 +27611,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -27588,6 +27647,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -27684,6 +27744,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -27719,6 +27780,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -27793,6 +27855,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -27828,6 +27891,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -27924,6 +27988,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -27959,6 +28024,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -28021,6 +28087,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -28056,6 +28123,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -28186,6 +28254,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28221,6 +28290,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -28323,6 +28393,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -28358,6 +28429,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -28450,6 +28522,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28485,6 +28558,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -28555,6 +28629,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -28590,6 +28665,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -28682,6 +28758,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28717,6 +28794,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -28750,6 +28828,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -28785,6 +28864,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -28834,6 +28914,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -28869,6 +28950,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -28931,6 +29013,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -28966,6 +29049,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -29080,6 +29164,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29115,6 +29200,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -29205,6 +29291,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
     lastLogin?: Date | string | null
@@ -29240,6 +29327,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -29336,6 +29424,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29371,6 +29460,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -29404,6 +29494,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -29479,6 +29570,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29513,6 +29605,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -29547,6 +29640,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -29743,6 +29837,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
@@ -29763,6 +29858,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -29798,6 +29894,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
@@ -29832,6 +29929,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
@@ -29853,6 +29951,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     isActive?: boolean
     mustChangePassword?: boolean
@@ -29874,6 +29973,7 @@ export namespace Prisma {
     phone?: string | null
     position?: string | null
     joiningDate?: Date | string | null
+    location?: string | null
     departmentId?: string | null
     reportingManagerId?: string | null
     isActive?: boolean
@@ -30009,6 +30109,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -30044,6 +30145,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
@@ -30078,6 +30180,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
@@ -30098,6 +30201,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     lastLogin?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -30133,6 +30237,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean
@@ -30167,6 +30272,7 @@ export namespace Prisma {
     phone?: NullableStringFieldUpdateOperationsInput | string | null
     position?: NullableStringFieldUpdateOperationsInput | string | null
     joiningDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    location?: NullableStringFieldUpdateOperationsInput | string | null
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     reportingManagerId?: NullableStringFieldUpdateOperationsInput | string | null
     isActive?: BoolFieldUpdateOperationsInput | boolean

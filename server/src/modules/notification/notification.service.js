@@ -10,10 +10,6 @@ const getUserNotifications = async (workspaceId, userId) => {
       workspaceId,
       status: 'PUBLISHED',
       publishDate: { lte: new Date() },
-      OR: [
-        { targetType: 'ALL' },
-        { selectedUsers: { some: { userId } } },
-      ],
     },
     include: {
       createdBy: {
@@ -52,10 +48,6 @@ const markNotificationAsRead = async (workspaceId, userId, announcementId) => {
       id: announcementId,
       workspaceId,
       status: 'PUBLISHED',
-      OR: [
-        { targetType: 'ALL' },
-        { selectedUsers: { some: { userId } } },
-      ],
     },
   });
 

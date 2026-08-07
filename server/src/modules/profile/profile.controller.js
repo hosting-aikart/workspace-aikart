@@ -19,6 +19,10 @@ const updateProfileSchema = z.object({
     .trim()
     .regex(/^\+?[\d\s\-().]{7,20}$/, { message: 'Enter a valid phone number.' })
     .optional(),
+  location: z
+    .string()
+    .trim()
+    .min(1, { message: 'Location is required (Remote or City name).' }),
   password: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters.' })

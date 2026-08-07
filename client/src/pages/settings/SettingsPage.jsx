@@ -12,6 +12,7 @@ export default function SettingsPage() {
     name: '',
     email: '',
     phone: '',
+    location: '',
     position: '',
     role: '',
     department: null,
@@ -44,6 +45,7 @@ export default function SettingsPage() {
         name: payload.name || '',
         email: payload.email || '',
         phone: payload.phone || '',
+        location: payload.location || '',
         position: payload.position || '',
         role: payload.role || '',
         department: payload.department || null,
@@ -78,15 +80,19 @@ export default function SettingsPage() {
     loadProfile();
   }, []);
 
-  const handleUpdatePhone = async (e) => {
+  const handleUpdateProfile = async (e) => {
     e.preventDefault();
+    if (!profile.location?.trim()) {
+      setError('Location is required (Remote or City name).');
+      return;
+    }
     setIsSaving(true);
     setError('');
     setNotice('');
 
     try {
-      await api.patch('/me/profile', { phone: profile.phone });
-      setNotice('Phone number updated successfully.');
+      await api.patch('/me/profile', { phone: profile.phone, location: profile.location });
+      setNotice('Profile updated successfully.');
     } catch (err) {
       setError(getErrorMessage(err));
     } finally {
@@ -232,7 +238,7 @@ export default function SettingsPage() {
         <div className="card animate-fade-in" style={{ padding: '1.75rem' }}>
           {/* Profile Tab */}
           {activeTab === 'profile' && (
-            <form onSubmit={handleUpdatePhone} style={{ display: 'grid', gap: '1rem' }}>
+            <form onSubmit={handleUpdateProfile} style={{ display: 'grid', gap: '1rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '0.5rem' }}>
                 <div>
                   {profile.profilePhotoUrl ? (
@@ -292,6 +298,20 @@ export default function SettingsPage() {
                     disabled
                   />
                 </div>
+              </div>
+
+              <div>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.88rem', marginBottom: '0.35rem' }}>
+                  Location <span style={{ color: 'var(--color-danger)' }}>*</span>
+                </label>
+                <input
+                  className="input"
+                  style={{ width: '100%' }}
+                  placeholder="e.g. Remote, Mumbai, New York"
+                  value={profile.location}
+                  onChange={(e) => setProfile({ ...profile, location: e.target.value })}
+                  required
+                />
               </div>
 
               <div>

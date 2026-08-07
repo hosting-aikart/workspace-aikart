@@ -11,6 +11,7 @@ const PROFILE_SELECT = {
   phone: true,
   position: true,
   joiningDate: true,
+  location: true,
   isActive: true,
   mustChangePassword: true,
   lastLogin: true,
@@ -50,6 +51,7 @@ const updateProfile = async (userId, data) => {
 
   if (data.phone !== undefined) updateData.phone = data.phone;
   if (data.profilePhoto !== undefined) updateData.profilePhoto = data.profilePhoto;
+  if (data.location !== undefined) updateData.location = data.location;
   if (data.password) {
     updateData.passwordHash = await bcrypt.hash(data.password, 12);
     updateData.mustChangePassword = false;
