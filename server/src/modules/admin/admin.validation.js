@@ -6,7 +6,7 @@ const employeeCreateSchema = z.object({
   email: z.string().trim().email('Please enter a valid email.'),
   phone: z.string().trim().optional().or(z.literal('')),
   position: z.string().trim().optional().or(z.literal('')),
-  location: z.string().trim().min(1, 'Location is required.'),
+  location: z.string().trim().optional().or(z.literal('')),
   departmentId: z.string().trim().optional().or(z.literal('')),
   reportingManagerId: z.string().trim().optional().or(z.literal('')),
   joiningDate: z.string().trim().optional().or(z.literal('')),

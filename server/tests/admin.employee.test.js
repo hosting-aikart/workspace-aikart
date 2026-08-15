@@ -69,3 +69,27 @@ test('createEmployee rejects duplicate employeeId inside the same workspace', as
     /already exists/i,
   );
 });
+
+test('employeeCreateSchema parses valid payload with or without location', () => {
+  const { employeeCreateSchema } = require('../src/modules/admin/admin.validation');
+
+  const payloadWithoutLocation = {
+    name: 'Test Employee',
+    employeeId: 'EMP-999',
+    email: 'test@example.com',
+    password: 'Password123!',
+  };
+
+  const parsed = employeeCreateSchema.parse(payloadWithoutLocation);
+  assert.equal(parsed.name, 'Test Employee');
+  assert.equal(parsed.location, undefined);
+
+  const payloadWithLocation = {
+    ...payloadWithoutLocation,
+    location: 'Remote',
+  };
+
+  const parsedWithLocation = employeeCreateSchema.parse(payloadWithLocation);
+  assert.equal(parsedWithLocation.location, 'Remote');
+});
+

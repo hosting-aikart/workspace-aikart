@@ -22,7 +22,8 @@ const updateProfileSchema = z.object({
   location: z
     .string()
     .trim()
-    .min(1, { message: 'Location is required (Remote or City name).' }),
+    .min(1, { message: 'Location is required (Remote or City name).' })
+    .optional(),
   password: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters.' })

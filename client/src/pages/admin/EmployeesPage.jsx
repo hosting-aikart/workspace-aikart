@@ -13,6 +13,7 @@ const createDefaultForm = () => ({
   employeeId: '',
   phone: '',
   position: '',
+  location: '',
   departmentId: '',
   reportingManagerId: '',
   role: 'EMPLOYEE',
@@ -132,6 +133,7 @@ export default function EmployeesPage() {
       employeeId: employee.employeeId || '',
       phone: employee.phone || '',
       position: employee.position || '',
+      location: employee.location || '',
       departmentId: employee.department?.id || '',
       reportingManagerId: employee.reportingManager?.id || '',
       role: employee.role || 'EMPLOYEE',
@@ -167,6 +169,7 @@ export default function EmployeesPage() {
         employeeId: form.employeeId,
         phone: form.phone || '',
         position: form.position || '',
+        location: form.location || '',
         departmentId: form.departmentId || '',
         reportingManagerId: form.reportingManagerId || '',
         role: form.role,
@@ -550,6 +553,19 @@ export default function EmployeesPage() {
                 onChange={(event) => setForm({ ...form, position: event.target.value })}
               />
             </div>
+          </div>
+
+          <div>
+            <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+              Location
+            </label>
+            <input
+              className="input"
+              style={{ width: '100%' }}
+              placeholder="e.g. Remote, New York, London"
+              value={form.location}
+              onChange={(event) => setForm({ ...form, location: event.target.value })}
+            />
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
