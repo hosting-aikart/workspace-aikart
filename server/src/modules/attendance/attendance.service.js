@@ -6,12 +6,88 @@ const startOfDay = (date = new Date()) => {
     return d;
 };
 
+const endOfDay = (date) => {
+    const d = new Date(date);
+    d.setHours(23, 59, 59, 999);
+    return d;
+};
+
+// Cap on how much time a forgotten check-out can credit for a single
+// segment (e.g. the browser was closed mid-shift and never reopened). Without
+// this, a session abandoned for days would otherwise inflate that day's
+// total to however long it took the person to notice — a genuine full shift
+// is comfortably under this, so it only ever clips truly abandoned sessions.
+const MAX_ABANDONED_SEGMENT_HOURS = 12;
+
+/**
+ * Auto-closes any attendance record left WORKING/PAUSED from a *previous*
+ * day — the browser closing (or crashing, or the laptop sleeping) mid-shift
+ * without an explicit check-out otherwise leaves that day stuck showing
+ * "Working" forever, with its total hours frozen at whatever was persisted
+ * before the abandoned segment started (checkOut and totalSeconds are only
+ * ever written by pauseTimer/checkOut, so an open segment that's never
+ * closed just never contributes). Each open segment is closed at
+ * min(startedAt + MAX_ABANDONED_SEGMENT_HOURS, end of that calendar day) so
+ * the credited time stays plausible, the day gets a real checkOut, and its
+ * history stops looking permanently unfinished.
+ *
+ * Runs against a single user (called from that user's own attendance
+ * actions/page loads) rather than as a global sweep — an admin viewing
+ * someone else's history sees it reconciled once that person's own next
+ * check-in/page load triggers this.
+ */
+const reconcileStaleAttendance = async (userId) => {
+    const prisma = getPrisma();
+    const today = startOfDay();
+
+    const stale = await prisma.attendance.findMany({
+        where: {
+            userId,
+            date: { lt: today },
+            status: { in: ['WORKING', 'PAUSED'] },
+        },
+        include: { timerSegments: true },
+    });
+
+    for (const attendance of stale) {
+        const running = attendance.timerSegments.find((s) => !s.endedAt);
+        let addedSeconds = 0;
+        let closedAt = attendance.updatedAt;
+
+        if (running) {
+            const startedAt = new Date(running.startedAt);
+            const cap = new Date(Math.min(
+                startedAt.getTime() + MAX_ABANDONED_SEGMENT_HOURS * 60 * 60 * 1000,
+                endOfDay(attendance.date).getTime(),
+            ));
+            addedSeconds = Math.max(0, Math.floor((cap.getTime() - startedAt.getTime()) / 1000));
+            closedAt = cap;
+
+            await prisma.timerSegment.update({
+                where: { id: running.id },
+                data: { endedAt: cap },
+            });
+        }
+
+        await prisma.attendance.update({
+            where: { id: attendance.id },
+            data: {
+                totalSeconds: attendance.totalSeconds + addedSeconds,
+                checkOut: closedAt,
+                status: 'CHECKED_OUT',
+            },
+        });
+    }
+};
+
 /**
  * Finds today's attendance record for a user, creating it if it doesn't exist yet.
  */
 const getOrCreateTodayAttendance = async (userId) => {
     const prisma = getPrisma();
     const today = startOfDay();
+
+    await reconcileStaleAttendance(userId);
 
     let attendance = await prisma.attendance.findUnique({
         where: { userId_date: { userId, date: today } },
@@ -190,6 +266,11 @@ const getTodayStatus = async (userId) => {
  */
 const getHistory = async (userId, { from, to } = {}) => {
     const prisma = getPrisma();
+
+    // Doesn't route through getOrCreateTodayAttendance like the other
+    // actions, so it needs its own call to pick up any stale WORKING/PAUSED
+    // day before returning history for it.
+    await reconcileStaleAttendance(userId);
 
     const where = { userId };
     if (from || to) {

@@ -65,6 +65,7 @@ const updateProjectHandler = async (req, res) => {
       req.user.workspaceId,
       req.params.id,
       req.body,
+      req.user.id,
     );
     return sendSuccess(res, data);
   } catch (err) {
@@ -115,6 +116,7 @@ const addMemberHandler = async (req, res) => {
       req.user.workspaceId,
       req.params.id,
       req.body.userId,
+      req.user.id,
     );
     return sendSuccess(res, data);
   } catch (err) {

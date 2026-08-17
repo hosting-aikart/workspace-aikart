@@ -212,6 +212,7 @@ exports.Prisma.TaskScalarFieldEnum = {
   dueDate: 'dueDate',
   projectId: 'projectId',
   createdById: 'createdById',
+  assignedToId: 'assignedToId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -285,6 +286,53 @@ exports.Prisma.MeetingParticipantScalarFieldEnum = {
   responseStatus: 'responseStatus',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ChatConversationScalarFieldEnum = {
+  id: 'id',
+  type: 'type',
+  name: 'name',
+  isDefault: 'isDefault',
+  workspaceId: 'workspaceId',
+  createdById: 'createdById',
+  lastMessageAt: 'lastMessageAt',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.ChatParticipantScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  userId: 'userId',
+  lastReadAt: 'lastReadAt',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.ChatMessageScalarFieldEnum = {
+  id: 'id',
+  conversationId: 'conversationId',
+  senderId: 'senderId',
+  content: 'content',
+  attachmentUrl: 'attachmentUrl',
+  attachmentType: 'attachmentType',
+  attachmentName: 'attachmentName',
+  isForwarded: 'isForwarded',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.NotificationScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  userId: 'userId',
+  type: 'type',
+  title: 'title',
+  body: 'body',
+  link: 'link',
+  entityId: 'entityId',
+  isRead: 'isRead',
+  readAt: 'readAt',
+  createdAt: 'createdAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -370,6 +418,21 @@ exports.ParticipantResponseStatus = exports.$Enums.ParticipantResponseStatus = {
   JOINED: 'JOINED'
 };
 
+exports.ChatConversationType = exports.$Enums.ChatConversationType = {
+  DIRECT: 'DIRECT',
+  GROUP: 'GROUP'
+};
+
+exports.NotificationType = exports.$Enums.NotificationType = {
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  CHAT_MESSAGE: 'CHAT_MESSAGE',
+  MEETING_INVITE: 'MEETING_INVITE',
+  GROUP_INVITE: 'GROUP_INVITE',
+  PROJECT_INVITE: 'PROJECT_INVITE',
+  TASK_ASSIGNED: 'TASK_ASSIGNED',
+  SYSTEM: 'SYSTEM'
+};
+
 exports.Prisma.ModelName = {
   Workspace: 'Workspace',
   Department: 'Department',
@@ -384,7 +447,11 @@ exports.Prisma.ModelName = {
   AnnouncementRead: 'AnnouncementRead',
   GoogleAccount: 'GoogleAccount',
   Meeting: 'Meeting',
-  MeetingParticipant: 'MeetingParticipant'
+  MeetingParticipant: 'MeetingParticipant',
+  ChatConversation: 'ChatConversation',
+  ChatParticipant: 'ChatParticipant',
+  ChatMessage: 'ChatMessage',
+  Notification: 'Notification'
 };
 
 /**

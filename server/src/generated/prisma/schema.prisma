@@ -18,11 +18,13 @@ model Workspace {
   name        String
   description String?
 
-  users         User[]
-  departments   Department[]
-  projects      Project[]
-  announcements Announcement[]
-  meetings      Meeting[]
+  users             User[]
+  departments       Department[]
+  projects          Project[]
+  announcements     Announcement[]
+  meetings          Meeting[]
+  chatConversations ChatConversation[]
+  notifications     Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -88,12 +90,19 @@ model User {
   managedProjects       Project[]                @relation("ProjectManager")
   projectMembers        ProjectMember[]
   createdTasks          Task[]                   @relation("TaskCreatedBy")
+  assignedTasks         Task[]                   @relation("TaskAssignedTo")
   createdAnnouncements  Announcement[]           @relation("AnnouncementCreatedBy")
   announcementTargets   AnnouncementTargetUser[]
   announcementReads     AnnouncementRead[]
   googleAccount         GoogleAccount?
   organizedMeetings     Meeting[]                @relation("MeetingOrganizer")
   meetingParticipations MeetingParticipant[]
+
+  createdChatConversations ChatConversation[] @relation("ChatConversationCreatedBy")
+  chatParticipations       ChatParticipant[]
+  chatMessages             ChatMessage[]      @relation("ChatMessageSender")
+
+  notifications Notification[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -216,10 +225,14 @@ model Task {
   createdById String?
   createdBy   User?   @relation("TaskCreatedBy", fields: [createdById], references: [id])
 
+  assignedToId String?
+  assignedTo   User?   @relation("TaskAssignedTo", fields: [assignedToId], references: [id], onDelete: SetNull)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([projectId])
+  @@index([assignedToId])
 }
 
 enum AnnouncementPriority {
@@ -379,4 +392,126 @@ model MeetingParticipant {
   updatedAt DateTime @updatedAt
 
   @@unique([meetingId, userId])
+}
+
+// ─── Chat Module ───────────────────────────────────────────────────────────────
+
+enum ChatConversationType {
+  DIRECT
+  GROUP
+}
+
+model ChatConversation {
+  id        String               @id @default(cuid())
+  type      ChatConversationType @default(GROUP)
+  name      String?
+  isDefault Boolean              @default(false) // workspace-wide "Team Chat" — open to every member
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  createdById String?
+  createdBy   User?   @relation("ChatConversationCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  participants  ChatParticipant[]
+  messages      ChatMessage[]
+  lastMessageAt DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([workspaceId])
+}
+
+model ChatParticipant {
+  id             String           @id @default(cuid())
+  conversationId String
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  lastReadAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model ChatMessage {
+  id             String           @id @default(cuid())
+  conversationId String
+  conversation   ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String?
+  sender   User?   @relation("ChatMessageSender", fields: [senderId], references: [id], onDelete: SetNull)
+
+  // `content` may be empty when the message is an image with no caption —
+  // one of content or the attachment fields is always present, enforced in
+  // chat.service.js rather than at the DB level (Prisma has no cross-column
+  // CHECK constraint support).
+  content String
+
+  // Single-image attachment, stored on Cloudinary — see profile photo
+  // upload for the same pattern. Kept as three flat nullable columns
+  // instead of a separate Attachment table since a chat message can only
+  // carry one image today; revisit if multi-file attachments are added.
+  attachmentUrl  String?
+  attachmentType String? // MIME type, e.g. "image/png"
+  attachmentName String? // original filename, for download/alt text
+
+  // True when this message was created by forwarding another message's
+  // content/attachment into this conversation (see forwardMessages in
+  // chat.service.js) — drives the "Forwarded" label on the client.
+  isForwarded Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([conversationId, createdAt])
+}
+
+// ─── Notification Module ────────────────────────────────────────────────────
+// Personal, per-user activity feed — distinct from Announcement (a broadcast
+// admin/manager post everyone can browse). A Notification is a private
+// pointer at something that happened ("X published an announcement", "Y sent
+// you a message"), generated by the events below and pushed live over
+// Socket.IO to the owning user's `user:<id>` room.
+
+enum NotificationType {
+  ANNOUNCEMENT
+  CHAT_MESSAGE
+  MEETING_INVITE
+  GROUP_INVITE
+  PROJECT_INVITE
+  TASK_ASSIGNED
+  SYSTEM
+}
+
+model Notification {
+  id String @id @default(cuid())
+
+  workspaceId String
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  type  NotificationType @default(SYSTEM)
+  title String
+  body  String?
+
+  // Client-side route to open when the notification is clicked, e.g. /app/chat.
+  link     String?
+  // id of the source record (announcement/conversation/meeting) for reference.
+  entityId String?
+
+  isRead Boolean   @default(false)
+  readAt DateTime?
+
+  createdAt DateTime @default(now())
+
+  @@index([workspaceId, userId, createdAt])
+  @@index([userId, isRead])
 }

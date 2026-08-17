@@ -2,7 +2,7 @@ const { z } = require('zod');
 
 const employeeCreateSchema = z.object({
   name: z.string().trim().min(2, 'Name is required.'),
-  employeeId: z.string().trim().min(1, 'Employee ID is required.'),
+  employeeId: z.string().trim().min(1).optional().or(z.literal('')),
   email: z.string().trim().email('Please enter a valid email.'),
   phone: z.string().trim().optional().or(z.literal('')),
   position: z.string().trim().optional().or(z.literal('')),

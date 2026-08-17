@@ -1,6 +1,45 @@
 const prismaModule = require('../../config/prisma');
+const notificationService = require('../notification/notification.service');
 
 const getPrisma = () => prismaModule.getPrisma();
+
+/**
+ * notifyAnnouncementTargets
+ * Fires a personal Notification (and live socket push) for everyone an
+ * announcement reaches, so it shows up in their notification bell — not
+ * just on the Announcements page they'd have to go browse. Best-effort:
+ * a notification failure shouldn't fail the announcement create/update.
+ */
+const notifyAnnouncementTargets = async (workspaceId, announcement) => {
+  if (announcement.status !== 'PUBLISHED') return;
+
+  try {
+    const prisma = getPrisma();
+    let targetUserIds;
+
+    if (announcement.targetType === 'SELECTED_USERS') {
+      targetUserIds = (announcement.selectedUsers || []).map((su) => su.userId ?? su.user?.id);
+    } else {
+      const allUsers = await prisma.user.findMany({
+        where: { workspaceId, isActive: true },
+        select: { id: true },
+      });
+      targetUserIds = allUsers.map((u) => u.id);
+    }
+
+    targetUserIds = targetUserIds.filter((id) => id && id !== announcement.createdById);
+
+    await notificationService.createNotificationsForUsers(workspaceId, targetUserIds, {
+      type: 'ANNOUNCEMENT',
+      title: announcement.title,
+      body: announcement.description?.slice(0, 140) || null,
+      link: '/app/announcements',
+      entityId: announcement.id,
+    });
+  } catch (err) {
+    console.error('Failed to notify announcement targets:', err.message);
+  }
+};
 
 const normalizePriority = (val) => {
   if (!val) return 'MEDIUM';
@@ -69,6 +108,8 @@ const createAnnouncement = async (workspaceId, createdById, payload, userRole = 
       },
     },
   });
+
+  await notifyAnnouncementTargets(workspaceId, announcement);
 
   return announcement;
 };
@@ -203,6 +244,12 @@ const updateAnnouncement = async (workspaceId, announcementId, payload) => {
       },
     },
   });
+
+  // Only notify on the DRAFT -> PUBLISHED transition, not on every edit of
+  // an already-published announcement.
+  if (existing.status !== 'PUBLISHED' && updated.status === 'PUBLISHED') {
+    await notifyAnnouncementTargets(workspaceId, updated);
+  }
 
   return updated;
 };

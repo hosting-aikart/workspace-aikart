@@ -1,4 +1,5 @@
 const prismaModule = require('../../config/prisma');
+const notificationService = require('../notification/notification.service');
 
 const getPrisma = () => {
   const prisma = prismaModule.getPrisma();
@@ -36,11 +37,41 @@ const ensureWorkspaceUser = async (prisma, workspaceId, userId, message) => {
   return user;
 };
 
+/**
+ * notifyAddedToProject
+ * Notifies each newly-added member (never the person doing the adding) that
+ * they've been put on a project, and pushes it live over the socket the
+ * same way announcements/chat do. Best-effort — a notification failure
+ * shouldn't fail the membership change itself.
+ */
+const notifyAddedToProject = async (workspaceId, projectId, projectName, actorId, addedUserIds) => {
+  const recipients = addedUserIds.filter((id) => id && id !== actorId);
+  if (recipients.length === 0) return;
+
+  try {
+    const prisma = prismaModule.getPrisma();
+    const actor = actorId
+      ? await prisma.user.findUnique({ where: { id: actorId }, select: { name: true } })
+      : null;
+
+    await notificationService.createNotificationsForUsers(workspaceId, recipients, {
+      type: 'PROJECT_INVITE',
+      title: `Added to "${projectName}"`,
+      body: `${actor?.name || 'Someone'} added you to this project.`,
+      link: `/app/projects/${projectId}`,
+      entityId: projectId,
+    });
+  } catch (err) {
+    console.error('Failed to notify new project members:', err.message);
+  }
+};
+
 const syncProjectMembers = async (
   prisma,
   workspaceId,
   projectId,
   memberIds = [],
+  { projectName, actorId } = {},
 ) => {
   const desiredIds = normalizeMemberIds(memberIds);
   const currentMemberships = await prisma.projectMember.findMany({
@@ -66,6 +97,10 @@ const syncProjectMembers = async (
     await prisma.projectMember.deleteMany({
       where: { projectId, userId: { in: toRemove } },
     });
+  }
+
+  if (toAdd.length && projectName) {
+    await notifyAddedToProject(workspaceId, projectId, projectName, actorId, toAdd);
   }
 };
 
@@ -186,6 +221,7 @@ const createProject = async (workspaceId, payload = {}) => {
       workspaceId,
       createdProject.id,
       payload.memberIds,
+      { projectName: normalizedName, actorId: payload.createdById },
     );
   }
 
@@ -276,11 +312,11 @@ const getProjectById = async (workspaceId, projectId) => {
   return project;
 };
 
-const updateProject = async (workspaceId, projectId, payload = {}) => {
+const updateProject = async (workspaceId, projectId, payload = {}, actorId = null) => {
   const prisma = getPrisma();
   const existingProject = await prisma.project.findFirst({
     where: { id: projectId, workspaceId },
-    select: { id: true },
+    select: { id: true, name: true },
   });
 
   if (!existingProject) {
@@ -345,7 +381,10 @@ const updateProject = async (workspaceId, projectId, payload = {}) => {
   });
 
   if (payload.memberIds !== undefined) {
-    await syncProjectMembers(prisma, workspaceId, projectId, payload.memberIds);
+    await syncProjectMembers(prisma, workspaceId, projectId, payload.memberIds, {
+      projectName: updateData.name || existingProject.name,
+      actorId,
+    });
   }
 
   return prisma.project.findFirst({
@@ -394,12 +433,12 @@ const updateProjectProgress = async (workspaceId, projectId, progress) => {
   });
 };
 
-const addProjectMember = async (workspaceId, projectId, userId) => {
+const addProjectMember = async (workspaceId, projectId, userId, actorId = null) => {
   const prisma = getPrisma();
 
   const project = await prisma.project.findFirst({
     where: { id: projectId, workspaceId },
-    select: { id: true },
+    select: { id: true, name: true },
   });
 
   if (!project) {
@@ -433,6 +472,8 @@ const addProjectMember = async (workspaceId, projectId, userId) => {
   await prisma.projectMember.create({
     data: { projectId, userId },
   });
+
+  await notifyAddedToProject(workspaceId, projectId, project.name, actorId, [userId]);
 
   return prisma.project.findFirst({
     where: { id: projectId, workspaceId },

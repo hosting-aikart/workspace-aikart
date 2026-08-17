@@ -36,12 +36,20 @@ const handleMulterError = (err, _req, res, next) => {
   next();
 };
 
-const { getUsers } = require('../admin/admin.controller');
+const { getDirectory, getEmployee } = require('../admin/admin.controller');
 
 // ─── Profile Routes ───────────────────────────────────────────────────────────
 
-// GET /api/me/directory — fetch all users in the workspace (for all roles)
-router.get('/directory', requireAuth, getUsers);
+// GET /api/me/directory — fetch all users in the workspace (for all roles).
+// getDirectory (not admin's getUsers/getEmployees) — this is a flat,
+// unpaginated "who's in my workspace" list, not the admin management table.
+router.get('/directory', requireAuth, getDirectory);
+
+// GET /api/me/directory/:id — a single colleague's basic info (email, phone,
+// position, department, …) for all roles. Used e.g. by the Chat page so
+// tapping a conversation's name/avatar can show who you're actually talking
+// to, without requiring the ADMIN/MANAGER role that /admin/employees/:id does.
+router.get('/directory/:id', requireAuth, getEmployee);
 
 // GET  /api/me/profile  — fetch logged-in user's full profile
 router.get('/profile', requireAuth, getMyProfile);

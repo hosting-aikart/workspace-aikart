@@ -14,6 +14,7 @@ const createTaskSchema = z.object({
     .min(1, 'Project ID is required')
     .optional()
     .or(z.null()),
+  assignedToId: z.string().min(1).optional().or(z.null()),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional(),
   status: z.enum(['TODO', 'IN_PROGRESS', 'DONE', 'ITERATE']).optional(),
   dueDate: z
@@ -26,6 +27,7 @@ const createTaskSchema = z.object({
 const updateTaskSchema = z.object({
   title: z.string().min(1).optional(),
   description: z.string().optional().or(z.null()),
+  assignedToId: z.string().min(1).optional().or(z.null()),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH', 'URGENT']).optional(),
   status: z.enum(['TODO', 'IN_PROGRESS', 'DONE', 'ITERATE']).optional(),
   dueDate: z

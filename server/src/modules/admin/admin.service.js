@@ -95,6 +95,45 @@ const getEmployees = async (workspaceId, options = {}) => {
   };
 };
 
+// Only the fields the workspace-wide directory actually renders (Directory
+// page cards, Chat's "start a DM"/"new group" pickers) — no
+// reportingManager join, which neither consumer uses.
+const DIRECTORY_SELECT = {
+  id: true,
+  name: true,
+  email: true,
+  role: true,
+  position: true,
+  phone: true,
+  profilePhoto: true,
+  department: { select: { id: true, name: true } },
+};
+
+/**
+ * getWorkspaceDirectory
+ * A lighter sibling of getEmployees for read-only "who's in my workspace"
+ * lists (GET /me/directory) rather than the admin employee-management
+ * table: no reportingManager join, no employeeId/joiningDate/location/
+ * timestamps, and — since none of its callers page through results, they
+ * all just request one big flat list — no `count()` query either. That
+ * count was a full extra DB round trip on every single load of the Chat
+ * page's sidebar (which fetches the directory to build its "Colleagues"
+ * list) and the Directory page, for a number nothing displayed.
+ */
+const getWorkspaceDirectory = async (workspaceId, options = {}) => {
+  const prisma = getPrisma();
+  const limit = Math.min(Number(options.limit) || 200, 500);
+
+  const employees = await prisma.user.findMany({
+    where: { workspaceId },
+    take: limit,
+    orderBy: { name: 'asc' },
+    select: DIRECTORY_SELECT,
+  });
+
+  return { employees };
+};
+
 const getEmployeeById = async (workspaceId, employeeId) => {
   const prisma = getPrisma();
   const employee = await prisma.user.findFirst({
@@ -124,16 +163,18 @@ const createEmployee = async (workspaceId, payload) => {
     throw err;
   }
 
-  const existingEmployeeId = await prisma.user.findFirst({
-    where: { workspaceId, employeeId: payload.employeeId },
-  });
+  if (payload.employeeId) {
+    const existingEmployeeId = await prisma.user.findFirst({
+      where: { workspaceId, employeeId: payload.employeeId },
+    });
 
-  if (existingEmployeeId) {
-    const err = new Error(
-      'An employee with this employee ID already exists in this workspace.',
-    );
-    err.statusCode = 409;
-    throw err;
+    if (existingEmployeeId) {
+      const err = new Error(
+        'An employee with this employee ID already exists in this workspace.',
+      );
+      err.statusCode = 409;
+      throw err;
+    }
   }
 
   const department = payload.departmentId
@@ -169,7 +210,7 @@ const createEmployee = async (workspaceId, payload) => {
       passwordHash,
       role: normalizeRole(payload.role),
       workspaceId,
-      employeeId: payload.employeeId,
+      employeeId: payload.employeeId || null,
       phone: payload.phone || null,
       position: payload.position || null,
       location: payload.location || null,
@@ -753,6 +794,7 @@ const getAdminReport = async (workspaceId, options = {}) => {
 
 module.exports = {
   getEmployees,
+  getWorkspaceDirectory,
   getEmployeeById,
   createEmployee,
   updateEmployee,

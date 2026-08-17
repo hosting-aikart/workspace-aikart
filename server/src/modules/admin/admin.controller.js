@@ -1,6 +1,7 @@
 const { sendSuccess, sendError } = require('../../utils/apiResponse');
 const {
   getEmployees,
+  getWorkspaceDirectory,
   getEmployeeById,
   createEmployee,
   updateEmployee,
@@ -40,6 +41,23 @@ const getUsers = async (req, res) => {
     return sendSuccess(res, data);
   } catch (err) {
     return sendError(res, err.message || 'Failed to fetch employees.', 500);
+  }
+};
+
+/**
+ * getDirectory
+ * The read-only "everyone in my workspace" list behind GET /me/directory —
+ * used by the Directory page and Chat's DM/new-group pickers, none of which
+ * search/filter/paginate. Backed by getWorkspaceDirectory (a lighter query
+ * than getUsers/getEmployees above) rather than reusing the admin
+ * employee-management endpoint's heavier, pagination-aware one.
+ */
+const getDirectory = async (req, res) => {
+  try {
+    const data = await getWorkspaceDirectory(req.user.workspaceId, { limit: req.query.limit });
+    return sendSuccess(res, data);
+  } catch (err) {
+    return sendError(res, err.message || 'Failed to fetch directory.', 500);
   }
 };
 
@@ -277,6 +295,7 @@ const getReport = async (req, res) => {
 
 module.exports = {
   getUsers,
+  getDirectory,
   getEmployee,
   createEmployeeHandler,
   updateEmployeeHandler,
