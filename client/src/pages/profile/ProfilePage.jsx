@@ -361,7 +361,6 @@ export default function ProfilePage() {
             <div className="profile-info-list">
               <InfoField label="Email Address" value={profile?.email} />
               <InfoField label="Location"      value={profile?.location} />
-              <InfoField label="Employee ID"   value={profile?.employeeId} />
               <InfoField label="Position"      value={profile?.position} />
               <InfoField label="Department"    value={profile?.department?.name} />
               <InfoField label="Joining Date"  value={formatDate(profile?.joiningDate)} />

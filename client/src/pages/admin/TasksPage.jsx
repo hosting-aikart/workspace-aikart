@@ -157,6 +157,16 @@ export default function TasksPage() {
       ),
     },
     {
+      key: 'assignedTo',
+      label: 'Assignee',
+      render: (row) =>
+        row.assignedTo?.name ? (
+          <span style={{ fontSize: '0.9rem', fontWeight: 500 }}>{row.assignedTo.name}</span>
+        ) : (
+          <span className="text-secondary" style={{ fontSize: '0.85rem' }}>Unassigned</span>
+        ),
+    },
+    {
       key: 'priority',
       label: 'Priority',
       render: (row) => <Badge tone={getPriorityTone(row.priority)}>{row.priority}</Badge>,

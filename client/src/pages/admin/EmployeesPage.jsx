@@ -10,7 +10,6 @@ import Badge from '../../components/common/Badge';
 const createDefaultForm = () => ({
   name: '',
   email: '',
-  employeeId: '',
   phone: '',
   position: '',
   location: '',
@@ -130,7 +129,6 @@ export default function EmployeesPage() {
     setForm({
       name: employee.name || '',
       email: employee.email || '',
-      employeeId: employee.employeeId || '',
       phone: employee.phone || '',
       position: employee.position || '',
       location: employee.location || '',
@@ -153,8 +151,8 @@ export default function EmployeesPage() {
   };
 
   const handleSave = async () => {
-    if (!form.name || !form.email || !form.employeeId) {
-      setError('Name, email, and employee ID are required.');
+    if (!form.name || !form.email) {
+      setError('Name and email are required.');
       return;
     }
 
@@ -166,7 +164,6 @@ export default function EmployeesPage() {
       const payload = {
         name: form.name,
         email: form.email,
-        employeeId: form.employeeId,
         phone: form.phone || '',
         position: form.position || '',
         location: form.location || '',
@@ -236,14 +233,12 @@ export default function EmployeesPage() {
         departmentName: employee.department?.name || '—',
         managerName: employee.reportingManager?.name || '—',
         roleLabel: employee.role,
-        employeeIdValue: employee.employeeId || employee.id,
       })),
     [employees],
   );
 
   const columns = useMemo(
     () => [
-      { key: 'employeeIdValue', label: 'Employee ID' },
       {
         key: 'name',
         label: 'Name',
@@ -501,31 +496,17 @@ export default function EmployeesPage() {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>
-            <div>
-              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
-                Email Address <span style={{ color: 'var(--color-danger)' }}>*</span>
-              </label>
-              <input
-                className="input"
-                style={{ width: '100%' }}
-                placeholder="john@aikart.com"
-                value={form.email}
-                onChange={(event) => setForm({ ...form, email: event.target.value })}
-              />
-            </div>
-            <div>
-              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
-                Employee ID <span style={{ color: 'var(--color-danger)' }}>*</span>
-              </label>
-              <input
-                className="input"
-                style={{ width: '100%' }}
-                placeholder="EMP-101"
-                value={form.employeeId}
-                onChange={(event) => setForm({ ...form, employeeId: event.target.value })}
-              />
-            </div>
+          <div>
+            <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem' }}>
+              Email Address <span style={{ color: 'var(--color-danger)' }}>*</span>
+            </label>
+            <input
+              className="input"
+              style={{ width: '100%' }}
+              placeholder="john@aikart.com"
+              value={form.email}
+              onChange={(event) => setForm({ ...form, email: event.target.value })}
+            />
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.75rem' }}>

@@ -13,6 +13,8 @@ export default function ConfirmDialog({
         position: 'fixed',
         inset: 0,
         background: 'rgba(15, 23, 42, 0.45)',
+        backdropFilter: 'blur(5px)',
+        WebkitBackdropFilter: 'blur(5px)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -34,7 +36,7 @@ export default function ConfirmDialog({
             marginTop: '1rem',
           }}
         >
-          <button className="btn btn-outline" onClick={onCancel}>
+          <button className="btn btn-secondary" onClick={onCancel}>
             Cancel
           </button>
           <button className="btn btn-danger" onClick={onConfirm}>

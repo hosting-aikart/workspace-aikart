@@ -6,6 +6,7 @@ import {
   useCallback,
 } from 'react';
 import api from '../utils/api';
+import { disconnectSocket } from '../utils/socket';
 
 const AuthContext = createContext(null);
 
@@ -47,6 +48,10 @@ export function AuthProvider({ children }) {
     api.token = null;
     setAccessToken(null);
     setUser(null);
+    // Chat and NotificationContext share one Socket.IO connection (see
+    // utils/socket.js) that outlives either individual consumer — it's
+    // only torn down here, once, on logout.
+    disconnectSocket();
 
     try {
       window.localStorage.removeItem('aikart-access-token');

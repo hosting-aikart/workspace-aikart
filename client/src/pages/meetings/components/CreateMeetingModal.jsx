@@ -3,15 +3,7 @@ import api from '../../../utils/api';
 import Modal from '../../../components/common/Modal';
 import Badge from '../../../components/common/Badge';
 import { useNavigate } from 'react-router-dom';
-
-function getInitials(name = '') {
-  return name
-    .split(' ')
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
-}
+import Avatar from '../../../components/common/Avatar';
 
 export default function CreateMeetingModal({ initialData = null, userRole = 'ADMIN', onClose, onSuccess }) {
   const isEditing = !!(initialData && initialData.id);
@@ -428,7 +420,7 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-                      <div className="avatar avatar-sm">{getInitials(emp.name)}</div>
+                      <Avatar name={emp.name} photo={emp.profilePhoto} size="sm" />
                       <div style={{ display: 'flex', flexDirection: 'column' }}>
                         <span style={{ fontWeight: 600, fontSize: '0.9rem', lineHeight: 1.2 }}>{emp.name}</span>
                         <span style={{ fontSize: '0.75rem', color: '#64748b' }}>{emp.email}</span>

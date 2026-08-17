@@ -121,9 +121,27 @@ export default function DepartmentsPage() {
 
   const columns = useMemo(
     () => [
-      { key: 'id', label: 'Department ID' },
       { key: 'name', label: 'Department Name' },
-      { key: 'employeeCount', label: 'Employee Count' },
+      {
+        key: 'employeeCount',
+        label: 'Employees',
+        render: (department) => {
+          const count = department.employeeCount ?? 0;
+          return count === 0 ? 'No employees yet' : `${count} ${count === 1 ? 'employee' : 'employees'}`;
+        },
+      },
+      {
+        key: 'createdAt',
+        label: 'Created',
+        render: (department) =>
+          department.createdAt
+            ? new Date(department.createdAt).toLocaleDateString([], {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+              })
+            : '—',
+      },
       {
         key: 'actions',
         label: 'Actions',

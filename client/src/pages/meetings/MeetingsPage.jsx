@@ -7,15 +7,7 @@ import Badge from '../../components/common/Badge';
 import EmptyState from '../../components/common/EmptyState';
 import { SkeletonList } from '../../components/common/Skeleton';
 import CreateMeetingModal from '../meetings/components/CreateMeetingModal';
-
-function getInitials(name = '') {
-  return name
-    .split(' ')
-    .map((w) => w[0])
-    .slice(0, 2)
-    .join('')
-    .toUpperCase();
-}
+import Avatar from '../../components/common/Avatar';
 
 const getStatusBadgeTone = (status) => {
   switch (status) {
@@ -364,9 +356,12 @@ export default function EmployeeMeetingsPage() {
                           fontSize: '0.8rem',
                         }}
                       >
-                        <div className="avatar avatar-sm" style={{ width: '20px', height: '20px', fontSize: '0.65rem' }}>
-                          {getInitials(p.user?.name)}
-                        </div>
+                        <Avatar
+                          name={p.user?.name}
+                          photo={p.user?.profilePhoto}
+                          size="sm"
+                          style={{ width: '20px', height: '20px', fontSize: '0.65rem' }}
+                        />
                         <span style={{ fontWeight: 500 }}>{p.user?.name}</span>
                         <Badge tone={getResponseBadgeTone(p.responseStatus)}>
                           {p.responseStatus}

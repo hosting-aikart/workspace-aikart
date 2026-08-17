@@ -1,8 +1,11 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../../utils/api';
 import PageHeader from '../../components/common/PageHeader';
 import Badge from '../../components/common/Badge';
 import EmptyState from '../../components/common/EmptyState';
+import { useAuth } from '../../context/AuthContext';
+import { useChatContext } from '../../context/ChatContext';
 
 function getInitials(name = '') {
   return name
@@ -25,6 +28,10 @@ function getRoleTone(role) {
 }
 
 export default function DirectoryPage() {
+  const navigate = useNavigate();
+  const { user: currentUser } = useAuth();
+  const { onlineUserIds, startDirectConversation } = useChatContext();
+
   const [users, setUsers] = useState([]);
   const [departments, setDepartments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -33,6 +40,22 @@ export default function DirectoryPage() {
   const [search, setSearch] = useState('');
   const [departmentFilter, setDepartmentFilter] = useState('');
   const [roleFilter, setRoleFilter] = useState('');
+  const [messagingId, setMessagingId] = useState(null);
+
+  const chatBasePath = currentUser?.role === 'ADMIN' ? '/admin/chat' : '/app/chat';
+
+  const handleMessage = async (member) => {
+    if (messagingId) return;
+    setMessagingId(member.id);
+    try {
+      const conversation = await startDirectConversation(member.id);
+      navigate(chatBasePath, { state: { openConversationId: conversation.id } });
+    } catch (err) {
+      setError(err?.response?.data?.message || 'Failed to start conversation.');
+    } finally {
+      setMessagingId(null);
+    }
+  };
 
   const loadData = useCallback(async () => {
     setIsLoading(true);
@@ -72,7 +95,6 @@ export default function DirectoryPage() {
       return (
         u.name?.toLowerCase().includes(query) ||
         u.email?.toLowerCase().includes(query) ||
-        u.employeeId?.toLowerCase().includes(query) ||
         u.position?.toLowerCase().includes(query) ||
         u.department?.name?.toLowerCase().includes(query)
       );
@@ -104,7 +126,7 @@ export default function DirectoryPage() {
         <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
           <input
             className="input"
-            placeholder="Search by name, email, employee ID or position…"
+            placeholder="Search by name, email, or position…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             style={{ flex: 1, minWidth: '240px' }}
@@ -177,7 +199,11 @@ export default function DirectoryPage() {
             gap: '1.25rem',
           }}
         >
-          {filteredUsers.map((member) => (
+          {filteredUsers.map((member) => {
+            const isOnline = onlineUserIds.includes(member.id);
+            const isSelf = member.id === currentUser?.id;
+
+            return (
             <div
               key={member.id}
               className="card animate-fade-in"
@@ -216,9 +242,9 @@ export default function DirectoryPage() {
                         fontSize: '1.05rem',
                       }}
                     >
-                      {member.profilePhotoUrl ? (
+                      {member.profilePhoto ? (
                         <img
-                          src={member.profilePhotoUrl}
+                          src={member.profilePhoto}
                           alt={member.name}
                           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         />
@@ -234,10 +260,10 @@ export default function DirectoryPage() {
                         width: '10px',
                         height: '10px',
                         borderRadius: '50%',
-                        backgroundColor: member.isActive ? '#22c55e' : '#9ca3af',
+                        backgroundColor: isOnline ? '#22c55e' : '#9ca3af',
                         border: '2px solid var(--color-surface, #ffffff)',
                       }}
-                      title={member.isActive ? 'Active Member' : 'Inactive Account'}
+                      title={isOnline ? 'Online now' : 'Offline'}
                     />
                   </div>
 
@@ -307,20 +333,26 @@ export default function DirectoryPage() {
                     </div>
                   )}
 
-                  {member.employeeId && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--color-text-secondary)" strokeWidth="2">
-                        <rect x="3" y="4" width="18" height="16" rx="2" />
-                        <line x1="7" y1="8" x2="17" y2="8" />
-                        <line x1="7" y1="12" x2="13" y2="12" />
-                      </svg>
-                      <span className="text-secondary">ID: {member.employeeId}</span>
-                    </div>
-                  )}
                 </div>
               </div>
+
+              {!isSelf && (
+                <button
+                  type="button"
+                  className="btn btn-secondary btn-sm btn-block"
+                  style={{ marginTop: '1rem', gap: '0.4rem' }}
+                  onClick={() => handleMessage(member)}
+                  disabled={messagingId === member.id}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                  </svg>
+                  {messagingId === member.id ? 'Opening…' : 'Message'}
+                </button>
+              )}
             </div>
-          ))}
+            );
+          })}
         </div>
       )}
     </div>

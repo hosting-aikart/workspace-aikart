@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getDefaultRouteByRole } from '../../utils/roleRoutes';
-import loginImg from '../../assets/login.png';
+import LoginIllustration from '../../components/auth/LoginIllustration';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -43,21 +43,14 @@ export default function LoginPage() {
   return (
     <div className="login-page">
       <div className="login-card">
-        {/* ── Left: Image Panel ─────────────────────────────────────────── */}
+        {/* ── Left: Illustration Panel ──────────────────────────────────── */}
         <div className="login-image-panel">
-          <img src={loginImg} alt="AIKart Workspace" className="login-image" />
-          <div className="login-image-overlay">
-            <div className="login-brand-badge">
-              <span className="login-brand-text">
-                ai<span>kart</span>
-              </span>
-              <span className="login-brand-sub">Workspace</span>
-            </div>
-          </div>
+          <LoginIllustration />
         </div>
 
         {/* ── Right: Form Panel ─────────────────────────────────────────── */}
         <div className="login-form-panel">
+          <div className="login-form-box">
           <div className="login-form-inner">
             {/* Header */}
             <div className="login-header">
@@ -127,14 +120,9 @@ export default function LoginPage() {
 
               {/* Password */}
               <div className="form-group">
-                <div className="flex justify-between items-center">
-                  <label htmlFor="password" className="form-label">
-                    Password
-                  </label>
-                  <button type="button" className="btn-link text-sm">
-                    Forgot Password?
-                  </button>
-                </div>
+                <label htmlFor="password" className="form-label">
+                  Password
+                </label>
                 <div className="input-group">
                   <svg
                     className="input-icon"
@@ -227,6 +215,7 @@ export default function LoginPage() {
               Access is managed by your administrator. Contact HR if you need
               help.
             </p>
+          </div>
           </div>
         </div>
       </div>

@@ -34,6 +34,7 @@ export default function NewTaskModal({
         title: formData.title.trim(),
         description: formData.description?.trim() || null,
         projectId: formData.projectId || null,
+        assignedToId: formData.assignedToId || null,
         priority: formData.priority,
         dueDate: formData.dueDate
           ? new Date(formData.dueDate).toISOString()

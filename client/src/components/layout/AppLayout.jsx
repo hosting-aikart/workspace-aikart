@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import TopNavbar from './TopNavbar';
 import { useAuth } from '../../context/AuthContext';
+import { useNotifications } from '../../context/NotificationContext';
+import { useChatContext } from '../../context/ChatContext';
 
 const NAV_SECTIONS = [
   {
@@ -102,6 +104,16 @@ const NAV_SECTIONS = [
     title: 'COMMUNICATION',
     items: [
       {
+        id: 'chat',
+        label: 'Team Chat',
+        path: '/app/chat',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+          </svg>
+        ),
+      },
+      {
         id: 'announcements',
         label: 'Announcements',
         path: '/app/announcements',
@@ -165,7 +177,15 @@ const NAV_SECTIONS = [
 export default function AppLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { user } = useAuth();
-  
+  const { unreadCount: unreadNotifications } = useNotifications();
+  const { totalUnread: unreadChats } = useChatContext();
+
+  // Live counts shown as a badge on their sidebar nav item — keyed by item id.
+  const navBadges = {
+    chat: unreadChats,
+    notifications: unreadNotifications,
+  };
+
   // Example filter if we had distinct roles array on items. For now, everything is available to both.
   const filteredSections = NAV_SECTIONS.map((section) => ({
     ...section,
@@ -203,6 +223,11 @@ export default function AppLayout() {
                 >
                   <span className="nav-icon">{item.icon}</span>
                   <span className="nav-label">{item.label}</span>
+                  {navBadges[item.id] > 0 && (
+                    <span className="nav-badge">
+                      {navBadges[item.id] > 99 ? '99+' : navBadges[item.id]}
+                    </span>
+                  )}
                 </NavLink>
               ))}
             </div>

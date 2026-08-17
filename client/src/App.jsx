@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { NotificationProvider } from './context/NotificationContext';
+import { ChatProvider } from './context/ChatContext';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import { getDefaultRouteByRole } from './utils/roleRoutes';
 
@@ -35,6 +37,7 @@ import MeetingsPage from './pages/meetings/MeetingsPage';
 import AnnouncementsPage from './pages/announcements/AnnouncementsPage';
 import EmailPage from './pages/email/EmailPage';
 import DirectoryPage from './pages/directory/DirectoryPage';
+import ChatPage from './pages/chat/ChatPage';
 
 import { AppSkeleton } from './components/common/Skeleton';
 
@@ -63,68 +66,74 @@ export default function App() {
   return (
     <BrowserRouter>
       <AuthProvider>
-        <Routes>
-          {/* ── Public ──────────────────────────────────────────────────── */}
-          <Route path="/login" element={<LoginPage />} />
+        <NotificationProvider>
+          <ChatProvider>
+            <Routes>
+              {/* ── Public ────────────────────────────────────────────────── */}
+              <Route path="/login" element={<LoginPage />} />
 
-          {/* ── Root Redirect ───────────────────────────────────────────── */}
-          <Route path="/" element={<RoleBasedRoot />} />
+              {/* ── Root Redirect ─────────────────────────────────────────── */}
+              <Route path="/" element={<RoleBasedRoot />} />
 
-          {/* ── Admin Application (/admin/*) ────────────────────────────── */}
-          <Route
-            path="/admin"
-            element={
-              <ProtectedRoute allowedRoles={['ADMIN']}>
-                <AdminLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<AdminDashboardPage />} />
-            <Route path="dashboard" element={<AdminDashboardPage />} />
-            <Route path="employees" element={<EmployeesPage />} />
-            <Route path="departments" element={<DepartmentsPage />} />
-            <Route path="directory" element={<DirectoryPage />} />
-            <Route path="roles" element={<RolesPage />} />
-            <Route path="projects" element={<ProjectsPageAdmin />} />
-            <Route path="tasks" element={<TasksPageAdmin />} />
-            <Route path="announcements" element={<AnnouncementsPageAdmin />} />
-            <Route path="attendance" element={<AttendanceManagementPage />} />
-            <Route path="meetings" element={<MeetingsPageAdmin />} />
-            <Route path="reports" element={<ReportsPageAdmin />} />
-            <Route path="email" element={<EmailPage />} />
-            <Route path="notifications" element={<NotificationsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-          </Route>
+              {/* ── Admin Application (/admin/*) ──────────────────────────── */}
+              <Route
+                path="/admin"
+                element={
+                  <ProtectedRoute allowedRoles={['ADMIN']}>
+                    <AdminLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<AdminDashboardPage />} />
+                <Route path="dashboard" element={<AdminDashboardPage />} />
+                <Route path="employees" element={<EmployeesPage />} />
+                <Route path="departments" element={<DepartmentsPage />} />
+                <Route path="directory" element={<DirectoryPage />} />
+                <Route path="roles" element={<RolesPage />} />
+                <Route path="projects" element={<ProjectsPageAdmin />} />
+                <Route path="tasks" element={<TasksPageAdmin />} />
+                <Route path="announcements" element={<AnnouncementsPageAdmin />} />
+                <Route path="chat" element={<ChatPage />} />
+                <Route path="attendance" element={<AttendanceManagementPage />} />
+                <Route path="meetings" element={<MeetingsPageAdmin />} />
+                <Route path="reports" element={<ReportsPageAdmin />} />
+                <Route path="email" element={<EmailPage />} />
+                <Route path="notifications" element={<NotificationsPage />} />
+                <Route path="settings" element={<SettingsPage />} />
+                <Route path="profile" element={<ProfilePage />} />
+              </Route>
 
-          {/* ── Employee / Manager Workspace (/app/*) ────────────────────── */}
-          <Route
-            path="/app"
-            element={
-              <ProtectedRoute allowedRoles={['EMPLOYEE', 'MANAGER', 'ADMIN']}>
-                <AppLayout />
-              </ProtectedRoute>
-            }
-          >
-            <Route index element={<HomePage />} />
-            <Route path="dashboard" element={<HomePage />} />
-            <Route path="directory" element={<DirectoryPage />} />
-            <Route path="employees" element={<EmployeesPage />} />
-            <Route path="profile" element={<ProfilePage />} />
-            <Route path="projects" element={<ProjectsListPage />} />
-            <Route path="projects/:id" element={<ProjectDetailPage />} />
-            <Route path="tasks" element={<TasksPage />} />
-            <Route path="attendance" element={<AttendancePage />} />
-            <Route path="meetings" element={<MeetingsPage />} />
-            <Route path="announcements" element={<AnnouncementsPage />} />
-            <Route path="email" element={<EmailPage />} />
-            <Route path="notifications" element={<NotificationsPage />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route>
+              {/* ── Employee / Manager Workspace (/app/*) ─────────────────── */}
+              <Route
+                path="/app"
+                element={
+                  <ProtectedRoute allowedRoles={['EMPLOYEE', 'MANAGER', 'ADMIN']}>
+                    <AppLayout />
+                  </ProtectedRoute>
+                }
+              >
+                <Route index element={<HomePage />} />
+                <Route path="dashboard" element={<HomePage />} />
+                <Route path="directory" element={<DirectoryPage />} />
+                <Route path="employees" element={<EmployeesPage />} />
+                <Route path="profile" element={<ProfilePage />} />
+                <Route path="projects" element={<ProjectsListPage />} />
+                <Route path="projects/:id" element={<ProjectDetailPage />} />
+                <Route path="tasks" element={<TasksPage />} />
+                <Route path="attendance" element={<AttendancePage />} />
+                <Route path="meetings" element={<MeetingsPage />} />
+                <Route path="announcements" element={<AnnouncementsPage />} />
+                <Route path="chat" element={<ChatPage />} />
+                <Route path="email" element={<EmailPage />} />
+                <Route path="notifications" element={<NotificationsPage />} />
+                <Route path="settings" element={<SettingsPage />} />
+              </Route>
 
-          {/* ── Catch-all ────────────────────────────────────────────────── */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+              {/* ── Catch-all ──────────────────────────────────────────────── */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </ChatProvider>
+        </NotificationProvider>
       </AuthProvider>
     </BrowserRouter>
   );

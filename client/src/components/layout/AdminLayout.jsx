@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import TopNavbar from './TopNavbar';
+import { useNotifications } from '../../context/NotificationContext';
+import { useChatContext } from '../../context/ChatContext';
 
 const ADMIN_NAV_SECTIONS = [
   {
@@ -94,6 +96,16 @@ const ADMIN_NAV_SECTIONS = [
         ),
       },
       {
+        id: 'chat',
+        label: 'Team Chat',
+        path: '/admin/chat',
+        icon: (
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+          </svg>
+        ),
+      },
+      {
         id: 'attendance',
         label: 'Attendance',
         path: '/admin/attendance',
@@ -180,6 +192,14 @@ const ADMIN_NAV_SECTIONS = [
 
 export default function AdminLayout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { unreadCount: unreadNotifications } = useNotifications();
+  const { totalUnread: unreadChats } = useChatContext();
+
+  // Live counts shown as a badge on their sidebar nav item — keyed by item id.
+  const navBadges = {
+    chat: unreadChats,
+    notifications: unreadNotifications,
+  };
 
   return (
     <div className="dashboard-root">
@@ -209,7 +229,12 @@ export default function AdminLayout() {
                   onClick={() => setSidebarOpen(false)}
                 >
                   <span className="nav-icon">{item.icon}</span>
-                  {item.label}
+                  <span className="nav-label">{item.label}</span>
+                  {navBadges[item.id] > 0 && (
+                    <span className="nav-badge">
+                      {navBadges[item.id] > 99 ? '99+' : navBadges[item.id]}
+                    </span>
+                  )}
                 </NavLink>
               ))}
             </div>

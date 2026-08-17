@@ -1,11 +1,11 @@
-export default function PageHeader({ title, subtitle, description, action, actionLabel, onAction }) {
+export default function PageHeader({ title, subtitle, description, action, actionLabel, onAction, compact = false }) {
   const sub = subtitle || description;
   return (
     <div
       className="page-header card"
       style={{
-        padding: '1.25rem 1.5rem',
-        marginBottom: '1rem',
+        padding: compact ? '0.75rem 1.25rem' : '1.25rem 1.5rem',
+        marginBottom: compact ? '0.75rem' : '1rem',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
@@ -16,11 +16,11 @@ export default function PageHeader({ title, subtitle, description, action, actio
       <div>
         <h2
           className="page-title"
-          style={{ fontSize: '22px', fontWeight: 700, margin: 0 }}
+          style={{ fontSize: compact ? '17px' : '22px', fontWeight: 700, margin: 0 }}
         >
           {title}
         </h2>
-        {sub ? <p className="text-secondary" style={{ margin: '0.25rem 0 0', fontSize: '0.9rem' }}>{sub}</p> : null}
+        {sub ? <p className="text-secondary" style={{ margin: '0.2rem 0 0', fontSize: compact ? '0.8rem' : '0.9rem' }}>{sub}</p> : null}
       </div>
       {action ? (
         <div>{action}</div>

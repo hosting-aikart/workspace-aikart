@@ -1,6 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useNotifications } from '../../context/NotificationContext';
+import logo from '../../assets/aikart-logo-transparent.png';
+import NotificationPanel from './NotificationPanel';
 
 function getInitials(name = '') {
   return name
@@ -14,19 +17,25 @@ function getInitials(name = '') {
 export default function TopNavbar({ onToggleSidebar }) {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const { unreadCount } = useNotifications();
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const notifRef = useRef(null);
 
   const handleLogout = async () => {
     await logout();
     navigate('/login');
   };
 
-  // Close dropdown on outside click
+  // Close either dropdown on an outside click
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setDropdownOpen(false);
+      }
+      if (notifRef.current && !notifRef.current.contains(event.target)) {
+        setNotifOpen(false);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -34,7 +43,7 @@ export default function TopNavbar({ onToggleSidebar }) {
   }, []);
 
   return (
-    <header className="topbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 1.5rem', height: '70px', position: 'sticky', top: 0, zIndex: 1000 }}>
+    <header className="topbar" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '0 1.5rem', height: '70px', position: 'sticky', top: 0, zIndex: 'var(--z-topbar)' }}>
       {/* LEFT: Sidebar Toggle, Logo, Page Context */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <button
@@ -49,15 +58,9 @@ export default function TopNavbar({ onToggleSidebar }) {
             <line x1="3" y1="18" x2="21" y2="18" />
           </svg>
         </button>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <svg width="24" height="24" viewBox="0 0 32 32" fill="none">
-            <rect width="32" height="32" rx="8" fill="#4461F2" />
-            <path d="M8 22L14 10L20 18L23 14L26 22H8Z" fill="white" opacity="0.9" />
-          </svg>
-          <span style={{ fontWeight: 800, fontSize: '1.25rem', letterSpacing: '-0.02em', color: 'var(--color-text, #1F2937)' }}>
-            ai<span style={{ color: '#4461F2' }}>kart</span>
-          </span>
-        </div>
+        <Link to={user?.role === 'ADMIN' ? '/admin' : '/app'} className="topbar-brand" aria-label="AIKart Home">
+          <img src={logo} alt="AIKart Logo" className="topbar-brand-logo" />
+        </Link>
       </div>
 
       {/* CENTER: Flex spacer */}
@@ -66,19 +69,32 @@ export default function TopNavbar({ onToggleSidebar }) {
       {/* RIGHT: Notifications, Profile Dropdown */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         {/* Notifications */}
-        <button
-          className="btn btn-ghost btn-icon"
-          style={{ position: 'relative' }}
-          onClick={() => navigate(user?.role === 'ADMIN' ? '/admin/notifications' : '/app/notifications')}
-          aria-label="Notifications"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
-            <path d="M13.73 21a2 2 0 0 1-3.46 0" />
-          </svg>
-          {/* Notification dot */}
-          <span style={{ position: 'absolute', top: '8px', right: '8px', width: '8px', height: '8px', backgroundColor: 'var(--color-danger, #EF4444)', borderRadius: '50%', border: '2px solid var(--color-surface, #FFFFFF)' }}></span>
-        </button>
+        <div ref={notifRef} style={{ position: 'relative' }}>
+          <button
+            className="btn btn-ghost btn-icon"
+            style={{ position: 'relative' }}
+            onClick={() => setNotifOpen((open) => !open)}
+            aria-expanded={notifOpen}
+            aria-haspopup="true"
+            aria-label="Notifications"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            {unreadCount > 0 && (
+              <span className="notif-bell-badge">{unreadCount > 99 ? '99+' : unreadCount}</span>
+            )}
+          </button>
+
+          {notifOpen && (
+            <NotificationPanel
+              onClose={() => setNotifOpen(false)}
+              onNavigate={(path, state) => navigate(path, state ? { state } : undefined)}
+              viewAllPath={user?.role === 'ADMIN' ? '/admin/notifications' : '/app/notifications'}
+            />
+          )}
+        </div>
 
         {/* Profile Dropdown */}
         <div ref={dropdownRef} style={{ position: 'relative' }}>
@@ -88,17 +104,15 @@ export default function TopNavbar({ onToggleSidebar }) {
             aria-haspopup="true"
             style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
           >
-            <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column' }}>
-              <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-primary)' }}>{user?.name}</span>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textTransform: 'capitalize' }}>{user?.role?.toLowerCase()}</span>
+            <div className="topbar-user-info">
+              <span className="topbar-user-name">{user?.name}</span>
+              <span className="topbar-user-role">{user?.role?.toLowerCase()}</span>
             </div>
-            <div className="topbar-avatar" style={{ width: '36px', height: '36px', borderRadius: '50%', overflow: 'hidden', backgroundColor: 'var(--color-bg, #F5F5F7)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              {user?.profilePhotoUrl ? (
-                <img src={user.profilePhotoUrl} alt={user?.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div className="topbar-avatar">
+              {user?.profilePhoto ? (
+                <img src={user.profilePhoto} alt={user?.name} className="topbar-avatar-img" />
               ) : (
-                <div style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-primary, #4461F2)' }}>
-                  {getInitials(user?.name)}
-                </div>
+                <span className="topbar-avatar-fallback">{getInitials(user?.name)}</span>
               )}
             </div>
           </button>
@@ -114,7 +128,7 @@ export default function TopNavbar({ onToggleSidebar }) {
               boxShadow: 'var(--shadow-lg)',
               border: '1px solid var(--color-border, #E5E7EB)',
               overflow: 'hidden',
-              zIndex: 50
+              zIndex: 'var(--z-dropdown)'
             }}>
               <div style={{ padding: '0.5rem' }}>
                 <Link
