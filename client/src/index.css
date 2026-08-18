@@ -2824,7 +2824,11 @@ code {
 .page-content {
   flex: 1;
   width: 100%;
-  padding: var(--space-6) var(--space-8);
+  /* Equal on every side — it used to be 24px top/bottom but 32px
+     left/right, which read as the gap next to the sidebar being bigger
+     than the gap above the page. Same value all around now, everywhere,
+     not just on Chat. */
+  padding: var(--space-6);
   max-width: 1200px;
   /* Without this, capping the width at 1200px on a wide monitor just left
      all the leftover space stranded on the right (content stuck to the
@@ -5061,19 +5065,6 @@ textarea:focus-visible,
   flex-direction: column;
   height: calc(100vh - 70px - (var(--space-6) * 2));
   min-height: 0;
-}
-
-/* .page-content's padding is 24px top/bottom but 32px left/right (see its
-   own rule) — fine for ordinary pages with body text, but on a full-bleed
-   panel like this the extra 8px reads as a lopsided gap between the app
-   sidebar and the chat card that doesn't match the gap above it. Pulling
-   back by that same 8px on each side makes it 24px all around, matching.
-   Desktop-only: the mobile page-content padding below is already uniform,
-   so there's nothing to correct there. */
-@media (min-width: 769px) {
-  .chat-page {
-    margin: 0 calc(-1 * (var(--space-8) - var(--space-6)));
-  }
 }
 
 @media (max-width: 768px) {
