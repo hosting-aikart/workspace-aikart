@@ -134,16 +134,45 @@ const listConversations = async (userId, workspaceId) => {
     },
   });
 
-  const conversations = await Promise.all(
-    participations.map(async (p) => {
-      const { conversation } = p;
-      const unreadCount = await prisma.chatMessage.count({
+  // Unread counts used to be one prisma.chatMessage.count() per
+  // conversation, run in parallel — but "in parallel" still means N
+  // separate round trips competing for a spot in Neon's (small, pooled)
+  // connection pool, so with several conversations they end up queueing
+  // behind each other rather than actually running at once. Fetching every
+  // candidate message once, then bucketing/counting them in memory, turns
+  // that into a single round trip regardless of how many conversations the
+  // user is in.
+  const cutoffByConversation = new Map(
+    participations.map((p) => [p.conversation.id, p.lastReadAt ?? new Date(0)]),
+  );
+  const earliestCutoff = participations.reduce(
+    (min, p) => (p.lastReadAt && p.lastReadAt < min ? p.lastReadAt : min),
+    new Date(0),
+  );
+  const conversationIds = participations.map((p) => p.conversation.id);
+
+  const candidateMessages = conversationIds.length
+    ? await prisma.chatMessage.findMany({
         where: {
-          conversationId: conversation.id,
-          createdAt: { gt: p.lastReadAt ?? new Date(0) },
+          conversationId: { in: conversationIds },
           senderId: { not: userId },
+          createdAt: { gt: earliestCutoff },
         },
-      });
+        select: { conversationId: true, createdAt: true },
+      })
+    : [];
+
+  const unreadCountByConversation = {};
+  for (const message of candidateMessages) {
+    if (message.createdAt > cutoffByConversation.get(message.conversationId)) {
+      unreadCountByConversation[message.conversationId] =
+        (unreadCountByConversation[message.conversationId] || 0) + 1;
+    }
+  }
+
+  const conversations = participations.map((p) => {
+      const { conversation } = p;
+      const unreadCount = unreadCountByConversation[conversation.id] || 0;
 
       const otherParticipants = conversation.participants
         .map((cp) => cp.user)
@@ -170,8 +199,7 @@ const listConversations = async (userId, workspaceId) => {
         unreadCount,
         otherParticipantLastReadAt,
       };
-    }),
-  );
+    });
 
   // Team channel always first, then most recently active.
   conversations.sort((a, b) => {

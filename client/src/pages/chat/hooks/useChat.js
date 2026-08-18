@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import api from '../../../utils/api';
 import { connectSocket } from '../../../utils/socket';
 import { useAuth } from '../../../context/AuthContext';
@@ -31,15 +31,44 @@ export function useChat() {
   const [messagesLoading, setMessagesLoading] = useState(false);
   const [typingUserIds, setTypingUserIds] = useState([]);
   const [error, setError] = useState('');
+  // A stand-in "conversation" for a colleague we've just clicked in New
+  // Chat, shown before the real conversation exists on the server yet — see
+  // startDirectConversation below. Cleared once the real one is created (or
+  // creating it fails).
+  const [pendingDirectEntry, setPendingDirectEntry] = useState(null);
 
   const socketRef = useRef(null);
   const activeIdRef = useRef(null);
   const typingTimeoutsRef = useRef({});
+  // { tempId, promise } for a direct conversation currently being created in
+  // the background — lets sendMessage/sendImage resolve the real id first
+  // if someone types and hits send before that finishes (see
+  // startDirectConversation below).
+  const pendingCreationRef = useRef(null);
   // conversationId -> Message[] — kept for the lifetime of the Chat page so
   // switching back to a conversation you've already opened shows instantly
   // instead of re-fetching every time. A ref (not state) since a cache miss
   // shouldn't itself trigger a render.
   const messagesCacheRef = useRef({});
+
+  // Shape of the stand-in "conversation" used by startDirectConversation /
+  // resolvePendingConversationId below, for a given id (the temp one before
+  // creation, or the real one right after — see there for why it needs both).
+  const buildPendingDirectEntry = (id, otherUser) => ({
+    id,
+    type: 'DIRECT',
+    isDefault: false,
+    name: otherUser.name,
+    participants: [otherUser],
+    lastMessage: null,
+    lastMessageAt: null,
+    unreadCount: 0,
+    otherParticipantLastReadAt: null,
+    // Lets MessageThread hide actions (clear/delete chat) that need a
+    // real, already-created conversation to act on — there's nothing to
+    // clear or delete yet.
+    isPending: true,
+  });
 
   useEffect(() => {
     activeIdRef.current = activeId;
@@ -174,6 +203,31 @@ export function useChat() {
     }
   }, [markConversationRead]);
 
+  // If `conversationId` is the stand-in id for a direct chat still being
+  // created in the background, wait for the real one and switch over to it
+  // — used by sendMessage/sendImage so typing and hitting send before that
+  // finishes still works instead of trying to send into an id that doesn't
+  // exist on the server. Returns the id to actually send to.
+  const resolvePendingConversationId = useCallback(async (conversationId) => {
+    const pending = pendingCreationRef.current;
+    if (!pending || pending.tempId !== conversationId) return conversationId;
+
+    const conversation = await pending.promise;
+    messagesCacheRef.current[conversation.id] = messagesCacheRef.current[conversation.id] || [];
+    if (activeIdRef.current === conversationId) {
+      setActiveId(conversation.id);
+      socketRef.current?.emit('conversation:join', conversation.id);
+    }
+    // Re-key the stand-in to the real id rather than dropping it — see the
+    // matching comment in startDirectConversation for why (the shared
+    // conversations list hasn't necessarily caught up yet).
+    setPendingDirectEntry(buildPendingDirectEntry(conversation.id, pending.otherUser));
+    if (pendingCreationRef.current?.tempId === conversationId) {
+      pendingCreationRef.current = null;
+    }
+    return conversation.id;
+  }, []);
+
   // ── Send a message (socket first, REST fallback) ─────────────────────────
   // Shows the bubble immediately on the sender's own screen — instead of
   // waiting for the round trip to the server and back — then reconciles it
@@ -184,13 +238,21 @@ export function useChat() {
       const trimmed = content.trim();
       if (!trimmed) return;
 
+      let targetId;
+      try {
+        targetId = await resolvePendingConversationId(conversationId);
+      } catch {
+        setError('Failed to start the conversation — try again.');
+        return;
+      }
+
       const tempId = `pending-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-      if (conversationId === activeIdRef.current) {
+      if (targetId === activeIdRef.current) {
         setMessages((prev) => [
           ...prev,
           {
             id: tempId,
-            conversationId,
+            conversationId: targetId,
             content: trimmed,
             senderId: user?.id,
             createdAt: new Date().toISOString(),
@@ -205,7 +267,7 @@ export function useChat() {
 
       const socket = socketRef.current;
       if (socket?.connected) {
-        socket.emit('message:send', { conversationId, content: trimmed }, (ack) => {
+        socket.emit('message:send', { conversationId: targetId, content: trimmed }, (ack) => {
           if (!ack?.ok) {
             setError(ack?.message || 'Failed to send message.');
             dropPending();
@@ -215,13 +277,13 @@ export function useChat() {
       }
 
       try {
-        await api.post(`/chat/conversations/${conversationId}/messages`, { content: trimmed });
+        await api.post(`/chat/conversations/${targetId}/messages`, { content: trimmed });
       } catch (err) {
         setError(err?.response?.data?.message || 'Failed to send message.');
         dropPending();
       }
     },
-    [user?.id],
+    [user?.id, resolvePendingConversationId],
   );
 
   // ── Send an attachment — image or document (always REST — file upload
@@ -236,15 +298,24 @@ export function useChat() {
   const sendImage = useCallback(
     async (conversationId, file, caption = '') => {
       const trimmedCaption = caption.trim();
-      const tempId = `pending-${Date.now()}-${Math.random().toString(36).slice(2)}`;
       const previewUrl = URL.createObjectURL(file);
 
-      if (conversationId === activeIdRef.current) {
+      let targetId;
+      try {
+        targetId = await resolvePendingConversationId(conversationId);
+      } catch {
+        setError('Failed to start the conversation — try again.');
+        URL.revokeObjectURL(previewUrl);
+        return;
+      }
+
+      const tempId = `pending-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      if (targetId === activeIdRef.current) {
         setMessages((prev) => [
           ...prev,
           {
             id: tempId,
-            conversationId,
+            conversationId: targetId,
             content: trimmedCaption,
             attachmentUrl: previewUrl,
             attachmentType: file.type,
@@ -267,7 +338,7 @@ export function useChat() {
         formData.append('file', file);
         if (trimmedCaption) formData.append('caption', trimmedCaption);
 
-        const { data } = await api.post(`/chat/conversations/${conversationId}/attachments`, formData, {
+        const { data } = await api.post(`/chat/conversations/${targetId}/attachments`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
 
@@ -276,7 +347,7 @@ export function useChat() {
           if (index === -1) return prev;
           const next = [...prev];
           next[index] = data.data;
-          messagesCacheRef.current[conversationId] = next;
+          messagesCacheRef.current[targetId] = next;
           return next;
         });
       } catch (err) {
@@ -286,7 +357,7 @@ export function useChat() {
         URL.revokeObjectURL(previewUrl);
       }
     },
-    [user?.id],
+    [user?.id, resolvePendingConversationId],
   );
 
   // ── Typing indicator (debounced stop) ─────────────────────────────────────
@@ -303,14 +374,93 @@ export function useChat() {
   }, []);
 
   // ── Start (or resume) a direct conversation with a colleague, then open it ─
+  // Only ever called for someone in the "Colleagues" list — people who
+  // don't already have a DIRECT conversation (see ConversationList's
+  // filter) — so this is always a brand-new, empty conversation.
+  //
+  // Rather than waiting on the POST that creates it before showing
+  // anything, this opens a stand-in thread for that person *immediately* —
+  // empty, ready to type into — and creates the real conversation in the
+  // background. That's the only network round trip left in this flow (it's
+  // unavoidable: we need a real id from the server before a message can
+  // actually be sent), but the person isn't staring at a blank/loading
+  // screen while it happens anymore.
   const startDirectConversation = useCallback(
-    async (otherUserId) => {
-      const conversation = await startDirectConversationShared(otherUserId);
-      await selectConversation(conversation.id);
-      return conversation;
+    async (otherUser) => {
+      const tempId = `pending-direct-${otherUser.id}`;
+      setPendingDirectEntry(buildPendingDirectEntry(tempId, otherUser));
+      setActiveId(tempId);
+      setMessages([]);
+      setTypingUserIds([]);
+      setMessagesLoading(false);
+      setError('');
+
+      // Registered before awaiting it so sendMessage/sendImage can find and
+      // await this same promise if the person types and hits send before
+      // it resolves (see resolvePendingConversationId).
+      const creationPromise = startDirectConversationShared(otherUser.id);
+      pendingCreationRef.current = { tempId, promise: creationPromise, otherUser };
+
+      try {
+        const conversation = await creationPromise;
+        messagesCacheRef.current[conversation.id] = [];
+        // Only swap the *active thread* to the real id if they're still
+        // looking at this pending one — if they'd already clicked away to
+        // something else while this was in flight, don't yank their
+        // current view out from under them.
+        if (activeIdRef.current === tempId) {
+          setActiveId(conversation.id);
+          socketRef.current?.emit('conversation:join', conversation.id);
+        }
+        // Keep the stand-in entry alive — just re-keyed to the real id —
+        // instead of dropping it here. ChatContext's conversations list
+        // only refreshes in the *background* after this POST resolves, so
+        // dropping the stand-in immediately left a gap where activeId
+        // pointed at an id nothing in the real list had yet: the thread
+        // would flash to "Select a conversation" and then pop back once
+        // that background refresh landed a moment later — the "opens then
+        // gets lost" you saw. The merge below drops this automatically the
+        // instant the real list actually contains that id.
+        setPendingDirectEntry(buildPendingDirectEntry(conversation.id, otherUser));
+        if (pendingCreationRef.current?.tempId === tempId) {
+          pendingCreationRef.current = null;
+        }
+        return conversation;
+      } catch (err) {
+        if (pendingCreationRef.current?.tempId === tempId) {
+          pendingCreationRef.current = null;
+        }
+        if (activeIdRef.current === tempId) {
+          setActiveId(null);
+        }
+        setPendingDirectEntry(null);
+        setError(err?.response?.data?.message || 'Failed to start conversation.');
+        throw err;
+      }
     },
-    [startDirectConversationShared, selectConversation],
+    [startDirectConversationShared],
   );
+
+  // Merges in the pending stand-in entry above so ChatPage's existing
+  // `conversations.find(c => c.id === activeId)` just works without needing
+  // to know anything about the pending-vs-real distinction. Once the real
+  // list actually contains that id (the background refresh caught up),
+  // this stops including the stand-in — the real entry takes over cleanly
+  // with no gap and no risk of a duplicate-id render in between.
+  const conversationsWithPending = useMemo(() => {
+    if (!pendingDirectEntry) return conversations;
+    if (conversations.some((c) => c.id === pendingDirectEntry.id)) return conversations;
+    return [pendingDirectEntry, ...conversations];
+  }, [conversations, pendingDirectEntry]);
+
+  // Drops the (now redundant) stand-in entry once the real list catches up
+  // — purely to stop holding onto stale state; conversationsWithPending
+  // above already stops rendering it the instant this becomes true.
+  useEffect(() => {
+    if (pendingDirectEntry && conversations.some((c) => c.id === pendingDirectEntry.id)) {
+      setPendingDirectEntry(null);
+    }
+  }, [conversations, pendingDirectEntry]);
 
   // ── Create a new group with the selected members ──────────────────────────
   // Opens the new group as soon as we have its id — the conversations list
@@ -385,7 +535,7 @@ export function useChat() {
   );
 
   return {
-    conversations,
+    conversations: conversationsWithPending,
     conversationsLoading,
     activeId,
     messages,

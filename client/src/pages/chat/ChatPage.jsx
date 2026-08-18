@@ -36,13 +36,28 @@ export default function ChatPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Arriving from elsewhere (e.g. the Directory page's "message" icon) with
-  // a conversation to jump straight to — open it once, then drop the state
-  // so a refresh/back-navigation doesn't keep re-triggering it.
+  // Arriving from elsewhere with a conversation to jump straight to — open
+  // it once, then drop the state so a refresh/back-navigation doesn't keep
+  // re-triggering it. Two shapes:
+  //  - openConversationId: an existing conversation (e.g. a notification
+  //    click) — just select it.
+  //  - startDirectWithUser: the Directory page's "Message" button, for
+  //    someone who may not have a conversation yet — opens a stand-in
+  //    thread instantly and creates the real one in the background (see
+  //    useChat's startDirectConversation), rather than Directory waiting on
+  //    that round trip before navigating here at all.
   useEffect(() => {
     const openConversationId = location.state?.openConversationId;
-    if (!openConversationId) return;
-    selectConversation(openConversationId);
+    const startDirectWithUser = location.state?.startDirectWithUser;
+    if (!openConversationId && !startDirectWithUser) return;
+
+    if (openConversationId) {
+      selectConversation(openConversationId);
+    } else {
+      startDirectConversation(startDirectWithUser).catch(() => {
+        // Already surfaced via the `error` state.
+      });
+    }
     setMobileShowThread(true);
     navigate(location.pathname, { replace: true, state: null });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -55,9 +70,13 @@ export default function ChatPage() {
     setMobileShowThread(true);
   };
 
-  const handleSelectMember = async (userId) => {
-    await startDirectConversation(userId);
+  const handleSelectMember = async (person) => {
     setMobileShowThread(true);
+    try {
+      await startDirectConversation(person);
+    } catch {
+      // Already surfaced via the `error` state — nothing more to do here.
+    }
   };
 
   const handleCreateGroup = async (name, memberIds) => {

@@ -441,7 +441,7 @@ export default function MessageThread({
           </p>
         </div>
 
-        {!conversation.isDefault && (
+        {!conversation.isDefault && !conversation.isPending && (
           <div ref={menuRef} className="chat-thread-menu-wrap">
             <button
               className="btn btn-ghost btn-icon btn-sm"
@@ -507,6 +507,7 @@ export default function MessageThread({
         open={confirmAction === 'clear'}
         title="Clear this chat?"
         description="This permanently deletes every message in this conversation for everyone in it. This can't be undone."
+        confirmLabel="Clear chat"
         onCancel={() => setConfirmAction(null)}
         onConfirm={handleConfirmAction}
       />
@@ -519,6 +520,7 @@ export default function MessageThread({
             ? 'You’ll be removed from this group and lose access to its messages. Other members keep the conversation.'
             : 'This removes the chat from your list. If they message you again, it’ll start fresh.'
         }
+        confirmLabel={isCustomGroup ? 'Leave group' : 'Delete chat'}
         onCancel={() => setConfirmAction(null)}
         onConfirm={handleConfirmAction}
       />
@@ -539,6 +541,7 @@ export default function MessageThread({
         open={Boolean(deleteMessageIds)}
         title={deleteMessageIds?.length > 1 ? `Delete ${deleteMessageIds.length} messages?` : 'Delete message?'}
         description="This deletes it for everyone in this conversation. This can't be undone."
+        confirmLabel="Delete"
         onCancel={() => setDeleteMessageIds(null)}
         onConfirm={handleConfirmDeleteMessages}
       />
