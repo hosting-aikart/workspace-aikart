@@ -234,7 +234,7 @@ export default function ProjectDetailPage() {
   };
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'grid', gap: '1.5rem' }}>
+    <div style={{ maxWidth: '1440px', margin: '0 auto', display: 'grid', gap: '1.5rem' }}>
       {/* Header Bar */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
         <button

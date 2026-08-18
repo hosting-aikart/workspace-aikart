@@ -151,7 +151,7 @@ export default function AnnouncementsPage() {
   ];
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
       <PageHeader
         title="Announcements"
         description="View latest workspace announcements and broadcasts."

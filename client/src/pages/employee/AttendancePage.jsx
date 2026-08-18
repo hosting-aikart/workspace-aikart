@@ -127,7 +127,7 @@ export default function AttendancePage() {
 
     if (loading) {
         return (
-            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
                 <SkeletonPageHeader />
                 <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '1fr 1fr', marginBottom: '2rem' }}>
                     <SkeletonCard />
@@ -144,7 +144,7 @@ export default function AttendancePage() {
     const isCheckedOut  = status?.status === 'CHECKED_OUT';
 
     return (
-        <div className="attendance-page animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="attendance-page animate-fade-in" style={{ maxWidth: '1440px', margin: '0 auto' }}>
 
             <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>

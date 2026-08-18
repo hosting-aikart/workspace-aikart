@@ -272,7 +272,7 @@ export default function AttendanceManagement() {
   );
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
       <PageHeader
         title="Workforce Attendance Dashboard"
         subtitle="Manage daily sign-ins, breaks, checked-out shifts, and time overrides."

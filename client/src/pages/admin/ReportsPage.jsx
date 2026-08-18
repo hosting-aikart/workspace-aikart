@@ -83,7 +83,7 @@ export default function ReportsPage() {
   const hoursLogged = Math.round(attendance.totalSeconds / 3600);
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
       <PageHeader
         title="Workspace Performance Reports"
         subtitle="Review attendance benchmarks, department sizes, check-in history, and workforce metrics."

@@ -2829,11 +2829,18 @@ code {
      than the gap above the page. Same value all around now, everywhere,
      not just on Chat. */
   padding: var(--space-6);
-  max-width: 1200px;
-  /* Without this, capping the width at 1200px on a wide monitor just left
-     all the leftover space stranded on the right (content stuck to the
-     left edge next to the sidebar) — centering it distributes that space
-     evenly on both sides instead. */
+  /* Raised from 1200px — on a wide 16:10 monitor (e.g. 1920x1200 or bigger)
+     a 1200px cap next to the 260px sidebar left a huge, obviously wasted
+     gray margin on both sides. 1440px uses that space better while still
+     capping line length on ultra-wide displays. Every page's own inline
+     maxWidth wrapper (Tasks, Projects, Attendance, Announcements, Reports,
+     etc.) was raised to match this value so none of them silently
+     re-shrink back down to 1200px underneath this. */
+  max-width: 1440px;
+  /* Without this, capping the width on a wide monitor just left all the
+     leftover space stranded on the right (content stuck to the left edge
+     next to the sidebar) — centering it distributes that space evenly on
+     both sides instead. */
   margin: 0 auto;
 }
 

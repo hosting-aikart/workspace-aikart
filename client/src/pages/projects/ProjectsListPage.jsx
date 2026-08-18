@@ -147,7 +147,7 @@ export default function ProjectsListPage() {
   ];
 
   return (
-    <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+    <div style={{ maxWidth: '1440px', margin: '0 auto' }}>
       <PageHeader
         title="Project Management"
         subtitle="Track, organize, and create projects across your team and workspace."
