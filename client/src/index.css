@@ -5063,6 +5063,19 @@ textarea:focus-visible,
   min-height: 0;
 }
 
+/* .page-content's padding is 24px top/bottom but 32px left/right (see its
+   own rule) — fine for ordinary pages with body text, but on a full-bleed
+   panel like this the extra 8px reads as a lopsided gap between the app
+   sidebar and the chat card that doesn't match the gap above it. Pulling
+   back by that same 8px on each side makes it 24px all around, matching.
+   Desktop-only: the mobile page-content padding below is already uniform,
+   so there's nothing to correct there. */
+@media (min-width: 769px) {
+  .chat-page {
+    margin: 0 calc(-1 * (var(--space-8) - var(--space-6)));
+  }
+}
+
 @media (max-width: 768px) {
   .chat-page {
     height: calc(100vh - 70px - (var(--space-4) * 2));
