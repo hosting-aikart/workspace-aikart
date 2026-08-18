@@ -1,8 +1,23 @@
 const prismaModule = require('../../config/prisma');
 const notificationService = require('../notification/notification.service');
 const { emitToUser } = require('../../socket/registry');
+const { destroyAsset } = require('../../utils/cloudinary');
 
 const getPrisma = () => prismaModule.getPrisma();
+
+/**
+ * destroyMessageAttachments
+ * Cleans up Cloudinary storage for a batch of messages being permanently
+ * deleted from the DB — called from deleteMessages, clearConversationMessages,
+ * and leaveConversation, the three places a message row can disappear.
+ * Fire-and-forget (destroyAsset swallows its own errors): a Cloudinary
+ * hiccup here shouldn't hold up — or fail — the delete the caller asked for.
+ */
+const destroyMessageAttachments = (messages) => {
+  messages
+    .filter((m) => m.attachmentUrl)
+    .forEach((m) => destroyAsset(m.attachmentUrl, m.attachmentType?.startsWith('image/') ? 'image' : 'raw'));
+};
 
 const MESSAGE_PAGE_SIZE = 50;
 
@@ -468,7 +483,7 @@ const deleteMessages = async (conversationId, userId, workspaceId, messageIds) =
 
   const messages = await prisma.chatMessage.findMany({
     where: { id: { in: ids }, conversationId },
-    select: { id: true, senderId: true },
+    select: { id: true, senderId: true, attachmentUrl: true, attachmentType: true },
   });
 
   if (messages.length !== ids.length) {
@@ -479,6 +494,7 @@ const deleteMessages = async (conversationId, userId, workspaceId, messageIds) =
   }
 
   await prisma.chatMessage.deleteMany({ where: { id: { in: ids } } });
+  destroyMessageAttachments(messages);
 
   // The conversation list's preview/sort order is driven by the stored
   // lastMessageAt column (bumped on every send), not recomputed on read —
@@ -603,10 +619,16 @@ const clearConversationMessages = async (conversationId, userId, workspaceId) =>
   }
 
   const prisma = getPrisma();
+  const messages = await prisma.chatMessage.findMany({
+    where: { conversationId, attachmentUrl: { not: null } },
+    select: { attachmentUrl: true, attachmentType: true },
+  });
+
   await prisma.$transaction([
     prisma.chatMessage.deleteMany({ where: { conversationId } }),
     prisma.chatConversation.update({ where: { id: conversationId }, data: { lastMessageAt: null } }),
   ]);
+  destroyMessageAttachments(messages);
 
   try {
     const participants = await prisma.chatParticipant.findMany({
@@ -649,10 +671,15 @@ const leaveConversation = async (conversationId, userId, workspaceId) => {
   const prisma = getPrisma();
 
   if (conversation.type === 'DIRECT') {
+    const messages = await prisma.chatMessage.findMany({
+      where: { conversationId, attachmentUrl: { not: null } },
+      select: { attachmentUrl: true, attachmentType: true },
+    });
     await prisma.$transaction([
       prisma.chatMessage.deleteMany({ where: { conversationId } }),
       prisma.chatConversation.delete({ where: { id: conversationId } }),
     ]);
+    destroyMessageAttachments(messages);
     return true;
   }
 
@@ -662,10 +689,15 @@ const leaveConversation = async (conversationId, userId, workspaceId) => {
 
   const remaining = await prisma.chatParticipant.count({ where: { conversationId } });
   if (remaining === 0) {
+    const messages = await prisma.chatMessage.findMany({
+      where: { conversationId, attachmentUrl: { not: null } },
+      select: { attachmentUrl: true, attachmentType: true },
+    });
     await prisma.$transaction([
       prisma.chatMessage.deleteMany({ where: { conversationId } }),
       prisma.chatConversation.delete({ where: { id: conversationId } }),
     ]);
+    destroyMessageAttachments(messages);
   }
 
   return true;
