@@ -1,16 +1,8 @@
 const { z } = require('zod');
-const cloudinary = require('cloudinary').v2;
 const { Readable } = require('stream');
+const { cloudinary } = require('../../utils/cloudinary');
 const chatService = require('./chat.service');
 const { getIo } = require('../../socket');
-
-// ─── Cloudinary config (reads from process.env — same account as profile
-// photo uploads, just a different folder) ──────────────────────────────────
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 const sendMessageSchema = z.object({
   content: z.string().min(1, 'Message content is required'),

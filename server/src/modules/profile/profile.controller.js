@@ -1,15 +1,8 @@
 const { z } = require('zod');
-const cloudinary = require('cloudinary').v2;
 const { Readable } = require('stream');
+const { cloudinary, destroyAsset } = require('../../utils/cloudinary');
 const { getProfile, updateProfile } = require('./profile.service');
 const { sendSuccess, sendError } = require('../../utils/apiResponse');
-
-// ─── Cloudinary config (reads from process.env) ───────────────────────────────
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
 
 // ─── Zod Schema ───────────────────────────────────────────────────────────────
 
@@ -92,6 +85,11 @@ const uploadProfilePhoto = async (req, res) => {
   }
 
   try {
+    // Grabbed before the upload so we know what to clean up afterwards —
+    // without this, every re-upload leaves the previous photo behind on
+    // Cloudinary forever (nothing else in the app ever deletes it).
+    const previous = await getProfile(req.user.id);
+
     // Stream buffer → Cloudinary
     const uploadResult = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(
@@ -111,6 +109,12 @@ const uploadProfilePhoto = async (req, res) => {
     const updated = await updateProfile(req.user.id, {
       profilePhoto: uploadResult.secure_url,
     });
+
+    // Only after the new photo is safely saved — if anything above failed,
+    // the old one is still the active photo and must not be deleted.
+    if (previous?.profilePhoto) {
+      destroyAsset(previous.profilePhoto, 'image');
+    }
 
     return sendSuccess(res, {
       profilePhoto: updated.profilePhoto,
