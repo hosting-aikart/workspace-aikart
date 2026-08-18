@@ -5,7 +5,7 @@ import {
   useEffect,
   useCallback,
 } from 'react';
-import api from '../utils/api';
+import api, { BASE_URL } from '../utils/api';
 import { disconnectSocket } from '../utils/socket';
 
 const AuthContext = createContext(null);
@@ -93,10 +93,11 @@ export function AuthProvider({ children }) {
           return;
         }
 
-        // Use plain axios here so the api interceptor doesn't interfere
+        // Use plain axios here so the api interceptor doesn't interfere.
+        // BASE_URL comes from utils/api.js (already normalized to include
+        // /api) rather than re-reading VITE_API_URL here, so this can't
+        // silently drift out of sync with the shared axios instance.
         const { default: axios } = await import('axios');
-        const BASE_URL =
-          import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
         const refreshRes = await axios.post(
           `${BASE_URL}/auth/refresh`,

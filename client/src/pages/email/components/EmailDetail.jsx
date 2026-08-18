@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { SkeletonPageHeader, SkeletonList } from '../../../components/common/Skeleton';
+import { BASE_URL } from '../../../utils/api';
 
 /**
  * EmailDetail
@@ -50,8 +51,7 @@ export default function EmailDetail({ message, loading, error, onReply, onForwar
   };
 
   const handleAttachmentDownload = (att) => {
-    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-    const url = `${apiBase}/email/attachments/${message.id}/${att.attachmentId}`;
+    const url = `${BASE_URL}/email/attachments/${message.id}/${att.attachmentId}`;
     // Open in new tab — the server streams the file as application/octet-stream
     window.open(url, '_blank', 'noopener,noreferrer');
   };

@@ -19,18 +19,14 @@
  */
 
 import { io } from 'socket.io-client';
-import api from './api';
+import api, { BASE_URL } from './api';
 
 let socket = null;
 
-const getSocketUrl = () => {
-  let base = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-  if (base && !base.startsWith('http://') && !base.startsWith('https://')) {
-    base = `https://${base}`;
-  }
-  // Socket.IO attaches to the bare server origin, not the /api prefix.
-  return base.replace(/\/api\/?$/, '');
-};
+// Socket.IO attaches to the bare server origin, not the /api prefix — so
+// strip it from the same normalized BASE_URL the REST client uses, rather
+// than re-deriving it from VITE_API_URL independently.
+const getSocketUrl = () => BASE_URL.replace(/\/api$/i, '');
 
 export function connectSocket(initialToken) {
   if (initialToken) {

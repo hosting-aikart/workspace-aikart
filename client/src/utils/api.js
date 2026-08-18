@@ -12,6 +12,13 @@
  *
  * Token is stored on `api.token` by AuthContext so interceptors can read it
  * without importing AuthContext (avoids circular deps).
+ *
+ * BASE_URL is exported so the few call sites that can't go through this
+ * axios instance (a plain-axios call during session bootstrap in
+ * AuthContext, a direct-download `window.open` link in EmailDetail) build
+ * their URL from the same normalized value instead of each re-deriving it
+ * from VITE_API_URL independently — see the "ensure /api" note below for
+ * why re-deriving it elsewhere is risky.
  */
 
 import axios from 'axios';
@@ -22,6 +29,21 @@ let BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 if (BASE_URL && !BASE_URL.startsWith('http://') && !BASE_URL.startsWith('https://')) {
   BASE_URL = `https://${BASE_URL}`;
 }
+
+// Ensure the backend's /api mount point is present exactly once. VITE_API_URL
+// is commonly set to just the bare deployed origin (e.g.
+// https://workspace-aikart.onrender.com, matching the Render service URL) —
+// every Express route in this app is mounted under /api (see app.js), so
+// without this the frontend would call e.g. POST /auth/login instead of
+// POST /api/auth/login and get a 404. Stripping any trailing slash first,
+// then checking for a trailing /api, means this is safe whether the env var
+// already includes /api or not — it never produces /api/api.
+BASE_URL = BASE_URL.replace(/\/+$/, '');
+if (!/\/api$/i.test(BASE_URL)) {
+  BASE_URL = `${BASE_URL}/api`;
+}
+
+export { BASE_URL };
 
 const api = axios.create({
   baseURL: BASE_URL,
