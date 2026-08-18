@@ -68,7 +68,7 @@ app.use(cookieParser());
 // pay the multi-second cold-start cost regardless of how often /health was
 // hit. If the DB is asleep/unreachable, `ok: false` still on a 200 status
 // (not 500) — a monitor should alert on it, not treat it as "service down".
-app.get('/api/health', async (req, res) => {
+const healthHandler = async (req, res) => {
   let dbOk = true;
   try {
     const { getPrisma } = require('./config/prisma');
@@ -79,7 +79,18 @@ app.get('/api/health', async (req, res) => {
   res.json({
     status: 'ok',
     message: 'AIKart Workspace API is running',
+    timestamp: new Date().toISOString(),
     db: dbOk ? 'ok' : 'unreachable',
+  });
+};
+
+app.get('/health', healthHandler);
+app.get('/api/health', healthHandler);
+app.get('/', (req, res) => {
+  res.json({
+    status: 'ok',
+    message: 'AIKart Workspace API Server',
+    health: '/health',
   });
 });
 
