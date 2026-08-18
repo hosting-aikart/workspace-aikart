@@ -154,3 +154,27 @@ test('createAnnouncement notification pipeline creates a personal notification p
   assert.equal(createdNotifications[0].type, 'ANNOUNCEMENT');
   assert.equal(createdNotifications[0].title, 'Office closed Friday');
 });
+
+test('getAnnouncements applies target scope filtering for non-admin users', async () => {
+  let capturedWhere = null;
+  const mockPrisma = {
+    announcement: {
+      findMany: async (args) => {
+        capturedWhere = args.where;
+        return [];
+      },
+    },
+  };
+
+  prismaConfig.getPrisma = () => mockPrisma;
+
+  await announcementService.getAnnouncements('ws-1', {}, { id: 'emp-1', role: 'EMPLOYEE' });
+
+  assert.equal(capturedWhere.workspaceId, 'ws-1');
+  assert.ok(capturedWhere.OR);
+  assert.deepEqual(capturedWhere.OR, [
+    { targetType: 'ALL' },
+    { createdById: 'emp-1' },
+    { selectedUsers: { some: { userId: 'emp-1' } } },
+  ]);
+});

@@ -49,6 +49,7 @@ const getAnnouncementsHandler = async (req, res) => {
     const announcements = await announcementService.getAnnouncements(
       req.user.workspaceId,
       filters,
+      req.user,
     );
     return res.json({ status: 'success', data: announcements });
   } catch (error) {

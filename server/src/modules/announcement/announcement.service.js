@@ -114,7 +114,7 @@ const createAnnouncement = async (workspaceId, createdById, payload, userRole = 
   return announcement;
 };
 
-const getAnnouncements = async (workspaceId, filters = {}) => {
+const getAnnouncements = async (workspaceId, filters = {}, user = null) => {
   const prisma = getPrisma();
 
   const where = { workspaceId };
@@ -132,6 +132,26 @@ const getAnnouncements = async (workspaceId, filters = {}) => {
       { title: { contains: filters.search, mode: 'insensitive' } },
       { description: { contains: filters.search, mode: 'insensitive' } },
     ];
+  }
+
+  if (user && user.role !== 'ADMIN') {
+    const targetScopeFilter = {
+      OR: [
+        { targetType: 'ALL' },
+        { createdById: user.id },
+        { selectedUsers: { some: { userId: user.id } } },
+      ],
+    };
+
+    if (where.OR) {
+      where.AND = [
+        { OR: where.OR },
+        targetScopeFilter,
+      ];
+      delete where.OR;
+    } else {
+      where.OR = targetScopeFilter.OR;
+    }
   }
 
   const announcements = await prisma.announcement.findMany({
