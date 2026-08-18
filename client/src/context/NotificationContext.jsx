@@ -1,6 +1,8 @@
 import { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import api from '../utils/api';
 import { connectSocket } from '../utils/socket';
+import { requestNotificationPermission, showDesktopNotification } from '../utils/desktopNotifications';
+import logoIcon from '../assets/aikart-logo-transparent.png';
 import { useAuth } from './AuthContext';
 
 const NotificationContext = createContext(null);
@@ -46,11 +48,17 @@ export function NotificationProvider({ children }) {
     }
 
     refresh();
+    requestNotificationPermission();
 
     const socket = connectSocket(accessToken);
     const handleNew = (notification) => {
       setNotifications((prev) => [notification, ...prev].slice(0, RECENT_LIMIT));
       setUnreadCount((prev) => prev + 1);
+      showDesktopNotification(notification.title, {
+        body: notification.body,
+        tag: notification.id,
+        icon: logoIcon,
+      });
     };
     socket.on('notification:new', handleNew);
 
