@@ -12,6 +12,7 @@ export default function AnnouncementsPage() {
   const [teamMembers, setTeamMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [viewingAnnouncement, setViewingAnnouncement] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
@@ -27,18 +28,19 @@ export default function AnnouncementsPage() {
     setLoading(true);
     setError('');
     try {
-      const p = [api.get('/announcements')];
-      if (user?.role === 'MANAGER') {
-        p.push(api.get('/me/directory?limit=200'));
-      }
-      
-      const responses = await Promise.all(p);
-      setAnnouncements(responses[0]?.data?.data || []);
-      
-      if (user?.role === 'MANAGER' && responses[1]) {
-        const list = responses[1].data?.data?.employees || responses[1].data?.employees || [];
-        setTeamMembers(list);
-      }
+      // The "New Broadcast" recipient picker is available to EMPLOYEE too
+      // (see the action button below), not just MANAGER — it needs the
+      // directory either way, or the picker just renders "No team members
+      // found" with nothing to select. This was previously gated to
+      // MANAGER only, which is why employees couldn't select anyone.
+      const [announcementsRes, directoryRes] = await Promise.all([
+        api.get('/announcements'),
+        api.get('/me/directory?limit=200'),
+      ]);
+      setAnnouncements(announcementsRes?.data?.data || []);
+
+      const list = directoryRes.data?.data?.employees || directoryRes.data?.employees || [];
+      setTeamMembers(list.filter((m) => m.id !== user?.id));
     } catch (err) {
       setError(err?.response?.data?.message || err.message || 'Failed to load announcements.');
     } finally {
@@ -112,12 +114,25 @@ export default function AnnouncementsPage() {
       key: 'title',
       label: 'Announcement Title',
       render: (row) => (
-        <div>
-          <strong style={{ fontSize: '0.95rem' }}>{row.title}</strong>
+        <button
+          type="button"
+          onClick={() => setViewingAnnouncement(row)}
+          style={{
+            display: 'block',
+            width: '100%',
+            textAlign: 'left',
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer',
+          }}
+          title="Click to read the full announcement"
+        >
+          <strong style={{ fontSize: '0.95rem', color: 'var(--color-primary)' }}>{row.title}</strong>
           <div className="text-secondary" style={{ fontSize: '0.8rem', marginTop: '0.15rem' }}>
             {row.description.length > 70 ? row.description.slice(0, 70) + '…' : row.description}
           </div>
-        </div>
+        </button>
       ),
     },
     {
@@ -216,35 +231,21 @@ export default function AnnouncementsPage() {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-            <div>
-              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>
-                Priority
-              </label>
-              <select
-                className="input"
-                style={{ width: '100%' }}
-                value={form.priority}
-                onChange={(e) => setForm({ ...form, priority: e.target.value })}
-              >
-                <option value="LOW">Low</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="HIGH">High</option>
-                <option value="URGENT">Urgent</option>
-              </select>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>
-                Target Scope
-              </label>
-              <input
-                className="input"
-                style={{ width: '100%', opacity: 0.7 }}
-                value="Selected Team Members"
-                disabled
-              />
-            </div>
+          <div>
+            <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem' }}>
+              Priority
+            </label>
+            <select
+              className="input"
+              style={{ width: '100%' }}
+              value={form.priority}
+              onChange={(e) => setForm({ ...form, priority: e.target.value })}
+            >
+              <option value="LOW">Low</option>
+              <option value="MEDIUM">Medium</option>
+              <option value="HIGH">High</option>
+              <option value="URGENT">Urgent</option>
+            </select>
           </div>
 
           <div>
@@ -306,6 +307,39 @@ export default function AnnouncementsPage() {
             </div>
           </div>
         </div>
+      </Modal>
+
+      {/* Read the full announcement — the table row only ever showed a
+          70-character preview with no way to see the rest. */}
+      <Modal
+        open={!!viewingAnnouncement}
+        title={viewingAnnouncement?.title || 'Announcement'}
+        footer={[
+          <button key="close" className="btn btn-outline" onClick={() => setViewingAnnouncement(null)}>
+            Close
+          </button>,
+        ]}
+      >
+        {viewingAnnouncement && (
+          <div style={{ display: 'grid', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+              <Badge tone={viewingAnnouncement.priority === 'URGENT' ? 'danger' : 'primary'}>
+                {viewingAnnouncement.priority}
+              </Badge>
+              <span className="text-secondary" style={{ fontSize: '0.85rem' }}>
+                {viewingAnnouncement.publishDate
+                  ? new Date(viewingAnnouncement.publishDate).toLocaleString(undefined, {
+                      dateStyle: 'medium',
+                      timeStyle: 'short',
+                    })
+                  : ''}
+              </span>
+            </div>
+            <p style={{ margin: 0, whiteSpace: 'pre-wrap', lineHeight: 1.6 }}>
+              {viewingAnnouncement.description}
+            </p>
+          </div>
+        )}
       </Modal>
     </div>
   );
