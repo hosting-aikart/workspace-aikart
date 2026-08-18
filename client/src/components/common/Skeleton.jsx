@@ -81,10 +81,15 @@ export function AppSkeleton() {
         <SkeletonList count={5} />
       </aside>
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <header style={{ height: '64px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 2rem' }}>
+        <header style={{ height: '64px', borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface)', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', padding: '0 1.5rem' }}>
           <SkeletonAvatar size="36px" />
         </header>
-        <div style={{ padding: '2rem', flex: 1, background: 'var(--color-bg)' }}>
+        {/* Same 1.5rem (24px) as the sidebar's own padding and as the real
+            .page-content wrapper this skeleton stands in for — it used to be
+            2rem here, the same left/right-bigger-than-top/bottom mismatch
+            .page-content itself had, so the gap visibly changed size the
+            instant the real page finished loading in underneath it. */}
+        <div style={{ padding: '1.5rem', flex: 1, background: 'var(--color-bg)' }}>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
             <SkeletonCard />
             <SkeletonCard />
