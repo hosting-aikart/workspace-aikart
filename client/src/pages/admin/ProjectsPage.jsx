@@ -421,8 +421,9 @@ export default function ProjectsPage() {
             className="btn btn-primary"
             onClick={handleSave}
             disabled={isSaving}
+            style={{ minWidth: '80px' }}
           >
-            {isSaving ? 'Saving…' : 'Save'}
+            {isSaving ? <span className="spinner spinner-sm" /> : 'Save'}
           </button>,
         ]}
       >
@@ -756,6 +757,8 @@ export default function ProjectsPage() {
         open={!!confirmArchiveProject}
         title="Archive project"
         description={`Archive ${confirmArchiveProject?.name || 'this project'}?`}
+        confirmLabel="Archive"
+        danger={false}
         onCancel={() => setConfirmArchiveProject(null)}
         onConfirm={handleArchive}
       />

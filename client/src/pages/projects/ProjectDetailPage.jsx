@@ -267,7 +267,7 @@ export default function ProjectDetailPage() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '1.5rem' }}>
+      <div className="project-detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '1.5rem' }}>
         {/* Main Left Column: Overview & Tasks */}
         <div style={{ display: 'grid', gap: '1.5rem' }}>
           {/* Overview Card */}
@@ -658,8 +658,9 @@ export default function ProjectDetailPage() {
                 className="btn btn-primary"
                 onClick={handleBulkAddMembers}
                 disabled={addingMembers || selectedMembers.length === 0}
+                style={{ minWidth: '120px' }}
               >
-                {addingMembers ? 'Adding…' : `Add ${selectedMembers.length} Member${selectedMembers.length !== 1 ? 's' : ''}`}
+                {addingMembers ? <span className="spinner spinner-sm" /> : `Add ${selectedMembers.length} Member${selectedMembers.length !== 1 ? 's' : ''}`}
               </button>
             </div>
           </div>
@@ -766,8 +767,8 @@ export default function ProjectDetailPage() {
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.5rem' }}>
                 <button type="button" className="btn btn-outline" onClick={() => setShowTaskModal(false)}>Cancel</button>
-                <button type="submit" className="btn btn-primary" disabled={taskSubmitting}>
-                  {taskSubmitting ? 'Saving…' : taskForm.id ? 'Save Changes' : 'Create Task'}
+                <button type="submit" className="btn btn-primary" disabled={taskSubmitting} style={{ minWidth: '110px' }}>
+                  {taskSubmitting ? <span className="spinner spinner-sm" /> : taskForm.id ? 'Save Changes' : 'Create Task'}
                 </button>
               </div>
             </form>

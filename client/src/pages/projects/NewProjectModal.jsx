@@ -562,8 +562,9 @@ export default function NewProjectModal({ onClose, onSuccess }) {
                 className="btn btn-primary"
                 onClick={handleSubmit}
                 disabled={loading}
+                style={{ minWidth: '140px' }}
               >
-                {loading ? 'Creating…' : `Create Project${selectedMembers.length > 0 ? ` (${selectedMembers.length})` : ''}`}
+                {loading ? <span className="spinner spinner-sm" /> : `Create Project${selectedMembers.length > 0 ? ` (${selectedMembers.length})` : ''}`}
               </button>
             </>
           )}

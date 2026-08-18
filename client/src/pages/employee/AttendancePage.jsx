@@ -32,7 +32,14 @@ export default function AttendancePage() {
     const [weeklySeconds,  setWeeklySeconds]  = useState(0);
     const [monthlySeconds, setMonthlySeconds] = useState(0);
     const [loading,        setLoading]        = useState(true);
-    const [actionLoading,  setActionLoading]  = useState(false);
+    // Which action (check-in / pause / check-out / resume) is currently in
+    // flight, if any — not just a boolean, so the specific button that was
+    // clicked can show its own spinner immediately instead of the whole
+    // control cluster just going quietly disabled with no visible feedback
+    // until the round trip finishes (that dead-feeling gap is what read as
+    // "check-in doesn't start for 2-3 seconds").
+    const [loadingAction,  setLoadingAction]  = useState(null);
+    const actionLoading = loadingAction !== null;
     const [error,          setError]          = useState('');
     const [history,        setHistory]        = useState([]);
     const [teamAttendance, setTeamAttendance] = useState([]);
@@ -103,7 +110,7 @@ export default function AttendancePage() {
     }, [status?.status]);
 
     const runAction = async (endpoint) => {
-        setActionLoading(true);
+        setLoadingAction(endpoint);
         setError('');
         try {
             const res = await api.post(`/attendance/${endpoint}`);
@@ -114,13 +121,13 @@ export default function AttendancePage() {
         } catch (err) {
             setError(err.response?.data?.message || 'Action failed.');
         } finally {
-            setActionLoading(false);
+            setLoadingAction(null);
         }
     };
 
     if (loading) {
         return (
-            <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                 <SkeletonPageHeader />
                 <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: '1fr 1fr', marginBottom: '2rem' }}>
                     <SkeletonCard />
@@ -137,17 +144,17 @@ export default function AttendancePage() {
     const isCheckedOut  = status?.status === 'CHECKED_OUT';
 
     return (
-        <div className="attendance-page animate-fade-in" style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="attendance-page animate-fade-in" style={{ maxWidth: '1200px', margin: '0 auto' }}>
 
             <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
                 <div>
-                    <h1 className="page-title" style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)' }}>Attendance &amp; Work Timer</h1>
+                    <h1 className="page-title">Attendance &amp; Work Timer</h1>
                     <p className="text-secondary">Track your daily working hours</p>
                 </div>
             </div>
 
             {isManager && (
-                <div style={{ display: 'flex', gap: '1rem', borderBottom: '1px solid var(--border-color)', marginBottom: '2rem' }}>
+                <div className="tab-scroll-row" style={{ gap: '1rem', borderBottom: '1px solid var(--color-border)', marginBottom: '2rem' }}>
                     <button
                         onClick={() => setActiveTab('my-attendance')}
                         style={{
@@ -155,7 +162,7 @@ export default function AttendancePage() {
                             background: 'none',
                             border: 'none',
                             borderBottom: activeTab === 'my-attendance' ? '2px solid var(--color-primary)' : '2px solid transparent',
-                            color: activeTab === 'my-attendance' ? 'var(--color-primary)' : 'var(--text-secondary)',
+                            color: activeTab === 'my-attendance' ? 'var(--color-primary)' : 'var(--color-text-secondary)',
                             fontWeight: 600,
                             cursor: 'pointer',
                         }}
@@ -169,7 +176,7 @@ export default function AttendancePage() {
                             background: 'none',
                             border: 'none',
                             borderBottom: activeTab === 'team-attendance' ? '2px solid var(--color-primary)' : '2px solid transparent',
-                            color: activeTab === 'team-attendance' ? 'var(--color-primary)' : 'var(--text-secondary)',
+                            color: activeTab === 'team-attendance' ? 'var(--color-primary)' : 'var(--color-text-secondary)',
                             fontWeight: 600,
                             cursor: 'pointer',
                         }}
@@ -185,7 +192,7 @@ export default function AttendancePage() {
                     <div className="card attendance-timer-card" style={{ marginBottom: '2rem' }}>
                         <div className="card-body attendance-timer-body" style={{ textAlign: 'center', padding: '3rem 1rem' }}>
 
-                            <div className="attendance-clock" style={{ fontSize: '4rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '1rem', fontVariantNumeric: 'tabular-nums' }}>
+                            <div className="attendance-clock" style={{ fontWeight: 800, color: 'var(--color-text)', marginBottom: '1rem', fontVariantNumeric: 'tabular-nums' }}>
                                 {formatDuration(liveSeconds)}
                             </div>
 
@@ -205,9 +212,13 @@ export default function AttendancePage() {
                                         onClick={() => runAction('check-in')}
                                         disabled={actionLoading}
                                     >
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
-                                        </svg>
+                                        {loadingAction === 'check-in' ? (
+                                            <span className="spinner spinner-sm" />
+                                        ) : (
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/>
+                                            </svg>
+                                        )}
                                         Check In
                                     </button>
                                 )}
@@ -220,9 +231,13 @@ export default function AttendancePage() {
                                             onClick={() => runAction('pause')}
                                             disabled={actionLoading}
                                         >
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
-                                            </svg>
+                                            {loadingAction === 'pause' ? (
+                                                <span className="spinner spinner-sm" />
+                                            ) : (
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+                                                </svg>
+                                            )}
                                             Pause
                                         </button>
                                         <button
@@ -231,9 +246,13 @@ export default function AttendancePage() {
                                             onClick={() => runAction('check-out')}
                                             disabled={actionLoading}
                                         >
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                                            </svg>
+                                            {loadingAction === 'check-out' ? (
+                                                <span className="spinner spinner-sm" />
+                                            ) : (
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                                </svg>
+                                            )}
                                             Check Out
                                         </button>
                                     </>
@@ -247,9 +266,13 @@ export default function AttendancePage() {
                                             onClick={() => runAction('resume')}
                                             disabled={actionLoading}
                                         >
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <polygon points="5 3 19 12 5 21 5 3"/>
-                                            </svg>
+                                            {loadingAction === 'resume' ? (
+                                                <span className="spinner spinner-sm" />
+                                            ) : (
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <polygon points="5 3 19 12 5 21 5 3"/>
+                                                </svg>
+                                            )}
                                             Resume
                                         </button>
                                         <button
@@ -258,9 +281,13 @@ export default function AttendancePage() {
                                             onClick={() => runAction('check-out')}
                                             disabled={actionLoading}
                                         >
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
-                                            </svg>
+                                            {loadingAction === 'check-out' ? (
+                                                <span className="spinner spinner-sm" />
+                                            ) : (
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/>
+                                                </svg>
+                                            )}
                                             Check Out
                                         </button>
                                     </>
@@ -274,10 +301,10 @@ export default function AttendancePage() {
                             </div>
 
                             {status?.checkIn && (
-                                <p className="attendance-times" style={{ marginTop: '1.5rem', color: 'var(--text-secondary)' }}>
-                                    Checked in at <strong style={{ color: 'var(--text-primary)' }}>{new Date(status.checkIn).toLocaleTimeString()}</strong>
+                                <p className="attendance-times" style={{ marginTop: '1.5rem', color: 'var(--color-text-secondary)' }}>
+                                    Checked in at <strong style={{ color: 'var(--color-text)' }}>{new Date(status.checkIn).toLocaleTimeString()}</strong>
                                     {status.checkOut && (
-                                        <> &middot; Checked out at <strong style={{ color: 'var(--text-primary)' }}>{new Date(status.checkOut).toLocaleTimeString()}</strong></>
+                                        <> &middot; Checked out at <strong style={{ color: 'var(--color-text)' }}>{new Date(status.checkOut).toLocaleTimeString()}</strong></>
                                     )}
                                 </p>
                             )}
@@ -288,19 +315,19 @@ export default function AttendancePage() {
                     <div className="attendance-summary-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
                         <div className="card attendance-summary-card">
                             <div className="card-body" style={{ textAlign: 'center' }}>
-                                <p className="attendance-summary-label" style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Today</p>
+                                <p className="attendance-summary-label" style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>Today</p>
                                 <p className="attendance-summary-value" style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatDuration(liveSeconds)}</p>
                             </div>
                         </div>
                         <div className="card attendance-summary-card">
                             <div className="card-body" style={{ textAlign: 'center' }}>
-                                <p className="attendance-summary-label" style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>This Week</p>
+                                <p className="attendance-summary-label" style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>This Week</p>
                                 <p className="attendance-summary-value" style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatDuration(weeklySeconds)}</p>
                             </div>
                         </div>
                         <div className="card attendance-summary-card">
                             <div className="card-body" style={{ textAlign: 'center' }}>
-                                <p className="attendance-summary-label" style={{ color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>This Month</p>
+                                <p className="attendance-summary-label" style={{ color: 'var(--color-text-secondary)', marginBottom: '0.5rem' }}>This Month</p>
                                 <p className="attendance-summary-value" style={{ fontSize: '1.5rem', fontWeight: 700 }}>{formatDuration(monthlySeconds)}</p>
                             </div>
                         </div>
@@ -308,23 +335,23 @@ export default function AttendancePage() {
 
                     {/* History table */}
                     <div className="card">
-                        <div className="card-header" style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
+                        <div className="card-header" style={{ padding: '1.5rem', borderBottom: '1px solid var(--color-border)' }}>
                             <h2 className="card-title" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Attendance History</h2>
                         </div>
                         <div className="table-wrapper">
                             <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead>
                                     <tr>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Date</th>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Check In</th>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Check Out</th>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Total Hours</th>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Status</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Date</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Check In</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Check Out</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Total Hours</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {history.map((h) => (
-                                        <tr key={h.id} style={{ borderTop: '1px solid var(--border-color)' }}>
+                                        <tr key={h.id} style={{ borderTop: '1px solid var(--color-border)' }}>
                                             <td style={{ padding: '1rem' }}>{new Date(h.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
                                             <td style={{ padding: '1rem' }}>{h.checkIn  ? new Date(h.checkIn).toLocaleTimeString()  : '—'}</td>
                                             <td style={{ padding: '1rem' }}>{h.checkOut ? new Date(h.checkOut).toLocaleTimeString() : '—'}</td>
@@ -334,7 +361,7 @@ export default function AttendancePage() {
                                     ))}
                                     {history.length === 0 && (
                                         <tr>
-                                            <td colSpan={5} className="table-empty" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
+                                            <td colSpan={5} className="table-empty" style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-secondary)' }}>
                                                 No attendance history yet.
                                             </td>
                                         </tr>
@@ -346,7 +373,7 @@ export default function AttendancePage() {
                 </>
             ) : (
                 <div className="card">
-                    <div className="card-header" style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)' }}>
+                    <div className="card-header" style={{ padding: '1.5rem', borderBottom: '1px solid var(--color-border)' }}>
                         <h2 className="card-title" style={{ fontSize: '1.25rem', fontWeight: 700 }}>Team Attendance (Today)</h2>
                     </div>
                     {teamLoading ? (
@@ -358,19 +385,19 @@ export default function AttendancePage() {
                             <table className="table" style={{ width: '100%', borderCollapse: 'collapse' }}>
                                 <thead>
                                     <tr>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Team Member</th>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Check In</th>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Check Out</th>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Total Hours</th>
-                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--text-secondary)' }}>Status</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Team Member</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Check In</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Check Out</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Total Hours</th>
+                                        <th style={{ textAlign: 'left', padding: '1rem', color: 'var(--color-text-secondary)' }}>Status</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {teamAttendance.map((log) => (
-                                        <tr key={log.id} style={{ borderTop: '1px solid var(--border-color)' }}>
+                                        <tr key={log.id} style={{ borderTop: '1px solid var(--color-border)' }}>
                                             <td style={{ padding: '1rem' }}>
                                                 <strong style={{ display: 'block' }}>{log.user?.name || '—'}</strong>
-                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{log.user?.position}</span>
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>{log.user?.position}</span>
                                             </td>
                                             <td style={{ padding: '1rem' }}>{log.checkIn ? new Date(log.checkIn).toLocaleTimeString() : '—'}</td>
                                             <td style={{ padding: '1rem' }}>{log.checkOut ? new Date(log.checkOut).toLocaleTimeString() : '—'}</td>
@@ -380,7 +407,7 @@ export default function AttendancePage() {
                                     ))}
                                     {teamAttendance.length === 0 && (
                                         <tr>
-                                            <td colSpan={5} className="table-empty" style={{ textAlign: 'center', padding: '2rem', color: 'var(--text-secondary)' }}>
+                                            <td colSpan={5} className="table-empty" style={{ textAlign: 'center', padding: '2rem', color: 'var(--color-text-secondary)' }}>
                                                 No team attendance data available for today.
                                             </td>
                                         </tr>

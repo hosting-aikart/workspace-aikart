@@ -150,6 +150,14 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Nothing in this app's layout is meant to scroll sideways at the page
+     level — every genuinely wide thing (a data table, the chat message
+     list) already scrolls inside its own container. This is a safety net
+     against the *page* growing wider than the viewport on mobile (forcing
+     a horizontal swipe to see the rest of a page) whenever some element
+     computes a hair wider than expected, rather than hunting every such
+     case down individually. */
+  overflow-x: hidden;
 }
 
 body {
@@ -160,6 +168,7 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   min-height: 100vh;
+  overflow-x: hidden;
 }
 
 #root {
@@ -2003,6 +2012,27 @@ code {
   animation: pulse 1.5s ease-in-out infinite;
 }
 
+/* A row of tabs/segmented buttons (status filters, etc.) that's too wide
+   for a narrow screen scrolls sideways within itself instead of forcing the
+   whole page to — used by Tasks, Meetings and Attendance's tab rows, which
+   previously had no flex-wrap or scroll at all and just ran off the edge of
+   the viewport on mobile. Scrollbar hidden since this reads as a tab strip,
+   not a scroll area — the ability to swipe it is enough of an affordance. */
+.tab-scroll-row {
+  display: flex;
+  overflow-x: auto;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.tab-scroll-row::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-scroll-row > * {
+  flex-shrink: 0;
+}
+
 
 /* ═══════════════════════════════════════════════════════════════════════════════
    19. RESPONSIVE BREAKPOINTS
@@ -2024,6 +2054,24 @@ code {
 
   .page-body {
     padding: var(--space-4);
+  }
+
+  /* Page-level h1s were sized for desktop everywhere they're used
+     ("Attendance & Work Timer", "Tasks Management", ...) with no mobile
+     reduction at all — several ran wider than a phone screen on their own,
+     before anything below them even had a chance to. */
+  .page-title {
+    font-size: 22px;
+  }
+
+  /* Project detail's main content + 320px-fixed sidebar was a straight
+     inline grid-template-columns, so the sidebar column never shrank below
+     320px — on a phone that alone is most of the screen width, squeezing
+     the main column to almost nothing and overflowing besides. The
+     !important is necessary here specifically because it's overriding an
+     inline style, not just normal cascade order. */
+  .project-detail-grid {
+    grid-template-columns: 1fr !important;
   }
 
   .page-header {
@@ -2775,8 +2823,14 @@ code {
 /* ── Page content ──────────────────────────────────────────────────────────── */
 .page-content {
   flex: 1;
+  width: 100%;
   padding: var(--space-6) var(--space-8);
   max-width: 1200px;
+  /* Without this, capping the width at 1200px on a wide monitor just left
+     all the leftover space stranded on the right (content stuck to the
+     left edge next to the sidebar) — centering it distributes that space
+     evenly on both sides instead. */
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
@@ -5154,9 +5208,27 @@ textarea:focus-visible,
   text-overflow: ellipsis;
 }
 
+/* Was relying on the sidebar nav's `.nav-item .nav-badge` rule for its
+   actual look (background, padding, radius) — but that selector requires a
+   `.nav-item` ancestor, which a chat conversation row isn't, so it never
+   matched here and this rendered as bare, unstyled text next to the name.
+   Fully standalone now. */
 .chat-unread-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   margin-left: 0;
   flex-shrink: 0;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-danger) 0%, #dc2626 100%);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 2px 5px rgba(239, 68, 68, 0.45);
 }
 
 /* ── Message thread (right pane) ───────────────────────────────────────────── */

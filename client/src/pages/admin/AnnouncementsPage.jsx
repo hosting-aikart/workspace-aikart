@@ -656,6 +656,7 @@ export default function AnnouncementsPage() {
         open={!!confirmDelete}
         title="Delete Announcement"
         description={`Are you sure you want to delete "${confirmDelete?.title || 'this announcement'}"?`}
+        confirmLabel="Delete"
         onCancel={() => setConfirmDelete(null)}
         onConfirm={handleDelete}
       />

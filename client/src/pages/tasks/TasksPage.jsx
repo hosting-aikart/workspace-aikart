@@ -246,8 +246,8 @@ export default function TasksPage() {
 
       {/* Tabs */}
       <div
+        className="tab-scroll-row"
         style={{
-          display: 'flex',
           gap: '0.4rem',
           marginBottom: '1rem',
           borderBottom: '1px solid var(--color-border)',

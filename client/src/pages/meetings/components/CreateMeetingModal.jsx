@@ -205,11 +205,9 @@ export default function CreateMeetingModal({ initialData = null, userRole = 'ADM
           <button type="button" className="btn btn-outline" onClick={onClose} disabled={loading}>
             Cancel
           </button>
-          <button type="submit" form="create-meeting-form" className="btn btn-primary" disabled={loading}>
+          <button type="submit" form="create-meeting-form" className="btn btn-primary" disabled={loading} style={{ minWidth: '180px' }}>
             {loading ? (
-              <span className="flex items-center gap-2">
-                <span className="spinner spinner-sm" /> Saving...
-              </span>
+              <span className="spinner spinner-sm" />
             ) : isEditing ? (
               'Update Meeting'
             ) : meetingType === 'INSTANT' ? (

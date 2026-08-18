@@ -106,7 +106,7 @@ export default function AdminMeetingsPage() {
         title="Meetings & Conferences"
         description="Schedule instant or upcoming Google Meet conferences, calendar events, and invitations."
         action={
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button
               className="btn btn-outline"
               onClick={() => {
@@ -145,7 +145,7 @@ export default function AdminMeetingsPage() {
 
       {/* Status Tabs */}
       <div className="card" style={{ padding: '0.75rem 1rem' }}>
-        <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem' }}>
+        <div className="tab-scroll-row" style={{ gap: '0.5rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem' }}>
           {['ALL', 'UPCOMING', 'COMPLETED', 'CANCELLED'].map((tab) => (
             <button
               key={tab}
@@ -245,8 +245,9 @@ export default function AdminMeetingsPage() {
                           className="btn btn-danger btn-sm"
                           disabled={actionLoadingId === meeting.id}
                           onClick={() => handleDeleteMeeting(meeting.id)}
+                          style={{ minWidth: '72px' }}
                         >
-                          {actionLoadingId === meeting.id ? 'Deleting...' : 'Delete'}
+                          {actionLoadingId === meeting.id ? <span className="spinner spinner-sm" /> : 'Delete'}
                         </button>
                       </>
                     )}

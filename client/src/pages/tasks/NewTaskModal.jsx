@@ -251,8 +251,9 @@ export default function NewTaskModal({
               type="submit"
               disabled={loading}
               className="btn btn-primary"
+              style={{ minWidth: '110px' }}
             >
-              {loading ? 'Creating Task…' : 'Create Task'}
+              {loading ? <span className="spinner spinner-sm" /> : 'Create Task'}
             </button>
           </div>
         </form>

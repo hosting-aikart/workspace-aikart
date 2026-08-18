@@ -131,7 +131,7 @@ export default function EmployeeMeetingsPage() {
         title="My Meetings"
         description="View, schedule, and join your upcoming team meetings."
         action={
-          <div style={{ display: 'flex', gap: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button
               className="btn btn-outline"
               onClick={() => {
@@ -169,7 +169,7 @@ export default function EmployeeMeetingsPage() {
 
       {/* Status Tabs */}
       <div className="card" style={{ padding: '0.75rem 1rem' }}>
-        <div style={{ display: 'flex', gap: '0.5rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem' }}>
+        <div className="tab-scroll-row" style={{ gap: '0.5rem', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.5rem' }}>
           {[
             { id: 'TODAY', label: "Today's Meetings" },
             { id: 'UPCOMING', label: 'Upcoming Meetings' },
@@ -243,7 +243,7 @@ export default function EmployeeMeetingsPage() {
                   </div>
 
                   {/* Join & Respond Actions */}
-                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                     {/* Join & Copy Link Buttons */}
                     {meeting.meetingUrl && meeting.status !== 'CANCELLED' && (
                       <>
@@ -288,8 +288,9 @@ export default function EmployeeMeetingsPage() {
                           className="btn btn-danger btn-sm"
                           onClick={() => handleDeleteMeeting(meeting.id)}
                           disabled={actionLoadingId === meeting.id}
+                          style={{ minWidth: '72px' }}
                         >
-                          {actionLoadingId === meeting.id ? 'Deleting...' : 'Delete'}
+                          {actionLoadingId === meeting.id ? <span className="spinner spinner-sm" /> : 'Delete'}
                         </button>
                       </>
                     )}

@@ -269,6 +269,7 @@ export default function DepartmentsPage() {
         open={!!confirmDeleteDepartment}
         title="Delete department"
         description={`Are you sure you want to delete ${confirmDeleteDepartment?.name || 'this department'}?`}
+        confirmLabel="Delete"
         onCancel={() => setConfirmDeleteDepartment(null)}
         onConfirm={handleDelete}
       />
