@@ -128,8 +128,14 @@ export default function HomePage() {
   const hour = now.getHours();
   const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
 
+  // No extra padding/max-width wrapper on this page's own root div on
+  // purpose — .page-content (applied once, at the layout level) already
+  // supplies both. Adding this page's own on top of that used to double
+  // the gap next to the sidebar and cap the width a little narrower
+  // (1400px) than every other page (1440px), which is exactly what read
+  // as "dashboard still looks different from the rest."
   return (
-    <div className="page-body animate-fade-in" style={{ padding: '2rem', maxWidth: '1400px', margin: '0 auto', width: '100%' }}>
+    <div className="animate-fade-in" style={{ width: '100%' }}>
       <header className="page-header" style={{ marginBottom: '2rem' }}>
         <h1 className="h1" style={{ marginBottom: '0.25rem' }}>
           {greeting}, {user?.name?.split(' ')[0]} 👋
@@ -153,7 +159,7 @@ export default function HomePage() {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', height: '100%', padding: '0.5rem 0' }}>
             <div>
               <p className="text-secondary text-sm">Today's Working Hours</p>
-              <h2 className="h2" style={{ fontSize: '2.25rem', margin: '0.25rem 0', color: 'var(--text-primary)' }}>
+              <h2 className="h2" style={{ fontSize: '2.25rem', margin: '0.25rem 0', color: 'var(--color-text)' }}>
                 {formatDuration(attendance?.totalSeconds || 0)}
               </h2>
             </div>
@@ -171,10 +177,10 @@ export default function HomePage() {
           {loading ? <SkeletonList count={3} style={{ marginTop: '1rem' }} /> : tasks.length === 0 ? <EmptyState label="No assigned tasks" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {tasks.slice(0, 3).map(task => (
-                <li key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                <li key={task.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
                   <div>
-                    <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{task.title}</strong>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>Due: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}</span>
+                    <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--color-text)', marginBottom: '0.25rem' }}>{task.title}</strong>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>Due: {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}</span>
                   </div>
                   <span className={`badge ${task.status === 'COMPLETED' ? 'badge-success' : 'badge-primary'}`}>{task.status?.replace('_', ' ')}</span>
                 </li>
@@ -188,12 +194,12 @@ export default function HomePage() {
           {loading ? <SkeletonList count={3} style={{ marginTop: '1rem' }} /> : projects.length === 0 ? <EmptyState label="No active projects" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {projects.slice(0, 3).map(proj => (
-                <li key={proj.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
+                <li key={proj.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                    <strong style={{ fontSize: '1rem', color: 'var(--text-primary)' }}>{proj.name}</strong>
-                    <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', fontWeight: 600 }}>{proj.progress || 0}%</span>
+                    <strong style={{ fontSize: '1rem', color: 'var(--color-text)' }}>{proj.name}</strong>
+                    <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>{proj.progress || 0}%</span>
                   </div>
-                  <div style={{ width: '100%', backgroundColor: 'var(--bg-body)', height: '8px', borderRadius: '4px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', backgroundColor: 'var(--color-bg)', height: '8px', borderRadius: '4px', overflow: 'hidden' }}>
                     <div style={{ width: `${proj.progress || 0}%`, backgroundColor: '#8B5CF6', height: '100%', borderRadius: '4px' }}></div>
                   </div>
                 </li>
@@ -207,9 +213,9 @@ export default function HomePage() {
           {loading ? <SkeletonList count={3} style={{ marginTop: '1rem' }} /> : meetings.length === 0 ? <EmptyState label="No upcoming meetings" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {meetings.slice(0, 3).map(meet => (
-                <li key={meet.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
-                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{meet.title}</strong>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{new Date(meet.startTime).toLocaleString()}</span>
+                <li key={meet.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
+                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--color-text)', marginBottom: '0.25rem' }}>{meet.title}</strong>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{new Date(meet.startTime).toLocaleString()}</span>
                 </li>
               ))}
             </ul>
@@ -221,9 +227,9 @@ export default function HomePage() {
           {loading ? <SkeletonList count={3} style={{ marginTop: '1rem' }} /> : announcements.length === 0 ? <EmptyState label="No recent announcements" /> : (
             <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               {announcements.slice(0, 3).map(ann => (
-                <li key={ann.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--border-color)' }}>
-                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--text-primary)', marginBottom: '0.25rem' }}>{ann.title}</strong>
-                  <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>{new Date(ann.createdAt).toLocaleDateString()}</span>
+                <li key={ann.id} style={{ paddingBottom: '1rem', borderBottom: '1px solid var(--color-border)' }}>
+                  <strong style={{ display: 'block', fontSize: '1rem', color: 'var(--color-text)', marginBottom: '0.25rem' }}>{ann.title}</strong>
+                  <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>{new Date(ann.createdAt).toLocaleDateString()}</span>
                 </li>
               ))}
             </ul>

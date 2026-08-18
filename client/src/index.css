@@ -3769,9 +3769,13 @@ code {
    ═══════════════════════════════════════════════════════════════════════════════ */
 
 .attendance-page {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: var(--space-6);
+  /* max-width/margin/padding deliberately NOT set here anymore — this class
+     used to cap the page at 800px and add its own var(--space-6) padding
+     on top of .page-content's own padding, which both fought with the
+     page's inline maxWidth (1440px, matching every other page) and doubled
+     the gap next to the sidebar. .page-content (layout-level) is now the
+     single source of truth for sizing; this class only owns the internal
+     vertical stacking. */
   display: flex;
   flex-direction: column;
   gap: var(--space-6);
@@ -3871,9 +3875,6 @@ code {
     grid-template-columns: 1fr;
   }
 
-  .attendance-page {
-    padding: var(--space-4);
-  }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════════
@@ -4887,11 +4888,13 @@ textarea:focus-visible,
 }
 
 /* ── Admin Dashboard Layout & Grid ──────────────────────────────────────── */
-.admin-dashboard-container {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 0.5rem;
-}
+/* .admin-dashboard-container used to cap this page at 1280px with a thin,
+   asymmetric 0/0.5rem padding — its own separate sizing scheme fighting
+   with .page-content's (the layout-level wrapper every page already sits
+   inside, now standardized to 1440px with uniform padding). That's what
+   made the admin dashboard read as narrower and differently-gapped than
+   every other admin page, so the class (and its use in AdminDashboard.jsx)
+   was dropped in favor of relying on .page-content alone. */
 
 .admin-dashboard-metrics {
   display: grid;

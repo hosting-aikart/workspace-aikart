@@ -150,7 +150,7 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div className="admin-dashboard-container">
+    <div>
       <PageHeader
         title="Admin Control Center"
         subtitle="Real-time workspace management, employee controls, and key system metrics."
