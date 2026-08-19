@@ -28,7 +28,7 @@ export default function AnnouncementsPage() {
     setLoading(true);
     setError('');
     try {
-      // The "New Broadcast" recipient picker is available to EMPLOYEE too
+      // The "New Announcement" recipient picker is available to EMPLOYEE too
       // (see the action button below), not just MANAGER — it needs the
       // directory either way, or the picker just renders "No team members
       // found" with nothing to select. This was previously gated to
@@ -161,7 +161,7 @@ export default function AnnouncementsPage() {
               className="btn btn-primary"
               onClick={() => setIsModalOpen(true)}
             >
-              New Broadcast
+              New Announcement
             </button>
           ) : null
         }

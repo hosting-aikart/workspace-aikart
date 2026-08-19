@@ -136,7 +136,11 @@ export default function HomePage() {
   // as "dashboard still looks different from the rest."
   return (
     <div className="animate-fade-in" style={{ width: '100%' }}>
-      <header className="page-header" style={{ marginBottom: '2rem' }}>
+      {/* "card" added — this header was hand-rolled and missing the shared
+          .card treatment every other page's header gets via the PageHeader
+          component, which is exactly why it looked flat/square next to the
+          rounded dashboard tiles below it. */}
+      <header className="page-header card" style={{ marginBottom: '2rem', padding: '1.5rem 1.75rem' }}>
         <h1 className="h1" style={{ marginBottom: '0.25rem' }}>
           {greeting}, {user?.name?.split(' ')[0]} 👋
         </h1>

@@ -95,7 +95,7 @@ export default function DirectoryPage() {
   }, [users, departmentFilter, roleFilter, search]);
 
   return (
-    <div className="admin-dashboard-container">
+    <div>
       <PageHeader
         title="Company Directory"
         subtitle="Browse workspace members, department structures, role assignments, and contact information."

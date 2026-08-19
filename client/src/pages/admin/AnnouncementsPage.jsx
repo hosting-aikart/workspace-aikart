@@ -11,7 +11,6 @@ const createDefaultForm = () => ({
   title: '',
   description: '',
   priority: 'MEDIUM',
-  targetType: 'ALL',
   selectedUserIds: [],
   status: 'PUBLISHED',
 });
@@ -114,8 +113,14 @@ export default function AnnouncementsPage() {
       title: item.title || '',
       description: item.description || '',
       priority: item.priority || 'MEDIUM',
-      targetType: item.targetType || 'ALL',
-      selectedUserIds: item.selectedUsers ? item.selectedUsers.map((su) => su.userId || su.user?.id) : [],
+      // Older announcements created before the recipient picker existed may
+      // be targetType 'ALL' with no selectedUsers rows at all — pre-select
+      // every current employee for those so re-saving an old broadcast
+      // without touching the audience still reaches everyone, instead of
+      // silently narrowing it down to nobody.
+      selectedUserIds: item.targetType === 'ALL'
+        ? employees.map((e) => e.id)
+        : (item.selectedUsers ? item.selectedUsers.map((su) => su.userId || su.user?.id) : []),
       status: item.status || 'PUBLISHED',
     });
     setEmployeeSearch('');
@@ -139,8 +144,8 @@ export default function AnnouncementsPage() {
       return;
     }
 
-    if (form.targetType === 'SELECTED_USERS' && (!form.selectedUserIds || form.selectedUserIds.length === 0)) {
-      setError('Please select at least one employee for selected users targeting.');
+    if (!form.selectedUserIds || form.selectedUserIds.length === 0) {
+      setError('Please select at least one recipient.');
       return;
     }
 
@@ -153,8 +158,8 @@ export default function AnnouncementsPage() {
         title: form.title.trim(),
         description: form.description.trim(),
         priority: form.priority,
-        targetType: form.targetType,
-        selectedUserIds: form.targetType === 'SELECTED_USERS' ? form.selectedUserIds : [],
+        targetType: 'SELECTED_USERS',
+        selectedUserIds: form.selectedUserIds,
         status: form.status,
       };
 
@@ -200,6 +205,14 @@ export default function AnnouncementsPage() {
       const updated = exists ? current.filter((id) => id !== userId) : [...current, userId];
       return { ...prev, selectedUserIds: updated };
     });
+  };
+
+  const handleSelectAllEmployees = () => {
+    setForm((prev) =>
+      prev.selectedUserIds?.length === employees.length
+        ? { ...prev, selectedUserIds: [] }
+        : { ...prev, selectedUserIds: employees.map((e) => e.id) },
+    );
   };
 
   const filteredEmployeesForModal = useMemo(() => {
@@ -448,7 +461,7 @@ export default function AnnouncementsPage() {
             />
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1rem' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
             <div>
               <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.3rem' }}>
                 Priority
@@ -463,21 +476,6 @@ export default function AnnouncementsPage() {
                 <option value="MEDIUM">Medium</option>
                 <option value="HIGH">High</option>
                 <option value="URGENT">Urgent</option>
-              </select>
-            </div>
-
-            <div>
-              <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.3rem' }}>
-                Share To
-              </label>
-              <select
-                className="input"
-                style={{ width: '100%' }}
-                value={form.targetType}
-                onChange={(e) => setForm({ ...form, targetType: e.target.value })}
-              >
-                <option value="ALL">All Employees</option>
-                <option value="SELECTED_USERS">Selected Employees</option>
               </select>
             </div>
 
@@ -498,75 +496,84 @@ export default function AnnouncementsPage() {
             </div>
           </div>
 
-          {/* Selected Employees multi-select panel */}
-          {form.targetType === 'SELECTED_USERS' && (
+          {/* Recipients — always visible, no separate "Share To" scope
+              selector. "All Employees" is just "select everyone" inside
+              this same picker (via the button below) instead of a whole
+              separate targeting mode, matching how the employee-side
+              broadcast composer already works. */}
+          <div
+            style={{
+              border: '1px solid var(--color-border)',
+              borderRadius: '8px',
+              padding: '0.75rem 1rem',
+              background: 'var(--color-bg-subtle, rgba(255, 255, 255, 0.03))',
+            }}
+          >
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
+              <label style={{ fontWeight: 600, margin: 0 }}>
+                Recipients <span style={{ color: 'var(--color-danger)' }}>*</span> ({form.selectedUserIds?.length || 0} selected)
+              </label>
+              <button
+                type="button"
+                className="btn btn-ghost btn-sm"
+                onClick={handleSelectAllEmployees}
+              >
+                {form.selectedUserIds?.length === employees.length ? 'Deselect All' : 'Select All Employees'}
+              </button>
+            </div>
+
+            <input
+              className="input"
+              style={{ width: '100%', marginBottom: '0.75rem' }}
+              placeholder="Search employees by name, email or position..."
+              value={employeeSearch}
+              onChange={(e) => setEmployeeSearch(e.target.value)}
+            />
+
             <div
               style={{
-                border: '1px solid var(--color-border)',
-                borderRadius: '8px',
-                padding: '0.75rem 1rem',
-                background: 'var(--color-bg-subtle, rgba(255, 255, 255, 0.03))',
+                maxHeight: '180px',
+                overflowY: 'auto',
+                display: 'grid',
+                gap: '0.4rem',
+                paddingRight: '0.25rem',
               }}
             >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                <label style={{ fontWeight: 600, margin: 0 }}>
-                  Select Target Employees ({form.selectedUserIds?.length || 0} selected)
-                </label>
-              </div>
-
-              <input
-                className="input"
-                style={{ width: '100%', marginBottom: '0.75rem' }}
-                placeholder="Search employees by name, email or position..."
-                value={employeeSearch}
-                onChange={(e) => setEmployeeSearch(e.target.value)}
-              />
-
-              <div
-                style={{
-                  maxHeight: '180px',
-                  overflowY: 'auto',
-                  display: 'grid',
-                  gap: '0.4rem',
-                  paddingRight: '0.25rem',
-                }}
-              >
-                {filteredEmployeesForModal.length === 0 ? (
-                  <p className="text-secondary" style={{ fontSize: '0.85rem', margin: '0.5rem 0' }}>
-                    No employees found matching search.
-                  </p>
-                ) : (
-                  filteredEmployeesForModal.map((emp) => {
-                    const isChecked = form.selectedUserIds?.includes(emp.id);
-                    return (
-                      <label
-                        key={emp.id}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '0.6rem',
-                          padding: '0.4rem 0.6rem',
-                          borderRadius: '6px',
-                          cursor: 'pointer',
-                          backgroundColor: isChecked ? 'rgba(68, 97, 242, 0.12)' : 'transparent',
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={isChecked}
-                          onChange={() => toggleUserSelection(emp.id)}
-                        />
-                        <span style={{ fontWeight: 500, fontSize: '0.9rem' }}>{emp.name}</span>
-                        <span className="text-secondary" style={{ fontSize: '0.8rem' }}>
-                          ({emp.position || emp.role} — {emp.email})
-                        </span>
-                      </label>
-                    );
-                  })
-                )}
-              </div>
+              {filteredEmployeesForModal.length === 0 ? (
+                <p className="text-secondary" style={{ fontSize: '0.85rem', margin: '0.5rem 0' }}>
+                  No employees found matching search.
+                </p>
+              ) : (
+                filteredEmployeesForModal.map((emp) => {
+                  const isChecked = form.selectedUserIds?.includes(emp.id);
+                  return (
+                    <label
+                      key={emp.id}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.6rem',
+                        padding: '0.4rem 0.6rem',
+                        borderRadius: '6px',
+                        cursor: 'pointer',
+                        backgroundColor: isChecked ? 'rgba(68, 97, 242, 0.12)' : 'transparent',
+                      }}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isChecked}
+                        onChange={() => toggleUserSelection(emp.id)}
+                      />
+                      <span style={{ fontWeight: 500, fontSize: '0.9rem' }}>{emp.name}</span>
+                      <span className="text-secondary" style={{ fontSize: '0.8rem' }}>
+                        ({emp.position || emp.role} — {emp.email})
+                      </span>
+                    </label>
+                  );
+                })
+              )}
             </div>
-          )}
+          </div>
         </div>
       </Modal>
 
