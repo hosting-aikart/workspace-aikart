@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const multer = require('multer');
 const { requireAuth } = require('../../middleware/auth.middleware');
+const { sensitiveLimiter } = require('../../middleware/rateLimiter');
 const {
   getMyProfile,
   updateMyProfile,
@@ -54,13 +55,16 @@ router.get('/directory/:id', requireAuth, getEmployee);
 // GET  /api/me/profile  — fetch logged-in user's full profile
 router.get('/profile', requireAuth, getMyProfile);
 
-// PATCH /api/me/profile — update phone / password
-router.patch('/profile', requireAuth, updateMyProfile);
+// PATCH /api/me/profile — update phone / password (password changes are
+// sensitive — rate-limited against a compromised-account or scripted-retry
+// scenario same as the file upload below).
+router.patch('/profile', requireAuth, sensitiveLimiter, updateMyProfile);
 
 // POST /api/me/profile/photo — upload profile photo to Cloudinary
 router.post(
   '/profile/photo',
   requireAuth,
+  sensitiveLimiter,
   (req, res, next) => upload.single('photo')(req, res, (err) => handleMulterError(err, req, res, next)),
   uploadProfilePhoto
 );

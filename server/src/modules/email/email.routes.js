@@ -3,6 +3,7 @@
 const { Router } = require('express');
 const multer = require('multer');
 const { requireAuth } = require('../../middleware/auth.middleware');
+const { sensitiveLimiter } = require('../../middleware/rateLimiter');
 const controller = require('./email.controller');
 
 const router = Router();
@@ -42,14 +43,16 @@ router.get('/search', controller.searchEmails);
 // Download attachment  GET /api/email/attachments/:messageId/:attachmentId
 router.get('/attachments/:messageId/:attachmentId', controller.downloadAttachment);
 
-// Compose / send
-router.post('/send', withFiles, controller.sendEmail);
+// Compose / send — sensitiveLimiter here since this both hits the Gmail
+// API (external, quota-bound) and is the one action in this module that
+// actually sends something on the user's behalf.
+router.post('/send', sensitiveLimiter, withFiles, controller.sendEmail);
 
 // Reply to a message
-router.post('/reply/:messageId', withFiles, controller.replyEmail);
+router.post('/reply/:messageId', sensitiveLimiter, withFiles, controller.replyEmail);
 
 // Forward a message
-router.post('/forward/:messageId', withFiles, controller.forwardEmail);
+router.post('/forward/:messageId', sensitiveLimiter, withFiles, controller.forwardEmail);
 
 // Create / update draft
 router.post('/draft', withFiles, controller.saveDraft);

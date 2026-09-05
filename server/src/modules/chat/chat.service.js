@@ -1,5 +1,5 @@
 const prismaModule = require('../../config/prisma');
-const notificationService = require('../notification/notification.service');
+const { enqueueNotificationFanout } = require('../../queues/notification.queue');
 const { emitToUser } = require('../../socket/registry');
 const { destroyAsset } = require('../../utils/cloudinary');
 
@@ -20,6 +20,11 @@ const destroyMessageAttachments = (messages) => {
 };
 
 const MESSAGE_PAGE_SIZE = 50;
+
+// A single message's max length. Raised well past a normal chat line so
+// pasting a real block of text (a .env file, a stack trace, a config
+// snippet) isn't rejected — see sendMessage below.
+const MAX_MESSAGE_LENGTH = 20000;
 
 const senderSelect = {
   id: true,
@@ -318,7 +323,7 @@ const notifyGroupMembers = async (workspaceId, creatorId, conversation, memberId
     const prisma = getPrisma();
     const creator = await prisma.user.findUnique({ where: { id: creatorId }, select: { name: true } });
 
-    await notificationService.createNotificationsForUsers(workspaceId, memberIds, {
+    await enqueueNotificationFanout(workspaceId, memberIds, {
       type: 'GROUP_INVITE',
       title: `Added to "${conversation.name}"`,
       body: `${creator?.name || 'Someone'} added you to a group chat.`,
@@ -418,8 +423,13 @@ const sendMessage = async (conversationId, userId, workspaceId, contentOrOptions
   if (!trimmed && !attachment) {
     throw new Error('Message content is required');
   }
-  if (trimmed.length > 4000) {
-    throw new Error('Message is too long (max 4000 characters)');
+  // Generous enough for someone pasting a real block of text — a .env file,
+  // a stack trace, a log snippet — not just a chat-length sentence. The
+  // column itself (`content String`, i.e. Postgres TEXT) is unbounded; this
+  // cap exists only to stop a single message from becoming pathologically
+  // large, not to constrain normal use.
+  if (trimmed.length > MAX_MESSAGE_LENGTH) {
+    throw new Error(`Message is too long (max ${MAX_MESSAGE_LENGTH.toLocaleString()} characters)`);
   }
 
   const conversation = await accessConversation(conversationId, userId, workspaceId);
@@ -470,7 +480,7 @@ const notifyDirectMessage = async (workspaceId, conversation, message) => {
       select: { userId: true },
     });
 
-    await notificationService.createNotificationsForUsers(
+    await enqueueNotificationFanout(
       workspaceId,
       participants.map((p) => p.userId),
       {

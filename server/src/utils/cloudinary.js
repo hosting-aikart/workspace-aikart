@@ -17,6 +17,10 @@ cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
+  // Previously unset — the SDK has no default request timeout, so a
+  // Cloudinary-side hang would otherwise hold the calling request open
+  // indefinitely (an upload, or destroyAsset's best-effort cleanup below).
+  timeout: 15_000,
 });
 
 /**

@@ -282,6 +282,11 @@ const getHistory = async (userId, { from, to } = {}) => {
     return prisma.attendance.findMany({
         where,
         orderBy: { date: 'desc' },
+        // One row/user/day, so this only bites someone requesting their full
+        // history with no from/to at all — a hard ceiling (~1 year) rather
+        // than a real pagination contract change, since callers today treat
+        // this as "the list", not "a page of it".
+        take: 400,
     });
 };
 

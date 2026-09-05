@@ -19,6 +19,24 @@
 const { google } = require('googleapis');
 const { getPrisma } = require('../../config/prisma');
 
+// ─── Global request defaults ───────────────────────────────────────────────────
+// `google` is a shared singleton across every module that `require('googleapis')`
+// (email/calendar/meet services included) — setting defaults here once at
+// startup applies them everywhere, without touching each individual API call
+// site. Previously unset, meaning a hung Gmail/Calendar/Meet call had no
+// timeout and could hold a request open indefinitely. retryConfig enables
+// gaxios's built-in retry (idempotent methods only, exponential-ish backoff
+// via retryDelay) for transient network errors and 429/5xx responses — the
+// most common failure mode against Google's APIs is a brief rate-limit or
+// upstream blip, not a hard failure.
+google.options({
+  timeout: 15_000,
+  retryConfig: {
+    retry: 3,
+    retryDelay: 1000,
+  },
+});
+
 // ─── Scopes ───────────────────────────────────────────────────────────────────
 
 const SCOPES = [

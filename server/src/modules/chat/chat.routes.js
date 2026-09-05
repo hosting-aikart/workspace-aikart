@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const multer = require('multer');
 const { requireAuth } = require('../../middleware/auth.middleware');
+const { sensitiveLimiter } = require('../../middleware/rateLimiter');
 const {
   listConversationsHandler,
   startDirectConversationHandler,
@@ -85,6 +86,7 @@ router.get('/conversations/:id/messages', getMessagesHandler);
 router.post('/conversations/:id/messages', sendMessageHandler);
 router.post(
   '/conversations/:id/attachments',
+  sensitiveLimiter,
   (req, res, next) => upload.single('file')(req, res, (err) => handleMulterError(err, req, res, next)),
   sendAttachmentHandler,
 );

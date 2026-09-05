@@ -31,6 +31,18 @@ const initPrisma = async () => {
 
   const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
+    // Previously all three were unset, meaning: max defaulted to 10 (fine,
+    // kept explicit here so it's a deliberate choice rather than an
+    // accident), idleTimeoutMillis defaulted to 10s, and — the real risk —
+    // connectionTimeoutMillis defaulted to 0 (no timeout), so a request
+    // arriving while all pool connections were busy would queue and wait
+    // indefinitely for one to free up instead of failing fast. DATABASE_URL
+    // already points at Neon's pooled (PgBouncer-style) endpoint, so this
+    // pool just bounds how many connections *this process* holds against
+    // that pooler, not a direct Postgres connection limit.
+    max: Number(process.env.DB_POOL_MAX) || 10,
+    idleTimeoutMillis: 30_000,
+    connectionTimeoutMillis: 10_000,
   });
 
   const adapter = new PrismaPg(pool);

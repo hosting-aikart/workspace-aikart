@@ -30,6 +30,9 @@ const getTeamMembers = async (workspaceId, managerUserId) => {
       },
     },
     orderBy: { name: 'asc' },
+    // Safety ceiling, not real pagination — bounded by workspace headcount,
+    // which for this kind of internal tool realistically never approaches it.
+    take: 500,
   });
 
   return members;
@@ -107,11 +110,20 @@ const getTeamDashboard = async (workspaceId, managerUserId) => {
   const projectIds = managedProjects.map((p) => p.id);
 
   // 3. Fetch tasks for managed projects
+  // Deliberately not take()-capped like the other queries here — tasks.length
+  // (via pendingTasks/completedTasks below) directly feeds the returned
+  // taskMetrics counts, so silently truncating the rows would silently
+  // under-report them. It's bounded by this manager's own project scope
+  // (projectIds above), not the whole workspace, so it stays reasonably
+  // sized without a cap; if that stops being true, this should switch to
+  // prisma.task.groupBy({ by: ['status'], where, _count: true }) for the
+  // counts instead of fetching full rows just to .filter() them.
   const tasks = await prisma.task.findMany({
     where: {
       projectId: { in: projectIds.length > 0 ? projectIds : ['none'] },
     },
     select: { id: true, status: true, priority: true, title: true, dueDate: true, projectId: true },
+    orderBy: { createdAt: 'desc' },
   });
 
   const pendingTasks = tasks.filter((t) => t.status !== 'DONE' && t.status !== 'COMPLETED');

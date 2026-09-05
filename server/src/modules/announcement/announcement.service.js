@@ -1,7 +1,19 @@
 const prismaModule = require('../../config/prisma');
-const notificationService = require('../notification/notification.service');
+const { enqueueNotificationFanout } = require('../../queues/notification.queue');
+const { cacheWrap, cacheDelByPrefix, buildKey } = require('../../utils/cache');
 
 const getPrisma = () => prismaModule.getPrisma();
+
+// The endpoint returns a plain array (no pagination wrapper) and the
+// frontend consumes it as one — adding real pagination would change that
+// contract, so this is a hard safety ceiling instead: prevents an
+// unbounded table scan/response as a workspace's announcement history
+// grows, without altering what callers get back for any normal-sized list.
+const ANNOUNCEMENTS_MAX = 200;
+
+const announcementsCacheKey = (workspaceId, filters, viewer) =>
+  buildKey('announcements', workspaceId, viewer, filters.status || '', filters.priority || '', filters.search || '');
+const invalidateAnnouncementsCache = (workspaceId) => cacheDelByPrefix(buildKey('announcements', workspaceId));
 
 /**
  * notifyAnnouncementTargets
@@ -29,7 +41,7 @@ const notifyAnnouncementTargets = async (workspaceId, announcement) => {
 
     targetUserIds = targetUserIds.filter((id) => id && id !== announcement.createdById);
 
-    await notificationService.createNotificationsForUsers(workspaceId, targetUserIds, {
+    await enqueueNotificationFanout(workspaceId, targetUserIds, {
       type: 'ANNOUNCEMENT',
       title: announcement.title,
       body: announcement.description?.slice(0, 140) || null,
@@ -110,11 +122,24 @@ const createAnnouncement = async (workspaceId, createdById, payload, userRole = 
   });
 
   await notifyAnnouncementTargets(workspaceId, announcement);
+  await invalidateAnnouncementsCache(workspaceId);
 
   return announcement;
 };
 
+// 45s TTL: the Announcements page and the dashboard's "Latest Announcements"
+// widget both load this, and every non-admin viewer gets a differently-
+// scoped result (see targetScopeFilter below), so the cache key includes
+// who's asking — 'admin' for the unrestricted view, otherwise their user id.
 const getAnnouncements = async (workspaceId, filters = {}, user = null) => {
+  const viewer = !user || user.role === 'ADMIN' ? 'admin' : user.id;
+
+  return cacheWrap(announcementsCacheKey(workspaceId, filters, viewer), 45, () =>
+    fetchAnnouncements(workspaceId, filters, user),
+  );
+};
+
+const fetchAnnouncements = async (workspaceId, filters, user) => {
   const prisma = getPrisma();
 
   const where = { workspaceId };
@@ -172,6 +197,7 @@ const getAnnouncements = async (workspaceId, filters = {}, user = null) => {
       },
     },
     orderBy: { createdAt: 'desc' },
+    take: ANNOUNCEMENTS_MAX,
   });
 
   return announcements;
@@ -271,6 +297,7 @@ const updateAnnouncement = async (workspaceId, announcementId, payload) => {
     await notifyAnnouncementTargets(workspaceId, updated);
   }
 
+  await invalidateAnnouncementsCache(workspaceId);
   return updated;
 };
 
@@ -289,6 +316,7 @@ const deleteAnnouncement = async (workspaceId, announcementId) => {
     where: { id: announcementId },
   });
 
+  await invalidateAnnouncementsCache(workspaceId);
   return true;
 };
 

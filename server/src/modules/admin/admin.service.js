@@ -1,7 +1,20 @@
 const bcrypt = require('bcrypt');
 const prismaModule = require('../../config/prisma');
+const { cacheWrap, cacheDelByPrefix, buildKey } = require('../../utils/cache');
 
 const getPrisma = () => prismaModule.getPrisma();
+
+// ─── Cache keys ────────────────────────────────────────────────────────────
+// All scoped by workspaceId (never cross-tenant) and invalidated with a
+// prefix delete, not tracked individually — see each cache*() call below for
+// why that specific piece of data is worth caching.
+const directoryCacheKey = (workspaceId, limit) => buildKey('directory', workspaceId, limit);
+const statsCacheKey = (workspaceId) => buildKey('admin-stats', workspaceId);
+const departmentsCacheKey = (workspaceId, page, limit, status) =>
+  buildKey('departments', workspaceId, page, limit, status || 'all');
+const invalidateDirectoryCache = (workspaceId) => cacheDelByPrefix(buildKey('directory', workspaceId));
+const invalidateStatsCache = (workspaceId) => cacheDelByPrefix(buildKey('admin-stats', workspaceId));
+const invalidateDepartmentsCache = (workspaceId) => cacheDelByPrefix(buildKey('departments', workspaceId));
 
 const VALID_ROLES = ['ADMIN', 'MANAGER', 'EMPLOYEE'];
 const EMPLOYEE_SELECT = {
@@ -120,18 +133,25 @@ const DIRECTORY_SELECT = {
  * page's sidebar (which fetches the directory to build its "Colleagues"
  * list) and the Directory page, for a number nothing displayed.
  */
+// 60s TTL: hit on nearly every page in the app (Chat sidebar, Directory
+// page, meeting/group member pickers all call this), but only ever changes
+// when someone is hired/edited/deactivated — a new hire being briefly
+// invisible in a colleague picker for up to a minute is a fine trade for
+// turning "several requests per user session" into "one DB round trip per
+// workspace per minute".
 const getWorkspaceDirectory = async (workspaceId, options = {}) => {
-  const prisma = getPrisma();
   const limit = Math.min(Number(options.limit) || 200, 500);
 
-  const employees = await prisma.user.findMany({
-    where: { workspaceId },
-    take: limit,
-    orderBy: { name: 'asc' },
-    select: DIRECTORY_SELECT,
+  return cacheWrap(directoryCacheKey(workspaceId, limit), 60, async () => {
+    const prisma = getPrisma();
+    const employees = await prisma.user.findMany({
+      where: { workspaceId },
+      take: limit,
+      orderBy: { name: 'asc' },
+      select: DIRECTORY_SELECT,
+    });
+    return { employees };
   });
-
-  return { employees };
 };
 
 const getEmployeeById = async (workspaceId, employeeId) => {
@@ -224,6 +244,7 @@ const createEmployee = async (workspaceId, payload) => {
     select: EMPLOYEE_SELECT,
   });
 
+  await Promise.all([invalidateDirectoryCache(workspaceId), invalidateStatsCache(workspaceId)]);
   return createdEmployee;
 };
 
@@ -299,6 +320,7 @@ const updateEmployee = async (workspaceId, employeeId, payload) => {
     select: EMPLOYEE_SELECT,
   });
 
+  await invalidateDirectoryCache(workspaceId);
   return updatedEmployee;
 };
 
@@ -325,11 +347,13 @@ const updateEmployeeRole = async (workspaceId, employeeId, role) => {
     throw err;
   }
 
-  return prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: employeeId },
     data: { role: normalizedRole },
     select: EMPLOYEE_SELECT,
   });
+  await Promise.all([invalidateDirectoryCache(workspaceId), invalidateStatsCache(workspaceId)]);
+  return updated;
 };
 
 const updateEmployeeStatus = async (workspaceId, employeeId, isActive) => {
@@ -345,11 +369,13 @@ const updateEmployeeStatus = async (workspaceId, employeeId, isActive) => {
     throw err;
   }
 
-  return prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: employeeId },
     data: { isActive },
     select: EMPLOYEE_SELECT,
   });
+  await Promise.all([invalidateDirectoryCache(workspaceId), invalidateStatsCache(workspaceId)]);
+  return updated;
 };
 
 const deleteEmployee = async (workspaceId, employeeId) => {
@@ -365,84 +391,97 @@ const deleteEmployee = async (workspaceId, employeeId) => {
     throw err;
   }
 
-  return prisma.user.update({
+  const updated = await prisma.user.update({
     where: { id: employeeId },
     data: { isActive: false },
     select: EMPLOYEE_SELECT,
   });
+  await Promise.all([invalidateDirectoryCache(workspaceId), invalidateStatsCache(workspaceId)]);
+  return updated;
 };
 
+// 30s TTL: the admin dashboard header re-fetches this on every visit, but
+// it's 7 count() aggregates run in parallel every time — genuinely more
+// query work than any other single endpoint in the app for what's ultimately
+// a handful of numbers nobody needs to the second.
 const getAdminStats = async (workspaceId) => {
-  const prisma = getPrisma();
+  return cacheWrap(statsCacheKey(workspaceId), 30, async () => {
+    const prisma = getPrisma();
 
-  const [
-    totalUsers,
-    totalEmployees,
-    activeEmployees,
-    adminCount,
-    managerCount,
-    employeeCount,
-    departments,
-  ] = await Promise.all([
-    prisma.user.count({ where: { workspaceId } }),
-    prisma.user.count({ where: { workspaceId } }),
-    prisma.user.count({ where: { workspaceId, isActive: true } }),
-    prisma.user.count({ where: { workspaceId, role: 'ADMIN' } }),
-    prisma.user.count({ where: { workspaceId, role: 'MANAGER' } }),
-    prisma.user.count({ where: { workspaceId, role: 'EMPLOYEE' } }),
-    prisma.department?.count
-      ? prisma.department.count({ where: { workspaceId } })
-      : 0,
-  ]);
+    const [
+      totalUsers,
+      totalEmployees,
+      activeEmployees,
+      adminCount,
+      managerCount,
+      employeeCount,
+      departments,
+    ] = await Promise.all([
+      prisma.user.count({ where: { workspaceId } }),
+      prisma.user.count({ where: { workspaceId } }),
+      prisma.user.count({ where: { workspaceId, isActive: true } }),
+      prisma.user.count({ where: { workspaceId, role: 'ADMIN' } }),
+      prisma.user.count({ where: { workspaceId, role: 'MANAGER' } }),
+      prisma.user.count({ where: { workspaceId, role: 'EMPLOYEE' } }),
+      prisma.department?.count
+        ? prisma.department.count({ where: { workspaceId } })
+        : 0,
+    ]);
 
-  return {
-    totalUsers,
-    totalEmployees,
-    activeEmployees,
-    adminCount,
-    managerCount,
-    employeeCount,
-    departments,
-  };
+    return {
+      totalUsers,
+      totalEmployees,
+      activeEmployees,
+      adminCount,
+      managerCount,
+      employeeCount,
+      departments,
+    };
+  });
 };
 
+// 120s TTL: departments are about as low-churn as workspace data gets (a
+// handful of rows, edited rarely), but the list is fetched constantly —
+// every employee create/edit form and the Directory page's filter dropdown
+// all load it.
 const listDepartments = async (workspaceId, options = {}) => {
-  const prisma = getPrisma();
   const page = Number(options.page || 1);
   const limit = Number(options.limit || 10);
-  const skip = (page - 1) * limit;
-  const status = String(options.status || '')
-    .trim()
-    .toLowerCase();
+  const status = String(options.status || '').trim().toLowerCase();
 
-  const where = { workspaceId };
-  if (status === 'active' || status === 'inactive') {
-    where.isActive = status === 'active';
-  }
+  return cacheWrap(departmentsCacheKey(workspaceId, page, limit, status), 120, async () => {
+    const prisma = getPrisma();
+    const skip = (page - 1) * limit;
 
-  const [departments, total] = await Promise.all([
-    prisma.department.findMany({
-      where,
-      skip,
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-      select: DEPARTMENT_SELECT,
-    }),
-    prisma.department.count({ where }),
-  ]);
+    const where = { workspaceId };
+    if (status === 'active' || status === 'inactive') {
+      where.isActive = status === 'active';
+    }
 
-  return {
-    departments: departments.map((department) => ({
-      ...department,
-      employeeCount: department._count?.users ?? 0,
-    })),
-    pagination: {
-      page,
-      limit,
-      total,
-      totalPages: Math.max(1, Math.ceil(total / limit)),
-    },
-  };
+    const [departments, total] = await Promise.all([
+      prisma.department.findMany({
+        where,
+        skip,
+        take: limit,
+        orderBy: { createdAt: 'desc' },
+        select: DEPARTMENT_SELECT,
+      }),
+      prisma.department.count({ where }),
+    ]);
+
+    return {
+      departments: departments.map((department) => ({
+        ...department,
+        employeeCount: department._count?.users ?? 0,
+      })),
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages: Math.max(1, Math.ceil(total / limit)),
+      },
+    };
+  });
 };
 
 const getDepartmentById = async (workspaceId, departmentId) => {
@@ -501,6 +540,7 @@ const createDepartment = async (workspaceId, payload) => {
     select: DEPARTMENT_SELECT,
   });
 
+  await Promise.all([invalidateDepartmentsCache(workspaceId), invalidateStatsCache(workspaceId)]);
   return {
     ...createdDepartment,
     employeeCount: createdDepartment._count?.users ?? 0,
@@ -554,6 +594,9 @@ const updateDepartment = async (workspaceId, departmentId, payload) => {
     select: DEPARTMENT_SELECT,
   });
 
+  // The renamed name is embedded in every cached directory entry for this
+  // department's members, not just the departments list itself.
+  await Promise.all([invalidateDepartmentsCache(workspaceId), invalidateDirectoryCache(workspaceId)]);
   return {
     ...updatedDepartment,
     employeeCount: updatedDepartment._count?.users ?? 0,
@@ -585,11 +628,13 @@ const deleteDepartment = async (workspaceId, departmentId) => {
     throw err;
   }
 
-  return prisma.department.update({
+  const updated = await prisma.department.update({
     where: { id: departmentId },
     data: { isActive: false },
     select: DEPARTMENT_SELECT,
   });
+  await Promise.all([invalidateDepartmentsCache(workspaceId), invalidateStatsCache(workspaceId)]);
+  return updated;
 };
 
 const activateDepartment = async (workspaceId, departmentId) => {
@@ -605,11 +650,13 @@ const activateDepartment = async (workspaceId, departmentId) => {
     throw err;
   }
 
-  return prisma.department.update({
+  const updated = await prisma.department.update({
     where: { id: departmentId },
     data: { isActive: true },
     select: DEPARTMENT_SELECT,
   });
+  await Promise.all([invalidateDepartmentsCache(workspaceId), invalidateStatsCache(workspaceId)]);
+  return updated;
 };
 
 const listUsers = async (workspaceId, options = {}) => {

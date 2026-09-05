@@ -158,6 +158,11 @@ const getTasks = async (workspaceId, filters = {}, userId, userRole) => {
       assignedTo: { select: assigneeSelect },
     },
     orderBy: [{ status: 'asc' }, { dueDate: 'asc' }, { createdAt: 'desc' }],
+    // Safety ceiling, not real pagination — the kanban board renders this
+    // as one flat list, so this is workspace-wide unbounded when no
+    // projectId filter is applied. 1000 comfortably covers a real board
+    // while capping the pathological unfiltered-large-workspace case.
+    take: 1000,
   });
 
   return tasks;

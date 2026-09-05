@@ -194,6 +194,15 @@ model Project {
   updatedAt DateTime @updatedAt
 
   @@unique([workspaceId, name])
+  // managerId/createdById are filtered directly (not just alongside
+  // workspaceId) in project.service.js's employee-scoped listProjects,
+  // manager.service.js's getTeamDashboard, and tasks.service.js's
+  // default-project lookup on every task create with no explicit
+  // projectId — none of that is covered by the (workspaceId, name)
+  // unique index above, since managerId/createdById aren't its leading
+  // column.
+  @@index([managerId])
+  @@index([createdById])
 }
 
 model ProjectMember {
@@ -274,6 +283,14 @@ model Announcement {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // No index existed on this table at all — every read (getAnnouncements,
+  // getAnnouncementById, the admin list) filters by workspaceId first, so
+  // without this every one of those was a full table scan. createdById is
+  // filtered directly too, in the non-admin viewer scope check in
+  // fetchAnnouncements (`OR: [..., { createdById: user.id }, ...]`).
+  @@index([workspaceId])
+  @@index([createdById])
 }
 
 model AnnouncementTargetUser {
@@ -287,6 +304,11 @@ model AnnouncementTargetUser {
   createdAt DateTime @default(now())
 
   @@unique([announcementId, userId])
+  // The unique index above is (announcementId, userId) — no help for the
+  // opposite lookup direction fetchAnnouncements needs: "which announcements
+  // target this userId", via the `selectedUsers: { some: { userId } }`
+  // relation filter on every non-admin viewer's announcement list.
+  @@index([userId])
 }
 
 model AnnouncementRead {
