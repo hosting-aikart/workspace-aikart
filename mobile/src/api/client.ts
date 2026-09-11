@@ -4,10 +4,12 @@ import { getAccessToken, removeAccessToken, removeCachedUserData } from '../util
 const getBaseUrl = (): string => {
   let url = process.env.EXPO_PUBLIC_API_URL;
   if (!url && typeof window !== 'undefined' && window.location) {
-    url = `http://${window.location.hostname}:5000/api`;
+    if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+      url = `http://${window.location.hostname}:5000/api`;
+    }
   }
   if (!url) {
-    url = 'http://localhost:5000/api';
+    url = 'https://workspace-aikart.onrender.com/api';
   }
   url = url.trim().replace(/\/+$/, '');
   if (!/\/api$/i.test(url)) {
