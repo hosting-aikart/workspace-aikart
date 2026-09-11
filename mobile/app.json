@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Aikart Workspace",
-    "slug": "aikart-workspace",
+    "slug": "mobile",
     "scheme": "aikart",
     "version": "1.0.0",
     "orientation": "portrait",
