@@ -13,7 +13,6 @@ import {
 import { useRouter } from 'expo-router';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Header } from '../Header';
-import { adminApi } from '../../api/adminApi';
 import { chatApi } from '../../api/chatApi';
 import { User } from '../../types';
 import { useAuth } from '../../context/AuthContext';
@@ -30,9 +29,11 @@ export const DirectoryComponent: React.FC = () => {
   const fetchDirectory = async () => {
     try {
       const data = await chatApi.getDirectory();
-      setEmployees(data);
+      const safeList = Array.isArray(data) ? data : (data as any)?.data || (data as any)?.users || [];
+      setEmployees(Array.isArray(safeList) ? safeList : []);
     } catch (err: any) {
       console.log('Failed to fetch directory', err);
+      setEmployees([]);
     } finally {
       setLoading(false);
     }
@@ -42,7 +43,9 @@ export const DirectoryComponent: React.FC = () => {
     fetchDirectory();
   }, []);
 
-  const filteredEmployees = employees.filter((e) => {
+  const safeEmployees = Array.isArray(employees) ? employees : [];
+  const filteredEmployees = safeEmployees.filter((e) => {
+    if (!e) return false;
     const query = search.toLowerCase();
     return (
       (e.name && e.name.toLowerCase().includes(query)) ||
@@ -92,7 +95,7 @@ export const DirectoryComponent: React.FC = () => {
       ) : (
         <FlatList
           data={filteredEmployees}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, idx) => item?.id || `emp-${idx}`}
           contentContainerStyle={{ padding: 16 }}
           renderItem={({ item }) => (
             <View style={styles.card}>
@@ -105,9 +108,11 @@ export const DirectoryComponent: React.FC = () => {
               <View style={styles.info}>
                 <View style={styles.nameRow}>
                   <Text style={styles.name}>{item.name || 'Workspace Member'}</Text>
-                  <View style={styles.roleBadge}>
-                    <Text style={styles.roleBadgeText}>{item.role}</Text>
-                  </View>
+                  {item.role ? (
+                    <View style={styles.roleBadge}>
+                      <Text style={styles.roleBadgeText}>{item.role}</Text>
+                    </View>
+                  ) : null}
                 </View>
 
                 <Text style={styles.email}>{item.email}</Text>

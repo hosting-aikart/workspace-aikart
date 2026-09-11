@@ -89,7 +89,11 @@ export const chatApi = {
 
   getDirectory: async (): Promise<any[]> => {
     const res = await api.get('/me/directory');
-    return res.data?.data || res.data || [];
+    const data = res.data?.data ?? res.data;
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.users)) return data.users;
+    if (data && Array.isArray(data.employees)) return data.employees;
+    return [];
   },
 
   clearChat: async (conversationId: string): Promise<void> => {
