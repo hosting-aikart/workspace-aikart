@@ -378,6 +378,40 @@ const updateConversationName = async (conversationId, userId, workspaceId, name)
 };
 
 /**
+ * addParticipantsToGroup
+ * Adds one or more workspace users to an existing custom GROUP conversation.
+ */
+const addParticipantsToGroup = async (conversationId, userId, workspaceId, memberIds) => {
+  const conversation = await accessConversation(conversationId, userId, workspaceId);
+  if (conversation.type !== 'GROUP' || conversation.isDefault) {
+    throw new Error('Can only add members to custom groups');
+  }
+
+  const uniqueMemberIds = Array.from(new Set(memberIds || [])).filter((id) => id && id !== userId);
+  if (uniqueMemberIds.length === 0) {
+    throw new Error('Select at least one member to add');
+  }
+
+  const prisma = getPrisma();
+  await prisma.chatParticipant.createMany({
+    data: uniqueMemberIds.map((uId) => ({ conversationId, userId: uId })),
+    skipDuplicates: true,
+  });
+
+  await notifyGroupMembers(workspaceId, userId, conversation, uniqueMemberIds);
+
+  const updated = await prisma.chatConversation.findUnique({
+    where: { id: conversationId },
+    include: {
+      participants: { include: { user: { select: senderSelect } } },
+    },
+  });
+
+  return updated;
+};
+
+
+/**
  * getMessages
  * Cursor-paginated message history (newest page first, ascending order
  * within the page for straightforward rendering).
@@ -458,9 +492,39 @@ const sendMessage = async (conversationId, userId, workspaceId, contentOrOptions
     }),
   ]);
 
+  await broadcastNewMessage(conversationId, message);
   await notifyDirectMessage(workspaceId, conversation, message);
 
   return message;
+};
+
+/**
+ * broadcastNewMessage
+ * Pushes 'message:new' to every participant's personal socket room
+ * (`user:<id>`, joined automatically on connect — see socket/index.js)
+ * rather than the conversation's room (`conv:<id>`), which a socket only
+ * joins by explicitly opening that specific thread (see 'conversation:join'
+ * in socket/index.js). Broadcasting to the conv room alone meant a
+ * brand-new conversation — one the recipient had never opened, e.g. the
+ * very first message from someone who wasn't already a recent contact —
+ * silently reached nobody: their socket had no reason to have joined a room
+ * for a conversation it didn't know existed yet, so the message (and the
+ * conversation itself) just never appeared on their side until they
+ * happened to reload the page. Per-user rooms guarantee delivery regardless
+ * of which specific thread each participant currently has open, or
+ * whether they've ever opened this one before at all.
+ */
+const broadcastNewMessage = async (conversationId, message) => {
+  try {
+    const prisma = getPrisma();
+    const participants = await prisma.chatParticipant.findMany({
+      where: { conversationId },
+      select: { userId: true },
+    });
+    participants.forEach((p) => emitToUser(p.userId, 'message:new', message));
+  } catch (err) {
+    console.error('Failed to broadcast new message:', err.message);
+  }
 };
 
 /**
@@ -748,6 +812,7 @@ module.exports = {
   getOrCreateDirectConversation,
   createGroupConversation,
   updateConversationName,
+  addParticipantsToGroup,
   getMessages,
   sendMessage,
   deleteMessages,

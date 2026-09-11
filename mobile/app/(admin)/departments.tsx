@@ -4,6 +4,7 @@ import { useFocusEffect } from 'expo-router';
 import { Card } from '../../src/components/Card';
 import { EmptyState } from '../../src/components/EmptyState';
 import { LoadingScreen } from '../../src/components/LoadingScreen';
+import { Header } from '../../src/components/Header';
 import { adminApi } from '../../src/api/adminApi';
 import { Department } from '../../src/types';
 
@@ -41,6 +42,7 @@ export default function AdminDepartmentsScreen() {
 
   return (
     <View style={styles.container}>
+      <Header title="Departments" />
       <FlatList
         data={departments}
         keyExtractor={(item) => item.id}

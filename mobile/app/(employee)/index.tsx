@@ -7,6 +7,7 @@ import { Badge } from '../../src/components/Badge';
 import { attendanceApi } from '../../src/api/attendanceApi';
 import { tasksApi } from '../../src/api/tasksApi';
 import { meetingsApi } from '../../src/api/meetingsApi';
+import { Header } from '../../src/components/Header';
 import { Attendance, Task, Meeting } from '../../src/types';
 
 export default function EmployeeDashboard() {
@@ -63,11 +64,13 @@ export default function EmployeeDashboard() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#6366F1" />}
-    >
+    <View style={{ flex: 1, backgroundColor: '#0F172A' }}>
+      <Header title="Dashboard" />
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#6366F1" />}
+      >
       <View style={styles.greetingHeader}>
         <Text style={styles.welcomeTitle}>Welcome back,</Text>
         <Text style={styles.nameText}>{user?.name || 'Employee'}</Text>
@@ -122,7 +125,8 @@ export default function EmployeeDashboard() {
         ))
       )}
     </ScrollView>
-  );
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

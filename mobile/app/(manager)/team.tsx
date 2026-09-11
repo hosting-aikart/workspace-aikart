@@ -5,6 +5,7 @@ import { Card } from '../../src/components/Card';
 import { Badge } from '../../src/components/Badge';
 import { EmptyState } from '../../src/components/EmptyState';
 import { LoadingScreen } from '../../src/components/LoadingScreen';
+import { Header } from '../../src/components/Header';
 import { managerApi } from '../../src/api/managerApi';
 import { User } from '../../src/types';
 
@@ -42,6 +43,7 @@ export default function ManagerTeamScreen() {
 
   return (
     <View style={styles.container}>
+      <Header title="Team Members" />
       <FlatList
         data={team}
         keyExtractor={(item) => item.id}

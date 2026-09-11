@@ -2,8 +2,8 @@ import { api } from './client';
 import { ApiResponse, Meeting, ParticipantResponseStatus } from '../types';
 
 export const meetingsApi = {
-  getMeetings: async (): Promise<Meeting[]> => {
-    const res = await api.get<ApiResponse<any>>('/meetings');
+  getMeetings: async (params?: { status?: string; type?: string }): Promise<Meeting[]> => {
+    const res = await api.get<ApiResponse<any>>('/meetings', { params });
     const rawData = res.data?.data;
     if (Array.isArray(rawData)) return rawData;
     if (rawData && Array.isArray(rawData.meetings)) return rawData.meetings;
@@ -19,11 +19,29 @@ export const meetingsApi = {
     title: string;
     description?: string;
     agenda?: string;
-    startTime: string;
-    endTime: string;
+    meetingType?: 'SCHEDULED' | 'INSTANT';
+    startTime?: string;
+    endTime?: string;
     participantIds?: string[];
+    externalEmails?: string[];
   }): Promise<Meeting> => {
     const res = await api.post<ApiResponse<Meeting>>('/meetings', data);
+    return res.data.data;
+  },
+
+  updateMeeting: async (
+    id: string,
+    data: {
+      title?: string;
+      description?: string;
+      agenda?: string;
+      startTime?: string;
+      endTime?: string;
+      participantIds?: string[];
+      externalEmails?: string[];
+    }
+  ): Promise<Meeting> => {
+    const res = await api.patch<ApiResponse<Meeting>>(`/meetings/${id}`, data);
     return res.data.data;
   },
 

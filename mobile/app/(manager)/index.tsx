@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native
 import { useFocusEffect } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { Card } from '../../src/components/Card';
+import { Header } from '../../src/components/Header';
 import { managerApi, ManagerDashboardData } from '../../src/api/managerApi';
 
 export default function ManagerDashboard() {
@@ -32,11 +33,13 @@ export default function ManagerDashboard() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#3B82F6" />}
-    >
+    <View style={{ flex: 1, backgroundColor: '#0F172A' }}>
+      <Header title="Manager Dashboard" />
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#3B82F6" />}
+      >
       <View style={styles.header}>
         <Text style={styles.welcomeTitle}>Manager Workspace</Text>
         <Text style={styles.nameText}>{user?.name || 'Manager'}</Text>
@@ -65,7 +68,8 @@ export default function ManagerDashboard() {
         </Card>
       </View>
     </ScrollView>
-  );
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

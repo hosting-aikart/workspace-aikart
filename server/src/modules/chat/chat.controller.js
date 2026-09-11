@@ -2,7 +2,6 @@ const { z } = require('zod');
 const { Readable } = require('stream');
 const { cloudinary } = require('../../utils/cloudinary');
 const chatService = require('./chat.service');
-const { getIo } = require('../../socket');
 
 const sendMessageSchema = z.object({
   content: z.string().min(1, 'Message content is required'),
@@ -89,6 +88,23 @@ const updateConversationNameHandler = async (req, res) => {
   }
 };
 
+const addParticipantsHandler = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { memberIds } = req.body;
+    if (!Array.isArray(memberIds) || memberIds.length === 0) {
+      return res.status(400).json({ status: 'error', message: 'memberIds array is required' });
+    }
+    const conversation = await chatService.addParticipantsToGroup(id, req.user.id, req.user.workspaceId, memberIds);
+    return res.json({ status: 'success', data: conversation });
+  } catch (error) {
+    if (error.message.includes('not found') || error.message.includes('access')) {
+      return res.status(404).json({ status: 'error', message: error.message });
+    }
+    return res.status(400).json({ status: 'error', message: error.message });
+  }
+};
+
 const getMessagesHandler = async (req, res) => {
   try {
     const { id } = req.params;
@@ -110,15 +126,10 @@ const sendMessageHandler = async (req, res) => {
   try {
     const { id } = req.params;
     const { content } = sendMessageSchema.parse(req.body);
+    // Live delivery to every participant (covers this REST fallback the same
+    // as the socket path) happens inside sendMessage itself — see
+    // broadcastNewMessage in chat.service.js.
     const message = await chatService.sendMessage(id, req.user.id, req.user.workspaceId, content);
-
-    // Broadcast to any socket clients in the room (covers senders/viewers who
-    // are connected via socket but posted through this REST fallback).
-    try {
-      getIo()?.to(`conv:${id}`).emit('message:new', message);
-    } catch {
-      // Socket layer may not be initialised in some contexts (tests) — ignore.
-    }
 
     return res.status(201).json({ status: 'success', data: message });
   } catch (error) {
@@ -176,6 +187,8 @@ const sendAttachmentHandler = async (req, res) => {
       Readable.from(req.file.buffer).pipe(uploadStream);
     });
 
+    // Live delivery happens inside sendMessage itself — see
+    // broadcastNewMessage in chat.service.js.
     const message = await chatService.sendMessage(id, req.user.id, req.user.workspaceId, {
       content: caption,
       attachment: {
@@ -184,12 +197,6 @@ const sendAttachmentHandler = async (req, res) => {
         name: req.file.originalname,
       },
     });
-
-    try {
-      getIo()?.to(`conv:${id}`).emit('message:new', message);
-    } catch {
-      // Socket layer may not be initialised in some contexts (tests) — ignore.
-    }
 
     return res.status(201).json({ status: 'success', data: message });
   } catch (error) {
@@ -219,10 +226,10 @@ const bulkDeleteMessagesHandler = async (req, res) => {
 
 /**
  * forwardMessagesHandler
- * Creates the forwarded copies (via chatService.forwardMessages) then, like
- * sendMessageHandler/sendAttachmentHandler, broadcasts each one to its
- * conversation's room so anyone with that conversation open sees it land
- * live instead of waiting for a refetch.
+ * Creates the forwarded copies via chatService.forwardMessages, which calls
+ * sendMessage for each one — so each copy's live delivery already happens
+ * inside that call (see broadcastNewMessage in chat.service.js); nothing
+ * further to broadcast here.
  */
 const forwardMessagesHandler = async (req, res) => {
   try {
@@ -235,13 +242,6 @@ const forwardMessagesHandler = async (req, res) => {
       messageIds,
       targetConversationIds,
     );
-
-    try {
-      const io = getIo();
-      created.forEach((message) => io?.to(`conv:${message.conversationId}`).emit('message:new', message));
-    } catch {
-      // Socket layer may not be initialised in some contexts (tests) — ignore.
-    }
 
     return res.status(201).json({ status: 'success', data: created });
   } catch (error) {
@@ -299,6 +299,7 @@ module.exports = {
   startDirectConversationHandler,
   createGroupConversationHandler,
   updateConversationNameHandler,
+  addParticipantsHandler,
   getMessagesHandler,
   sendMessageHandler,
   sendAttachmentHandler,

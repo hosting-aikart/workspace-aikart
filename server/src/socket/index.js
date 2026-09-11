@@ -103,11 +103,15 @@ const initSocket = (httpServer) => {
       socket.leave(conversationRoom(conversationId));
     });
 
-    // ── Send a message, persist it, broadcast to the room ──────────────────
+    // ── Send a message, persist it ──────────────────────────────────────────
+    // Delivery to every participant (including the sender's own other
+    // devices/tabs) happens inside chatService.sendMessage itself, via each
+    // participant's personal `user:<id>` room — see broadcastNewMessage in
+    // chat.service.js for why that's used instead of this conversation's
+    // room.
     socket.on('message:send', async ({ conversationId, content } = {}, ack) => {
       try {
         const message = await chatService.sendMessage(conversationId, userId, workspaceId, content);
-        io.to(conversationRoom(conversationId)).emit('message:new', message);
         ack?.({ ok: true, message });
       } catch (err) {
         ack?.({ ok: false, message: err.message });

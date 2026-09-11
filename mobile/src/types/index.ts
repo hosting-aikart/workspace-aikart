@@ -106,6 +106,7 @@ export interface TimerSegment {
 export interface Attendance {
   id: string;
   userId: string;
+  user?: User;
   date: string;
   checkIn?: string | null;
   checkOut?: string | null;
@@ -153,6 +154,7 @@ export interface Notification {
   type: NotificationType;
   title: string;
   body?: string | null;
+  message?: string | null;
   link?: string | null;
   entityId?: string | null;
   isRead: boolean;
@@ -170,3 +172,28 @@ export interface AuthLoginResponse {
   user: User;
   accessToken: string;
 }
+
+export interface EmailAttachment {
+  id: string;
+  filename: string;
+  mimeType?: string;
+  size?: number;
+}
+
+export interface EmailMessage {
+  id: string;
+  threadId?: string;
+  from?: string;
+  to?: string;
+  cc?: string;
+  bcc?: string;
+  subject: string;
+  snippet?: string;
+  body?: string;
+  date?: string;
+  isRead?: boolean;
+  hasAttachments?: boolean;
+  attachments?: EmailAttachment[];
+  draftId?: string;
+}
+

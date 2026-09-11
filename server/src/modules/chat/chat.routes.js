@@ -7,6 +7,7 @@ const {
   startDirectConversationHandler,
   createGroupConversationHandler,
   updateConversationNameHandler,
+  addParticipantsHandler,
   getMessagesHandler,
   sendMessageHandler,
   sendAttachmentHandler,
@@ -96,5 +97,6 @@ router.post('/conversations/:id/messages/forward', forwardMessagesHandler);
 router.delete('/conversations/:id/messages', clearMessagesHandler);
 router.delete('/conversations/:id/participants/me', leaveConversationHandler);
 router.patch('/conversations/:id', updateConversationNameHandler);
+router.post('/conversations/:id/participants', addParticipantsHandler);
 
 module.exports = router;

@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { useRouter } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
+import { Header } from '../../src/components/Header';
 import { Card } from '../../src/components/Card';
 import { Button } from '../../src/components/Button';
 import { Badge } from '../../src/components/Badge';
@@ -16,7 +17,9 @@ export default function EmployeeProfileScreen() {
   };
 
   return (
-    <ScrollView style={styles.container} contentContainerStyle={styles.content}>
+    <View style={{ flex: 1, backgroundColor: '#0F172A' }}>
+      <Header title="My Profile" />
+      <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <View style={styles.avatarSection}>
         <View style={styles.avatarCircle}>
           <Text style={styles.avatarInitials}>
@@ -61,7 +64,8 @@ export default function EmployeeProfileScreen() {
         style={styles.logoutBtn}
       />
     </ScrollView>
-  );
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

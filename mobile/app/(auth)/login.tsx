@@ -7,8 +7,10 @@ import {
   Platform,
   ScrollView,
   Alert,
+  Image,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useAuth } from '../../src/context/AuthContext';
 import { Input } from '../../src/components/Input';
 import { Button } from '../../src/components/Button';
@@ -16,6 +18,7 @@ import { Button } from '../../src/components/Button';
 export default function LoginScreen() {
   const router = useRouter();
   const { login } = useAuth();
+  const insets = useSafeAreaInsets();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -54,8 +57,22 @@ export default function LoginScreen() {
       style={styles.container}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <ScrollView contentContainerStyle={styles.scrollContent} keyboardShouldPersistTaps="handled">
+      <ScrollView
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingTop: Math.max(insets.top + 16, 24),
+            paddingBottom: Math.max(insets.bottom + 16, 24),
+          },
+        ]}
+        keyboardShouldPersistTaps="handled"
+      >
         <View style={styles.header}>
+          <Image
+            source={require('../../assets/aikart-workspace-logo.png')}
+            style={styles.logoImage}
+            resizeMode="contain"
+          />
           <Text style={styles.logoText}>AIKart</Text>
           <Text style={styles.subLogoText}>WORKSPACE MOBILE</Text>
           <Text style={styles.welcomeText}>Sign in to your account</Text>
@@ -112,6 +129,12 @@ const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
     marginBottom: 32,
+  },
+  logoImage: {
+    width: 80,
+    height: 80,
+    marginBottom: 12,
+    borderRadius: 16,
   },
   logoText: {
     fontSize: 40,

@@ -6,8 +6,7 @@ export default function AdminLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerStyle: { backgroundColor: '#1E293B' },
-        headerTitleStyle: { color: '#F8FAFC', fontWeight: '700', fontSize: 18 },
+        headerShown: false,
         tabBarStyle: { backgroundColor: '#1E293B', borderTopColor: 'rgba(255, 255, 255, 0.08)' },
         tabBarActiveTintColor: '#A855F7',
         tabBarInactiveTintColor: '#64748B',
@@ -18,7 +17,14 @@ export default function AdminLayout() {
         name="index"
         options={{
           title: 'Dashboard',
-          tabBarIcon: ({ color, size }) => <Ionicons name="speedometer-outline" size={size} color={color} />,
+          tabBarIcon: ({ color, size }) => <Ionicons name="grid-outline" size={size} color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: 'Chat',
+          tabBarIcon: ({ color, size }) => <Ionicons name="chatbubbles-outline" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -38,29 +44,61 @@ export default function AdminLayout() {
       <Tabs.Screen
         name="projects"
         options={{
-          title: 'Projects',
-          tabBarIcon: ({ color, size }) => <Ionicons name="folder-outline" size={size} color={color} />,
+          href: null,
         }}
       />
       <Tabs.Screen
         name="tasks"
         options={{
-          title: 'Tasks',
-          tabBarIcon: ({ color, size }) => <Ionicons name="checkbox-outline" size={size} color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="attendance"
-        options={{
-          title: 'Attendance',
-          tabBarIcon: ({ color, size }) => <Ionicons name="time-outline" size={size} color={color} />,
+          href: null,
         }}
       />
       <Tabs.Screen
         name="meetings"
         options={{
-          title: 'Meetings',
-          tabBarIcon: ({ color, size }) => <Ionicons name="calendar-outline" size={size} color={color} />,
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="attendance"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="announcements"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="directory"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="email"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="notifications"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="reports"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          href: null,
         }}
       />
       <Tabs.Screen

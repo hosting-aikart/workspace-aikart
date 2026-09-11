@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, ScrollView, RefreshControl } from 'react-native
 import { useFocusEffect } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 import { Card } from '../../src/components/Card';
+import { Header } from '../../src/components/Header';
 import { adminApi, AdminStatsData } from '../../src/api/adminApi';
 
 export default function AdminDashboard() {
@@ -32,11 +33,13 @@ export default function AdminDashboard() {
   };
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.content}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#A855F7" />}
-    >
+    <View style={{ flex: 1, backgroundColor: '#0F172A' }}>
+      <Header title="Admin Dashboard" />
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={styles.content}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor="#A855F7" />}
+      >
       <View style={styles.header}>
         <Text style={styles.welcomeTitle}>System Administration</Text>
         <Text style={styles.nameText}>{user?.name || 'Administrator'}</Text>
@@ -65,7 +68,8 @@ export default function AdminDashboard() {
         </Card>
       </View>
     </ScrollView>
-  );
+  </View>
+);
 }
 
 const styles = StyleSheet.create({

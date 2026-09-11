@@ -2,7 +2,13 @@ import axios from 'axios';
 import { getAccessToken } from '../utils/storage';
 
 const getBaseUrl = (): string => {
-  let url = process.env.EXPO_PUBLIC_API_URL || 'http://10.0.2.2:5000/api';
+  let url = process.env.EXPO_PUBLIC_API_URL;
+  if (!url && typeof window !== 'undefined' && window.location) {
+    url = `http://${window.location.hostname}:5000/api`;
+  }
+  if (!url) {
+    url = 'http://localhost:5000/api';
+  }
   url = url.trim().replace(/\/+$/, '');
   if (!/\/api$/i.test(url)) {
     url = `${url}/api`;
@@ -21,9 +27,20 @@ export const api = axios.create({
   timeout: 15000,
 });
 
+let cachedToken: string | null = null;
+
+export const setStoredToken = (token: string | null) => {
+  cachedToken = token;
+};
+
+export const getStoredToken = (): string | null => {
+  return cachedToken;
+};
+
 api.interceptors.request.use(async (config) => {
   const token = await getAccessToken();
   if (token) {
+    cachedToken = token;
     config.headers.Authorization = `Bearer ${token}`;
   }
   return config;

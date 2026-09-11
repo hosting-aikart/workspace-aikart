@@ -5,6 +5,7 @@ import { Card } from '../../src/components/Card';
 import { Badge } from '../../src/components/Badge';
 import { EmptyState } from '../../src/components/EmptyState';
 import { LoadingScreen } from '../../src/components/LoadingScreen';
+import { Header } from '../../src/components/Header';
 import { adminApi } from '../../src/api/adminApi';
 import { User } from '../../src/types';
 
@@ -42,6 +43,7 @@ export default function AdminUsersScreen() {
 
   return (
     <View style={styles.container}>
+      <Header title="Employees" />
       <FlatList
         data={users}
         keyExtractor={(item) => item.id}

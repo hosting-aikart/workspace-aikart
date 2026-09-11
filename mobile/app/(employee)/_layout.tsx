@@ -6,8 +6,7 @@ export default function EmployeeLayout() {
   return (
     <Tabs
       screenOptions={{
-        headerStyle: { backgroundColor: '#1E293B' },
-        headerTitleStyle: { color: '#F8FAFC', fontWeight: '700', fontSize: 18 },
+        headerShown: false,
         tabBarStyle: { backgroundColor: '#1E293B', borderTopColor: 'rgba(255, 255, 255, 0.08)' },
         tabBarActiveTintColor: '#6366F1',
         tabBarInactiveTintColor: '#64748B',
@@ -22,10 +21,10 @@ export default function EmployeeLayout() {
         }}
       />
       <Tabs.Screen
-        name="projects"
+        name="chat"
         options={{
-          title: 'Projects',
-          tabBarIcon: ({ color, size }) => <Ionicons name="folder-outline" size={size} color={color} />,
+          title: 'Chat',
+          tabBarIcon: ({ color, size }) => <Ionicons name="chatbubbles-outline" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
@@ -36,24 +35,52 @@ export default function EmployeeLayout() {
         }}
       />
       <Tabs.Screen
-        name="attendance"
+        name="projects"
         options={{
-          title: 'Attendance',
-          tabBarIcon: ({ color, size }) => <Ionicons name="time-outline" size={size} color={color} />,
+          title: 'Projects',
+          tabBarIcon: ({ color, size }) => <Ionicons name="folder-outline" size={size} color={color} />,
         }}
       />
       <Tabs.Screen
         name="meetings"
         options={{
-          title: 'Meetings',
-          tabBarIcon: ({ color, size }) => <Ionicons name="calendar-outline" size={size} color={color} />,
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="attendance"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="announcements"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="directory"
+        options={{
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="email"
+        options={{
+          href: null,
         }}
       />
       <Tabs.Screen
         name="notifications"
         options={{
-          title: 'Alerts',
-          tabBarIcon: ({ color, size }) => <Ionicons name="notifications-outline" size={size} color={color} />,
+          href: null,
+        }}
+      />
+      <Tabs.Screen
+        name="settings"
+        options={{
+          href: null,
         }}
       />
       <Tabs.Screen

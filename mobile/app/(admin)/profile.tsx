@@ -1,2 +1,6 @@
+import React from 'react';
 import EmployeeProfileScreen from '../(employee)/profile';
-export default EmployeeProfileScreen;
+
+export default function AdminProfileScreen() {
+  return <EmployeeProfileScreen />;
+}
