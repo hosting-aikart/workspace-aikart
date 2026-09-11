@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getAccessToken } from '../utils/storage';
+import { getAccessToken, removeAccessToken, removeCachedUserData } from '../utils/storage';
 
 const getBaseUrl = (): string => {
   let url = process.env.EXPO_PUBLIC_API_URL;
@@ -50,7 +50,10 @@ api.interceptors.response.use(
   (response) => response,
   async (error) => {
     if (error.response?.status === 401) {
-      console.warn('[API] 401 Unauthorized received — token expired or invalid');
+      console.warn('[API] 401 Unauthorized received — clearing invalid token');
+      cachedToken = null;
+      await removeAccessToken();
+      await removeCachedUserData();
     }
     return Promise.reject(error);
   }

@@ -29,7 +29,7 @@ export const DirectoryComponent: React.FC = () => {
 
   const fetchDirectory = async () => {
     try {
-      const data = await adminApi.getEmployees();
+      const data = await chatApi.getDirectory();
       setEmployees(data);
     } catch (err: any) {
       console.log('Failed to fetch directory', err);
